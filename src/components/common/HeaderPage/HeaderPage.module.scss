@@ -1,0 +1,38 @@
+.headerPage {
+  margin-bottom: 62px;
+  height: 240px;
+  padding: 80px 0;
+  background-color: lightgray;
+  background-image: url("./../../../../public/assets/illus.png");
+  background-position: center;
+  .title {
+    text-align: center;
+    font-weight: 600;
+    font-size: 40px;
+    color: #fff;
+    padding: 0 4rem 10px;
+    position: relative;
+    z-index: 99;
+  }
+  .breadcrumb {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 99;
+    color: #fff;
+    .breadcrumbItem {
+      &__bold {
+        font-weight: 700;
+      }
+    }
+  }
+}
+.overlay {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  /* padding: 80px 0; */
+  top: 0;
+  height: 100%;
+}

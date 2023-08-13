@@ -1,0 +1,31 @@
+.cardPassword {
+  box-shadow: 3px 5px 12px #e7e7e785;
+  border-radius: 10px;
+  display: flex;
+  margin-bottom: 42px;
+  .cardImg {
+    img {
+      border-radius: 10px;
+      height: 300px;
+      object-fit: cover;
+      width: 260px;
+    }
+  }
+  .cardInfo {
+    padding: 30px;
+
+    .cardList {
+      ul {
+        li {
+        }
+      }
+    }
+  }
+}
+
+.title {
+  font-size: 35px;
+  line-height: 42px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}

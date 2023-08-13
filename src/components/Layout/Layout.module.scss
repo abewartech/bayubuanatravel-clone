@@ -1,0 +1,77 @@
+@import "./../../../styles/variable";
+.layout {
+  .header {
+    .contactWrap {
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      background-color: $primary;
+      display: flex;
+    }
+    .mainHeader {
+      padding: 20px 0;
+      background-color: #fff;
+      .logoWrap {
+      }
+      .navWrap {
+        display: flex;
+        gap: 46px;
+        justify-content: flex-end;
+        align-items: center;
+        .navItem {
+          cursor: pointer;
+          font-size: 18px;
+          a {
+            text-decoration: none !important;
+            color: #000;
+          }
+          &__hover {
+            .navWrap {
+              display: none;
+            }
+            &:hover {
+              .navWrap {
+                display: block;
+                position: absolute;
+                z-index: 9;
+                background: white;
+                box-shadow: 3px 4px 10px rgba(86, 68, 169, 0.05);
+                padding: 24px 16px;
+                .navChildMenu {
+                  margin-bottom: 12px;
+                  &:last-child {
+                    margin-bottom: 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .footerWrap {
+    background-color: $secondary;
+    padding: 26px 0;
+    color: #fff;
+    .footerContent {
+      justify-content: center;
+      .footerSocmed {
+        .footerSocmedItem {
+        }
+      }
+      .footerOtherMenu {
+        display: flex;
+        justify-content: space-evenly;
+        .footerItemMenu {
+          margin-bottom: 28px;
+        }
+      }
+    }
+    .copyRight {
+      text-align: center;
+      font-size: 12px;
+    }
+  }
+}

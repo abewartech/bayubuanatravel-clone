@@ -1,0 +1,35 @@
+.contactCollapsible {
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  border-radius: 32px;
+  cursor: pointer;
+  background-color: lightgray;
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+.contactList {
+  .contactItem {
+    margin-bottom: 32px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    box-shadow: 3px 5px 35px rgba(86, 68, 169, 0.1);
+    .contactTitle {
+      color: #006d67;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .contactAddress {
+      margin-bottom: 8px;
+    }
+    .contactMe {
+    }
+    .officeHours {
+      margin-top: 12px;
+    }
+    .dayOpen {
+    }
+  }
+}

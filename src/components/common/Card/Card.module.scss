@@ -1,0 +1,46 @@
+.card {
+  border-radius: 10px;
+  height: 400px;
+  position: relative;
+  margin-bottom: 56px;
+  img {
+    border-radius: 10px;
+
+    height: inherit;
+  }
+  .wrapContent {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    width: -webkit-fill-available;
+    right: 16px;
+    .cardInfo {
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      .titlePackage {
+        font-weight: 600;
+        font-size: 24px;
+      }
+      .total {
+        font-size: 12px;
+      }
+    }
+    .cardPricing {
+      color: #fff;
+      .price {
+        font-size: 12px;
+      }
+      .priceNumber {
+        font-weight: 600;
+        font-size: 20px;
+        span {
+          font-weight: 400;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
