@@ -4,3 +4,33 @@ html,
 * {
   font-family: "Segoe UI", sans-serif;
 }
+
+// Override
+.select__control {
+  border: none !important;
+  .select__value-container {
+    padding-left: 0px !important;
+    .select__placeholder {
+      &:focus-visible {
+        outline: none;
+      }
+    }
+    .select__input-container {
+      &:focus-visible {
+        outline: none;
+      }
+    }
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}
+
+.react-datepicker__input-container {
+  min-height: 38px !important;
+  input {
+    padding: 4px 0 !important;
+    border: none;
+    width: 100% !important;
+  }
+}

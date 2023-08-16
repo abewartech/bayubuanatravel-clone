@@ -8,7 +8,10 @@
   .title {
     text-align: center;
     font-weight: 600;
-    font-size: 40px;
+    font-size: 28px;
+    @media (min-width: 768px) {
+      font-size: 40px;
+    }
     color: #fff;
     padding: 0 4rem 10px;
     position: relative;

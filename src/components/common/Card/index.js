@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import styles from "./Card.module.scss";
 import Image from "next/image";
 import sample from "./../../../../public/assets/sample.png";
+import domestic from "./../../../../public/assets/domestic.png";
+import clock from "./../../../../public/assets/icon/clock.svg";
 
 export default function Card(props) {
   const { type } = props;
@@ -29,13 +31,18 @@ export default function Card(props) {
     return (
       <div className={`${styles.card} ${styles.card__domestic}`}>
         <div className={styles.thumbnailWrap}>
-          {/* <Image src="" alt="thumbnail" /> */}
-          <div className={styles.date}></div>
+          <Image src={domestic} alt="thumbnail" />
+          <div className={styles.date}>
+            <span className="me-2">
+              <Image src={clock} width={10} height={10} alt="clock" />
+            </span>
+            4 Days & 3 Nights
+          </div>
         </div>
         <div className={styles.info}>
-          <div className={styles.titleCard}></div>
+          <div className={styles.titleCard}>4D EXOTIC TANA TORAJA</div>
           <div className={styles.departure}>
-            Depart: <span></span>
+            Depart: <span>Jan - Aug 2023</span>
           </div>
           <div className={styles.footerCard}>
             <div className={styles.cta}>
@@ -62,5 +69,5 @@ export default function Card(props) {
     }
   };
 
-  return <>{handleRender()}</>;
+  return <>{handleRender(type)}</>;
 }

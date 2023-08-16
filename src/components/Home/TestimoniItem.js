@@ -3,7 +3,7 @@ import styles from "./../../../styles/pages/Home.module.scss";
 import quote from "./../../../public/assets/quote-review.svg";
 export default function TestimoniItem() {
   return (
-    <div className="col-4 mb-4">
+    <div className="mb-4">
       <div className={styles.testimoniCard}>
         <div className={styles.userInformation}>
           <div className={styles.profilePict}></div>

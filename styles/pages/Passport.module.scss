@@ -6,9 +6,13 @@
   .cardImg {
     img {
       border-radius: 10px;
-      height: 300px;
       object-fit: cover;
-      width: 260px;
+      height: 100%;
+      width: 200px;
+      @media (min-width: 650px) {
+        height: 300px;
+        width: 260px;
+      }
     }
   }
   .cardInfo {
@@ -28,4 +32,51 @@
   line-height: 42px;
   margin-bottom: 12px;
   font-weight: 600;
+}
+
+.cardNewsUpdate {
+  box-shadow: 3px 5px 12px #e7e7e785;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  // height: 450px;
+
+  .cardNewsThumbnail {
+    img {
+      height: 200px;
+      object-fit: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .cardNewsBody {
+    padding: 16px 24px 24px;
+    .cardNewsDate {
+      color: #898989;
+      font-size: 13px;
+    }
+    .cardNewsTitle {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      color: #262626;
+      font-weight: 600;
+      line-height: 1.2;
+      font-size: 19px;
+    }
+    .desc {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      margin: 0 0 24px;
+      font-size: 14px;
+    }
+    .more {
+      margin-top: 10px;
+      color: #e84d0e;
+      font-style: italic;
+      font-size: 13px;
+    }
+  }
 }

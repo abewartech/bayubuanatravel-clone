@@ -1,5 +1,38 @@
 @import "./../../../styles/variable";
 .layout {
+  position: relative;
+  &__hide {
+    overflow: hidden;
+  }
+  .sidemenu {
+    position: absolute;
+    transition: all 0.3s ease;
+    height: 100vh;
+    z-index: 1000;
+    background-color: white;
+    width: 300px;
+    top: 0;
+    padding: 24px;
+    left: -300px;
+    &__active {
+      left: 0px;
+      .sideMenuItem {
+        margin-bottom: 10px;
+        font-weight: 500;
+        a {
+          color: #000 !important;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: #0000008c;
+  }
   .header {
     .contactWrap {
       padding: 8px;
@@ -15,10 +48,24 @@
       .logoWrap {
       }
       .navWrap {
-        display: flex;
+        display: none;
         gap: 46px;
         justify-content: flex-end;
         align-items: center;
+        @media (min-width: 1024px) {
+          display: flex;
+        }
+        &__mobile {
+          display: flex;
+          text-align: right;
+          img {
+            width: 36px;
+            height: 36px;
+          }
+          @media (min-width: 1024px) {
+            display: none;
+          }
+        }
         .navItem {
           cursor: pointer;
           font-size: 18px;
