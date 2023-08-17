@@ -1,14 +1,23 @@
 .card {
   border-radius: 10px;
-  height: 350px;
+  height: 400px;
+  margin-bottom: 0;
+  @media (min-width: 768px) {
+    height: 350px;
+    margin-bottom: 16px;
+  }
   position: relative;
-  margin-bottom: 16px;
   box-shadow: 3px 5px 12px #e7e7e785;
+  // &:last- {
+  //   margin-bottom: 42px;
+  // }
   &__domestic {
     height: auto;
     padding-bottom: 16px;
   }
   img {
+    object-fit: cover;
+    object-position: top;
     border-radius: 10px;
     height: inherit;
   }
@@ -55,20 +64,7 @@
     .footerCard {
       display: flex;
       gap: 32px;
-      .cta {
-        button {
-          font-weight: 600;
-          font-size: 15px;
-          text-transform: uppercase;
-          color: #262626;
-          background: #fff;
-          border: 1px solid #fdc300;
-          box-sizing: border-box;
-          border-radius: 5px;
-          padding: 8px 10px;
-          transition: all 0.3s;
-        }
-      }
+
       .label {
         font-size: 12px;
       }
@@ -81,12 +77,36 @@
       }
     }
   }
+  .date {
+    display: flex;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: capitalize;
+    color: #fff;
+    background: #f26f49;
+    border-radius: 24px;
+    padding: 4px 12px;
+    width: fit-content;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    span {
+      display: flex;
+      align-items: center;
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
   .wrapContent {
+    z-index: 2;
     position: absolute;
     bottom: 16px;
     left: 16px;
     width: -webkit-fill-available;
     right: 16px;
+
     .cardInfo {
       color: #fff;
       display: flex;
@@ -95,7 +115,10 @@
       margin-bottom: 4px;
       .titlePackage {
         font-weight: 600;
-        font-size: 24px;
+        font-size: 16px;
+        @media (min-width: 768px) {
+          font-size: 24px;
+        }
       }
       .total {
         font-size: 12px;
@@ -109,9 +132,127 @@
       .priceNumber {
         font-weight: 600;
         font-size: 20px;
+        line-height: 24px;
         span {
           font-weight: 400;
           font-size: 12px;
+        }
+      }
+    }
+    .cta {
+      button {
+        font-weight: 600;
+        font-size: 16px;
+        color: #f26f49;
+        border: 1px solid #f26f49;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 4px 10px;
+        transition: all 0.3s;
+        margin-top: 8px;
+      }
+    }
+  }
+  .overlay {
+    height: 180px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
+    border-radius: 0 0 10px 10px;
+    background: linear-gradient(0deg, black, transparent);
+  }
+}
+
+.cardNewsUpdate {
+  box-shadow: 3px 5px 12px #e7e7e785;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  // height: 450px;
+
+  .cardNewsThumbnail {
+    img {
+      height: 200px;
+      object-fit: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .cardNewsBody {
+    padding: 16px 24px 24px;
+    .cardNewsDate {
+      color: #898989;
+      font-size: 13px;
+    }
+    .cardNewsTitle {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      color: #262626;
+      font-weight: 600;
+      line-height: 1.2;
+      font-size: 16px;
+      @media (min-width: 768px) {
+        font-size: 19px;
+      }
+    }
+    .desc {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      margin: 0 0 24px;
+      font-size: 14px;
+    }
+    .more {
+      margin-top: 10px;
+      color: #e84d0e;
+      font-style: italic;
+      font-size: 13px;
+    }
+  }
+}
+
+.cardPassword {
+  box-shadow: 3px 5px 12px #e7e7e785;
+  border-radius: 10px;
+  display: flex;
+  margin-bottom: 42px;
+  flex-direction: column;
+  @media (min-width: 576px) {
+    flex-direction: row;
+  }
+  .cardImg {
+    img {
+      border-radius: 10px;
+      object-fit: cover;
+      height: 250px;
+      width: 100%;
+      @media (min-width: 650px) {
+        height: 300px;
+        width: 260px;
+      }
+    }
+  }
+  .cardInfo {
+    padding: 20px;
+    @media (min-width: 567px) {
+      padding: 30px;
+    }
+    .cardPassporttitle {
+      font-size: 28px;
+      margin-bottom: 8px;
+      @media (min-width: 567px) {
+        font-size: 35px;
+        margin-bottom: 12px;
+      }
+      line-height: 42px;
+      font-weight: 600;
+    }
+    .cardList {
+      ul {
+        li {
         }
       }
     }

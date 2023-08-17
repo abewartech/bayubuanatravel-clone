@@ -1,8 +1,7 @@
 import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
-import styles from "./../styles/pages/Passport.module.scss";
-import CardPassport from "../src/components/Passport/CardPassport";
-import CardNews from "../src/components/Passport/CardNews";
+import TitleSection from "../src/components/common/TitleSection";
+import Card from "../src/components/common/Card";
 export default function Passport() {
   const breadcrumb = [
     {
@@ -20,19 +19,17 @@ export default function Passport() {
           {[...Array(2)].map((item, idx) => {
             return (
               <div key={idx} className="col-12 col-xl-6">
-                <CardPassport />
+                <Card type="passport" />
               </div>
             );
           })}
         </div>
         <div className="row">
-          <div className="col-12">
-            <div className={styles.title}>News Update</div>
-          </div>
+          <TitleSection title="News Update" more={false} />
           {[...Array(3)].map((item, idx) => {
             return (
               <div className="col-12 col-md-6 col-lg-4" key={idx}>
-                <CardNews />
+                <Card type="news" />
               </div>
             );
           })}

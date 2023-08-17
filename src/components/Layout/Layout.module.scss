@@ -14,6 +14,9 @@
     top: 0;
     padding: 24px;
     left: -300px;
+    height: 100%;
+    color: #000 !important;
+    text-decoration: none;
     &__active {
       left: 0px;
       .sideMenuItem {
@@ -29,21 +32,24 @@
   .overlay {
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     z-index: 999;
     background: #0000008c;
   }
   .header {
     .contactWrap {
       padding: 8px;
-      font-size: 12px;
+      font-size: 10px;
+      @media (min-width: 576px) {
+        font-size: 12px;
+      }
       font-weight: 600;
       color: #fff;
       background-color: $primary;
       display: flex;
     }
     .mainHeader {
-      padding: 20px 0;
+      padding: 16px 0;
       background-color: #fff;
       .logoWrap {
       }
@@ -67,8 +73,11 @@
           }
         }
         .navItem {
-          cursor: pointer;
-          font-size: 18px;
+          font-size: 16px;
+          &:hover {
+            cursor: pointer;
+            opacity: 0.75;
+          }
           a {
             text-decoration: none !important;
             color: #000;
@@ -99,26 +108,52 @@
     }
   }
   .footerWrap {
-    background-color: $secondary;
-    padding: 26px 0;
-    color: #fff;
+    background-color: #f6f6f6;
+    padding: 56px 0 32px;
     .footerContent {
       justify-content: center;
+      .footerAddress {
+        margin-top: 52px;
+        font-size: 16px;
+      }
       .footerSocmed {
         .footerSocmedItem {
         }
       }
       .footerOtherMenu {
-        display: flex;
-        justify-content: space-evenly;
+        // display: flex;
+        // justify-content: space-evenly;
+        .footerOtherTitle {
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 24px;
+        }
         .footerItemMenu {
           margin-bottom: 28px;
+          font-size: 16px;
         }
       }
     }
     .copyRight {
       text-align: center;
-      font-size: 12px;
+      font-size: 16px;
+    }
+  }
+  .whatsappBtn {
+    position: fixed;
+    z-index: 9;
+    bottom: 20px;
+    right: 20px;
+    .whatsappBtnCta {
+      width: 55px;
+      height: 55px;
+      padding: 8px;
+      border-radius: 30px;
+      background-color: #49e670;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }

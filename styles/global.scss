@@ -1,15 +1,33 @@
 @import "/node_modules/bootstrap/scss/bootstrap.scss";
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,500;10..48,600&display=swap");
 
 html,
-* {
-  font-family: "Segoe UI", sans-serif;
+body {
+  font-family: "Bricolage Grotesque", sans-serif;
+}
+
+#search {
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.sticky {
+  position: fixed !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 200;
+  box-shadow: 0 1.6rem 3rem rgb(0 0 0 / 10%);
+}
+
+.sticky + #heroShot {
+  padding-top: 102px;
 }
 
 // Override
 .select__control {
   border: none !important;
   .select__value-container {
-    padding-left: 0px !important;
     .select__placeholder {
       &:focus-visible {
         outline: none;
@@ -26,11 +44,16 @@ html,
   }
 }
 
-.react-datepicker__input-container {
-  min-height: 38px !important;
-  input {
-    padding: 4px 0 !important;
-    border: none;
-    width: 100% !important;
+.react-datepicker-wrapper {
+  width: 100%;
+  .react-datepicker__input-container {
+    min-height: 38px !important;
+    input {
+      margin: 2px;
+      padding-bottom: 2px;
+      padding-top: 2px;
+      border: none;
+      width: 100% !important;
+    }
   }
 }

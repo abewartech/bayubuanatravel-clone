@@ -3,6 +3,9 @@ import Footer from "./Footer";
 import Header from "./Header";
 import styles from "./Layout.module.scss";
 import Link from "next/link";
+import Image from "next/image";
+import whatsapp from "./../../../public/assets/logo/whatsapp.png";
+import Sidebar from "./Sidebar";
 
 export default function Layout(props) {
   const { children } = props;
@@ -19,39 +22,22 @@ export default function Layout(props) {
     setShowSideMenu(!showSideMenu);
   };
   return (
-    <div className={`${styles.layout} ${showSideMenu && styles.layout__hide}`}>
-      {showSideMenu && (
-        <div onClick={handleShowMenu} className={styles.overlay}></div>
-      )}
-      <div
-        className={`${styles.sidemenu} ${
-          showSideMenu && styles.sidemenu__active
-        }`}
-      >
-        <div className={styles.sideMenuItem}>
-          <Link href="/">Home</Link>
-        </div>
-        <div className={styles.sideMenuItem}>About Us</div>
-
-        <div className={styles.sideMenuItem}>
-          <Link href="/destination/international">
-            International Destination
-          </Link>
-        </div>
-        <div className={styles.sideMenuItem}>
-          <Link href="/destination/domenstic">Domestic Destination</Link>
-        </div>
-        <div className={styles.sideMenuItem}>
-          <Link href="/passport">Passport & Visa</Link>
-        </div>
-        <div className={styles.sideMenuItem}>
-          <Link href="/contact-us">Contact Us</Link>
-        </div>
-      </div>
-
+    <div
+      className={`${styles.layout} ${
+        showSideMenu ? styles.layout__hide : undefined
+      }`}
+    >
+      <Sidebar showSideMenu={showSideMenu} handleShowMenu={handleShowMenu} />
       <Header handleShowMenu={handleShowMenu} />
       {children}
       <Footer />
+      <div className={styles.whatsappBtn}>
+        <div className={styles.whatsappBtnCta}>
+          <Link href="https://wa.me/6281316776671" target="_blank">
+            <Image src={whatsapp} alt="whatsapp" />
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,18 +2,14 @@ import styles from "./../../../styles/pages/Home.module.scss";
 import promo from "./../../../public/assets/promo.png";
 import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
+import TitleSection from "../common/TitleSection";
 export default function PromoBigBanner() {
   return (
     <>
-      <div className="col-8">
-        <div className={styles.title}>Explore Our Promotions</div>
-        <div className={styles.subtitle}>
-          NIKMATI PROMO & EVENT MENARIK UNTUK MELENGKAPI LIBURANMU
-        </div>
-      </div>
-      <div className="col-4 d-flex align-items-center justify-content-end">
-        <a className={styles.link}>View More</a>
-      </div>
+      <TitleSection
+        title="Explore Our Promotions"
+        subtitle="Nikmati Promo & Event Menarik Untuk Melengkapi Liburanmu"
+      />
       <Splide
         options={{
           type: "loop",

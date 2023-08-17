@@ -3,12 +3,16 @@
   border-radius: 10px;
   display: flex;
   margin-bottom: 42px;
+  flex-direction: column;
+  @media (min-width: 576px) {
+    flex-direction: row;
+  }
   .cardImg {
     img {
       border-radius: 10px;
       object-fit: cover;
-      height: 100%;
-      width: 200px;
+      height: 250px;
+      width: 100%;
       @media (min-width: 650px) {
         height: 300px;
         width: 260px;
@@ -16,8 +20,10 @@
     }
   }
   .cardInfo {
-    padding: 30px;
-
+    padding: 20px;
+    @media (min-width: 567px) {
+      padding: 30px;
+    }
     .cardList {
       ul {
         li {
@@ -28,9 +34,13 @@
 }
 
 .title {
-  font-size: 35px;
+  font-size: 28px;
+  margin-bottom: 8px;
+  @media (min-width: 567px) {
+    font-size: 35px;
+    margin-bottom: 12px;
+  }
   line-height: 42px;
-  margin-bottom: 12px;
   font-weight: 600;
 }
 
@@ -61,7 +71,10 @@
       color: #262626;
       font-weight: 600;
       line-height: 1.2;
-      font-size: 19px;
+      font-size: 16px;
+      @media (min-width: 768px) {
+        font-size: 19px;
+      }
     }
     .desc {
       overflow: hidden;

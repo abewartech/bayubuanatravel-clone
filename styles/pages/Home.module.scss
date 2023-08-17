@@ -1,29 +1,54 @@
 @import "./../variable";
 .heroShot {
   position: relative;
-  margin-bottom: 42px;
-  .wrap {
+  margin-bottom: -20px;
+  @media (min-width: 991px) {
+    margin-bottom: 42px;
+  }
+  .bannerBig {
+    width: 100%;
     height: calc(100vh - 32px);
-    display: flex;
+    // position: absolute;
+    object-fit: cover;
+    // left: 1%;
+    z-index: 1;
+    animation: zoomAnimation 4s infinite alternate;
+    // transition: transform 2s;
+    // background-position: center;
+  }
+  .wrap {
+    top: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+    height: calc(100vh - 32px);
+    background-color: rgba(22, 43, 50, 0.7);
     img {
       width: 100%;
       height: 100vh;
       object-fit: cover;
-      animation: zoomAnimation 4s infinite alternate;
-      transition: transform 2s;
     }
     .wrapInfo {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       position: relative;
       z-index: 9;
-      background-color: rgba(22, 43, 50, 1);
-      padding: 72px 42px 16px !important;
+      height: calc(100vh - 32px);
+
+      // padding: 72px 42px 16px !important;
       .mainTitle {
-        font-size: 72px;
+        font-size: 42px;
+        line-height: 52px;
+        margin-bottom: 24px;
+        @media (min-width: 650px) {
+          font-size: 72px;
+          line-height: 82px;
+          margin-bottom: 32px;
+        }
         color: $fourth;
         font-weight: 600;
-        max-width: 400px;
-        line-height: 82px;
-        margin-bottom: 32px;
+        // max-width: 400px;
       }
       .subTitle {
         color: #fff;
@@ -40,15 +65,25 @@
   .searchBox {
     box-shadow: 3px 4px 10px rgb(86 68 169/5%);
     border-radius: 10px;
-    padding: 15px 25px;
+    padding: 32px 16px;
+    margin: 0 -4px;
+    bottom: 80px;
+    @media (min-width: 991px) {
+      padding: 15px 25px;
+      margin: auto;
+      bottom: 50px;
+    }
     position: relative;
     background-color: #fff;
-    bottom: 50px;
     z-index: 9;
     .filter {
       border: 1px solid #e2e2e2;
       box-sizing: border-box;
       padding: 10px 15px;
+      margin-bottom: 16px;
+      @media (min-width: 768px) {
+        margin-bottom: 0;
+      }
       .icon {
       }
       .filterForm {
@@ -84,31 +119,24 @@
       height: 100%;
       padding: 12px 24px;
       transition: all 0.35s;
+      margin-bottom: 16px;
     }
   }
 }
 
-.title {
-  font-size: 35px;
-  line-height: 42px;
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-.subtitle {
-  font-size: 16px;
-  margin-bottom: 24px;
-}
-
-.link {
-  font-size: 14px;
+.client_logo {
+  width: 100%;
+  height: fit-content;
 }
 
 .sliderList {
   border-radius: 12px;
   .sliderItem {
     margin-bottom: 42px;
-    height: 500px;
+    height: 400px;
+    @media (min-width: 768px) {
+      height: 500px;
+    }
     width: 100%;
     border-radius: 12px;
     img {
@@ -142,7 +170,7 @@
 .testimoniWrap {
   padding: 64px 0 60px;
   background-color: lightgray;
-  background-image: url("./../../public//assets/thumb.png");
+  background-image: url("./../../public/assets/slider/slider1.jpg");
   background-attachment: fixed;
   margin-bottom: 32px;
   color: #fff;
@@ -199,6 +227,12 @@
     border-radius: 10px;
     background-color: lightgray;
     margin-bottom: 8px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
   }
   .caption {
     font-size: 12px;
@@ -216,6 +250,6 @@
     transform: scale(1);
   }
   100% {
-    transform: scale(1.2);
+    transform: scale(1.0025);
   }
 }

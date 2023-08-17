@@ -1,16 +1,12 @@
 import Card from "../common/Card";
+import TitleSection from "../common/TitleSection";
 import styles from "./../../../styles/pages/Home.module.scss";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 
 export default function TourList() {
   return (
     <>
-      <div className="col-8">
-        <div className={styles.title}>All Tours</div>
-      </div>
-      <div className="col-4 d-flex align-items-center justify-content-end">
-        <a className={styles.link}>View More</a>
-      </div>
+      <TitleSection title="All Tours" />
       <div className="mb-4">
         <Splide
           options={{

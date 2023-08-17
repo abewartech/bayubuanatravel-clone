@@ -8,6 +8,7 @@ import TestimoniList from "../src/components/Home/TestimoniList";
 import GalleryList from "../src/components/Home/GalleryList";
 import "@splidejs/react-splide/css/core";
 import "@splidejs/react-splide/css";
+import ClientList from "../src/components/Home/ClientList";
 export default function Homepage() {
   return (
     <Layout>
@@ -20,6 +21,7 @@ export default function Homepage() {
           <Videotron />
         </div>
       </div>
+      <ClientList />
       <TestimoniList />
       <GalleryList />
     </Layout>

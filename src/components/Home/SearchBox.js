@@ -31,6 +31,7 @@ export default function SearchBox() {
                 <label>Departure Dates</label>
                 {/* <input /> */}
                 <Select
+                  id="search"
                   classNamePrefix="select"
                   defaultValue={selectedOption}
                   onChange={setSelectedOption}
@@ -45,11 +46,11 @@ export default function SearchBox() {
           <div className={styles.filter}>
             <div className={styles.icon}></div>
             <div className={styles.filterForm}>
-              <div className="d-flex align-items-center">
+              <div className="d-flex w-100 align-items-center">
                 <div className="me-3">
                   <Image src={calendar} alt="calendar" />
                 </div>
-                <div>
+                <div className="w-100">
                   <label>Departure Dates</label>
                   <ReactDatePicker
                     selectsRange={true}
@@ -64,7 +65,7 @@ export default function SearchBox() {
             </div>
           </div>
         </div>
-        <div className="col-12 col-lg-2">
+        <div className="col-12 col-lg-2 p-0">
           <button className={styles.cta}>Find Now</button>
         </div>
       </div>

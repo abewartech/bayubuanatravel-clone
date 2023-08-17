@@ -1,17 +1,20 @@
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import styles from "./../../../styles/pages/Home.module.scss";
+import TitleSection from "../common/TitleSection";
+import img1 from "./../../../public/assets/gallery/1.jpg";
+import img2 from "./../../../public/assets/gallery/2.jpg";
+import img3 from "./../../../public/assets/gallery/3.jpg";
+import img4 from "./../../../public/assets/gallery/4.jpg";
+import img5 from "./../../../public/assets/gallery/5.jpg";
+import img6 from "./../../../public/assets/gallery/6.jpg";
+import Image from "next/image";
 
 export default function GalleryList() {
+  const gallery = [img1, img2, img3, img4, img5, img6];
   return (
     <div className={`${styles.galleryList} container`}>
       <div className="row">
-        <div className="col-8">
-          <div className={styles.title}>Image Gallery from Participant</div>
-        </div>
-        <div className="col-4 d-flex align-items-center justify-content-end">
-          <a className={styles.link}>View More</a>
-        </div>
-
+        <TitleSection title="Gallery" />
         <Splide
           options={{
             type: "loop",
@@ -38,11 +41,13 @@ export default function GalleryList() {
             },
           }}
         >
-          {[...Array(5)].map((item, idx) => {
+          {gallery.map((item, idx) => {
             return (
               <SplideSlide key={idx}>
-                <div className={styles.galleryItem}></div>
-                <div className={styles.caption}>Photo By</div>
+                <div className={styles.galleryItem}>
+                  <Image alt="gallery" src={item} />
+                </div>
+                {/* <div className={styles.caption}>Photo By</div> */}
               </SplideSlide>
             );
           })}
