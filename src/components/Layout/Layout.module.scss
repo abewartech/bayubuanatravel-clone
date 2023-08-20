@@ -37,17 +37,6 @@
     background: #0000008c;
   }
   .header {
-    .contactWrap {
-      padding: 8px;
-      font-size: 10px;
-      @media (min-width: 576px) {
-        font-size: 12px;
-      }
-      font-weight: 600;
-      color: #fff;
-      background-color: $primary;
-      display: flex;
-    }
     .mainHeader {
       padding: 16px 0;
       background-color: #fff;

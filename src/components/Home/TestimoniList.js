@@ -32,7 +32,7 @@ export default function TestimoniList() {
                 },
                 640: {
                   perPage: 1,
-                  fixedWidth: "calc(100% - 6rem)",
+                  fixedWidth: "calc(100% - 4.5rem)",
                 },
               },
             }}

@@ -1,5 +1,6 @@
 @import "/node_modules/bootstrap/scss/bootstrap.scss";
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,500;10..48,600&display=swap");
+@import "./variable";
 
 html,
 body {
@@ -54,6 +55,71 @@ body {
       padding-top: 2px;
       border: none;
       width: 100% !important;
+    }
+  }
+}
+
+.ReactModal__Overlay {
+  z-index: 1000;
+  background-color: rgb(24 24 24 / 75%) !important;
+  .ReactModal__Content {
+    border-radius: 24px !important;
+    img {
+      object-fit: cover;
+      border-radius: 14px !important;
+      max-width: 600px;
+      max-height: 500px;
+    }
+  }
+}
+
+.react-datepicker__tab-loop {
+  font-family: "Bricolage Grotesque", sans-serif !important;
+  .react-datepicker-popper {
+    box-shadow: 0 1.6rem 3rem rgb(0 0 0 / 10%);
+    .react-datepicker {
+      border: none !important;
+      border-radius: 16px !important;
+      .react-datepicker__triangle {
+        &::before {
+          border: none !important;
+        }
+      }
+      .react-datepicker__navigation {
+        border-radius: 32px;
+        background: $primary;
+        display: flex;
+        padding: 4px;
+        justify-content: center;
+        align-items: flex-start;
+        .react-datepicker__navigation-icon {
+          &--next {
+            left: 0px !important;
+            top: 2px !important;
+          }
+          &--previous {
+            right: 0px !important;
+            top: 2px !important;
+          }
+        }
+      }
+      .react-datepicker__header {
+        border-top-right-radius: 16px !important;
+        border-top-left-radius: 16px !important;
+        background-color: $secondary;
+        padding: 12px 0 !important;
+        .react-datepicker__current-month {
+          color: #fff !important;
+        }
+        .react-datepicker__day-names {
+          .react-datepicker__day-name {
+            color: #fff !important;
+          }
+        }
+      }
+      .react-datepicker__month {
+        margin: 0.75rem !important;
+      }
     }
   }
 }

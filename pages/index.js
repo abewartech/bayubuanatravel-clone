@@ -8,8 +8,23 @@ import TestimoniList from "../src/components/Home/TestimoniList";
 import GalleryList from "../src/components/Home/GalleryList";
 import "@splidejs/react-splide/css/core";
 import "@splidejs/react-splide/css";
-import ClientList from "../src/components/Home/ClientList";
+import Client from "../src/components/common/Client";
+import ModalComponent from "../src/components/common/Modal";
+import { useState } from "react";
+import Image from "next/image";
 export default function Homepage() {
+  const [open, setOpen] = useState(false);
+  const [img, setImg] = useState();
+  const handleOpen = (currImg) => {
+    setImg(currImg);
+    setOpen(!open);
+  };
+
+  const content = (
+    <div>
+      <Image src={img} alt="img-show" />
+    </div>
+  );
   return (
     <Layout>
       <HeroShot />
@@ -21,9 +36,10 @@ export default function Homepage() {
           <Videotron />
         </div>
       </div>
-      <ClientList />
+      <Client />
       <TestimoniList />
-      <GalleryList />
+      <GalleryList onClick={handleOpen} />
+      <ModalComponent open={open} close={handleOpen} content={content} />
     </Layout>
   );
 }

@@ -1,25 +1,48 @@
+import Image from "next/image";
 import styles from "./../../../styles/pages/ContactUs.module.scss";
-
-export default function ContactList() {
+import mail from "./../../../public/assets/icon/mail.svg";
+import Link from "next/link";
+import call from "./../../../public/assets/icon/call.svg";
+export default function ContactList(props) {
+  const { title } = props;
   return (
-    <div className={`${styles.contactList} row`}>
-      <div className={`${styles.contactItem} col-4`}>
-        <div className={styles.contactTitle}>Puri Indah Mall</div>
+    <div className="col-6">
+      <div className={styles.contactItem}>
+        <div className={styles.contactTitle}>{title}</div>
         <div className={styles.contactAddress}>
-          Expansion 2nd Floor, Unit E-2068 Jl. Puri Agung No.1, Jakarta 11610
+          <>
+            <div className={`me-4 ${styles.contactNumber}`}>
+              {title.toLowerCase() === "contact" ? (
+                <>
+                  <span className="me-2">
+                    <Image src={call} alt="call" width={24} height={24} />
+                  </span>
+                  +6221-23509999
+                </>
+              ) : (
+                <>
+                  <span className="me-2">
+                    <Image src={mail} alt="mail" width={24} height={24} />
+                  </span>
+                  tourtravelmarina@gmail.com
+                </>
+              )}
+            </div>
+            <div className={styles.contactMe}>
+              Open trip (every weekend)
+              <br /> Private trip (day by request)
+            </div>
+            {title.toLowerCase() === "contact" ? (
+              <Link href="https://wa.me/6281316776671" target="_blank">
+                <button>Contact</button>
+              </Link>
+            ) : (
+              <Link href="mailto:tourtravelmarina@gmail.com">
+                <button>Email Us</button>
+              </Link>
+            )}
+          </>
         </div>
-        <div className={styles.contactMe}>
-          <span></span> (021) 582 2708
-        </div>
-        <div className={styles.contactMe}>
-          <span></span> office@pri.bayubuanatravel.com
-        </div>
-        <div className={styles.officeHours}>
-          <span></span> Jam Operasional :
-          <br />
-          Senin - Minggu, 10.00 - 21.00 WIB
-        </div>
-        <div className={styles.dayOpen}></div>
       </div>
     </div>
   );

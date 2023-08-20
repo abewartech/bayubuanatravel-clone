@@ -1,9 +1,9 @@
 @import "./../variable";
 .heroShot {
   position: relative;
-  margin-bottom: -20px;
+  margin-bottom: 40px;
   @media (min-width: 991px) {
-    margin-bottom: 42px;
+    margin-bottom: 72px;
   }
   .bannerBig {
     width: 100%;
@@ -122,11 +122,6 @@
       margin-bottom: 16px;
     }
   }
-}
-
-.client_logo {
-  width: 100%;
-  height: fit-content;
 }
 
 .sliderList {

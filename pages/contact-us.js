@@ -3,6 +3,8 @@ import HeaderPage from "../src/components/common/HeaderPage";
 import styles from "./../styles/pages/ContactUs.module.scss";
 import Layout from "../src/components/Layout";
 import ContactList from "../src/components/Contact/ContactList";
+import Client from "../src/components/common/Client";
+import TitleSection from "../src/components/common/TitleSection";
 
 export default function ContactUs() {
   const [id, setId] = useState(0);
@@ -25,22 +27,12 @@ export default function ContactUs() {
         <HeaderPage title="Contact Us" breadcrumb={breadcrumb} />
         <div className="container mb-5">
           <div className="row">
-            {[...Array(4)].map((item, idx) => {
-              return (
-                <div className="col-12" key={idx}>
-                  <div
-                    onClick={() => handleCollapse(idx)}
-                    className={styles.contactCollapsible}
-                  >
-                    <div className={styles.title}>Head Office</div>
-                    <div></div>
-                  </div>
-                  {expand && id === idx && <ContactList />}
-                </div>
-              );
-            })}
+            <TitleSection title="Reservation Now" more={false} />
+            <ContactList title="Contact" />
+            <ContactList title="Email" />
           </div>
         </div>
+        <Client />
       </Layout>
     </>
   );

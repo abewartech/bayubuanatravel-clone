@@ -3,7 +3,7 @@
   height: 400px;
   margin-bottom: 0;
   @media (min-width: 768px) {
-    height: 350px;
+    height: 400px;
     margin-bottom: 16px;
   }
   position: relative;
@@ -140,16 +140,28 @@
       }
     }
     .cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .infoDetail {
+        cursor: pointer;
+        img {
+          rotate: 180deg;
+          margin-top: 8px;
+          margin-bottom: 0;
+        }
+      }
       button {
         font-weight: 600;
         font-size: 16px;
         color: #f26f49;
-        border: 1px solid #f26f49;
+        // border: 1px solid #f26f49;
         background-color: #fff;
         border-radius: 5px;
-        padding: 4px 10px;
+        padding: 4px 16px;
         transition: all 0.3s;
         margin-top: 8px;
+        margin-right: 8px;
       }
     }
   }
@@ -211,6 +223,17 @@
       font-style: italic;
       font-size: 13px;
     }
+  }
+}
+
+.cardGallery {
+  margin-bottom: 24px;
+  img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
   }
 }
 

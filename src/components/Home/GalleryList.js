@@ -9,7 +9,8 @@ import img5 from "./../../../public/assets/gallery/5.jpg";
 import img6 from "./../../../public/assets/gallery/6.jpg";
 import Image from "next/image";
 
-export default function GalleryList() {
+export default function GalleryList(props) {
+  const { onClick } = props;
   const gallery = [img1, img2, img3, img4, img5, img6];
   return (
     <div className={`${styles.galleryList} container`}>
@@ -44,7 +45,10 @@ export default function GalleryList() {
           {gallery.map((item, idx) => {
             return (
               <SplideSlide key={idx}>
-                <div className={styles.galleryItem}>
+                <div
+                  onClick={() => onClick(item)}
+                  className={styles.galleryItem}
+                >
                   <Image alt="gallery" src={item} />
                 </div>
                 {/* <div className={styles.caption}>Photo By</div> */}

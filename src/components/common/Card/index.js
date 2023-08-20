@@ -4,6 +4,7 @@ import Image from "next/image";
 import sample from "./../../../../public/assets/sample.png";
 import domestic from "./../../../../public/assets/domestic.png";
 import clock from "./../../../../public/assets/icon/clock.svg";
+import info from "./../../../../public/assets/icon/info.svg";
 import thumbnail from "./../../../../public/assets/thumb.png";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
 import passport from "./../../../../public/assets/passport.png";
@@ -11,6 +12,7 @@ import Link from "next/link";
 
 export default function Card(props) {
   const { type } = props;
+
   const commonCard = () => {
     return (
       <div className={`${styles.card} mt-3  `}>
@@ -36,6 +38,9 @@ export default function Card(props) {
             <Link href="https://wa.me/6281316776671" target="_blank">
               <button>Contact</button>
             </Link>
+            <div className={styles.infoDetail}>
+              <Image src={info} alt="info" />
+            </div>
           </div>
         </div>
         <div className={styles.overlay}></div>
@@ -66,6 +71,14 @@ export default function Card(props) {
           </div>
           <div className={styles.more}>Read More</div>
         </div>
+      </div>
+    );
+  };
+
+  const galleryCard = () => {
+    return (
+      <div className={styles.cardGallery}>
+        <Image src={thumbnail} alt="thumb" />
       </div>
     );
   };
@@ -130,6 +143,8 @@ export default function Card(props) {
         return domesticCard();
       case "news":
         return newsCard();
+      case "gallery":
+        return galleryCard();
       case "passport":
         return passportCard();
       default:

@@ -47,7 +47,7 @@ export default function HeroShot() {
           </div>
         </div>
       </div>
-      <SearchBox />
+      {/* <SearchBox /> */}
     </div>
   );
 }

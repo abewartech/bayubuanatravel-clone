@@ -26,31 +26,17 @@ export default function Header(props) {
   }, []);
   return (
     <div className={styles.header}>
-      <div className={styles.contactWrap}>
-        <div className="container">
-          <div className="d-flex justify-content-end">
-            <div className="me-4">
-              <span className="me-2">
-                <Image src={call} alt="call" width={16} height={16} />
-              </span>
-              +6221-23509999
-            </div>
-            <div>
-              <span className="me-2">
-                <Image src={mail} alt="mail" width={16} height={16} />
-              </span>
-              office@bayubuanatravel.com
-            </div>
-          </div>
-        </div>
-      </div>
       <div id="header-landing" className={styles.mainHeader}>
         <div className="container">
           <div className="row justify-content-between">
-            <Link href="/" className={`${styles.logoWrap} col-10 col-lg-4`}>
-              <Image src={logo} alt="logo" width={100} height={40} />
-            </Link>
-            <nav className={`${styles.navWrap} col-lg-8 col-10`}>
+            <div className="col-10 col-lg-4">
+              <Link href="/" className={`${styles.logoWrap} `}>
+                <Image src={logo} alt="logo" width={100} height={40} />
+              </Link>
+            </div>
+            <div
+              className={`${styles.navWrap} col-lg-8 col-10 justify-content-end`}
+            >
               <div className={styles.navItem}>
                 <Link href="/">Home</Link>
               </div>
@@ -67,15 +53,15 @@ export default function Header(props) {
                 </div>
               </div> */}
               <div className={styles.navItem}>
-                <Link href="/destination/international">Destination</Link>
+                <Link href="/packages">Packages</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/passport">Passport & Visa</Link>
+                <Link href="/gallery">Gallery</Link>
               </div>
               <div className={styles.navItem}>
                 <Link href="/contact-us">Contact Us</Link>
               </div>
-            </nav>
+            </div>
             <div
               onClick={handleShowMenu}
               className={`${styles.navWrap__mobile} ${styles.navWrap} col-2`}

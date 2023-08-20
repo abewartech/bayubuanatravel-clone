@@ -1,9 +1,13 @@
 import styles from "./TitleSection.module.scss";
 export default function TitleSection(props) {
-  const { title, subtitle, more } = props;
+  const { title, subtitle, more, align } = props;
   return (
     <>
-      <div className={`col-12  ${more === false ? "col-lg-12" : "col-lg-8"}`}>
+      <div
+        className={`col-12 ${align === "center" ? "text-center" : undefined} ${
+          more === false ? "col-lg-12" : "col-lg-8"
+        }`}
+      >
         <div className={styles.title}>{title}</div>
         {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
       </div>
