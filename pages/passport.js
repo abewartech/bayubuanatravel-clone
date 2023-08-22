@@ -2,6 +2,8 @@ import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import TitleSection from "../src/components/common/TitleSection";
 import Card from "../src/components/common/Card";
+import resort from "./../public/assets/resort.jpg";
+
 export default function Passport() {
   const breadcrumb = [
     {
@@ -13,7 +15,11 @@ export default function Passport() {
   ];
   return (
     <Layout>
-      <HeaderPage title="Passport & Visa" breadcrumb={breadcrumb} />
+      <HeaderPage
+        title="Passport & Visa"
+        breadcrumb={breadcrumb}
+        background={resort}
+      />
       <div className="container">
         <div className="row">
           {[...Array(2)].map((item, idx) => {

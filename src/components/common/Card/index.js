@@ -5,7 +5,7 @@ import sample from "./../../../../public/assets/sample.png";
 import domestic from "./../../../../public/assets/domestic.png";
 import clock from "./../../../../public/assets/icon/clock.svg";
 import info from "./../../../../public/assets/icon/info.svg";
-import thumbnail from "./../../../../public/assets/thumb.png";
+import thumbnail from "./../../../../public/assets/gallery/1.jpg";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
 import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
@@ -16,7 +16,7 @@ export default function Card(props) {
   const commonCard = () => {
     return (
       <div className={`${styles.card} mt-3  `}>
-        <Image src={sample} alt="sample" className="w-100" />
+        <Image src={thumbnail} alt="thumbnail" className="w-100" />
         <div className={styles.date}>
           <span className="me-2">
             <Image src={clock} width={10} height={10} alt="clock" />

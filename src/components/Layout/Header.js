@@ -40,20 +40,14 @@ export default function Header(props) {
               <div className={styles.navItem}>
                 <Link href="/">Home</Link>
               </div>
-              <div className={styles.navItem}>About Us</div>
-              {/* <div className={`${styles.navItem} ${styles.navItem__hover}`}>
-                Destination
-                <div className={styles.navWrap}>
-                  <div className={styles.navChildMenu}>
-                    <Link href="/destination/international">International</Link>
-                  </div>
-                  <div className={styles.navChildMenu}>
-                    <Link href="/destination/domenstic">Domestic</Link>
-                  </div>
-                </div>
-              </div> */}
+              <div className={styles.navItem}>
+                <Link href="/about">About</Link>
+              </div>
               <div className={styles.navItem}>
                 <Link href="/packages">Packages</Link>
+              </div>
+              <div className={styles.navItem}>
+                <Link href="/resort">Resort</Link>
               </div>
               <div className={styles.navItem}>
                 <Link href="/gallery">Gallery</Link>

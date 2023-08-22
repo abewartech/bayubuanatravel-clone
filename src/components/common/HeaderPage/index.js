@@ -1,11 +1,14 @@
 import styles from "./HeaderPage.module.scss";
 export default function HeaderPage(props) {
-  const { title, breadcrumb } = props;
-  console.log(breadcrumb);
+  const { title, breadcrumb, background } = props;
+  console.log(background);
   return (
     <>
       <div className="position-relative">
-        <div className={styles.headerPage}>
+        <div
+          className={styles.headerPage}
+          style={{ backgroundImage: `url(${background.src})` }}
+        >
           <div className={styles.title}>{title}</div>
           <div className={styles.breadcrumb}>
             {breadcrumb.map((item, idx) => {

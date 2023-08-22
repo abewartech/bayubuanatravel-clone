@@ -3,6 +3,7 @@ import HeaderPage from "../src/components/common/HeaderPage";
 import Card from "../src/components/common/Card";
 import { useState } from "react";
 import styles from "./../styles/pages/Gallery.module.scss";
+import resort from "./../public/assets/resort.jpg";
 import TitleSection from "../src/components/common/TitleSection";
 export default function Gallery() {
   const [active, setActive] = useState("All");
@@ -28,7 +29,7 @@ export default function Gallery() {
 
   return (
     <Layout>
-      <HeaderPage title="Gallery" breadcrumb={breadcrumb} />
+      <HeaderPage title="Gallery" breadcrumb={breadcrumb} background={resort} />
       <div className="container">
         <div className="row">
           <div className="col-12">

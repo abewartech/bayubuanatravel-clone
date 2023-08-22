@@ -17,16 +17,20 @@ export default function Sidebar(props) {
           <div className={styles.sideMenuItem}>
             <Link href="/">Home</Link>
           </div>
-          <div className={styles.sideMenuItem}>About Us</div>
-
           <div className={styles.sideMenuItem}>
-            <Link href="/destination/international">Destination</Link>
+            <Link href="/about">About</Link>
+          </div>
+          <div className={styles.sideMenuItem}>
+            <Link href="/packages">Packages</Link>
+          </div>
+          <div className={styles.sideMenuItem}>
+            <Link href="/resort">Resort</Link>
           </div>
           {/* <div className={styles.sideMenuItem}>
           <Link href="/destination/domenstic">Domestic Destination</Link>
         </div> */}
           <div className={styles.sideMenuItem}>
-            <Link href="/passport">Passport & Visa</Link>
+            <Link href="/gallery">Gallery</Link>
           </div>
           <div className={styles.sideMenuItem}>
             <Link href="/contact-us">Contact Us</Link>

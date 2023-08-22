@@ -2,6 +2,7 @@
 import Layout from "../src/components/Layout";
 import Card from "../src/components/common/Card";
 import HeaderPage from "../src/components/common/HeaderPage";
+import resort from "./../public/assets/resort.jpg";
 
 export default function TypeDestination() {
   // const currUrl = useRouter();
@@ -16,7 +17,11 @@ export default function TypeDestination() {
   ];
   return (
     <Layout>
-      <HeaderPage title={"Packages"} breadcrumb={breadcrumb} />
+      <HeaderPage
+        title={"Packages"}
+        breadcrumb={breadcrumb}
+        background={resort}
+      />
       <div className="container mb-5">
         <div className="row">
           {[...Array(8)].map((item, idx) => {

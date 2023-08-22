@@ -4,11 +4,12 @@
   @media (min-width: 768px) {
     margin-bottom: 62px;
   }
-  height: 240px;
-  padding: 80px 0;
+  height: 350px;
+  padding: 120px 0 80px;
   background-color: lightgray;
-  background-image: url("./../../../../public/assets/illus.png");
+
   background-position: center;
+  background-attachment: fixed;
   .title {
     text-align: center;
     font-weight: 600;

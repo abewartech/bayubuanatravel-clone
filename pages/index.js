@@ -1,7 +1,7 @@
 import Layout from "../src/components/Layout";
 import HeroShot from "../src/components/Home/HeroShot";
 import PromoBigBanner from "../src/components/Home/PromoBigBanner";
-import PromoSmallBanner from "../src/components/Home/PromoSmallBanner";
+// import PromoSmallBanner from "../src/components/Home/PromoSmallBanner";
 import TourList from "../src/components/Home/TourList";
 import Videotron from "../src/components/Home/Videotron";
 import TestimoniList from "../src/components/Home/TestimoniList";
@@ -31,7 +31,7 @@ export default function Homepage() {
       <div className="container">
         <div className="row">
           <PromoBigBanner />
-          <PromoSmallBanner />
+          {/* <PromoSmallBanner /> */}
           <TourList />
           <Videotron />
         </div>

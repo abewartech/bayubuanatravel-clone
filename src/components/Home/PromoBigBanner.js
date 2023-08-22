@@ -9,6 +9,7 @@ export default function PromoBigBanner() {
       <TitleSection
         title="Explore Our Promotions"
         subtitle="Nikmati Promo & Event Menarik Untuk Melengkapi Liburanmu"
+        more={false}
       />
       <Splide
         options={{

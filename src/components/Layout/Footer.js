@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="container">
         <div className={`${styles.footerContent} row`}>
           <div className="col-12 col-lg-4 mb-5">
-            <Image src={logo} alt="logo" width={180} height={90} />
+            <Image src={logo} alt="logo" width={180} height={80} />
             <div className={styles.footerAddress}>
               Jl. Cakalang komp. Pelabuhan Perikanan. Kota sorong Papua Barat
             </div>
