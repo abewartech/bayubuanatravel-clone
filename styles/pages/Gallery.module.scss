@@ -1,0 +1,43 @@
+@import "./../variable";
+.menuGallery {
+  display: flex;
+  gap: 16px;
+  .galleryItem {
+    padding: 8px 16px;
+    border: 2px solid $primary;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    &_active {
+      color: #fff;
+      background-color: $primary;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.activityContainer {
+  background-color: $primary;
+  padding-top: 56px;
+  padding-bottom: 56px;
+  color: #fff;
+  .menuActivity {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    .activityItem {
+      padding: 8px 16px;
+      border: 2px solid #fff;
+      margin-bottom: 24px;
+      border-radius: 8px;
+      &_active {
+        color: $primary;
+        background-color: #fff;
+      }
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
