@@ -145,4 +145,21 @@
       }
     }
   }
+  .liveChatBtn {
+    position: fixed;
+    z-index: 9;
+    bottom: 100px;
+    right: 20px;
+    .liveChatBtnCta {
+      width: 55px;
+      height: 55px;
+      padding: 8px;
+      border-radius: 30px;
+      background-color: #f1c40f;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }

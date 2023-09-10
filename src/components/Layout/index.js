@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import whatsapp from "./../../../public/assets/logo/whatsapp.png";
 import Sidebar from "./Sidebar";
+import LiveChatComponent from "../common/LiveChat";
 
 export default function Layout(props) {
   const { children } = props;
@@ -31,6 +32,11 @@ export default function Layout(props) {
       <Header handleShowMenu={handleShowMenu} />
       {children}
       <Footer />
+      <div className={styles.liveChatBtn}>
+        <div className={styles.liveChatBtnCta}>
+          <LiveChatComponent />
+        </div>
+      </div>
       <div className={styles.whatsappBtn}>
         <div className={styles.whatsappBtnCta}>
           <Link href="https://wa.me/6281316776671" target="_blank">
