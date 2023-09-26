@@ -16,7 +16,9 @@ export default function Card(props) {
   const commonCard = () => {
     return (
       <div className={`${styles.card} mt-3  `}>
-        <Image src={thumbnail} alt="thumbnail" className="w-100" />
+        <Link href="/packages/1" className="h-100">
+          <Image src={thumbnail} alt="thumbnail" className="w-100" />
+        </Link>
         <div className={styles.date}>
           <span className="me-2">
             <Image src={clock} width={10} height={10} alt="clock" />
