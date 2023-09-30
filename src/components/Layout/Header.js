@@ -6,6 +6,7 @@ import mail from "./../../../public/assets/icon/mail.svg";
 import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
   Button,
   Modal,
@@ -15,7 +16,8 @@ import {
   Grid,
   Snackbar
 } from "@mui/material";
-import { Formik } from "formik";
+import { ErrorMessage, Field, Formik } from "formik";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -29,8 +31,12 @@ const style = {
   p: 4
 };
 export default function Header(props) {
+  const router = useRouter();
   const { handleShowMenu } = props;
   const [open, setOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const [username, setUsername] = useState("");
   const handleClose = () => setOpen(false);
   useEffect(() => {
     window.onscroll = function () {
@@ -48,8 +54,30 @@ export default function Header(props) {
       }
     }
   }, []);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("access_token");
+
+    if (storedToken) {
+      // Assuming you have a valid token, set the user as logged in
+      setLoggedIn(true);
+
+      // Fetch and set the username from localStorage or your API
+      const storedUsername = localStorage.getItem("username");
+      setUsername(storedUsername || ""); // Set the actual username here
+    }
+  }, []);
   const handleLogin = () => {
     setOpen(true);
+  };
+  // Function to handle logout
+  const handleLogout = () => {
+    // Logic for handling logout (clearing loggedIn and username)
+    setLoggedIn(false);
+    setUsername("");
+
+    // Clear localStorage
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("username");
   };
   return (
     <div className={styles.header}>
@@ -83,9 +111,22 @@ export default function Header(props) {
                 <Link href="/contact-us">Contact Us</Link>
               </div>
               <div className={styles.navItem}>
-                <Button variant="contained" onClick={handleLogin}>
-                  Login
-                </Button>
+                {loggedIn ? (
+                  <div>
+                    <span onClick={() => setShowButton(true)}>
+                      Welcome, {username}!
+                    </span>
+                    {showButton && (
+                      <Button variant="contained" onClick={handleLogout}>
+                        Logout
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <Button variant="contained" onClick={handleLogin}>
+                    Login
+                  </Button>
+                )}
               </div>
             </div>
             <div
@@ -134,10 +175,32 @@ export default function Header(props) {
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                      alert(JSON.stringify(values, null, 2));
-                      setSubmitting(false);
-                    }, 400);
+                    axios
+                      .post(
+                        "http://api.marinarajaampat.id/users/v1/login",
+                        values
+                      )
+                      .then((res) => {
+                        console.log(res);
+                        setSubmitting(false);
+                        router.push("/");
+                        localStorage.setItem(
+                          "access_token",
+                          res.data.data.access_token
+                        );
+                        localStorage.setItem(
+                          "refresh_token",
+                          res.data.data.refresh_token
+                        );
+                        localStorage.setItem("username", values.email);
+                        setOpen(false);
+                        setLoggedIn(true);
+                        //redirect to homepage
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                        setSubmitting(false);
+                      });
                   }}
                 >
                   {({
@@ -148,7 +211,6 @@ export default function Header(props) {
                     handleBlur,
                     handleSubmit,
                     isSubmitting
-                    /* and other goodies */
                   }) => (
                     <form
                       sx={{ margin: 10, height: "40px" }}
@@ -158,27 +220,28 @@ export default function Header(props) {
                     >
                       <Typography>
                         <Box fontSize={16} fontWeight={700} lineHeight="24px">
-                          Email atau Username
+                          Email
                         </Box>
                       </Typography>
-                      <input
+                      <Field
                         type="text"
-                        onChange={handleChange}
-                        name="username"
-                        placeholder="contoh@versinema.com"
+                        name="email"
+                        placeholder="Your Email"
                       />
+                      <ErrorMessage name="email" component="div" />
+
                       <Typography>
                         <Box fontSize={16} fontWeight={700} lineHeight="24px">
                           Password
                         </Box>
                       </Typography>
-                      <input
+                      <Field
                         type="password"
-                        onChange={handleChange}
                         name="password"
-                        autoComplete="on"
-                        placeholder="Password kamu"
+                        placeholder="Your Password"
                       />
+                      <ErrorMessage name="password" component="div" />
+
                       <div
                         sx={{
                           display: "flex",
@@ -203,7 +266,9 @@ export default function Header(props) {
                           marginTop: 10
                         }}
                       >
-                        <Button type="submit">Masuk</Button>
+                        <Button type="submit" disabled={isSubmitting}>
+                          Login
+                        </Button>
                       </div>
                       <div
                         sx={{

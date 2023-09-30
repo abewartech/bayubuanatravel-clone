@@ -1,14 +1,20 @@
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import resort from "./../public/assets/resort.jpg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { Box, Button, FormControlLabel, Radio, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Radio,
+  Typography
+} from "@mui/material";
 import axios from "axios";
 
 export default function Register() {
-  // const currUrl = useRouter();
+  const router = useRouter();
   // const typePage = currUrl.query.type;
   const breadcrumb = [
     {
@@ -50,13 +56,13 @@ export default function Register() {
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
-              axios.post("http://api.marinarajaampat.id/users/v1/register", values).then(res => {
-                console.log(res);
-              })
+              axios
+                .post("http://api.marinarajaampat.id/users/v1/register", values)
+                .then((res) => {
+                  console.log(res);
+                  setSubmitting(false);
+                  router.push("/");
+                });
             }}
           >
             {({
@@ -105,12 +111,28 @@ export default function Register() {
                     Country
                   </Box>
                 </Typography>
-                <Field
-                  type="text"
-                  onChange={handleChange}
-                  name="country"
-                  placeholder="Your Country"
-                />
+                <div role="group" aria-labelledby="my-radio-group">
+                  <FormControlLabel
+                    control={
+                      <Radio
+                        onChange={handleChange}
+                        name="country"
+                        value="ID"
+                      />
+                    }
+                    label="Indonesia"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Radio
+                        onChange={handleChange}
+                        name="country"
+                        value="US"
+                      />
+                    }
+                    label="United States"
+                  />
+                </div>
                 <ErrorMessage name="country" component="div" />
 
                 <Typography>
@@ -121,21 +143,13 @@ export default function Register() {
                 <div role="group" aria-labelledby="my-radio-group">
                   <FormControlLabel
                     control={
-                      <Radio
-                        onChange={handleChange}
-                        name="gender"
-                        value="male"
-                      />
+                      <Radio onChange={handleChange} name="gender" value="l" />
                     }
                     label="Male"
                   />
                   <FormControlLabel
                     control={
-                      <Radio
-                        onChange={handleChange}
-                        name="gender"
-                        value="female"
-                      />
+                      <Radio onChange={handleChange} name="gender" value="p" />
                     }
                     label="Female"
                   />
@@ -169,8 +183,6 @@ export default function Register() {
                   placeholder="Password kamu"
                 />
                 <ErrorMessage name="password" component="div" />
-
-                {/* Include other form fields as needed based on your schema */}
 
                 <div
                   sx={{
