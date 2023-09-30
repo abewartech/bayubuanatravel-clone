@@ -5,14 +5,32 @@ import clock from "./../../public/assets/icon/clock.svg";
 import airplane from "./../../public/assets/icon/airplane-square.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import { useState } from "react";
+import { Button, Modal, Box, Typography, Grid } from "@mui/material";
+import bi from "../../public/assets/bi.png";
+import xendit from "../../public/assets/xendit.png";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4
+};
 export default function DetailPackages() {
   const [expand, setExpand] = useState(false);
   const [id, setId] = useState(0);
+  const [open, setOpen] = useState(false);
   const handleShowDetail = (id) => {
     setExpand(!expand);
     setId(id);
   };
+  const handleBook = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
   return (
     <Layout>
       <div className="container my-4">
@@ -38,7 +56,9 @@ export default function DetailPackages() {
             <div>
               <div className={styles.labelDetail}>Tour Details</div>
               <div className={styles.infoDetail}>
-                <div className="mb-1">Depart: 17 Juli 2023, 24 Juli 2023, 7 Agustus 2023</div>
+                <div className="mb-1">
+                  Depart: 17 Juli 2023, 24 Juli 2023, 7 Agustus 2023
+                </div>
                 <div className="d-flex align-items-center">
                   <span className="me-1">
                     <Image src={airplane} alt="airplane" />
@@ -96,9 +116,113 @@ export default function DetailPackages() {
                 </div>
               );
             })}
+            <Button variant="contained" onClick={handleBook}>
+              Book Now
+            </Button>
           </div>
         </div>
       </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none"
+        }}
+      >
+        <Box sx={style}>
+          <div
+            sx={{
+              backgroundColor: "#181818",
+              boxShadow: 5,
+              padding: 5,
+              margin: 2,
+              overflowY: "auto",
+              height: "-webkit-fill-available"
+            }}
+          ></div>
+          <Typography component="div">
+            <Box fontSize={32} lineHeight="48px" fontWeight={500}>
+              Lanjut Bayar
+            </Box>
+
+            <Box fontSize={12} lineHeight="16px" fontWeight={400}>
+              Lorem ipsum
+            </Box>
+          </Typography>
+          <div>
+            <Typography>
+              <Box id="tess" fontSize={16} lineHeight="24px" fontWeight={700}>
+                4 Days & 3 Nights
+              </Box>
+              <Box
+                fontSize={12}
+                lineHeight="16px"
+                fontWeight={400}
+                style={{
+                  display: "contents"
+                }}
+              >
+                <img
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "15px"
+                  }}
+                  src="./fotoprofile/default.png"
+                />
+                4 Days & 3 Nights
+              </Box>
+              <Box
+                fontSize={16}
+                style={{
+                  clear: "both"
+                }}
+                lineHeight="24px"
+                fontWeight={700}
+              >
+                Rp. 500.000
+              </Box>
+            </Typography>
+          </div>
+          <Typography>
+            <Box fontSize={16} lineHeight="24px" fontWeight={700}>
+              Email
+            </Box>
+          </Typography>
+
+          <input placeholder="Masukkan email kamu" />
+          <Typography>
+            <Box fontSize={12} lineHeight="16px" fontWeight={400}>
+              *Gunakan email ini
+            </Box>
+          </Typography>
+          <Typography>
+            <Box fontSize={16} lineHeight="24px" fontWeight={700}>
+              Metode Pembayaran
+            </Box>
+          </Typography>
+          <Grid container>
+            <Grid item xs={8} md={8}>
+              <Typography>
+                <Box fontSize="12px" lineHeight="16px">
+                  Support By
+                </Box>
+              </Typography>
+            </Grid>
+            <Grid item xs={2} md={2}>
+              <img src={bi} />
+            </Grid>
+            <Grid item xs={2} md={2}>
+              <img src={xendit} />
+            </Grid>
+          </Grid>
+        </Box>
+      </Modal>
     </Layout>
   );
 }

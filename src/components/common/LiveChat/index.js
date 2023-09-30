@@ -39,7 +39,7 @@ export default function LiveChatComponent(props) {
         <div className={styles.chat_box}>
           {/* Chat Box Header */}
           <div className={styles.chat_box_header}>
-            ChatBot
+            Live Chat
             <IconButton
               aria-label="delete"
               color="success"
