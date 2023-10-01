@@ -19,6 +19,7 @@ import {
 import { ErrorMessage, Field, Formik } from "formik";
 import axios from "axios";
 import API from "../../common/api";
+import useAuthStore from "../../store/loginStore";
 
 const style = {
   position: "absolute",
@@ -35,9 +36,17 @@ export default function Header(props) {
   const router = useRouter();
   const { handleShowMenu } = props;
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [username, setUsername] = useState("");
+  const {
+    isLoggedIn,
+    accessToken,
+    refreshToken,
+    username,
+    setLoggedIn,
+    setAccessToken,
+    setRefreshToken,
+    setUsername,
+  } = useAuthStore();
   const handleClose = () => setOpen(false);
   useEffect(() => {
     window.onscroll = function () {
@@ -55,30 +64,13 @@ export default function Header(props) {
       }
     }
   }, []);
-  useEffect(() => {
-    const storedToken = localStorage.getItem("access_token");
-
-    if (storedToken) {
-      // Assuming you have a valid token, set the user as logged in
-      setLoggedIn(true);
-
-      // Fetch and set the username from localStorage or your API
-      const storedUsername = localStorage.getItem("username");
-      setUsername(storedUsername || ""); // Set the actual username here
-    }
-  }, []);
   const handleLogin = () => {
     setOpen(true);
   };
   // Function to handle logout
   const handleLogout = () => {
-    // Logic for handling logout (clearing loggedIn and username)
     setLoggedIn(false);
     setUsername("");
-
-    // Clear localStorage
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("username");
   };
   return (
     <div className={styles.header}>
@@ -112,7 +104,7 @@ export default function Header(props) {
                 <Link href="/contact-us">Contact Us</Link>
               </div>
               <div className={styles.navItem}>
-                {loggedIn ? (
+                {isLoggedIn ? (
                   <div>
                     <span onClick={() => setShowButton(true)}>
                       Welcome, {username}!
@@ -184,16 +176,9 @@ export default function Header(props) {
                       .then((res) => {
                         setSubmitting(false);
                         router.push("/");
-                        console.log(res)
-                        localStorage.setItem(
-                          "access_token",
-                          res.data.access_token
-                        );
-                        localStorage.setItem(
-                          "refresh_token",
-                          res.data.refresh_token
-                        );
-                        localStorage.setItem("username", values.email);
+                        setAccessToken(res.data.access_token);
+                        setRefreshToken(res.data.refresh_token);
+                        setUsername(values.email);
                         setOpen(false);
                         setLoggedIn(true);
                       })

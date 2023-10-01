@@ -3,7 +3,8 @@ import API_URL from "./variable";
 
 // Create an Axios instance with the base URL
 const API = axios.create({
-  baseURL: API_URL
+  baseURL: API_URL,
+  rejectUnauthorized: false
   // You can add additional configuration options here if needed
 });
 
@@ -11,11 +12,13 @@ const API = axios.create({
 API.interceptors.request.use(
   function (config) {
     // Do something before the request is sent
-    const isLogin = localStorage.getItem("access_token");
+
+    const isLogin = JSON.parse(localStorage.getItem("auth")).state.isLoggedIn;
     if (isLogin) {
-      const auth = isLogin;
-      config.headers.Authorization = localStorage.getItem("access_token")
-        ? `Bearer ${auth}` // Use template literals for string concatenation
+      const accessToken = JSON.parse(localStorage.getItem("auth")).state
+        .accessToken;
+      config.headers.Authorization = localStorage.getItem("auth")
+        ? `Bearer ${accessToken}` // Use template literals for string concatenation
         : "";
     }
 
