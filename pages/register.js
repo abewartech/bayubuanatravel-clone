@@ -12,6 +12,7 @@ import {
   Typography
 } from "@mui/material";
 import axios from "axios";
+import API from "../src/common/api";
 
 export default function Register() {
   const router = useRouter();
@@ -56,12 +57,17 @@ export default function Register() {
               return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-              axios
-                .post("http://api.marinarajaampat.id/users/v1/register", values)
+              API
+                .post("/users/v1/register", values)
                 .then((res) => {
-                  console.log(res);
                   setSubmitting(false);
                   router.push("/");
+                }).catch((err) => {
+                  setSubmitting(false);
+                  console.log(err.data.status);
+                  if(err.data.status === "failed"){
+                    alert(err.data.message);
+                  }
                 });
             }}
           >

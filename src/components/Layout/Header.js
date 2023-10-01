@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { ErrorMessage, Field, Formik } from "formik";
 import axios from "axios";
+import API from "../../common/api";
 
 const style = {
   position: "absolute",
@@ -175,27 +176,26 @@ export default function Header(props) {
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    axios
+                    API
                       .post(
-                        "http://api.marinarajaampat.id/users/v1/login",
+                        "/users/v1/login",
                         values
                       )
                       .then((res) => {
-                        console.log(res);
                         setSubmitting(false);
                         router.push("/");
+                        console.log(res)
                         localStorage.setItem(
                           "access_token",
-                          res.data.data.access_token
+                          res.data.access_token
                         );
                         localStorage.setItem(
                           "refresh_token",
-                          res.data.data.refresh_token
+                          res.data.refresh_token
                         );
                         localStorage.setItem("username", values.email);
                         setOpen(false);
                         setLoggedIn(true);
-                        //redirect to homepage
                       })
                       .catch((error) => {
                         console.error(error);
