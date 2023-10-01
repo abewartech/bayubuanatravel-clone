@@ -178,9 +178,10 @@ export default function Header(props) {
                         router.push("/");
                         setAccessToken(res.data.access_token);
                         setRefreshToken(res.data.refresh_token);
-                        setUsername(values.email);
+                        setUsername(values.email.split('@')[0]);
                         setOpen(false);
                         setLoggedIn(true);
+                        setShowButton(false)
                       })
                       .catch((error) => {
                         console.error(error);
