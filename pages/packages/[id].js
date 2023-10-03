@@ -17,7 +17,9 @@ const style = {
   width: 400,
   bgcolor: "background.paper",
   boxShadow: 24,
-  p: 4
+  border: "none",
+  borderRadius: 4,
+  p: 4,
 };
 export default function DetailPackages() {
   const [expand, setExpand] = useState(false);
@@ -116,9 +118,11 @@ export default function DetailPackages() {
                 </div>
               );
             })}
-            <Button variant="contained" onClick={handleBook}>
-              Book Now
-            </Button>
+            <div id="book">
+              <Button variant="contained" onClick={handleBook}>
+                Book Now
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -131,7 +135,7 @@ export default function DetailPackages() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          border: "none"
+          border: "none",
         }}
       >
         <Box sx={style}>
@@ -142,71 +146,88 @@ export default function DetailPackages() {
               padding: 5,
               margin: 2,
               overflowY: "auto",
-              height: "-webkit-fill-available"
+              height: "-webkit-fill-available",
             }}
           ></div>
           <Typography component="div">
-            <Box fontSize={32} lineHeight="48px" fontWeight={500}>
+            <Box fontSize={24} lineHeight="32px" fontWeight={500}>
               Lanjut Bayar
             </Box>
 
-            <Box fontSize={12} lineHeight="16px" fontWeight={400}>
+            <Box
+              fontSize={12}
+              marginBottom={2}
+              lineHeight="16px"
+              fontWeight={400}
+            >
               Lorem ipsum
             </Box>
           </Typography>
-          <div>
-            <Typography>
-              <Box id="tess" fontSize={16} lineHeight="24px" fontWeight={700}>
-                4 Days & 3 Nights
-              </Box>
-              <Box
-                fontSize={12}
-                lineHeight="16px"
-                fontWeight={400}
-                style={{
-                  display: "contents"
-                }}
-              >
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex  align-items-center">
+              <Box className="me-3">
                 <img
                   style={{
                     width: "30px",
                     height: "30px",
-                    borderRadius: "15px"
+                    borderRadius: "15px",
                   }}
                   src="./fotoprofile/default.png"
                 />
-                4 Days & 3 Nights
               </Box>
-              <Box
-                fontSize={16}
+              <Box>
+                <Typography
+                  id="tess"
+                  fontSize={16}
+                  lineHeight="24px"
+                  fontWeight={700}
+                >
+                  Paket 1
+                </Typography>
+                <Typography
+                  fontSize={12}
+                  lineHeight="16px"
+                  fontWeight={400}
+                  style={{
+                    display: "contents",
+                  }}
+                >
+                  4 Days & 3 Nights
+                </Typography>
+              </Box>
+            </div>
+            <div className="d-flex">
+              <Typography
+                fontSize={20}
                 style={{
-                  clear: "both"
+                  clear: "both",
                 }}
                 lineHeight="24px"
                 fontWeight={700}
               >
                 Rp. 500.000
-              </Box>
-            </Typography>
+              </Typography>
+            </div>
           </div>
           <Typography>
-            <Box fontSize={16} lineHeight="24px" fontWeight={700}>
+            <Box fontSize={16} lineHeight="24px" fontWeight={500}>
               Email
             </Box>
           </Typography>
 
-          <input placeholder="Masukkan email kamu" />
-          <Typography>
-            <Box fontSize={12} lineHeight="16px" fontWeight={400}>
-              *Gunakan email ini
-            </Box>
+          <input placeholder="Masukkan email kamu" className="mb-0" />
+          <Typography
+            fontSize={12}
+            lineHeight="16px"
+            fontWeight={400}
+            marginBottom={3}
+          >
+            *Gunakan email ini
           </Typography>
-          <Typography>
-            <Box fontSize={16} lineHeight="24px" fontWeight={700}>
-              Metode Pembayaran
-            </Box>
+          <Typography fontSize={16} lineHeight="24px" fontWeight={700}>
+            Metode Pembayaran
           </Typography>
-          <Grid container>
+          <Grid container id="logo-payment">
             <Grid item xs={8} md={8}>
               <Typography>
                 <Box fontSize="12px" lineHeight="16px">
@@ -215,10 +236,10 @@ export default function DetailPackages() {
               </Typography>
             </Grid>
             <Grid item xs={2} md={2}>
-              <img src={bi} />
+              <img src={bi.src} alt="bi" />
             </Grid>
             <Grid item xs={2} md={2}>
-              <img src={xendit} />
+              <img src={xendit.src} alt="bi" />
             </Grid>
           </Grid>
         </Box>

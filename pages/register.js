@@ -9,7 +9,7 @@ import {
   Button,
   FormControlLabel,
   Radio,
-  Typography
+  Typography,
 } from "@mui/material";
 import axios from "axios";
 import API from "../src/common/api";
@@ -19,11 +19,11 @@ export default function Register() {
   // const typePage = currUrl.query.type;
   const breadcrumb = [
     {
-      name: "Home"
+      name: "Home",
     },
     {
-      name: "Register"
-    }
+      name: "Register",
+    },
   ];
   const initialValues = {
     address: "",
@@ -31,7 +31,7 @@ export default function Register() {
     email: "",
     full_name: "",
     gender: "",
-    password: ""
+    password: "",
   };
   return (
     <Layout>
@@ -41,193 +41,230 @@ export default function Register() {
         background={resort}
       />
       <div className="container mb-5">
-        <div className="row">
-          <Formik
-            initialValues={initialValues}
-            validate={(values) => {
-              const errors = {};
-              if (!values.email) {
-                errors.email = "Required";
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
-                errors.email = "Invalid email address";
-              }
-              // Add more validation rules as needed
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              API
-                .post("/users/v1/register", values)
-                .then((res) => {
-                  setSubmitting(false);
-                  router.push("/");
-                }).catch((err) => {
-                  setSubmitting(false);
-                  console.log(err.data.status);
-                  if(err.data.status === "failed"){
-                    alert(err.data.message);
-                  }
-                });
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting
-              /* and other goodies */
-            }) => (
-              <Form
-                sx={{ margin: 10, height: "40px" }}
-                noValidate
-                autoComplete="off"
-              >
-                <Typography>
-                  <Box fontSize={16} fontWeight={700} lineHeight="24px">
+        <div className="row justify-content-center">
+          <div className="col-lg-5 p-4">
+            <Formik
+              initialValues={initialValues}
+              validate={(values) => {
+                const errors = {};
+                if (!values.email) {
+                  errors.email = "Required";
+                } else if (
+                  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                ) {
+                  errors.email = "Invalid email address";
+                }
+                // Add more validation rules as needed
+                return errors;
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                API.post("/users/v1/register", values)
+                  .then((res) => {
+                    setSubmitting(false);
+                    router.push("/");
+                  })
+                  .catch((err) => {
+                    setSubmitting(false);
+                    console.log(err.data.status);
+                    if (err.data.status === "failed") {
+                      alert(err.data.message);
+                    }
+                  });
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+                <Form
+                  sx={{ margin: 10, height: "40px" }}
+                  noValidate
+                  autoComplete="off"
+                >
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                  >
                     Full Name
-                  </Box>
-                </Typography>
-                <Field
-                  type="text"
-                  onChange={handleChange}
-                  name="full_name"
-                  placeholder="Your Full Name"
-                />
-                <ErrorMessage name="full_name" component="div" />
+                  </Typography>
+                  <Field
+                    type="text"
+                    onChange={handleChange}
+                    name="full_name"
+                    placeholder="Your Full Name"
+                  />
+                  <ErrorMessage name="full_name" component="div" />
 
-                <Typography>
-                  <Box fontSize={16} fontWeight={700} lineHeight="24px">
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                  >
                     Address
-                  </Box>
-                </Typography>
-                <Field
-                  type="text"
-                  onChange={handleChange}
-                  name="address"
-                  placeholder="Your Address"
-                />
-                <ErrorMessage name="address" component="div" />
+                  </Typography>
+                  <Field
+                    type="text"
+                    onChange={handleChange}
+                    name="address"
+                    placeholder="Your Address"
+                  />
+                  <ErrorMessage name="address" component="div" />
 
-                <Typography>
-                  <Box fontSize={16} fontWeight={700} lineHeight="24px">
+                  <Typography fontSize={16} fontWeight={500} lineHeight="24px">
                     Country
-                  </Box>
-                </Typography>
-                <div role="group" aria-labelledby="my-radio-group">
-                  <FormControlLabel
-                    control={
-                      <Radio
-                        onChange={handleChange}
-                        name="country"
-                        value="ID"
-                      />
-                    }
-                    label="Indonesia"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Radio
-                        onChange={handleChange}
-                        name="country"
-                        value="US"
-                      />
-                    }
-                    label="United States"
-                  />
-                </div>
-                <ErrorMessage name="country" component="div" />
+                  </Typography>
+                  <div
+                    role="group"
+                    className="mb-1"
+                    aria-labelledby="my-radio-group"
+                  >
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          onChange={handleChange}
+                          name="country"
+                          value="ID"
+                          size="small"
+                        />
+                      }
+                      label="Indonesia"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          onChange={handleChange}
+                          name="country"
+                          size="small"
+                          value="US"
+                        />
+                      }
+                      label="United States"
+                    />
+                  </div>
+                  <ErrorMessage name="country" component="div" />
 
-                <Typography>
-                  <Box fontSize={16} fontWeight={700} lineHeight="24px">
+                  <Typography fontSize={16} fontWeight={500} lineHeight="24px">
                     Gender
-                  </Box>
-                </Typography>
-                <div role="group" aria-labelledby="my-radio-group">
-                  <FormControlLabel
-                    control={
-                      <Radio onChange={handleChange} name="gender" value="l" />
-                    }
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Radio onChange={handleChange} name="gender" value="p" />
-                    }
-                    label="Female"
-                  />
-                </div>
-                <ErrorMessage name="gender" component="div" />
+                  </Typography>
+                  <div
+                    role="group"
+                    className="mb-1"
+                    aria-labelledby="my-radio-group"
+                  >
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          onChange={handleChange}
+                          name="gender"
+                          size="small"
+                          value="l"
+                        />
+                      }
+                      label="Male"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          onChange={handleChange}
+                          name="gender"
+                          size="small"
+                          value="p"
+                        />
+                      }
+                      label="Female"
+                    />
+                  </div>
+                  <ErrorMessage name="gender" component="div" />
 
-                <Typography>
-                  <Box fontSize={16} fontWeight={700} lineHeight="24px">
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                  >
                     Email atau Username
-                  </Box>
-                </Typography>
+                  </Typography>
 
-                <Field
-                  type="text"
-                  onChange={handleChange}
-                  name="email"
-                  placeholder="contoh@versinema.com"
-                />
-                <ErrorMessage name="email" component="div" />
+                  <Field
+                    type="text"
+                    onChange={handleChange}
+                    name="email"
+                    placeholder="contoh@versinema.com"
+                  />
+                  <ErrorMessage name="email" component="div" />
 
-                <Typography>
-                  <Box fontSize={16} fontWeight={700} lineHeight="24px">
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                  >
                     Password
-                  </Box>
-                </Typography>
-                <Field
-                  type="password"
-                  onChange={handleChange}
-                  name="password"
-                  autoComplete="on"
-                  placeholder="Password kamu"
-                />
-                <ErrorMessage name="password" component="div" />
+                  </Typography>
+                  <Field
+                    type="password"
+                    onChange={handleChange}
+                    name="password"
+                    autoComplete="on"
+                    placeholder="Password kamu"
+                  />
+                  <ErrorMessage name="password" component="div" />
 
-                <div
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    marginTop: 10
-                  }}
-                >
-                  <a href="forgot-password" color="textPrimary" replace>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      Forget Password ?
-                    </Typography>
-                  </a>
-                </div>
+                  {/* <div
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      marginTop: 10,
+                    }}
+                  >
+                    <a href="forgot-password" color="textPrimary" replace>
+                      <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Forget Password ?
+                      </Typography>
+                    </a>
+                  </div> */}
 
-                <div
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    marginTop: 10
-                  }}
-                >
-                  <Button type="submit">Register</Button>
-                </div>
+                  <div
+                    id="btn-login"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      marginTop: 10,
+                    }}
+                  >
+                    <Button type="submit">Register</Button>
+                  </div>
 
-                <div
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    marginTop: 10
-                  }}
-                >
-                  <Link href="/login" passHref>
-                    <Button component="a">Login</Button>
-                  </Link>
-                </div>
-              </Form>
-            )}
-          </Formik>
+                  <div
+                    id="btn-regist"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      marginTop: 10,
+                    }}
+                  >
+                    Sudah punya akun?
+                    <Link href="/login" passHref>
+                      <Button>Login</Button>
+                    </Link>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
         </div>
       </div>
     </Layout>

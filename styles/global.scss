@@ -13,6 +13,49 @@ body {
   }
 }
 
+input {
+  border: none !important;
+  background-color: rgb(254, 247, 247);
+  padding: 12px;
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+#book {
+  button {
+    background-color: $secondary;
+    padding: 12px 32px;
+  }
+}
+
+#logo-payment {
+  img {
+    width: 100%;
+    height: 24px;
+  }
+}
+
+#btn-login {
+  button {
+    margin-top: 32px;
+    width: 100%;
+    padding: 12px 32px;
+    color: #fff;
+    background-color: $secondary;
+  }
+}
+
+#btn-regist {
+  text-align: center;
+  width: 100%;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
 .sticky {
   position: fixed !important;
   top: 0 !important;

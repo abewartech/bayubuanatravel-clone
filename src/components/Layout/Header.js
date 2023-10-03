@@ -14,7 +14,7 @@ import {
   Typography,
   Container,
   Grid,
-  Snackbar
+  Snackbar,
 } from "@mui/material";
 import { ErrorMessage, Field, Formik } from "formik";
 import axios from "axios";
@@ -28,9 +28,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "none",
+  borderRadius: 4,
   boxShadow: 24,
-  p: 4
+  p: 1,
 };
 export default function Header(props) {
   const router = useRouter();
@@ -140,12 +141,14 @@ export default function Header(props) {
         <Box sx={style}>
           <Container
             maxWidth="sm"
-            sx={{ height: "58vh", display: "flex", alignItems: "center" }}
+            sx={{ height: "65vh", display: "flex", alignItems: "center" }}
           >
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 <Typography>
-                  <Box fontSize={32}>Login</Box>
+                  <Box fontSize={32} fontWeight={600}>
+                    Login
+                  </Box>
                   <Box fontSize={12} fontWeight={400} lineHeight="16px">
                     Welcome back!
                   </Box>
@@ -168,20 +171,16 @@ export default function Header(props) {
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    API
-                      .post(
-                        "/users/v1/login",
-                        values
-                      )
+                    API.post("/users/v1/login", values)
                       .then((res) => {
                         setSubmitting(false);
                         router.push("/");
                         setAccessToken(res.data.access_token);
                         setRefreshToken(res.data.refresh_token);
-                        setUsername(values.email.split('@')[0]);
+                        setUsername(values.email.split("@")[0]);
                         setOpen(false);
                         setLoggedIn(true);
-                        setShowButton(false)
+                        setShowButton(false);
                       })
                       .catch((error) => {
                         console.error(error);
@@ -196,7 +195,7 @@ export default function Header(props) {
                     handleChange,
                     handleBlur,
                     handleSubmit,
-                    isSubmitting
+                    isSubmitting,
                   }) => (
                     <form
                       sx={{ margin: 10, height: "40px" }}
@@ -204,10 +203,13 @@ export default function Header(props) {
                       autoComplete="off"
                       onSubmit={handleSubmit}
                     >
-                      <Typography>
-                        <Box fontSize={16} fontWeight={700} lineHeight="24px">
-                          Email
-                        </Box>
+                      <Typography
+                        fontSize={16}
+                        fontWeight={500}
+                        marginBottom={1}
+                        lineHeight="24px"
+                      >
+                        Email
                       </Typography>
                       <Field
                         type="text"
@@ -216,10 +218,13 @@ export default function Header(props) {
                       />
                       <ErrorMessage name="email" component="div" />
 
-                      <Typography>
-                        <Box fontSize={16} fontWeight={700} lineHeight="24px">
-                          Password
-                        </Box>
+                      <Typography
+                        fontSize={16}
+                        fontWeight={500}
+                        marginBottom={1}
+                        lineHeight="24px"
+                      >
+                        Password
                       </Typography>
                       <Field
                         type="password"
@@ -232,7 +237,7 @@ export default function Header(props) {
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 10
+                          marginTop: 1,
                         }}
                       >
                         <a color="textPrimary" href="forgot-password" replace>
@@ -241,15 +246,16 @@ export default function Header(props) {
                             display="block"
                             gutterBottom
                           >
-                            Forget Password ?
+                            Forgot Password ?
                           </Typography>
                         </a>
                       </div>
                       <div
+                        id="btn-login"
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 10
+                          marginTop: 16,
                         }}
                       >
                         <Button type="submit" disabled={isSubmitting}>
@@ -257,14 +263,15 @@ export default function Header(props) {
                         </Button>
                       </div>
                       <div
+                        id="btn-regist"
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 10
                         }}
                       >
+                        Belum mempunyai akun?
                         <Link href="/register" passHref>
-                          <Button component="a">Register</Button>
+                          <Button>Register</Button>
                         </Link>
                       </div>
                     </form>
