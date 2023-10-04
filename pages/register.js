@@ -191,7 +191,7 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Email atau Username
+                    Email
                   </Typography>
 
                   <Field
