@@ -1,11 +1,10 @@
-/** @type {import('next-i18next').UserConfig} */
 module.exports = {
   i18n: {
-    defaultLocale: "en-US",
-    locales: ["en-US", "id-ID"],
-    localeDetection: false
+    // all the locales supported in the application
+    locales: ["en", "id"],
+    // the default locale to be used when visiting
+    // a non-localized route (e.g. `/about`)
+    defaultLocale: "en"
   },
-  nonExplicitSupportedLngs: true,
-  // localePath,
-  reloadOnPrerender: process.env.APP_ENV === "debug"
+  reloadOnPrerender: process.env.APP_ENV === 'debug'
 };
