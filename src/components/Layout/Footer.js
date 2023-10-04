@@ -1,16 +1,10 @@
 import Image from "next/image";
-import useTranslation from "next-translate/useTranslation";
 import logo from "./../../../public/assets/logo/logo.png";
 import styles from "./Layout.module.scss";
 import mail from "./../../../public/assets/icon/mail.svg";
 import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 export default function Footer() {
-  const { t, lang } = useTranslation("common");
-  const example = t("variable-example", { count: 42 });
-  const variableExampleTranslation = t('variable-example');
-  console.log(example);
-  console.log(variableExampleTranslation);
   return (
     <div className={`${styles.footerWrap} `}>
       <div className="container">
@@ -49,7 +43,7 @@ export default function Footer() {
 
         <div className="col-12 mt-5">
           <div className={styles.copyRight}>
-            {example}© 2023 Bayu Buana Travel Services. All Rights Reserved.
+            © 2023 Bayu Buana Travel Services. All Rights Reserved.
           </div>
         </div>
       </div>
