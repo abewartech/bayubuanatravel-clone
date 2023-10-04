@@ -19,7 +19,7 @@ const style = {
   boxShadow: 24,
   border: "none",
   borderRadius: 4,
-  p: 4,
+  p: 4
 };
 export default function DetailPackages() {
   const [expand, setExpand] = useState(false);
@@ -33,6 +33,12 @@ export default function DetailPackages() {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+  const handleMidtrans = () => {
+    window.open(
+      "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
+      '_blank',
+    )
+  }
   return (
     <Layout>
       <div className="container my-4">
@@ -135,7 +141,7 @@ export default function DetailPackages() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          border: "none",
+          border: "none"
         }}
       >
         <Box sx={style}>
@@ -146,7 +152,7 @@ export default function DetailPackages() {
               padding: 5,
               margin: 2,
               overflowY: "auto",
-              height: "-webkit-fill-available",
+              height: "-webkit-fill-available"
             }}
           ></div>
           <Typography component="div">
@@ -166,13 +172,13 @@ export default function DetailPackages() {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div className="d-flex  align-items-center">
               <Box className="me-3">
-                <img
+                <Image
                   style={{
                     width: "30px",
                     height: "30px",
-                    borderRadius: "15px",
+                    borderRadius: "15px"
                   }}
-                  src="./fotoprofile/default.png"
+                  src={thumbnail}
                 />
               </Box>
               <Box>
@@ -189,7 +195,7 @@ export default function DetailPackages() {
                   lineHeight="16px"
                   fontWeight={400}
                   style={{
-                    display: "contents",
+                    display: "contents"
                   }}
                 >
                   4 Days & 3 Nights
@@ -200,7 +206,7 @@ export default function DetailPackages() {
               <Typography
                 fontSize={20}
                 style={{
-                  clear: "both",
+                  clear: "both"
                 }}
                 lineHeight="24px"
                 fontWeight={700}
@@ -227,7 +233,17 @@ export default function DetailPackages() {
           <Typography fontSize={16} lineHeight="24px" fontWeight={700}>
             Metode Pembayaran
           </Typography>
-          <Grid container id="logo-payment">
+          <Grid container spacing={2}>
+            <Grid item xs={6} md={3}>
+              <Button
+                variant="outlined"
+                onClick={handleMidtrans}
+              >
+                Midtrans
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container id="logo-payment" className="mt-5">
             <Grid item xs={8} md={8}>
               <Typography>
                 <Box fontSize="12px" lineHeight="16px">
