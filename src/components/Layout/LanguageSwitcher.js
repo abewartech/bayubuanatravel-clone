@@ -2,7 +2,7 @@ import React from "react";
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 
 const languages = ["en", "id"];
 
@@ -29,19 +29,20 @@ function LanguageSwitcher() {
 
   return (
     <div>
-      <Button
+      <div
         aria-controls="language-menu"
         aria-haspopup="true"
         onClick={handleOpenMenu}
-        color="inherit"
+        style={{ cursor: "pointer" }}
       >
         <Image
           src={`/assets/flags/${lang}.png`}
           alt={lang}
           width={24}
           height={16}
+          className="img-fluid"
         />
-      </Button>
+      </div>
       <Menu
         id="language-menu"
         anchorEl={anchorEl}
@@ -59,8 +60,9 @@ function LanguageSwitcher() {
               alt={language}
               width={24}
               height={16}
+              className="img-fluid me-1"
             />
-            {language}
+            {language === "en" ? " English" : " Indonesia"}
           </MenuItem>
         ))}
       </Menu>
