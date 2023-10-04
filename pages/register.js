@@ -198,7 +198,7 @@ export default function Register() {
                     type="text"
                     onChange={handleChange}
                     name="email"
-                    placeholder="contoh@versinema.com"
+                    placeholder="contoh@example.com"
                   />
                   <ErrorMessage name="email" component="div" />
 
