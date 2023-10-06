@@ -14,11 +14,12 @@ import {
   Typography,
   Container,
   Grid,
-  Snackbar,
+  Snackbar
 } from "@mui/material";
 import { ErrorMessage, Field, Formik } from "formik";
 import axios from "axios";
 import API from "../../common/api";
+import LanguageSwitcher from "./LanguageSwitcher";
 import useAuthStore from "../../store/loginStore";
 
 const style = {
@@ -31,7 +32,7 @@ const style = {
   border: "none",
   borderRadius: 4,
   boxShadow: 24,
-  p: 1,
+  p: 1
 };
 export default function Header(props) {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function Header(props) {
     setLoggedIn,
     setAccessToken,
     setRefreshToken,
-    setUsername,
+    setUsername
   } = useAuthStore();
   const handleClose = () => setOpen(false);
   useEffect(() => {
@@ -122,6 +123,9 @@ export default function Header(props) {
                   </Button>
                 )}
               </div>
+              <div className={`${styles.navItem} language-switcher`}>
+                <LanguageSwitcher />
+              </div>
             </div>
             <div
               onClick={handleShowMenu}
@@ -195,7 +199,7 @@ export default function Header(props) {
                     handleChange,
                     handleBlur,
                     handleSubmit,
-                    isSubmitting,
+                    isSubmitting
                   }) => (
                     <form
                       sx={{ margin: 10, height: "40px" }}
@@ -237,7 +241,7 @@ export default function Header(props) {
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 1,
+                          marginTop: 1
                         }}
                       >
                         <a color="textPrimary" href="forgot-password" replace>
@@ -255,7 +259,7 @@ export default function Header(props) {
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 16,
+                          marginTop: 16
                         }}
                       >
                         <Button type="submit" disabled={isSubmitting}>
@@ -266,7 +270,7 @@ export default function Header(props) {
                         id="btn-regist"
                         sx={{
                           display: "flex",
-                          justifyContent: "flex-start",
+                          justifyContent: "flex-start"
                         }}
                       >
                         Belum mempunyai akun?
