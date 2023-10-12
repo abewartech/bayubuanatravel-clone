@@ -1,21 +1,55 @@
-// import { useRouter } from "next/router";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import Layout from "../../src/components/Layout";
 import Card from "../../src/components/common/Card";
 import HeaderPage from "../../src/components/common/HeaderPage";
+import MuiAlert from "@mui/material/Alert";
 import resort from "./../../public/assets/resort.jpg";
+import API from "../../src/common/api";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function TypeDestination() {
-  // const currUrl = useRouter();
-  // const typePage = currUrl.query.type;
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   const breadcrumb = [
     {
-      name: "Home",
+      name: "Home"
     },
     {
-      name: "Package",
-    },
+      name: "Package"
+    }
   ];
+
+  const fetchData = async () => {
+    try {
+      const response = await API.get(
+        `/products/v1/external?page=${page}&size=10`
+      );
+      const newData = response.data;
+
+      // Assuming the API response is an array
+      setData((prevData) => [...prevData, ...newData]);
+      setLoading(false);
+      setPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(error?.message || "An error occurred");
+      setLoading(false);
+      setHasMore(false); // Stop infinite scrolling on error
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []); // Empty dependency array ensures the effect runs once on mount
+
   return (
     <Layout>
       <HeaderPage
@@ -24,15 +58,25 @@ export default function TypeDestination() {
         background={resort}
       />
       <div className="container mb-5">
-        <div className="row">
-          {[...Array(8)].map((item, idx) => {
-            return (
+        <InfiniteScroll
+          dataLength={data.length}
+          next={fetchData}
+          hasMore={hasMore}
+          loader={<p>Loading...</p>}
+          style={{
+            overflow: 'hidden'
+          }}
+        >
+          <div className="row m-1">
+            {error && <Alert severity="error">{error}</Alert>}
+            {!loading && data.length === 0 && !error && <p>No data found</p>}
+            {data.map((item, idx) => (
               <div className={"col-lg-3 col-md-6 col-12"} key={idx}>
-                  <Card type="common" />
+                <Card type="common" data={item} />
               </div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        </InfiniteScroll>
       </div>
     </Layout>
   );

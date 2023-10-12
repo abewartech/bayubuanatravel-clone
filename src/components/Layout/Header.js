@@ -1,4 +1,5 @@
 import Image from "next/image";
+import dynamic from 'next/dynamic';
 import styles from "./Layout.module.scss";
 import Link from "next/link";
 import logo from "./../../../public/assets/logo/logo.png";
@@ -7,9 +8,9 @@ import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+const DynamicModal = dynamic(() => import('@mui/material/Modal'), { ssr: false });
 import {
   Button,
-  Modal,
   Box,
   Typography,
   Container,
@@ -136,7 +137,7 @@ export default function Header(props) {
           </div>
         </div>
       </div>
-      <Modal
+      <DynamicModal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -294,7 +295,7 @@ export default function Header(props) {
             /> */}
           </Container>
         </Box>
-      </Modal>
+      </DynamicModal>
     </div>
   );
 }
