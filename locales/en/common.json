@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"Welcome": "Welcome To Marina Raja Ampat",
 	"home":"Home",
     "about":"About",
@@ -55,4 +56,8 @@
 
 	
 
+=======
+	"Welcome": "Welcome To Marina Raja Ampat", 
+	"Home": 
+>>>>>>> 17f0f27 (📝)
 }
