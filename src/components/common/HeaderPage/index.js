@@ -1,7 +1,6 @@
 import styles from "./HeaderPage.module.scss";
 export default function HeaderPage(props) {
   const { title, breadcrumb, background } = props;
-  console.log(background);
   return (
     <>
       <div className="position-relative">

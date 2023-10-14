@@ -33,18 +33,24 @@ export default function TypeDestination() {
         `/products/v1/external?page=${page}&size=10`
       );
       const newData = response.data;
-
+  
       // Assuming the API response is an array
       setData((prevData) => [...prevData, ...newData]);
-      setLoading(false);
       setPage((prevPage) => prevPage + 1);
+  
+      // Check if the new data is empty
+      if (newData.length === 0) {
+        setHasMore(false); // Stop infinite scrolling when there's no more data
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(error?.message || "An error occurred");
-      setLoading(false);
       setHasMore(false); // Stop infinite scrolling on error
+    } finally {
+      setLoading(false); // Set loading to false after data is processed
     }
   };
+  
 
   useEffect(() => {
     fetchData();

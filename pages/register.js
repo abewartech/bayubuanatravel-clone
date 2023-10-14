@@ -65,7 +65,6 @@ export default function Register() {
                   })
                   .catch((err) => {
                     setSubmitting(false);
-                    console.log(err.data.status);
                     if (err.data.status === "failed") {
                       alert(err.data.message);
                     }
