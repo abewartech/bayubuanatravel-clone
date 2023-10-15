@@ -52,8 +52,6 @@ export default function LiveChatComponent(props) {
     setIsChatOpen(true);
   };
 
-  console.log("askForUserInfo:", askForUserInfo);
-
   return (
     <>
       <div className={isChatOpen ? styles.chat_open : styles.chat_closed}>
