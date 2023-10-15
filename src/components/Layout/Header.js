@@ -1,5 +1,5 @@
 import Image from "next/image";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import styles from "./Layout.module.scss";
 import Link from "next/link";
 import logo from "./../../../public/assets/logo/logo.png";
@@ -8,7 +8,9 @@ import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-const DynamicModal = dynamic(() => import('@mui/material/Modal'), { ssr: false });
+const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
+  ssr: false
+});
 import {
   Button,
   Box,
@@ -40,6 +42,11 @@ export default function Header(props) {
   const { handleShowMenu } = props;
   const [open, setOpen] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const {
     isLoggedIn,
     accessToken,
@@ -67,6 +74,7 @@ export default function Header(props) {
       }
     }
   }, []);
+
   const handleLogin = () => {
     setOpen(true);
   };
@@ -106,24 +114,36 @@ export default function Header(props) {
               <div className={styles.navItem}>
                 <Link href="/contact-us">Contact Us</Link>
               </div>
-              <div className={styles.navItem}>
-                {isLoggedIn ? (
-                  <div>
-                    <span onClick={() => setShowButton(true)}>
-                      Welcome, {username}!
-                    </span>
-                    {showButton && (
-                      <Button variant="contained" onClick={handleLogout}>
-                        Logout
-                      </Button>
-                    )}
-                  </div>
-                ) : (
-                  <Button variant="contained" onClick={handleLogin}>
-                    Login
-                  </Button>
-                )}
-              </div>
+              {isClient ? (
+                <div className={styles.navItem}>
+                  {isLoggedIn ? (
+                    <div>
+                      {typeof window !== "undefined" && (
+                        <span onClick={() => setShowButton(true)}>
+                          Welcome, {username}!
+                        </span>
+                      )}
+                      {showButton && (
+                        <Button
+                          variant="contained"
+                          onClick={handleLogout}
+                          suppressHydrationWarning
+                        >
+                          Logout
+                        </Button>
+                      )}
+                    </div>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={handleLogin}
+                      suppressHydrationWarning
+                    >
+                      Login
+                    </Button>
+                  )}
+                </div>
+              ) : null}
               <div className={`${styles.navItem} language-switcher`}>
                 <LanguageSwitcher />
               </div>
