@@ -29,15 +29,24 @@ export default function TypeDestination() {
 
   const fetchData = async () => {
     try {
-      const response = await API.get(
-        `/products/v1/external?page=${page}&size=10`
-      );
-      const newData = response.data;
-  
+      const response = await fetch(
+        `https://api.marinarajaampat.id/contents/v1/1`
+      , {
+        // mode: 'no-cors',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const newData = await response.json();
+
+      console.log(newData)
+
       // Assuming the API response is an array
-      setData((prevData) => [...prevData, ...newData]);
+      setData((prevData) => [...prevData, ...newData.data]);
       setPage((prevPage) => prevPage + 1);
-  
+
       // Check if the new data is empty
       if (newData.length === 0) {
         setHasMore(false); // Stop infinite scrolling when there's no more data
@@ -50,7 +59,6 @@ export default function TypeDestination() {
       setLoading(false); // Set loading to false after data is processed
     }
   };
-  
 
   useEffect(() => {
     fetchData();
@@ -70,7 +78,7 @@ export default function TypeDestination() {
           hasMore={hasMore}
           loader={<p>Loading...</p>}
           style={{
-            overflow: 'hidden'
+            overflow: "hidden"
           }}
         >
           <div className="row m-1">
