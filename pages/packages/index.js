@@ -30,7 +30,7 @@ export default function TypeDestination() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://api.marinarajaampat.id/contents/v1/1`
+        `https://api.marinarajaampat.id/products/v1/external?page=${page}&size=1`
       , {
         // mode: 'no-cors',
       });
@@ -76,7 +76,6 @@ export default function TypeDestination() {
           dataLength={data.length}
           next={fetchData}
           hasMore={hasMore}
-          loader={<p>Loading...</p>}
           style={{
             overflow: "hidden"
           }}
