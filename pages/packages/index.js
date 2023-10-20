@@ -6,6 +6,7 @@ import MuiAlert from "@mui/material/Alert";
 import resort from "./../../public/assets/resort.jpg";
 import API from "../../src/common/api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import axios from "axios";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -29,24 +30,22 @@ export default function TypeDestination() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `https://api.marinarajaampat.id/products/v1/external?page=${page}&size=1`
-      , {
-        // mode: 'no-cors',
-      });
-
-      if (!response.ok) {
+      const response = await axios.get(
+        `https://user1697714815999.requestly.dev/products/v1/external?page=${page}&size=1`
+      );
+  
+      if (response.status !== 200) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
-      const newData = await response.json();
-
-      console.log(newData)
-
+  
+      const newData = response.data.data;
+  
+      console.log(data);
+  
       // Assuming the API response is an array
-      setData((prevData) => [...prevData, ...newData.data]);
+      setData((prevData) => [...prevData, ...newData]);
       setPage((prevPage) => prevPage + 1);
-
+  
       // Check if the new data is empty
       if (newData.length === 0) {
         setHasMore(false); // Stop infinite scrolling when there's no more data

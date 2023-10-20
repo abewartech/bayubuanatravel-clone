@@ -11,29 +11,29 @@ import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
 
 export default function Card(props) {
-  const { type } = props;
+  const { type, data } = props;
 
   const commonCard = () => {
     return (
       <div className={`${styles.card} mt-3  `}>
-        <Link href="/packages/1" className="h-100">
+        <Link href={`/packages/${data.id}`} className="h-100">
           <Image src={thumbnail} alt="thumbnail" className="w-100" />
         </Link>
         <div className={styles.date}>
           <span className="me-2">
             <Image src={clock} width={10} height={10} alt="clock" />
           </span>
-          4 Days & 3 Nights
+          {data.additional_info}
         </div>
         <div className={styles.wrapContent}>
           <div className={styles.cardInfo}>
-            <div className={styles.titlePackage}>Asia</div>
+            <div className={styles.titlePackage}>{data.title}</div>
             <div className={styles.total}></div>
           </div>
           <div className={styles.cardPricing}>
             <div className={styles.price}>Starting From</div>
             <div className={styles.priceNumber}>
-              IDR 56.000 <span>Per Person</span>
+              IDR {data.base_price} <span>Per Person</span>
             </div>
           </div>
           <div className={styles.cta}>
