@@ -16,24 +16,24 @@ export default function Card(props) {
   const commonCard = () => {
     return (
       <div className={`${styles.card} mt-3  `}>
-        <Link href={`/packages/${data.id}`} className="h-100">
+        <Link href={data && data.id !== null ? `/packages/${data.id}` : '/default-url'} className="h-100">
           <Image src={thumbnail} alt="thumbnail" className="w-100" />
         </Link>
         <div className={styles.date}>
           <span className="me-2">
             <Image src={clock} width={10} height={10} alt="clock" />
           </span>
-          {data.additional_info}
+          {data && data.additional_info}
         </div>
         <div className={styles.wrapContent}>
           <div className={styles.cardInfo}>
-            <div className={styles.titlePackage}>{data.title}</div>
+            <div className={styles.titlePackage}>{data && data.title}</div>
             <div className={styles.total}></div>
           </div>
           <div className={styles.cardPricing}>
             <div className={styles.price}>Starting From</div>
             <div className={styles.priceNumber}>
-              IDR {data.base_price} <span>Per Person</span>
+              IDR {data && data.base_price} <span>Per Person</span>
             </div>
           </div>
           <div className={styles.cta}>
