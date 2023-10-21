@@ -39,8 +39,9 @@ export default function HeroShot() {
                 {t('Welcome')}
               </div>
               <div className={styles.subTitle}>
-                Full Experience With Us, #KalobosanLiburan
+                {t('fullexperience')}
               </div>
+          
             </div>
           </div>
         </div>

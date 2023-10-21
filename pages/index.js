@@ -31,7 +31,6 @@ export default function Homepage() {
       <div className="container">
         <div className="row">
           <PromoBigBanner />
-          {/* <PromoSmallBanner /> */}
           <TourList />
           <Videotron />
         </div>

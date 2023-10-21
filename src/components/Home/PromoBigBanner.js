@@ -3,11 +3,13 @@ import promo from "./../../../public/assets/promo.png";
 import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import TitleSection from "../common/TitleSection";
+import useTranslation from 'next-translate/useTranslation'
 export default function PromoBigBanner() {
+  const { t, lang } = useTranslation('common')
   return (
     <>
       <TitleSection
-        title="Explore Our Promotions"
+        title={t('explore')}
         subtitle="Nikmati Promo & Event Menarik Untuk Melengkapi Liburanmu"
         more={false}
       />
