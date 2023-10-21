@@ -6,6 +6,7 @@ import MuiAlert from "@mui/material/Alert";
 import resort from "./../../public/assets/resort.jpg";
 import API from "../../src/common/api";
 import InfiniteScroll from "react-infinite-scroll-component";
+import axios from "axios";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -29,10 +30,17 @@ export default function TypeDestination() {
 
   const fetchData = async () => {
     try {
-      const response = await API.get(
-        `/products/v1/external?page=${page}&size=10`
+      const response = await axios.get(
+        `https://user1697714815999.requestly.dev/products/v1/external?page=${page}&size=1`
       );
-      const newData = response.data;
+  
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const newData = response.data.data;
+  
+      console.log(data);
   
       // Assuming the API response is an array
       setData((prevData) => [...prevData, ...newData]);
@@ -50,7 +58,6 @@ export default function TypeDestination() {
       setLoading(false); // Set loading to false after data is processed
     }
   };
-  
 
   useEffect(() => {
     fetchData();
@@ -68,9 +75,8 @@ export default function TypeDestination() {
           dataLength={data.length}
           next={fetchData}
           hasMore={hasMore}
-          loader={<p>Loading...</p>}
           style={{
-            overflow: 'hidden'
+            overflow: "hidden"
           }}
         >
           <div className="row m-1">

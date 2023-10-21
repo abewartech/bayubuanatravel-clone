@@ -40,5 +40,5 @@
     "@types/react": "18.2.20",
     "next-translate-plugin": "^2.6.0"
   },
-  "proxy": "https://api.marinarajaampat.id"
+  "proxy": "https://api.marinarajaampat.id/"
 }

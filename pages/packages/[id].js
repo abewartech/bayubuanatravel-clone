@@ -4,10 +4,11 @@ import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import airplane from "./../../public/assets/icon/airplane-square.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal, Box, Typography, Grid } from "@mui/material";
 import bi from "../../public/assets/bi.png";
 import xendit from "../../public/assets/xendit.png";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -25,6 +26,26 @@ export default function DetailPackages() {
   const [expand, setExpand] = useState(false);
   const [id, setId] = useState(0);
   const [open, setOpen] = useState(false);
+  const [productData, setProductData] = useState(null);
+
+  const fetchProductData = async (productId) => {
+    try {
+      const response = await axios.get(
+        `https://api.marinarajaampat.id/products/v1/external/${productId}`
+      );
+      setProductData(response.data.data); // Store the product data in state
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
+  useEffect(() => {
+    // When the component mounts, fetch product data for a specific ID (e.g., 1)
+    fetchProductData(1); // You can replace 1 with the actual ID you want to fetch
+
+    // ... your other useEffect code ...
+  }, []);
+
   const handleShowDetail = (id) => {
     setExpand(!expand);
     setId(id);
@@ -33,12 +54,25 @@ export default function DetailPackages() {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+
+  const fetchBookingCash = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.marinarajaampat.id/orders/v1/booking-cash`
+      );
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
   const handleMidtrans = () => {
+    fetchBookingCash()
     window.open(
       "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
-      '_blank',
-    )
-  }
+      "_blank"
+    );
+  };
+
   return (
     <Layout>
       <div className="container my-4">
@@ -54,12 +88,16 @@ export default function DetailPackages() {
                 <span className="me-2">
                   <Image src={clock} width={10} height={10} alt="clock" />
                 </span>
-                4 Days & 3 Nights
+                {productData && productData.additional_info}
               </div>
             </div>
             <div className="mb-5">
-              <div className={styles.topLabel}>Lorem ipsum doler sit amet</div>
-              <div className={styles.topTitle}>Paket 1 </div>
+              <div className={styles.topLabel}>
+                Rp. {productData && productData.base_price}
+              </div>
+              <div className={styles.topTitle}>
+                {productData && productData.title}
+              </div>
             </div>
             <div>
               <div className={styles.labelDetail}>Tour Details</div>
@@ -72,6 +110,11 @@ export default function DetailPackages() {
                     <Image src={airplane} alt="airplane" />
                   </span>
                   Malaysia Airlines
+                </div>
+              </div>
+              <div className={styles.infoDetail}>
+                <div className="mb-1">
+                  {productData && productData.description}
                 </div>
               </div>
             </div>
@@ -166,7 +209,7 @@ export default function DetailPackages() {
               lineHeight="16px"
               fontWeight={400}
             >
-              Lorem ipsum
+              {productData && productData.description}
             </Box>
           </Typography>
           <div className="d-flex justify-content-between align-items-center mb-4">
@@ -188,7 +231,7 @@ export default function DetailPackages() {
                   lineHeight="24px"
                   fontWeight={700}
                 >
-                  Paket 1
+                  {productData && productData.title}
                 </Typography>
                 <Typography
                   fontSize={12}
@@ -198,7 +241,7 @@ export default function DetailPackages() {
                     display: "contents"
                   }}
                 >
-                  4 Days & 3 Nights
+                  {productData && productData.additional_info}
                 </Typography>
               </Box>
             </div>
@@ -211,7 +254,7 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                Rp. 500.000
+                Rp. {productData && productData.base_price}
               </Typography>
             </div>
           </div>
@@ -235,10 +278,7 @@ export default function DetailPackages() {
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={6} md={3}>
-              <Button
-                variant="outlined"
-                onClick={handleMidtrans}
-              >
+              <Button variant="outlined" onClick={handleMidtrans}>
                 Midtrans
               </Button>
             </Grid>

@@ -218,24 +218,6 @@ export default function Register() {
                   />
                   <ErrorMessage name="password" component="div" />
 
-                  {/* <div
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      marginTop: 10,
-                    }}
-                  >
-                    <a href="forgot-password" color="textPrimary" replace>
-                      <Typography
-                        variant="caption"
-                        display="block"
-                        gutterBottom
-                      >
-                        Forget Password ?
-                      </Typography>
-                    </a>
-                  </div> */}
-
                   <div
                     id="btn-login"
                     sx={{

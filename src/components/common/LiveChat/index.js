@@ -7,10 +7,16 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { IconButton, TextField } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
+import useAuthStore from "../../../store/loginStore";
 export default function LiveChatComponent(props) {
+  const { isLoggedIn } = useAuthStore();
+
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [askForUserInfo, setAskForUserInfo] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     // Add any initial setup logic here
@@ -31,6 +37,19 @@ export default function LiveChatComponent(props) {
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen); // Toggle the chat dialog visibility
+    if (!isChatOpen && !isLoggedIn) {
+      // If chat is opened and user is not logged in, ask for user info
+      console.log("Asking for user info...");
+      setAskForUserInfo(true);
+    }
+  };
+
+  const handleUserInfoSubmit = (e) => {
+    e.preventDefault();
+
+    // Close the user info form and open the chat
+    setAskForUserInfo(false);
+    setIsChatOpen(true);
   };
 
   return (
@@ -53,21 +72,44 @@ export default function LiveChatComponent(props) {
 
           {/* Chat Box Body */}
           <div className={styles.chat_box_body}>
-            <Box sx={{ p: 2, height: 300, }}>
+            <Box sx={{ p: 2, height: 300 }}>
               <div className={styles.chat_box_overlay}></div>
               <div className="chat-logs">
                 {messages.map((message, index) => (
                   <div key={index} className={`chat-msg ${message.type}`}>
                     <span className="msg-avatar">
-                      <img
-                        src="https://image.crisp.im/avatar/operator/196af8cc-f6ad-4ef7-afd1-c45d5231387c/240/?1483361727745"
-                        alt="Avatar"
-                      />
+                      <Image src={'/assets/wanna1.png'} width={20} height={20} alt="Avatar" className="img-fluid"/>
                     </span>
                     <div className="cm-msg-text">{message.text}</div>
                   </div>
                 ))}
               </div>
+
+              {askForUserInfo && (
+                <form onSubmit={handleUserInfoSubmit}>
+                  <TextField
+                    type="text"
+                    label="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    variant="outlined"
+                    fullWidth
+                    required
+                  />
+                  <TextField
+                    type="email"
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    variant="outlined"
+                    fullWidth
+                    required
+                  />
+                  <Button type="submit" variant="contained">
+                    Submit
+                  </Button>
+                </form>
+              )}
             </Box>
           </div>
 
@@ -90,8 +132,9 @@ export default function LiveChatComponent(props) {
                   <Button
                     variant="contained"
                     type="submit"
-                    className="chat-submit"
+                    className="chat-submit mt-2"
                     id="chat-submit"
+                    disabled={askForUserInfo}
                   >
                     Send
                   </Button>
@@ -111,5 +154,5 @@ export default function LiveChatComponent(props) {
 }
 
 function LiveChatButton({ isOpen }) {
-  return <Image src={livechat} alt="livechat" />;
+  return <Image src={livechat} alt="livechat" style={{ width: '100%', height: '100%' }} />;
 }
