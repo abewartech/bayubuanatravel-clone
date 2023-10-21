@@ -1,12 +1,15 @@
 import Card from "../common/Card";
 import TitleSection from "../common/TitleSection";
 import styles from "./../../../styles/pages/Home.module.scss";
+import useTranslation from 'next-translate/useTranslation'
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 
+
 export default function TourList() {
+  const { t, lang } = useTranslation('common')
   return (
     <>
-      <TitleSection title="All Tours" />
+      <TitleSection title={t('alltours')}/>
       <div className="mb-4">
         <Splide
           options={{

@@ -10,7 +10,7 @@ export default function PromoBigBanner() {
     <>
       <TitleSection
         title={t('explore')}
-        subtitle="Nikmati Promo & Event Menarik Untuk Melengkapi Liburanmu"
+        subtitle={t('experiance')}
         more={false}
       />
       <Splide

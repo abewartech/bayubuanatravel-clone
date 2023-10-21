@@ -7,13 +7,17 @@ import clock from "./../../../../public/assets/icon/clock.svg";
 import info from "./../../../../public/assets/icon/info.svg";
 import thumbnail from "./../../../../public/assets/gallery/1.jpg";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
+import useTranslation from 'next-translate/useTranslation'
+
 import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
 
 export default function Card(props) {
   const { type, data } = props;
+  const { t, lang } = useTranslation('common')
 
   const commonCard = () => {
+
     return (
       <div className={`${styles.card} mt-3  `}>
         <Link href={data && data.id !== null ? `/packages/${data.id}` : '/default-url'} className="h-100">
@@ -31,7 +35,8 @@ export default function Card(props) {
             <div className={styles.total}></div>
           </div>
           <div className={styles.cardPricing}>
-            <div className={styles.price}>Starting From</div>
+            <div className={styles.price}>{t('starting')}
+            </div>
             <div className={styles.priceNumber}>
               IDR {data && data.base_price} <span>Per Person</span>
             </div>
