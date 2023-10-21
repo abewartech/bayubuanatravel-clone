@@ -78,10 +78,7 @@ export default function LiveChatComponent(props) {
                 {messages.map((message, index) => (
                   <div key={index} className={`chat-msg ${message.type}`}>
                     <span className="msg-avatar">
-                      <img
-                        src="https://image.crisp.im/avatar/operator/196af8cc-f6ad-4ef7-afd1-c45d5231387c/240/?1483361727745"
-                        alt="Avatar"
-                      />
+                      <Image src={'/assets/wanna1.png'} width={20} height={20} alt="Avatar" className="img-fluid"/>
                     </span>
                     <div className="cm-msg-text">{message.text}</div>
                   </div>
@@ -135,7 +132,7 @@ export default function LiveChatComponent(props) {
                   <Button
                     variant="contained"
                     type="submit"
-                    className="chat-submit"
+                    className="chat-submit mt-2"
                     id="chat-submit"
                     disabled={askForUserInfo}
                   >
@@ -157,5 +154,5 @@ export default function LiveChatComponent(props) {
 }
 
 function LiveChatButton({ isOpen }) {
-  return <Image src={livechat} alt="livechat" />;
+  return <Image src={livechat} alt="livechat" style={{ width: '100%', height: '100%' }} />;
 }

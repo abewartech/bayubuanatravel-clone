@@ -7,11 +7,10 @@ import Image from "next/image";
 import whatsapp from "./../../../public/assets/logo/whatsapp.png";
 import Sidebar from "./Sidebar";
 import LiveChatComponent from "../common/LiveChat";
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 export default function Layout(props) {
   const { children } = props;
@@ -45,7 +44,7 @@ export default function Layout(props) {
       <div className={styles.whatsappBtn}>
         <div className={styles.whatsappBtnCta}>
           <Link href="https://wa.me/6281316776671" target="_blank">
-            <Image src={whatsapp} alt="whatsapp" />
+            <Image src={whatsapp} alt="whatsapp" style={{ width: '100%', height: '100%' }} />
           </Link>
         </div>
       </div>
