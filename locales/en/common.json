@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "Welcome": "Welcome To Marina Raja Ampat",
   "home": "Home",
   "about": "About",
@@ -38,51 +37,6 @@
   "others": "others",
   "reserv": "Reservation Now",
   "open": "Open trip (every weekend)"
-=======
-
-	"Welcome": "Welcome To Marina Raja Ampat",
-	"home":"Home",
-    "about":"About",
-    "packages":"Packages",
-    "resort":"Resort",
-    "gallery":"Gallery",
-    "contactus":"Contact US",
-    "login":"Login",
-	"fullexperience":"Full Experience With Us, if you're bored on holiday",
-    "explore":"Explore Our Promotions",
-    "experiance":"Nikmati Promo & Event Menarik Untuk Melengkapi Liburanmu",
-    "alltours":"All Tours",
-    "time":"4 Days & 3 Nights",
-    "starting":"Starting From",
-    "contact":"Contact",
-    "view":"View More",
-    "person":"Per Person",
-    "ourclient":"Our Client",
-    "testimoni":"Testimoni Travelers What do they say about traveling with Bayu Buana?",
-    
-    "galery":"Gallery",
-    "other":"Other",
-    "travel":"Travel  Updates",
-    "term" :"Terms & Conditions",
-    "privacy":"Privacy Policy",
-    "sitemap":"Sitemap",
-    "bayu":"© 2023 Bayu Buana Travel Services. All Rights Reserved.",
-    "company":"Is The company that handles Raja Ampat tours, from arrival to departure to your hometown. Again, we also have complete services to meet your Raja Ampat travel needs.",
-    "contacts":"Our Contact",
-    "one":"One Stop Services",
-    "all":"All",
-
-    "marinastarresto":"Marina Star Resto",
-    "jetty":"Jetty Marina Star",
-    "Speed":"Speed Boat",
-    "our":"Our Clients",
-    "others":"others",
-    "reserv":"Reservation Now",
-    "open":"Open trip (every weekend)"
-    
-
-    
->>>>>>> 64f8dee (📝)
 }
 
 
