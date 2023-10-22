@@ -53,7 +53,9 @@ export default function DetailPackages() {
   const [checkedItinerary, setCheckedItinerary] = useState(
     new Array(8).fill(true)
   );
-  const [selectedItinerary, setSelectedItinerary] = useState([...Array(8).keys()]);
+  const [selectedItinerary, setSelectedItinerary] = useState([
+    ...Array(8).keys()
+  ]);
   const [orderStatus, setOrderStatus] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -61,6 +63,8 @@ export default function DetailPackages() {
   const router = useRouter();
 
   useEffect(() => {
+    let intervalId; // Define intervalId here
+
     const fetchData = async () => {
       setOpenSnackbar(false);
       try {
@@ -82,14 +86,15 @@ export default function DetailPackages() {
         setOpenSnackbar(false);
       }
     };
+
     if (transactionId) {
       fetchData();
-      const intervalId = setInterval(fetchData, 5000);
+      intervalId = setInterval(fetchData, 5000); // Set intervalId
       return () => {
         clearInterval(intervalId);
       };
     }
-  }, []);
+  }, [transactionId]);
 
   const {
     isLoggedIn,
@@ -106,7 +111,7 @@ export default function DetailPackages() {
     const updatedCheckedItinerary = [...checkedItinerary];
     updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
     setCheckedItinerary(updatedCheckedItinerary);
-  
+
     if (updatedCheckedItinerary[idx]) {
       // Item is checked, no need to modify the selectedItinerary state
     } else {
@@ -175,7 +180,8 @@ export default function DetailPackages() {
       // Handle the response data here
       console.log("Response data:", response.data);
       if (response.data) {
-        // setTransactionId(response.data)
+        setTransactionId(response.data.order.id);
+        window.open(`${response.data.link.redirect_url}`, "_blank");
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
