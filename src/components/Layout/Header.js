@@ -87,7 +87,7 @@ export default function Header(props) {
     setUsername("");
   };
   const handleProfile = () => {
-    router.push('profile')
+    router.push('/profile')
   };
   return (
     <div className={styles.header}>
