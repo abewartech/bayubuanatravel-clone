@@ -73,7 +73,7 @@ export default function DetailPackages() {
             `https://api.marinarajaampat.id/orders/v1/client/${transactionId}`
           );
           console.log("Response data:", response.data);
-          if (response.data.status === "ORDERED") {
+          if (response.data.status !== "INITIATED") {
             // If it's "ORDERED," stop the interval
             clearInterval(intervalId);
             setPesanError("Order Success");
@@ -413,13 +413,10 @@ export default function DetailPackages() {
             *Jumlah minimum yang perlu dibayarkan adalah Rp.{" "}
             {productData && productData.minimum_payment}
           </Typography>
-          <Typography fontSize={16} lineHeight="24px" fontWeight={700}>
-            Metode Pembayaran
-          </Typography>
           <Grid container spacing={2}>
             <Grid item xs={6} md={3}>
               <Button variant="outlined" onClick={handleMidtrans}>
-                Midtrans
+                Lanjut ke Pembayaran
               </Button>
             </Grid>
           </Grid>

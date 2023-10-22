@@ -8,10 +8,9 @@ import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import useTranslation from 'next-translate/useTranslation'
+import useTranslation from "next-translate/useTranslation";
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
   ssr: false
-  
 });
 import {
   Button,
@@ -40,11 +39,12 @@ const style = {
   p: 1
 };
 export default function Header(props) {
-  const { t, lang } = useTranslation('common')
+  const { t, lang } = useTranslation("common");
   const router = useRouter();
   const { handleShowMenu } = props;
   const [open, setOpen] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -86,6 +86,7 @@ export default function Header(props) {
     setLoggedIn(false);
     setUsername("");
   };
+  const handleProfile = () => {};
   return (
     <div className={styles.header}>
       <div id="header-landing" className={styles.mainHeader}>
@@ -100,40 +101,75 @@ export default function Header(props) {
               className={`${styles.navWrap} col-lg-8 col-10 justify-content-end`}
             >
               <div className={styles.navItem}>
-                <Link href="/">{t('home')}</Link>
+                <Link href="/">{t("home")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/about">{t('about')}</Link>
+                <Link href="/about">{t("about")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/packages">{t('packages')}</Link>
+                <Link href="/packages">{t("packages")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/resort">{t('resort')}</Link>
+                <Link href="/resort">{t("resort")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/gallery">{t('gallery')}</Link>
+                <Link href="/gallery">{t("gallery")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/contact-us">{t('contactus')}</Link>
+                <Link href="/contact-us">{t("contactus")}</Link>
               </div>
               {isClient ? (
                 <div className={styles.navItem}>
                   {isLoggedIn ? (
-                    <div>
+                    <div
+                      onMouseEnter={() => setShowOptions(true)}
+                      onMouseLeave={() => setShowOptions(false)}
+                    >
                       {typeof window !== "undefined" && (
                         <span onClick={() => setShowButton(true)}>
-                          {t('login')}, {username}!
+                          {t("login")}, {username}!
                         </span>
                       )}
-                      {showButton && (
-                        <Button
-                          variant="contained"
-                          onClick={handleLogout}
-                          suppressHydrationWarning
+                      {showOptions && (
+                        <div
+                          className={styles.options}
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            position: "absolute",
+                            top: "100%",
+                            left: 0,
+                            background: "white",
+                            border: "1px solid #ccc",
+                            padding: "10px",
+                            zIndex: 1
+                          }}
                         >
-                         {t('logout')}
-                        </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleLogout}
+                            suppressHydrationWarning
+                            style={{
+                              margin: "5px 0",
+                              backgroundColor: "#f00",
+                              color: "#fff"
+                            }}
+                          >
+                            {t("logout")}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={handleProfile} // Add a function to handle profile
+                            suppressHydrationWarning
+                            style={{
+                              margin: "5px 0",
+                              backgroundColor: "#00f",
+                              color: "#fff"
+                            }}
+                          >
+                            Profile
+                          </Button>
+                        </div>
                       )}
                     </div>
                   ) : (
@@ -142,7 +178,7 @@ export default function Header(props) {
                       onClick={handleLogin}
                       suppressHydrationWarning
                     >
-                     {t('login')}
+                      {t("login")}
                     </Button>
                   )}
                 </div>
@@ -175,10 +211,10 @@ export default function Header(props) {
               <Grid item xs={12} md={12}>
                 <Typography>
                   <Box fontSize={32} fontWeight={600}>
-                    {t('login')}
+                    {t("login")}
                   </Box>
                   <Box fontSize={12} fontWeight={400} lineHeight="16px">
-                   {t('welcomeback')}
+                    {t("welcomeback")}
                   </Box>
                 </Typography>
               </Grid>
@@ -274,7 +310,7 @@ export default function Header(props) {
                             display="block"
                             gutterBottom
                           >
-                            {t('forgot')}
+                            {t("forgot")}
                           </Typography>
                         </a>
                       </div>
@@ -297,9 +333,9 @@ export default function Header(props) {
                           justifyContent: "flex-start"
                         }}
                       >
-                        {t('dont')}
+                        {t("dont")}
                         <Link href="/register" passHref>
-                          <Button>{t('register')}</Button>
+                          <Button>{t("register")}</Button>
                         </Link>
                       </div>
                     </form>
