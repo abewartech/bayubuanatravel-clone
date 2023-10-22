@@ -1,14 +1,25 @@
 import Image from "next/image";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import Layout from "../../src/components/Layout";
 import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import airplane from "./../../public/assets/icon/airplane-square.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import { useEffect, useState } from "react";
-import { Button, Modal, Box, Typography, Grid } from "@mui/material";
+import { Button, Modal, Box, Typography, Grid, Container } from "@mui/material";
 import bi from "../../public/assets/bi.png";
+import useTranslation from "next-translate/useTranslation";
 import xendit from "../../public/assets/xendit.png";
 import axios from "axios";
+import { ErrorMessage, Field, Formik } from "formik";
+import Link from "next/link";
+import useAuthStore from "../../src/store/loginStore";
+import API from "../../src/common/api";
+
+const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
+  ssr: false
+});
 
 const style = {
   position: "absolute",
@@ -23,10 +34,25 @@ const style = {
   p: 4
 };
 export default function DetailPackages() {
+  const { t, lang } = useTranslation("common");
   const [expand, setExpand] = useState(false);
   const [id, setId] = useState(0);
+  const [amountChanges, setAmountChanges] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModalLogin, setOpenModalLogin] = useState(false);
   const [productData, setProductData] = useState(null);
+  const router = useRouter();
+
+  const {
+    isLoggedIn,
+    accessToken,
+    refreshToken,
+    username,
+    setLoggedIn,
+    setAccessToken,
+    setRefreshToken,
+    setUsername
+  } = useAuthStore();
 
   const fetchProductData = async (productId) => {
     try {
@@ -41,7 +67,9 @@ export default function DetailPackages() {
 
   useEffect(() => {
     // When the component mounts, fetch product data for a specific ID (e.g., 1)
-    fetchProductData(1); // You can replace 1 with the actual ID you want to fetch
+    const { id } = router.query;
+
+    fetchProductData(id); // You can replace 1 with the actual ID you want to fetch
 
     // ... your other useEffect code ...
   }, []);
@@ -51,22 +79,43 @@ export default function DetailPackages() {
     setId(id);
   };
   const handleBook = () => {
-    setOpen(true);
+    if (isLoggedIn) {
+      setOpen(true);
+    } else {
+      setOpenModalLogin(true);
+    }
   };
+  const handleCloseLogin = () => setOpenModalLogin(false);
   const handleClose = () => setOpen(false);
+
+  const amountChange = (e) => {
+    setAmountChanges(e.target.value);
+  };
 
   const fetchBookingCash = async () => {
     try {
-      const response = await axios.get(
-        `https://api.marinarajaampat.id/orders/v1/booking-cash`
+      const { id } = router.query;
+      const payload = {
+        amount: parseInt(amountChanges, 10), // Parse 'amountChanges' to an integer
+        product_id: parseInt(id, 10), // Parse 'id' to an integer
+        product_subs: [],
+        voucher_code: ""
+      };
+
+      const response = await API.post(
+        "https://api.marinarajaampat.id/orders/v1/client",
+        payload
       );
+
+      // Handle the response data here
+      console.log("Response data:", response.data);
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
   };
 
   const handleMidtrans = () => {
-    fetchBookingCash()
+    fetchBookingCash();
     window.open(
       "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
       "_blank"
@@ -222,6 +271,7 @@ export default function DetailPackages() {
                     borderRadius: "15px"
                   }}
                   src={thumbnail}
+                  alt="productThumb"
                 />
               </Box>
               <Box>
@@ -260,18 +310,23 @@ export default function DetailPackages() {
           </div>
           <Typography>
             <Box fontSize={16} lineHeight="24px" fontWeight={500}>
-              Email
+              Amount
             </Box>
           </Typography>
 
-          <input placeholder="Masukkan email kamu" className="mb-0" />
+          <input
+            placeholder="Masukkan amount"
+            className="mb-0"
+            type="number"
+            onChange={amountChange}
+          />
           <Typography
             fontSize={12}
             lineHeight="16px"
             fontWeight={400}
             marginBottom={3}
           >
-            *Gunakan email ini
+            *Jumlah minimum yang perlu dibayarkan
           </Typography>
           <Typography fontSize={16} lineHeight="24px" fontWeight={700}>
             Metode Pembayaran
@@ -300,6 +355,155 @@ export default function DetailPackages() {
           </Grid>
         </Box>
       </Modal>
+      <DynamicModal
+        open={openModalLogin}
+        onClose={handleCloseLogin}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Container
+            maxWidth="sm"
+            sx={{ height: "65vh", display: "flex", alignItems: "center" }}
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12}>
+                <Typography>
+                  <Box fontSize={32} fontWeight={600}>
+                    {t("login")}
+                  </Box>
+                  <Box fontSize={12} fontWeight={400} lineHeight="16px">
+                    {t("welcomeback")}
+                  </Box>
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Formik
+                  initialValues={{ email: "", password: "" }}
+                  validate={(values) => {
+                    const errors = {};
+                    if (!values.email) {
+                      errors.email = "Required";
+                    } else if (
+                      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+                        values.email
+                      )
+                    ) {
+                      errors.email = "Invalid email address";
+                    }
+                    return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                    API.post("/users/v1/login", values)
+                      .then((res) => {
+                        setSubmitting(false);
+                        setAccessToken(res.data.access_token);
+                        setRefreshToken(res.data.refresh_token);
+                        setUsername(values.email.split("@")[0]);
+                        setOpen(true);
+                        setOpenModalLogin(false);
+                        setLoggedIn(true);
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                        setSubmitting(false);
+                      });
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting
+                  }) => (
+                    <form
+                      sx={{ margin: 10, height: "40px" }}
+                      noValidate
+                      autoComplete="off"
+                      onSubmit={handleSubmit}
+                    >
+                      <Typography
+                        fontSize={16}
+                        fontWeight={500}
+                        marginBottom={1}
+                        lineHeight="24px"
+                      >
+                        Email
+                      </Typography>
+                      <Field
+                        type="text"
+                        name="email"
+                        placeholder="Your Email"
+                      />
+                      <ErrorMessage name="email" component="div" />
+
+                      <Typography
+                        fontSize={16}
+                        fontWeight={500}
+                        marginBottom={1}
+                        lineHeight="24px"
+                      >
+                        Password
+                      </Typography>
+                      <Field
+                        type="password"
+                        name="password"
+                        placeholder="Your Password"
+                      />
+                      <ErrorMessage name="password" component="div" />
+
+                      <div
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          marginTop: 1
+                        }}
+                      >
+                        <a color="textPrimary" href="forgot-password" replace>
+                          <Typography
+                            variant="caption"
+                            display="block"
+                            gutterBottom
+                          >
+                            {t("forgot")}
+                          </Typography>
+                        </a>
+                      </div>
+                      <div
+                        id="btn-login"
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          marginTop: 16
+                        }}
+                      >
+                        <Button type="submit" disabled={isSubmitting}>
+                          Login
+                        </Button>
+                      </div>
+                      <div
+                        id="btn-regist"
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-start"
+                        }}
+                      >
+                        {t("dont")}
+                        <Link href="/register" passHref>
+                          <Button>{t("register")}</Button>
+                        </Link>
+                      </div>
+                    </form>
+                  )}
+                </Formik>
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </DynamicModal>
     </Layout>
   );
 }
