@@ -1,6 +1,8 @@
 import styles from "./TitleSection.module.scss";
+import useTranslation from 'next-translate/useTranslation';
 export default function TitleSection(props) {
   const { title, subtitle, more, align } = props;
+  const { t, lang } = useTranslation('common')
   return (
     <>
       <div
@@ -15,7 +17,7 @@ export default function TitleSection(props) {
         ""
       ) : (
         <div className="d-none d-lg-flex col-lg-4 align-items-center justify-content-end">
-          <a className={styles.link}>View More</a>
+          <a className={styles.link}>{t('view')}</a>
         </div>
       )}
     </>
