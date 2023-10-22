@@ -3,7 +3,7 @@ export default function HeaderPage(props) {
   const { title, breadcrumb, background } = props;
   return (
     <>
-      <div className="position-relative">
+      <div className="position-relative" style={{zIndex: -1}}>
         <div
           className={styles.headerPage}
           style={{ backgroundImage: `url(${background.src})` }}

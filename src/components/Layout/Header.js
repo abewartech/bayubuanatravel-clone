@@ -86,7 +86,9 @@ export default function Header(props) {
     setLoggedIn(false);
     setUsername("");
   };
-  const handleProfile = () => {};
+  const handleProfile = () => {
+    router.push('profile')
+  };
   return (
     <div className={styles.header}>
       <div id="header-landing" className={styles.mainHeader}>
@@ -134,41 +136,46 @@ export default function Header(props) {
                         <div
                           className={styles.options}
                           style={{
-                            display: "flex",
-                            flexDirection: "column",
                             position: "absolute",
-                            top: "100%",
-                            left: 0,
-                            background: "white",
-                            border: "1px solid #ccc",
-                            padding: "10px",
-                            zIndex: 1
+                            paddingTop: "10px",
+                            opacity: 1
                           }}
                         >
-                          <Button
-                            variant="contained"
-                            onClick={handleLogout}
-                            suppressHydrationWarning
+                          <div
                             style={{
-                              margin: "5px 0",
-                              backgroundColor: "#f00",
-                              color: "#fff"
+                              borderRadius: 10,
+                              background: "white",
+                              display: "flex",
+                              flexDirection: "column",
+                              padding: "12px 20px",
+                              opacity: 1
                             }}
                           >
-                            {t("logout")}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            onClick={handleProfile} // Add a function to handle profile
-                            suppressHydrationWarning
-                            style={{
-                              margin: "5px 0",
-                              backgroundColor: "#00f",
-                              color: "#fff"
-                            }}
-                          >
-                            Profile
-                          </Button>
+                            <Button
+                              variant="contained"
+                              onClick={handleProfile} // Add a function to handle profile
+                              suppressHydrationWarning
+                              style={{
+                                margin: "5px 0",
+                                backgroundColor: "#00f",
+                                color: "#fff"
+                              }}
+                            >
+                              Profile
+                            </Button>
+                            <Button
+                              variant="contained"
+                              onClick={handleLogout}
+                              suppressHydrationWarning
+                              style={{
+                                margin: "5px 0",
+                                backgroundColor: "#f00",
+                                color: "#fff"
+                              }}
+                            >
+                              {t("logout")}
+                            </Button>
+                          </div>
                         </div>
                       )}
                     </div>
