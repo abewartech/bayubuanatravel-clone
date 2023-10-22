@@ -17,6 +17,34 @@ export default function LiveChatComponent(props) {
   const [askForUserInfo, setAskForUserInfo] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    // Initialize the WebSocket connection when the component mounts
+    const newSocket = new WebSocket("wss://user1697714815999.requestly.dev/chat");
+
+    // Set up event listeners for WebSocket messages
+    newSocket.onopen = () => {
+      console.log("WebSocket connection opened");
+    };
+
+    newSocket.onmessage = (event) => {
+      // Parse and process the incoming message
+      const message = JSON.parse(event.data);
+      setMessages([...messages, message]);
+    };
+
+    newSocket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    setSocket(newSocket);
+
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      newSocket.close();
+    };
+  }, []); // The empty dependency array ensures this effect runs only once on mount
 
   useEffect(() => {
     // Function to fetch messages from the API
@@ -43,17 +71,48 @@ export default function LiveChatComponent(props) {
     fetchMessages();
   }, []); // The empty dependency array ensures this effect runs only once on mount
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newMessage = {
       text: inputMessage,
-      type: "self" // You can set the message type as needed
+      type: "self", // You can set the message type as needed
+      isSender: true, // Assuming you're the sender
+      isRead: true // Assuming the message is read
     };
 
+    // Update the local state with the new message
     setMessages([...messages, newMessage]);
+
     setInputMessage("");
 
-    // Implement the logic for generating responses here if needed
+    // Send the message to the backend
+    try {
+      const response = await fetch(
+        "https://user1697714815999.requestly.dev/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(newMessage)
+        }
+      );
+
+      if (response.ok) {
+        // Message sent successfully to the backend
+      } else {
+        // Handle errors if needed
+        console.error("Failed to send the message to the backend.");
+      }
+
+      if (socket) {
+        socket.send(JSON.stringify(newMessage));
+      }
+    } catch (error) {
+      // Handle network errors here
+      console.error("Network error:", error);
+    }
   };
 
   const toggleChat = () => {
