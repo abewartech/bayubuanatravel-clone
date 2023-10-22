@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import bi from "../../public/assets/bi.png";
 import useTranslation from "next-translate/useTranslation";
-import xendit from "../../public/assets/xendit.png";
+import midtrans from "../../public/assets/midtrans.png";
 import axios from "axios";
 import { ErrorMessage, Field, Formik } from "formik";
 import Link from "next/link";
@@ -51,39 +51,44 @@ export default function DetailPackages() {
   const [productData, setProductData] = useState(null);
   const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
   const [checkedItinerary, setCheckedItinerary] = useState(
-    new Array(8).fill(false)
+    new Array(8).fill(true)
   );
-  const [selectedItinerary, setSelectedItinerary] = useState([]);
+  const [selectedItinerary, setSelectedItinerary] = useState([...Array(8).keys()]);
   const [orderStatus, setOrderStatus] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [transactionId, setTransactionId] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
-      setOpenSnackbar(false)
+      setOpenSnackbar(false);
       try {
-        const response = await API.get(
-          "https://api.marinarajaampat.id/orders/v1/client/77de0bff-d075-46be-b7a7-241f92a1e2be"
-        );
-        console.log("Response data:", response.data);
-        if (response.data.status === "ORDERED") {
-          // If it's "ORDERED," stop the interval
-          clearInterval(intervalId);
-          setPesanError('Order Success')
-          setOpenSnackbar(true)
+        if (transactionId) {
+          const response = await API.get(
+            `https://api.marinarajaampat.id/orders/v1/client/${transactionId}`
+          );
+          console.log("Response data:", response.data);
+          if (response.data.status === "ORDERED") {
+            // If it's "ORDERED," stop the interval
+            clearInterval(intervalId);
+            setPesanError("Order Success");
+            setOpenSnackbar(true);
+          }
+          setOrderStatus(response.data);
         }
-        setOrderStatus(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setOpenSnackbar(false)
+        setOpenSnackbar(false);
       }
     };
-    fetchData();
-    const intervalId = setInterval(fetchData, 5000);
-    return () => {
-      clearInterval(intervalId);
-    };
+    if (transactionId) {
+      fetchData();
+      const intervalId = setInterval(fetchData, 5000);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
   }, []);
 
   const {
@@ -101,10 +106,9 @@ export default function DetailPackages() {
     const updatedCheckedItinerary = [...checkedItinerary];
     updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
     setCheckedItinerary(updatedCheckedItinerary);
-
+  
     if (updatedCheckedItinerary[idx]) {
-      // Item is checked, add it to the selectedItinerary state
-      setSelectedItinerary((prevSelected) => [...prevSelected, idx]);
+      // Item is checked, no need to modify the selectedItinerary state
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       setSelectedItinerary((prevSelected) =>
@@ -170,6 +174,9 @@ export default function DetailPackages() {
 
       // Handle the response data here
       console.log("Response data:", response.data);
+      if (response.data) {
+        // setTransactionId(response.data)
+      }
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
@@ -421,9 +428,9 @@ export default function DetailPackages() {
             <Grid item xs={2} md={2}>
               <img src={bi.src} alt="bi" />
             </Grid>
-            {/* <Grid item xs={2} md={2}>
-              <img src={xendit.src} alt="bi" />
-            </Grid> */}
+            <Grid item xs={2} md={2}>
+              <img src={midtrans.src} alt="bi" />
+            </Grid>
           </Grid>
         </Box>
       </Modal>
