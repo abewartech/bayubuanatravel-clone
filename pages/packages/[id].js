@@ -7,7 +7,15 @@ import clock from "./../../public/assets/icon/clock.svg";
 import airplane from "./../../public/assets/icon/airplane-square.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import { useEffect, useState } from "react";
-import { Button, Modal, Box, Typography, Grid, Container } from "@mui/material";
+import {
+  Button,
+  Modal,
+  Box,
+  Typography,
+  Grid,
+  Container,
+  Snackbar
+} from "@mui/material";
 import bi from "../../public/assets/bi.png";
 import useTranslation from "next-translate/useTranslation";
 import xendit from "../../public/assets/xendit.png";
@@ -26,7 +34,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 450,
   bgcolor: "background.paper",
   boxShadow: 24,
   border: "none",
@@ -41,7 +49,42 @@ export default function DetailPackages() {
   const [open, setOpen] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
   const [productData, setProductData] = useState(null);
+  const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
+  const [checkedItinerary, setCheckedItinerary] = useState(
+    new Array(8).fill(false)
+  );
+  const [selectedItinerary, setSelectedItinerary] = useState([]);
+  const [orderStatus, setOrderStatus] = useState(null);
+  const [pesanError, setPesanError] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setOpenSnackbar(false)
+      try {
+        const response = await API.get(
+          "https://api.marinarajaampat.id/orders/v1/client/77de0bff-d075-46be-b7a7-241f92a1e2be"
+        );
+        console.log("Response data:", response.data);
+        if (response.data.status === "ORDERED") {
+          // If it's "ORDERED," stop the interval
+          clearInterval(intervalId);
+          setPesanError('Order Success')
+          setOpenSnackbar(true)
+        }
+        setOrderStatus(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setOpenSnackbar(false)
+      }
+    };
+    fetchData();
+    const intervalId = setInterval(fetchData, 5000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const {
     isLoggedIn,
@@ -54,12 +97,29 @@ export default function DetailPackages() {
     setUsername
   } = useAuthStore();
 
+  const handleCheckboxChange = (idx) => {
+    const updatedCheckedItinerary = [...checkedItinerary];
+    updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
+    setCheckedItinerary(updatedCheckedItinerary);
+
+    if (updatedCheckedItinerary[idx]) {
+      // Item is checked, add it to the selectedItinerary state
+      setSelectedItinerary((prevSelected) => [...prevSelected, idx]);
+    } else {
+      // Item is unchecked, remove it from the selectedItinerary state
+      setSelectedItinerary((prevSelected) =>
+        prevSelected.filter((item) => item !== idx)
+      );
+    }
+  };
+
   const fetchProductData = async (productId) => {
     try {
       const response = await axios.get(
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
       setProductData(response.data.data); // Store the product data in state
+      console.log(response.data.data);
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
@@ -94,6 +154,7 @@ export default function DetailPackages() {
 
   const fetchBookingCash = async () => {
     try {
+      console.log(selectedItinerary);
       const { id } = router.query;
       const payload = {
         amount: parseInt(amountChanges, 10), // Parse 'amountChanges' to an integer
@@ -116,10 +177,10 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     fetchBookingCash();
-    window.open(
-      "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
-      "_blank"
-    );
+    // window.open(
+    //   "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
+    //   "_blank"
+    // );
   };
 
   return (
@@ -197,7 +258,7 @@ export default function DetailPackages() {
           </div>
           <div className="col-lg-7">
             <div className={styles.itineraryTitle}>Itinerary</div>
-            {[...Array(8)].map((item, idx) => {
+            {itineraryItems.map((item, idx) => {
               return (
                 <div
                   key={idx}
@@ -208,6 +269,15 @@ export default function DetailPackages() {
                     <div className={styles.number}>{idx + 1}</div>
                     <div>Hari 0{idx + 1}: Jakarta - Kansai</div>
                   </div>
+                  <input
+                    type="checkbox"
+                    checked={checkedItinerary[idx]}
+                    onChange={() => handleCheckboxChange(idx)}
+                    style={{
+                      marginLeft: "10px", // Adjust the spacing as needed
+                      verticalAlign: "middle" // Align the checkbox with text
+                    }}
+                  />
                   {expand && id === idx + 1 && (
                     <div className="p-4">
                       <div>Detail Itinerary</div>
@@ -216,6 +286,7 @@ export default function DetailPackages() {
                 </div>
               );
             })}
+
             <div id="book">
               <Button variant="contained" onClick={handleBook}>
                 Book Now
@@ -326,7 +397,8 @@ export default function DetailPackages() {
             fontWeight={400}
             marginBottom={3}
           >
-            *Jumlah minimum yang perlu dibayarkan
+            *Jumlah minimum yang perlu dibayarkan adalah Rp.{" "}
+            {productData && productData.minimum_payment}
           </Typography>
           <Typography fontSize={16} lineHeight="24px" fontWeight={700}>
             Metode Pembayaran
@@ -349,9 +421,9 @@ export default function DetailPackages() {
             <Grid item xs={2} md={2}>
               <img src={bi.src} alt="bi" />
             </Grid>
-            <Grid item xs={2} md={2}>
+            {/* <Grid item xs={2} md={2}>
               <img src={xendit.src} alt="bi" />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       </Modal>
@@ -504,6 +576,16 @@ export default function DetailPackages() {
           </Container>
         </Box>
       </DynamicModal>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right"
+        }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        message={pesanError}
+        onClose={() => setOpenSnackbar(false)}
+      />
     </Layout>
   );
 }
