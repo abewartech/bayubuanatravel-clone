@@ -31,7 +31,7 @@ export default function TypeDestination() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://user1697714815999.requestly.dev/products/v1/external?page=${page}&size=1`
+        `https://user1697714815999.requestly.dev/products/v1/external?page=${page}&size=10`
       );
   
       if (response.status !== 200) {
