@@ -21,7 +21,9 @@ export default function LiveChatComponent(props) {
 
   useEffect(() => {
     // Initialize the WebSocket connection when the component mounts
-    const newSocket = new WebSocket("wss://user1697714815999.requestly.dev/chat");
+    const newSocket = new WebSocket(
+      "wss://user1697714815999.requestly.dev/chat"
+    );
 
     // Set up event listeners for WebSocket messages
     newSocket.onopen = () => {
@@ -223,8 +225,15 @@ export default function LiveChatComponent(props) {
           </div>
 
           {/* Chat Box Input */}
-          <div className="chat-input">
-            <form onSubmit={handleSubmit}>
+          <div style={{ padding: "8px", backgroundColor: "#f0f0f0" }}>
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
               <Grid container spacing={2}>
                 <Grid xs={8}>
                   <TextField
@@ -235,13 +244,14 @@ export default function LiveChatComponent(props) {
                     label="Send a message..."
                     variant="outlined"
                     fullWidth
+                    style={{ flex: 1 }}
                   />
                 </Grid>
                 <Grid xs={4}>
                   <Button
                     variant="contained"
                     type="submit"
-                    className="chat-submit mt-2"
+                    style={{ marginLeft: "8px", marginTop: 5 }}
                     id="chat-submit"
                     disabled={askForUserInfo}
                   >
