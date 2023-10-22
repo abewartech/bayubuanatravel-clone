@@ -17,22 +17,104 @@ export default function LiveChatComponent(props) {
   const [askForUserInfo, setAskForUserInfo] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Add any initial setup logic here
-  }, []);
+    // Initialize the WebSocket connection when the component mounts
+    const newSocket = new WebSocket(
+      "wss://user1697714815999.requestly.dev/chat"
+    );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newMessage = {
-      text: inputMessage,
-      type: "self" // You can set the message type as needed
+    // Set up event listeners for WebSocket messages
+    newSocket.onopen = () => {
+      console.log("WebSocket connection opened");
     };
 
+    newSocket.onmessage = (event) => {
+      // Parse and process the incoming message
+      const message = JSON.parse(event.data);
+      setMessages([...messages, message]);
+    };
+
+    newSocket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    setSocket(newSocket);
+
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      newSocket.close();
+    };
+  }, []); // The empty dependency array ensures this effect runs only once on mount
+
+  useEffect(() => {
+    // Function to fetch messages from the API
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch(
+          "https://user1697714815999.requestly.dev/chat"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          // Assuming the API returns an array of messages, update the state
+          setMessages(data.data);
+        } else {
+          // Handle errors here if needed
+          console.error("Failed to fetch messages from the API");
+        }
+      } catch (error) {
+        // Handle any network errors here
+        console.error("Network error:", error);
+      }
+    };
+
+    // Call the fetchMessages function when the component mounts
+    fetchMessages();
+  }, []); // The empty dependency array ensures this effect runs only once on mount
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const newMessage = {
+      text: inputMessage,
+      type: "self", // You can set the message type as needed
+      isSender: true, // Assuming you're the sender
+      isRead: true // Assuming the message is read
+    };
+
+    // Update the local state with the new message
     setMessages([...messages, newMessage]);
+
     setInputMessage("");
 
-    // Implement the logic for generating responses here if needed
+    // Send the message to the backend
+    try {
+      const response = await fetch(
+        "https://user1697714815999.requestly.dev/chat",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(newMessage)
+        }
+      );
+
+      if (response.ok) {
+        // Message sent successfully to the backend
+      } else {
+        // Handle errors if needed
+        console.error("Failed to send the message to the backend.");
+      }
+
+      if (socket) {
+        socket.send(JSON.stringify(newMessage));
+      }
+    } catch (error) {
+      // Handle network errors here
+      console.error("Network error:", error);
+    }
   };
 
   const toggleChat = () => {
@@ -76,11 +158,40 @@ export default function LiveChatComponent(props) {
               <div className={styles.chat_box_overlay}></div>
               <div className="chat-logs">
                 {messages.map((message, index) => (
-                  <div key={index} className={`chat-msg ${message.type}`}>
-                    <span className="msg-avatar">
-                      <Image src={'/assets/wanna1.png'} width={20} height={20} alt="Avatar" className="img-fluid"/>
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                      justifyContent: message.isSender
+                        ? "flex-end"
+                        : "flex-start" // Adjust alignment based on sender
+                    }}
+                  >
+                    <span style={{ width: "20px", height: "20px" }}>
+                      <Image
+                        src={"/assets/wanna1.png"}
+                        width={20}
+                        height={20}
+                        alt="Avatar"
+                        className="img-fluid"
+                      />
                     </span>
-                    <div className="cm-msg-text">{message.text}</div>
+                    <div
+                      style={{
+                        marginLeft: "8px",
+                        padding: "8px",
+                        backgroundColor: message.isSender
+                          ? "#5BC7E3"
+                          : "#E5E5EA", // Adjust background color based on sender
+                        borderRadius: "8px",
+                        color: message.isRead ? "#000" : "#999" // Adjust text color based on read status
+                      }}
+                    >
+                      {message.text}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -114,8 +225,15 @@ export default function LiveChatComponent(props) {
           </div>
 
           {/* Chat Box Input */}
-          <div className="chat-input">
-            <form onSubmit={handleSubmit}>
+          <div style={{ padding: "8px", backgroundColor: "#f0f0f0" }}>
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
               <Grid container spacing={2}>
                 <Grid xs={8}>
                   <TextField
@@ -126,13 +244,14 @@ export default function LiveChatComponent(props) {
                     label="Send a message..."
                     variant="outlined"
                     fullWidth
+                    style={{ flex: 1 }}
                   />
                 </Grid>
                 <Grid xs={4}>
                   <Button
                     variant="contained"
                     type="submit"
-                    className="chat-submit mt-2"
+                    style={{ marginLeft: "8px", marginTop: 5 }}
                     id="chat-submit"
                     disabled={askForUserInfo}
                   >
@@ -154,5 +273,11 @@ export default function LiveChatComponent(props) {
 }
 
 function LiveChatButton({ isOpen }) {
-  return <Image src={livechat} alt="livechat" style={{ width: '100%', height: '100%' }} />;
+  return (
+    <Image
+      src={livechat}
+      alt="livechat"
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
 }
