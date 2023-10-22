@@ -9,10 +9,12 @@ import thumbnail from "./../../../../public/assets/gallery/1.jpg";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
 import useTranslation from 'next-translate/useTranslation'
 
+
 import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
 
 export default function Card(props) {
+  
   const { type, data } = props;
   const { t, lang } = useTranslation('common')
 
@@ -38,7 +40,7 @@ export default function Card(props) {
             <div className={styles.price}>{t('starting')}
             </div>
             <div className={styles.priceNumber}>
-              IDR {data && data.base_price} <span>Per Person</span>
+              IDR {data && data.base_price} <span>{t('person')}</span>
             </div>
           </div>
           <div className={styles.cta}>
@@ -135,7 +137,7 @@ export default function Card(props) {
             <div className={styles.price}>
               <div className={styles.label}>From</div>
               <div className={styles.priceNumber}>IDR 5,679,000</div>
-              <div className={styles.label}>Per Person</div>
+              <div className={styles.label}>{t('person')}</div>
             </div>
           </div>
         </div>

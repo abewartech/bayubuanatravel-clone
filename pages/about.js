@@ -8,6 +8,7 @@ import Client from "../src/components/common/Client";
 import { useState } from "react";
 import resort from "./../public/assets/resort.jpg";
 import Card from "../src/components/common/Card";
+import useTranslation from 'next-translate/useTranslation'
 export default function About() {
   const [active, setActive] = useState("All");
   const breadcrumb = [
@@ -18,12 +19,13 @@ export default function About() {
       name: "About",
     },
   ];
+  const { t, lang } = useTranslation('common')
   const oneStopServices = [
     "All",
     "Marina Star Resto",
     "Jetty Marina Star",
     "Speed Boat",
-  ];
+  ]; 
   const handleActive = (menu) => {
     setActive(menu);
   };
@@ -36,13 +38,10 @@ export default function About() {
             <div className={styles.wrap}>
               <TitleSection title="Marina Raja Ampat" more={false} />
               <div className={styles.desc}>
-                Perusahaan yang menangani perjalan wisata raja ampat, mulai dari
-                kedatangan sampai keberangkatan ke kota asal Kembali, kami juga
-                memiliki pelayanan lengkap untuk memenuhi kebutuhan anda untuk
-                perjalanan raja ampat.
+               {t('company')}
               </div>
               <div className={styles.cta}>
-                <button>Kontak Kami</button>
+                <button>{t('contactus')}</button>
               </div>
             </div>
           </div>

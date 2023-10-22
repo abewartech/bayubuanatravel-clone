@@ -4,7 +4,7 @@
   "about": "Tentang",
   "packages": "Pilihan Paket",
   "resort": "Resor",
-  "gallery": "galeri",
+  "gallery": "Galeri",
   "contactus": "Hubungi Kami",
   "login": "Masuk",
   "fullexperience": "Pengalaman Penuh Bersama Kami, jika Anda bosan berlibur",
@@ -16,10 +16,11 @@
   "contact": "Kontak",
   "view": "lihat lebih banyak",
   "person": "Per satu orang",
-  "ourclient": "Klient Kami",
-  "testimoni": "Testimoni Para Pengguna Apa pendapat mereka tentang traveling bersama Bayu Buana?",
+  "our": "Klient Kami",
+  "testimoni": "Testimoni Para Pengguna ",
+  "testimonit":"Apa pendapat mereka tentang traveling bersama Bayu Buana?",
   "other": "Lainnya",
-  "travel": "Travel  Updates",
+  "travel": "pembaruan perjalanan",
   "term": "Syarat & Ketentuan",
   "privacy": "Kebijakan pribadi",
   "sitemap": "Peta Situs",
@@ -32,5 +33,12 @@
   "jetty": "Jetty Marina Star",
   "Speed": "Speed Boat",
   "reserv": "Reservasi Sekarang",
-  "open": "Trip Terbuka (setiap akhir pekan)"
+  "open": "Trip Terbuka (setiap akhir pekan)",
+  "dont": "Belum Mempunyai Akun ?",
+  "forgot":"forgot Password ?",
+  "register":"Daftar",
+  "welcomeback":"Selamat Datang kembali",
+  "logout":"Keluar"
+  
+  
 }

@@ -5,6 +5,7 @@ import Layout from "../src/components/Layout";
 import ContactList from "../src/components/Contact/ContactList";
 import Client from "../src/components/common/Client";
 import TitleSection from "../src/components/common/TitleSection";
+import useTranslation from 'next-translate/useTranslation';
 import resort from "./../public/assets/resort.jpg";
 
 export default function ContactUs() {

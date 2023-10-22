@@ -8,8 +8,10 @@ import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import useTranslation from 'next-translate/useTranslation'
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
   ssr: false
+  
 });
 import {
   Button,
@@ -38,6 +40,7 @@ const style = {
   p: 1
 };
 export default function Header(props) {
+  const { t, lang } = useTranslation('common')
   const router = useRouter();
   const { handleShowMenu } = props;
   const [open, setOpen] = useState(false);
@@ -97,22 +100,22 @@ export default function Header(props) {
               className={`${styles.navWrap} col-lg-8 col-10 justify-content-end`}
             >
               <div className={styles.navItem}>
-                <Link href="/">Home</Link>
+                <Link href="/">{t('home')}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/about">About</Link>
+                <Link href="/about">{t('about')}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/packages">Packages</Link>
+                <Link href="/packages">{t('packages')}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/resort">Resort</Link>
+                <Link href="/resort">{t('resort')}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/gallery">Gallery</Link>
+                <Link href="/gallery">{t('gallery')}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/contact-us">Contact Us</Link>
+                <Link href="/contact-us">{t('contactus')}</Link>
               </div>
               {isClient ? (
                 <div className={styles.navItem}>
@@ -120,7 +123,7 @@ export default function Header(props) {
                     <div>
                       {typeof window !== "undefined" && (
                         <span onClick={() => setShowButton(true)}>
-                          Welcome, {username}!
+                          {t('login')}, {username}!
                         </span>
                       )}
                       {showButton && (
@@ -129,7 +132,7 @@ export default function Header(props) {
                           onClick={handleLogout}
                           suppressHydrationWarning
                         >
-                          Logout
+                         {t('logout')}
                         </Button>
                       )}
                     </div>
@@ -139,7 +142,7 @@ export default function Header(props) {
                       onClick={handleLogin}
                       suppressHydrationWarning
                     >
-                      Login
+                     {t('login')}
                     </Button>
                   )}
                 </div>
@@ -172,10 +175,10 @@ export default function Header(props) {
               <Grid item xs={12} md={12}>
                 <Typography>
                   <Box fontSize={32} fontWeight={600}>
-                    Login
+                    {t('login')}
                   </Box>
                   <Box fontSize={12} fontWeight={400} lineHeight="16px">
-                    Welcome back!
+                   {t('welcomeback')}
                   </Box>
                 </Typography>
               </Grid>
@@ -271,7 +274,7 @@ export default function Header(props) {
                             display="block"
                             gutterBottom
                           >
-                            Forgot Password ?
+                            {t('forgot')}
                           </Typography>
                         </a>
                       </div>
@@ -294,9 +297,9 @@ export default function Header(props) {
                           justifyContent: "flex-start"
                         }}
                       >
-                        Belum mempunyai akun?
+                        {t('dont')}
                         <Link href="/register" passHref>
-                          <Button>Register</Button>
+                          <Button>{t('register')}</Button>
                         </Link>
                       </div>
                     </form>

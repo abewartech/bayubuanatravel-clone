@@ -5,7 +5,7 @@
   "packages": "Packages",
   "resort": "Resort",
   "gallery": "Gallery",
-  "contactus": "Contact US",
+  "contactus": "Contact Us",
   "login": "Login",
   "fullexperience": "Full Experience With Us, if you're bored on holiday",
   "explore": "Explore Our Promotions",
@@ -17,7 +17,8 @@
   "view": "View More",
   "person": "Per Person",
   "ourclient": "Our Client",
-  "testimoni": "Testimoni Travelers What do they say about traveling with Bayu Buana?",
+  "testimoni": "Testimoni Travelers", 
+  "testimonit":"What do they say about traveling with Bayu Buana?",
 
   "galery": "Gallery",
   "other": "Other",
@@ -26,7 +27,7 @@
   "privacy": "Privacy Policy",
   "sitemap": "Sitemap",
   "bayu": "© 2023 Bayu Buana Travel Services. All Rights Reserved.",
-  "company": "Is The company that handles Raja Ampat tours, from arrival to departure to your hometown. Again, we also have complete services to meet your Raja Ampat travel needs.",
+  "company": "Is The Company that handles Raja Ampat tours, from arrival to departure to your hometown. Again, we also have complete services to meet your Raja Ampat travel needs.",
   "contacts": "Our Contact",
   "one": "One Stop Services",
   "all": "All",
@@ -36,7 +37,13 @@
   "our": "Our Clients",
   "others": "others",
   "reserv": "Reservation Now",
-  "open": "Open trip (every weekend)"
+  "open": "Open trip (every weekend)",
+  "dont": "Dont Have account ?",
+  "forgot":"forgot Password ?",
+  "register":"Register",
+  "welcomeback":"Welcome Back",
+  "logout":"Logout"
+  
 }
 
 

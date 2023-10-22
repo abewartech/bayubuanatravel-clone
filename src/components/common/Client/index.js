@@ -13,7 +13,9 @@ import client10 from "./../../../../public/assets/clients/client10.png";
 import client11 from "./../../../../public/assets/clients/client11.png";
 import client12 from "./../../../../public/assets/clients/client12.png";
 import styles from "./Client.module.scss";
+import useTranslation from 'next-translate/useTranslation'
 export default function Client() {
+  const { t, lang } = useTranslation('common')
   const clients = [
     client1,
     client2,
@@ -32,7 +34,7 @@ export default function Client() {
     <div className="container mb-5">
       <div className="row">
         <div className="col-12">
-          <TitleSection title="Our Clients" more={false} />
+          <TitleSection title={t('our')} more={false} />
         </div>
         {clients.map((item, idx) => {
           return (

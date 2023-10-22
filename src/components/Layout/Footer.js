@@ -4,7 +4,9 @@ import styles from "./Layout.module.scss";
 import mail from "./../../../public/assets/icon/mail.svg";
 import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
+import useTranslation from 'next-translate/useTranslation';
 export default function Footer() {
+  const { t, lang } = useTranslation('common')
   return (
     <div className={`${styles.footerWrap} `}>
       <div className="container">
@@ -32,11 +34,12 @@ export default function Footer() {
 
           <div className={` col-12 col-lg-3 offset-lg-5`}>
             <div className={`${styles.footerOtherMenu}`}>
-              <div className={styles.footerOtherTitle}>Others</div>
-              <div className={styles.footerItemMenu}>Travel Updates</div>
-              <div className={styles.footerItemMenu}>Terms & Conditions</div>
-              <div className={styles.footerItemMenu}>Privacy Policy</div>
-              <div className={styles.footerItemMenu}>Sitemap</div>
+              <div className={styles.footerOtherTitle}>{t('other')}
+                </div>
+              <div className={styles.footerItemMenu}>{t('travel')}</div>
+              <div className={styles.footerItemMenu}>{t('term')}</div>
+              <div className={styles.footerItemMenu}>{t('privacy')}</div>
+              <div className={styles.footerItemMenu}>{t('sitemap')}</div>
             </div>
           </div>
         </div>
