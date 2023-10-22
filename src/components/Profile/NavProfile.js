@@ -65,7 +65,7 @@ export default function NavProfile(props) {
             "information",
             personalCardActive,
             personalCard,
-            "Informasi Pribadi"
+            "Personal Information"
           )}
           {navigationMenu(
             "history",
@@ -73,7 +73,7 @@ export default function NavProfile(props) {
             "information",
             personalCardActive,
             personalCard,
-            "History"
+            "Transaction History"
           )}
         </div>
       </div>

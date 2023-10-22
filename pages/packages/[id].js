@@ -78,6 +78,7 @@ export default function DetailPackages() {
             clearInterval(intervalId);
             setPesanError("Order Success");
             setOpenSnackbar(true);
+            setOpen(false)
           }
           setOrderStatus(response.data);
         }

@@ -6,6 +6,7 @@ import NavProfile from "../src/components/Profile/NavProfile";
 import styles from "../src/components/Profile/Profile.module.scss";
 import { useState } from "react";
 import PrivateInformation from "../src/components/Profile/PrivateInformation";
+import History from "../src/components/Profile/History";
 
 export default function Profile() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function Profile() {
               handleNavigateMenu={handleNavigateMenu}
             />
             {currMenu === "personal" && <PrivateInformation />}
-            {currMenu === "history" && <PrivateInformation />}
+            {currMenu === "history" && <History />}
           </div>
         </div>
       </div>
