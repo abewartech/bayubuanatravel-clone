@@ -16,6 +16,11 @@ import {
   Container,
   Snackbar
 } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import bi from "../../public/assets/bi.png";
 import useTranslation from "next-translate/useTranslation";
 import midtrans from "../../public/assets/midtrans.png";
@@ -59,6 +64,7 @@ export default function DetailPackages() {
   const [orderStatus, setOrderStatus] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
   const router = useRouter();
 
@@ -67,6 +73,7 @@ export default function DetailPackages() {
 
     const fetchData = async () => {
       setOpenSnackbar(false);
+      setOpenDialog(false)
       try {
         if (transactionId) {
           const response = await API.get(
@@ -78,13 +85,15 @@ export default function DetailPackages() {
             clearInterval(intervalId);
             setPesanError("Order Success");
             setOpenSnackbar(true);
-            setOpen(false)
+            setOpenDialog(true)
+            setOpen(false);
           }
           setOrderStatus(response.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
         setOpenSnackbar(false);
+        setOpenDialog(false)
       }
     };
 
@@ -190,7 +199,12 @@ export default function DetailPackages() {
   };
 
   const handleMidtrans = () => {
-    fetchBookingCash();
+    if (amountChanges) {
+      fetchBookingCash();
+    } else {
+      setPesanError("Amount Tidak Boleh Kosong");
+      setOpenSnackbar(true);
+    }
     // window.open(
     //   "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
     //   "_blank"
@@ -597,6 +611,29 @@ export default function DetailPackages() {
         message={pesanError}
         onClose={() => setOpenSnackbar(false)}
       />
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Transaction Success"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`Congratulations! Your transaction was successful. We're thrilled to
+            inform you that your payment has been processed without any issues.
+            Thank you for choosing our services, and we look forward to serving
+            you again in the future. If you have any questions or need further
+            assistance, please don't hesitate to reach out to our customer
+            support team. Have a fantastic day!`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Layout>
   );
 }
