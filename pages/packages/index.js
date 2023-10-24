@@ -30,17 +30,11 @@ export default function TypeDestination() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://user1697714815999.requestly.dev/products/v1/external?page=${page}&size=10`
+      const response = await API.get(
+        `/products/v1/external/list?page=${page}&size=10`
       );
   
-      if (response.status !== 200) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const newData = response.data.data;
-  
-      console.log(data);
+      const newData = response.data;
   
       // Assuming the API response is an array
       setData((prevData) => [...prevData, ...newData]);
