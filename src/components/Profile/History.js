@@ -31,9 +31,10 @@ export default function History(props) {
   };
 
   const print = () => {
+    const printURL = '/printhistory?id=yourParameterHere'; // Replace with your URL and parameter
+    window.open(printURL, '_blank');
+  };
 
-  }
-  
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
@@ -162,7 +163,9 @@ export default function History(props) {
                 <Button>Detail Paket</Button>
               </div>
               <div className={styles.historySee}>
-                <Button variant="outlined" color="success" onClick={print}>Print</Button>
+                <Button variant="outlined" color="success" onClick={print}>
+                  Print
+                </Button>
               </div>
             </div>
           </div>
