@@ -206,6 +206,7 @@ export default function LiveChatComponent(props) {
                     variant="outlined"
                     fullWidth
                     required
+                    className="mb-1"
                   />
                   <TextField
                     type="email"
@@ -215,6 +216,7 @@ export default function LiveChatComponent(props) {
                     variant="outlined"
                     fullWidth
                     required
+                    className="mb-1"
                   />
                   <Button type="submit" variant="contained">
                     Submit
