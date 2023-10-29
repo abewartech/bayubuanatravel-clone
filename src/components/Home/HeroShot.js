@@ -12,7 +12,7 @@ export default function HeroShot() {
   const sliders = [slider1, slider2, slider3];
   const { t, lang } = useTranslation('common')
   return (
-    <div className={styles.heroShot}>
+    <div className={styles.heroShot} style={{zIndex: -1}}>
       <Splide
         options={{
           type: "loop",

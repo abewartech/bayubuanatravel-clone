@@ -1,30 +1,46 @@
+import useTranslation from "next-translate/useTranslation";
+import styles from "./Profile.module.scss";
+import Image from "next/image";
+import useAuthStore from "../../store/loginStore";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import Layout from "../src/components/Layout";
-import HeaderPage from "../src/components/common/HeaderPage";
-import resort from "./../public/assets/resort.jpg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  Radio,
-  Typography,
-} from "@mui/material";
-import axios from "axios";
-import API from "../src/common/api";
+import API from "../../common/api";
+import { Button, FormControlLabel, Radio, Typography } from "@mui/material";
+import Link from "next/link";
 
-export default function Register() {
+export default function PrivateInformation(props) {
+  const { data, handleNavigateMenu, currMenu } = props;
+  const { t, lang } = useTranslation("common");
+  const [userName, setUserName] = useState("");
   const router = useRouter();
-  // const typePage = currUrl.query.type;
-  const breadcrumb = [
-    {
-      name: "Home",
-    },
-    {
-      name: "Register",
-    },
-  ];
+  const currUrl = router.pathname.split("/");
+  const {
+    isLoggedIn,
+    accessToken,
+    refreshToken,
+    username,
+    setLoggedIn,
+    setAccessToken,
+    setRefreshToken,
+    setUsername
+  } = useAuthStore();
+  useEffect(() => {
+    setUserName(username);
+  }, []);
+  const navigationMenu = (url, curr, param, active, unActive, text) => {
+    return (
+      <div
+        onClick={() => handleNavigateMenu(url)}
+        className={`${styles.navItem} ${
+          currMenu === url && styles.navItem__active
+        }`}
+      >
+        <Image src={currMenu === url ? active : unActive} alt="personal" />
+        {text}
+      </div>
+    );
+  };
   const initialValues = {
     address: "",
     country: "",
@@ -34,16 +50,10 @@ export default function Register() {
     password: "",
   };
   return (
-    <Layout>
-      <HeaderPage
-        title={"Register"}
-        breadcrumb={breadcrumb}
-        background={resort}
-      />
-      <div className="container mb-5">
-        <div className="row justify-content-center">
-          <div className="col-lg-5 p-4">
-            <Formik
+    <div className="col-lg-8">
+      <div className={styles.menuShow}>
+        <h1 className="mb-4 mb-md-0">Informasi Pribadi</h1>
+        <Formik
               initialValues={initialValues}
               validate={(values) => {
                 const errors = {};
@@ -65,8 +75,8 @@ export default function Register() {
                   })
                   .catch((err) => {
                     setSubmitting(false);
-                    if (err) {
-                      console.log(err);
+                    if (err.data.status === "failed") {
+                      alert(err.data.message);
                     }
                   });
               }}
@@ -201,7 +211,7 @@ export default function Register() {
                   />
                   <ErrorMessage name="email" component="div" />
 
-                  <Typography
+                  {/* <Typography
                     fontSize={16}
                     fontWeight={500}
                     marginBottom={1}
@@ -216,7 +226,7 @@ export default function Register() {
                     autoComplete="on"
                     placeholder="Password kamu"
                   />
-                  <ErrorMessage name="password" component="div" />
+                  <ErrorMessage name="password" component="div" /> */}
 
                   <div
                     id="btn-login"
@@ -226,28 +236,12 @@ export default function Register() {
                       marginTop: 10,
                     }}
                   >
-                    <Button type="submit">Register</Button>
-                  </div>
-
-                  <div
-                    id="btn-regist"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      marginTop: 10,
-                    }}
-                  >
-                    Sudah punya akun?
-                    <Link href="/login" passHref>
-                      <Button>Login</Button>
-                    </Link>
+                    <Button type="submit">Ubah</Button>
                   </div>
                 </Form>
               )}
             </Formik>
-          </div>
-        </div>
       </div>
-    </Layout>
+    </div>
   );
 }

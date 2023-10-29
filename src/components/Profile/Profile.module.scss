@@ -1,0 +1,335 @@
+@import "./mixins";
+@import "./variable";
+
+.profileDesktop {
+  min-height: calc(100vh - 24px);
+  // overflow-y: auto;
+  .navigationLeft {
+    position: sticky;
+    top: 32px;
+    margin-top: 124px;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    padding: 22px 28px;
+
+    .profileWrap {
+      display: flex;
+      margin-bottom: 42px;
+      .profile {
+        margin-right: 20px;
+        .profileCircle {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 63px;
+          height: 63px;
+          background-color: #d9d9d9;
+          border-radius: 32px;
+        }
+      }
+      .profileInformation {
+        .name {
+          color: $text;
+          font-size: $fourthFont;
+          font-weight: $extraBold;
+          margin-bottom: 0px;
+        }
+        .subName {
+          color: $text;
+          font-size: $fifthFont;
+          opacity: 0.6;
+          font-weight: $reguler;
+        }
+      }
+    }
+    .navList {
+      .navItem {
+        cursor: pointer;
+        border-radius: 6px;
+        border: 1px solid $second;
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        font-size: $fifthFont;
+        font-weight: $bold;
+        margin-bottom: 16px;
+        color: $text;
+        text-decoration: none !important;
+        &:last-child {
+          // margin-bottom: 32px;
+        }
+        img {
+          margin-right: 10px;
+        }
+        &__active {
+          color: $white;
+          background: $second;
+        }
+        &__logout {
+          margin-top: 36px;
+          justify-content: center;
+          background-color: $third;
+          color: $white;
+        }
+        a {
+        }
+      }
+    }
+  }
+
+  .menuShow {
+    margin-top: 24px;
+    @media (min-width: 768px) {
+      margin-top: 124px;
+    }
+    h1 {
+      font-size: $fourthFont !important;
+      margin-bottom: 32px !important;
+    }
+    label {
+      color: $text;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: $reguler;
+    }
+    input {
+      margin-bottom: 28px !important;
+      padding: 12px 14px;
+      border: 1px solid #d9d9d9;
+      width: 100%;
+    }
+    textarea {
+      margin-bottom: 28px !important;
+    }
+
+    .imgIcon {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+    }
+
+    .accountBankText {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-direction: column;
+      @media (min-width: 991px) {
+        flex-direction: row;
+      }
+      button {
+        margin-bottom: 32px !important;
+        background-color: transparent !important;
+        color: $primary;
+        border: none !important;
+        font-size: $fifthFont;
+        font-weight: $extraBold;
+      }
+    }
+    .filterDataHistory {
+      display: none;
+      @media (min-width: 768px) {
+        display: block;
+      }
+    }
+    .filterHistory {
+      display: flex;
+      gap: 12px;
+      @media (min-width: 768px) {
+        gap: 0;
+      }
+
+      .historyMainStatus {
+        color: $text;
+        margin-right: 24px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: $extraBold;
+        display: none;
+        margin-bottom: 42px;
+        align-items: center;
+        @media (min-width: 768px) {
+          display: flex;
+        }
+      }
+      .btnFilter {
+        margin-bottom: 42px;
+        cursor: pointer;
+        color: $second;
+        border-radius: 6px;
+        border: 2px solid $second;
+        box-shadow: 0px 4px 10px 2px rgba(228, 145, 15, 0.2);
+        padding: 10px 16px;
+        width: calc(33% - 6px);
+        font-size: 12px;
+        text-align: center;
+        @media (min-width: 991px) {
+          width: 100%;
+          font-size: 14px;
+          margin-right: 12px;
+          padding: 10px 46px;
+        }
+        &__active {
+          color: $white;
+          font-weight: $extraBold;
+          background: $second;
+        }
+      }
+    }
+
+    .historyList {
+      .historyItem {
+        border-bottom: 1px solid #d9d9d9;
+        margin-bottom: 20px;
+        .historyDate {
+          display: flex;
+          align-items: center;
+          margin-bottom: 16px;
+          span {
+            margin-right: 8px;
+          }
+          color: #212121;
+          font-size: 12px;
+          font-weight: $reguler;
+        }
+      }
+      .historyContainer {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        .historyLeft {
+          @include row();
+          .historyImg {
+            width: 81px;
+            height: 81px;
+            border-radius: 4px;
+            background: #d9d9d9;
+            margin-right: 20px;
+            img {
+              width: inherit;
+              height: inherit;
+              object-fit: cover;
+              border-radius: 4px;
+            }
+          }
+          .historyWrap {
+            .historyStatus {
+              margin-top: 10px;
+              border-radius: 4px;
+              padding: 4px 15px;
+              background: $second;
+              width: fit-content;
+              color: $white;
+              font-size: 10px;
+              text-align: center;
+              margin-bottom: 10px;
+              font-weight: $extraBold;
+              box-shadow: 0px 4px 10px 2px rgba(228, 145, 15, 0.2);
+            }
+            .historyStatusPaid {
+              margin-top: 10px;
+              border-radius: 4px;
+              padding: 4px 15px;
+              background: $primary;
+              width: fit-content;
+              color: $white;
+              font-size: 10px;
+              text-align: center;
+              margin-bottom: 10px;
+              font-weight: $extraBold;
+              box-shadow: 0px 4px 10px 2px rgba(228, 145, 15, 0.2);
+            }
+            .historyName {
+              color: #292d32;
+              font-size: $fifthFont;
+              font-weight: $extraBold;
+            }
+          }
+        }
+      }
+      .historyRight {
+        margin-bottom: 20px;
+
+        .historyLabel {
+          margin-bottom: 4px;
+          color: #212121;
+          text-align: right;
+          font-size: 12px;
+          font-weight: $reguler;
+          opacity: 0.6;
+        }
+        .historyPrice {
+          color: #212121;
+          font-size: $fifthFont;
+          font-weight: $extraBold;
+        }
+      }
+      .historyAction {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: flex-end;
+        .historyDetail {
+          button {
+            padding: 12px 36px;
+            color: $white;
+            font-size: $fifthFont;
+            font-weight: $extraBold;
+            background-color: transparent !important;
+            color: $primary;
+            border: none !important;
+            margin-right: 8px;
+          }
+        }
+        .historySee {
+          button {
+            border: none !important;
+            width: 165px;
+            border-radius: 6px;
+            background: $primary;
+            box-shadow: 0px 4px 10px 2px rgba(228, 145, 15, 0.2);
+            padding: 12px 36px;
+            color: $white;
+            font-size: $fifthFont;
+            font-weight: $extraBold;
+          }
+        }
+      }
+    }
+
+    // Bank
+    .bankList {
+      .bankItem {
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        padding: 16px 18px;
+        margin-bottom: 16px;
+        .bankCircle {
+          width: 51px;
+          height: 51px;
+          border-radius: 32px;
+          margin-right: 10px;
+          background-color: #d9d9d9;
+        }
+        .bankInfo {
+          flex: 2;
+          color: $text;
+          .bankName {
+            font-size: 14px;
+            font-weight: $bold;
+            margin-bottom: 2px;
+          }
+          .bankNumber {
+            font-size: 14px;
+            font-weight: $reguler;
+            opacity: 0.5;
+          }
+        }
+        .bankAction {
+          flex: 1;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
