@@ -14,7 +14,8 @@ import {
   Typography,
   Grid,
   Container,
-  Snackbar
+  Snackbar,
+  TextField
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -66,6 +67,7 @@ export default function DetailPackages() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
+  const [promoCode, setPromoCode] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -73,7 +75,7 @@ export default function DetailPackages() {
 
     const fetchData = async () => {
       setOpenSnackbar(false);
-      setOpenDialog(false)
+      setOpenDialog(false);
       try {
         if (transactionId) {
           const response = await API.get(
@@ -85,7 +87,7 @@ export default function DetailPackages() {
             clearInterval(intervalId);
             setPesanError("Order Success");
             setOpenSnackbar(true);
-            setOpenDialog(true)
+            setOpenDialog(true);
             setOpen(false);
           }
           setOrderStatus(response.data);
@@ -93,7 +95,7 @@ export default function DetailPackages() {
       } catch (error) {
         console.error("Error fetching data:", error);
         setOpenSnackbar(false);
-        setOpenDialog(false)
+        setOpenDialog(false);
       }
     };
 
@@ -182,12 +184,8 @@ export default function DetailPackages() {
         voucher_code: ""
       };
 
-      const response = await API.post(
-        "https://api.marinarajaampat.id/orders/v1/client",
-        payload
-      );
+      const response = await API.post("orders/v1/client", payload);
 
-      // Handle the response data here
       console.log("Response data:", response.data);
       if (response.data) {
         setTransactionId(response.data.order.id);
@@ -205,10 +203,22 @@ export default function DetailPackages() {
       setPesanError("Amount Tidak Boleh Kosong");
       setOpenSnackbar(true);
     }
-    // window.open(
-    //   "https://app.midtrans.com/snap/v3/redirection/4b389d36-4f83-41ad-87ad-13cc89d0a803",
-    //   "_blank"
-    // );
+  };
+
+  const handlePromo = async () => {
+    try {
+
+      const response = await API.get(
+        `promo/v1/ex/eligibility?promo_code=${promoCode}`
+      );
+
+      console.log("Response data:", response.data);
+      if (response.data) {
+        console.log("a");
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
   };
 
   return (
@@ -429,8 +439,24 @@ export default function DetailPackages() {
             {productData && productData.minimum_payment}
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={6} md={3}>
-              <Button variant="outlined" onClick={handleMidtrans}>
+            <Grid item xs={8} md={8}>
+              <TextField
+                label="Promo Code"
+                variant="outlined"
+                size="small"
+                fullWidth
+                onChange={(e) => setPromoCode(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={4} md={4}>
+              <Button variant="outlined" onClick={handlePromo}>
+                Use Promo
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container spacing={2} className="mt-2">
+            <Grid item xs={12} md={6}>
+              <Button variant="contained" onClick={handleMidtrans}>
                 Lanjut ke Pembayaran
               </Button>
             </Grid>
