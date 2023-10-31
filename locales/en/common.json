@@ -42,7 +42,8 @@
   "forgot":"forgot Password ?",
   "register":"Register",
   "welcomeback":"Welcome Back",
-  "logout":"Logout"
+  "logout":"Logout",
+  "service": "One Stop Services" 
   
 }
 

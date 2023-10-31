@@ -11,6 +11,7 @@ import Card from "../src/components/common/Card";
 import useTranslation from 'next-translate/useTranslation'
 export default function About() {
   const [active, setActive] = useState("All");
+  const { t, lang } = useTranslation('common')
   const breadcrumb = [
     {
       name: "Home",
@@ -19,7 +20,7 @@ export default function About() {
       name: "About",
     },
   ];
-  const { t, lang } = useTranslation('common')
+ 
   const oneStopServices = [
     "All",
     "Marina Star Resto",
@@ -56,7 +57,7 @@ export default function About() {
         <div className="container">
           <div className="row">
             <TitleSection
-              title="One Stop Services"
+              title={t('service')}
               align="center"
               more={false}
             />
