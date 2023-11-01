@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRef } from "react";
 import livechat from "../../../../public/assets/logo/livechat.png";
 import styles from "./LiveChat.module.scss";
 import Button from "@mui/material/Button";
@@ -7,15 +8,23 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { IconButton, TextField } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
+import API from "../../../common/api";
 import useAuthStore from "../../../store/loginStore";
+import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 export default function LiveChatComponent(props) {
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, email } = useAuthStore();
+
+  const tawkMessengerRef = useRef();
+
+  const handleMinimize = () => {
+    tawkMessengerRef.current.minimize();
+  };
 
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [askForUserInfo, setAskForUserInfo] = useState(false);
-  const [email, setEmail] = useState("");
+  const [emailGuest, setEmailGuest] = useState("");
   const [name, setName] = useState("");
   const [socket, setSocket] = useState(null);
 
@@ -48,26 +57,27 @@ export default function LiveChatComponent(props) {
     };
   }, []); // The empty dependency array ensures this effect runs only once on mount
 
+  const fetchMessages = async () => {
+    try {
+      const response = await API.get(
+        `contents/v1/livechat?email=${email ? email : emailGuest}`
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        // Assuming the API returns an array of messages, update the state
+        setMessages(data.data);
+      } else {
+        // Handle errors here if needed
+        console.error("Failed to fetch messages from the API");
+      }
+    } catch (error) {
+      // Handle any network errors here
+      console.error("Network error:", error);
+    }
+  };
+
   useEffect(() => {
     // Function to fetch messages from the API
-    const fetchMessages = async () => {
-      try {
-        const response = await fetch(
-          "https://user1697714815999.requestly.dev/chat"
-        );
-        if (response.ok) {
-          const data = await response.json();
-          // Assuming the API returns an array of messages, update the state
-          setMessages(data.data);
-        } else {
-          // Handle errors here if needed
-          console.error("Failed to fetch messages from the API");
-        }
-      } catch (error) {
-        // Handle any network errors here
-        console.error("Network error:", error);
-      }
-    };
 
     // Call the fetchMessages function when the component mounts
     fetchMessages();
@@ -87,6 +97,8 @@ export default function LiveChatComponent(props) {
     setMessages([...messages, newMessage]);
 
     setInputMessage("");
+
+    fetchMessages();
 
     // Send the message to the backend
     try {
@@ -132,10 +144,16 @@ export default function LiveChatComponent(props) {
     // Close the user info form and open the chat
     setAskForUserInfo(false);
     setIsChatOpen(true);
+    fetchMessages();
   };
 
   return (
     <>
+    <TawkMessengerReact
+      propertyId="6541c637a84dd54dc48753b7"
+      widgetId="default"
+      useRef={tawkMessengerRef}
+    />
       <div className={isChatOpen ? styles.chat_open : styles.chat_closed}>
         <div className={styles.chat_box}>
           {/* Chat Box Header */}
@@ -211,8 +229,8 @@ export default function LiveChatComponent(props) {
                   <TextField
                     type="email"
                     label="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={emailGuest}
+                    onChange={(e) => setEmailGuest(e.target.value)}
                     variant="outlined"
                     fullWidth
                     required
@@ -268,6 +286,7 @@ export default function LiveChatComponent(props) {
       <div className={styles.liveChatBtn}>
         <div className={styles.liveChatBtnCta} onClick={toggleChat}>
           <LiveChatButton isOpen={isChatOpen} />
+          <button onClick={handleMinimize}> </button>
         </div>
       </div>
     </>

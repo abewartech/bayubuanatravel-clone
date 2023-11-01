@@ -20,6 +20,7 @@ export default function PrivateInformation(props) {
     accessToken,
     refreshToken,
     username,
+    email,
     setLoggedIn,
     setAccessToken,
     setRefreshToken,
@@ -44,8 +45,8 @@ export default function PrivateInformation(props) {
   const initialValues = {
     address: "",
     country: "",
-    email: "",
-    full_name: "",
+    email: email,
+    full_name: username,
     gender: "",
     password: "",
   };
@@ -111,7 +112,22 @@ export default function PrivateInformation(props) {
                     placeholder="Your Full Name"
                   />
                   <ErrorMessage name="full_name" component="div" />
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                  >
+                    Email
+                  </Typography>
 
+                  <Field
+                    type="text"
+                    onChange={handleChange}
+                    name="email"
+                    placeholder="contoh@example.com"
+                  />
+                  <ErrorMessage name="email" component="div" />
                   <Typography
                     fontSize={16}
                     fontWeight={500}
@@ -194,22 +210,7 @@ export default function PrivateInformation(props) {
                   </div>
                   <ErrorMessage name="gender" component="div" />
 
-                  <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                  >
-                    Email
-                  </Typography>
-
-                  <Field
-                    type="text"
-                    onChange={handleChange}
-                    name="email"
-                    placeholder="contoh@example.com"
-                  />
-                  <ErrorMessage name="email" component="div" />
+                  
 
                   {/* <Typography
                     fontSize={16}

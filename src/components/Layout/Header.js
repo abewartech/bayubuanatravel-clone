@@ -58,7 +58,8 @@ export default function Header(props) {
     setLoggedIn,
     setAccessToken,
     setRefreshToken,
-    setUsername
+    setUsername,
+    setEmail
   } = useAuthStore();
   const handleClose = () => setOpen(false);
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function Header(props) {
   const handleLogout = () => {
     setLoggedIn(false);
     setUsername("");
+    setEmail("")
   };
   const handleProfile = () => {
     router.push('/profile')
@@ -249,6 +251,7 @@ export default function Header(props) {
                         setAccessToken(res.data.access_token);
                         setRefreshToken(res.data.refresh_token);
                         setUsername(values.email.split("@")[0]);
+                        setEmail(values.email);
                         setOpen(false);
                         setLoggedIn(true);
                         setShowButton(false);

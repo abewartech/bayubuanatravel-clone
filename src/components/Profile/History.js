@@ -11,12 +11,13 @@ export default function History(props) {
   const router = useRouter();
   const [statusTrx, setStatusTrx] = useState("all");
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
 
   // Use useEffect to fetch data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await API.get("/orders/v1/client");
+        const response = await API.get(`orders/v1/client/history?page=${page}&limit=10`);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
