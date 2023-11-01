@@ -51,7 +51,7 @@ export default function Terms() {
                 during your trip.
               </li>
               <li>
-                <strong>Passports and Visas:</strong> It's your responsibility
+                <strong>Passports and Visas:</strong> Its your responsibility
                 to ensure you have the necessary travel documents, including
                 valid passports and visas.
               </li>
