@@ -53,7 +53,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      <div className={styles.services}>
+      {/* <div className={styles.services}>
         <div className="container">
           <div className="row">
             <TitleSection
@@ -85,7 +85,7 @@ export default function About() {
             })}
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="container">
         <div className="row">
           <Client />

@@ -10,6 +10,7 @@ export default function TestimoniList() {
           <TitleSection
             title="Testimoni Travelers"
             subtitle="Kata mereka mengenai traveling bareng bayu buana"
+            more={false}
           />
           <Splide
             options={{

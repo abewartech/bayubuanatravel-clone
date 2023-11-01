@@ -32,12 +32,12 @@ export default function Homepage() {
         <div className="row">
           <PromoBigBanner />
           <TourList />
-          <Videotron />
         </div>
       </div>
       <Client />
       <TestimoniList />
       <GalleryList onClick={handleOpen} />
+      <Videotron />
       <ModalComponent open={open} close={handleOpen} content={content} />
     </Layout>
   );

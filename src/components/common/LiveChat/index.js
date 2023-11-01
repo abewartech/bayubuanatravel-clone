@@ -280,12 +280,11 @@ export default function LiveChatComponent(props) {
           </div>
         </div>
       </div> */}
-      <div className={styles.liveChatBtn}>
+      {/* <div className={styles.liveChatBtn}>
         <div className={styles.liveChatBtnCta} onClick={toggleChat}>
           <LiveChatButton isOpen={isChatOpen} />
-          {/* <button onClick={handleMinimize}> </button> */}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

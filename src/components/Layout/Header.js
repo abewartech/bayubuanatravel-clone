@@ -114,9 +114,9 @@ export default function Header(props) {
               <div className={styles.navItem}>
                 <Link href="/packages">{t("packages")}</Link>
               </div>
-              <div className={styles.navItem}>
+              {/* <div className={styles.navItem}>
                 <Link href="/resort">{t("resort")}</Link>
-              </div>
+              </div> */}
               <div className={styles.navItem}>
                 <Link href="/gallery">{t("gallery")}</Link>
               </div>
@@ -160,7 +160,7 @@ export default function Header(props) {
                               suppressHydrationWarning
                               style={{
                                 margin: "5px 0",
-                                backgroundColor: "#00f",
+                                backgroundColor: "#0197da",
                                 color: "#fff"
                               }}
                             >
@@ -172,7 +172,7 @@ export default function Header(props) {
                               suppressHydrationWarning
                               style={{
                                 margin: "5px 0",
-                                backgroundColor: "#f00",
+                                backgroundColor: "#fdc202",
                                 color: "#fff"
                               }}
                             >

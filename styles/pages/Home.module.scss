@@ -5,6 +5,11 @@
   @media (min-width: 991px) {
     margin-bottom: 72px;
   }
+  .imageContainer {
+    position: relative; /* Required for absolutely positioned child (Image) */
+    width: 100%; /* Set the desired width for the image */
+    height: calc(100vh - 32px);
+  }
   .bannerBig {
     width: 100%;
     height: calc(100vh - 32px);

@@ -7,6 +7,7 @@ import Image from "next/image";
 import whatsapp from "./../../../public/assets/logo/whatsapp.png";
 import Sidebar from "./Sidebar";
 import LiveChatComponent from "../common/LiveChat";
+import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -36,15 +37,18 @@ export default function Layout(props) {
       <Header handleShowMenu={handleShowMenu} />
       {children}
       <Footer />
-      <div className={styles.liveChatBtn}>
-        <div className={styles.liveChatBtnCta}>
-          <LiveChatComponent />
-        </div>
-      </div>
+      <TawkMessengerReact
+        propertyId="6541c637a84dd54dc48753b7"
+        widgetId="1he4esimm"
+      />
       <div className={styles.whatsappBtn}>
         <div className={styles.whatsappBtnCta}>
           <Link href="https://wa.me/6281316776671" target="_blank">
-            <Image src={whatsapp} alt="whatsapp" style={{ width: '100%', height: '100%' }} />
+            <Image
+              src={whatsapp}
+              alt="whatsapp"
+              style={{ width: "100%", height: "100%" }}
+            />
           </Link>
         </div>
       </div>
