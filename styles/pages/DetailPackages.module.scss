@@ -78,4 +78,15 @@
     padding: 12px 8px 12px 3.75rem;
     width: 100%;
   }
+  .arrowIcon {
+    display: inline-block;
+    margin-right: 5px; /* Adjust the margin as needed */
+    font-size: 18px; /* Adjust the font size as needed */
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .arrowIcon.active {
+    transform: rotate(180deg); /* Rotate the arrow icon when expanded */
+  }
 }

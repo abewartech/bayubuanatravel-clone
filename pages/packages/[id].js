@@ -98,6 +98,9 @@ export default function DetailPackages() {
   const [selectedItinerary, setSelectedItinerary] = useState([
     ...Array(8).keys()
   ]);
+  const [expandedItems, setExpandedItems] = useState(
+    Array(itineraryItems.length).fill(false)
+  );
   const [orderStatus, setOrderStatus] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -194,6 +197,12 @@ export default function DetailPackages() {
   const handleShowDetail = (id) => {
     setExpand(!expand);
     setId(id);
+    // Create a new array based on the current state
+    const updatedExpandedItems = [...expandedItems];
+    // Toggle the expanded state for the clicked item
+    updatedExpandedItems[id] = !updatedExpandedItems[id];
+    // Update the state with the new array
+    setExpandedItems(updatedExpandedItems);
   };
   const handleBook = () => {
     if (isLoggedIn) {
@@ -208,7 +217,7 @@ export default function DetailPackages() {
   const amountChange = (e) => {
     if (productData && productData.minimum_payment) {
       if (e.target.value < productData.minimum_payment) {
-        setErrorAmount(true)
+        setErrorAmount(true);
       }
     }
     setAmountChanges(e.target.value);
@@ -341,8 +350,21 @@ export default function DetailPackages() {
                 <div key={idx} className={styles.itineraryItem}>
                   <div className={styles.itineraryDetail}>
                     <div className={styles.number}>{idx + 1}</div>
-                    <div onClick={() => handleShowDetail(idx + 1)}>
+                    <div
+                      onClick={() => handleShowDetail(idx + 1)}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between"
+                      }}
+                    >
                       Hari 0{idx + 1}: Jakarta - Kansai
+                      <span
+                        className={`${styles.arrowIcon} ${
+                          expandedItems[idx + 1] ? styles.active : ""
+                        }`}
+                      >
+                        ▼
+                      </span>
                     </div>
                   </div>
                   {expand && id === idx + 1 && (
@@ -365,9 +387,8 @@ export default function DetailPackages() {
                 </div>
               );
             })}
-
             <div id="book">
-              <Button variant="contained" onClick={handleBook}>
+              <Button variant="contained" onClick={handleBook} style={{backgroundColor: '#0197da'}}>
                 Book Now
               </Button>
             </div>

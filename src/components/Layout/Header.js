@@ -187,6 +187,7 @@ export default function Header(props) {
                       variant="contained"
                       onClick={handleLogin}
                       suppressHydrationWarning
+                      style={{backgroundColor: '#0197da'}}
                     >
                       {t("login")}
                     </Button>
@@ -333,7 +334,7 @@ export default function Header(props) {
                           marginTop: 16
                         }}
                       >
-                        <Button type="submit" disabled={isSubmitting}>
+                        <Button type="submit" disabled={isSubmitting} style={{backgroundColor: '#0197da'}}>
                           Login
                         </Button>
                       </div>
