@@ -87,6 +87,7 @@ export default function Header(props) {
     setLoggedIn(false);
     setUsername("");
     setEmail("")
+    router.push('/')
   };
   const handleProfile = () => {
     router.push('/profile')

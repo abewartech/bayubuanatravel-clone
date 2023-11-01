@@ -10,20 +10,38 @@ import {
   FormControlLabel,
   Radio,
   Typography,
+  TextField
 } from "@mui/material";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 import axios from "axios";
 import API from "../src/common/api";
+import useAuthStore from "../src/store/loginStore";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import { useMemo } from "react";
 
 export default function Register() {
   const router = useRouter();
+  const {
+    isLoggedIn,
+    accessToken,
+    refreshToken,
+    username,
+    setLoggedIn,
+    setAccessToken,
+    setRefreshToken,
+    setUsername,
+    setEmail
+  } = useAuthStore();
   // const typePage = currUrl.query.type;
   const breadcrumb = [
     {
-      name: "Home",
+      name: "Home"
     },
     {
-      name: "Register",
-    },
+      name: "Register"
+    }
   ];
   const initialValues = {
     address: "",
@@ -32,7 +50,10 @@ export default function Register() {
     full_name: "",
     gender: "",
     password: "",
+    phone_number: "",
+    confirmPassword: ""
   };
+  const options = useMemo(() => countryList().getData(), []);
   return (
     <Layout>
       <HeaderPage
@@ -54,14 +75,40 @@ export default function Register() {
                 ) {
                   errors.email = "Invalid email address";
                 }
-                // Add more validation rules as needed
+                if (!values.password) {
+                  errors.password = "Required";
+                } else if (values.password.length < 6) {
+                  errors.password =
+                    "Password must be at least 6 characters long";
+                } else if (
+                  !/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(values.password)
+                ) {
+                  errors.password =
+                    "Password must contain at least one capital letter and one symbol";
+                }
+
+                if (values.password !== values.confirmPassword) {
+                  errors.confirmPassword = "Passwords do not match";
+                }
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
                 API.post("/users/v1/register", values)
                   .then((res) => {
-                    setSubmitting(false);
-                    router.push("/");
+                    API.post("/users/v1/login", values)
+                      .then((res) => {
+                        setAccessToken(res.data.access_token);
+                        setRefreshToken(res.data.refresh_token);
+                        setUsername(values.email.split("@")[0]);
+                        setEmail(values.email);
+                        setSubmitting(false);
+                        setLoggedIn(true)
+                        router.push("/");
+                      })
+                      .catch((error) => {
+                        console.error(error);
+                        setSubmitting(false);
+                      });
                   })
                   .catch((err) => {
                     setSubmitting(false);
@@ -78,8 +125,7 @@ export default function Register() {
                 handleChange,
                 handleBlur,
                 handleSubmit,
-                isSubmitting,
-                /* and other goodies */
+                isSubmitting
               }) => (
                 <Form
                   sx={{ margin: 10, height: "40px" }}
@@ -121,37 +167,28 @@ export default function Register() {
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
                     Country
                   </Typography>
-                  <div
-                    role="group"
-                    className="mb-1"
-                    aria-labelledby="my-radio-group"
-                  >
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          onChange={handleChange}
-                          name="country"
-                          value="ID"
-                          size="small"
-                        />
-                      }
-                      label="Indonesia"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          onChange={handleChange}
-                          name="country"
-                          size="small"
-                          value="US"
-                        />
-                      }
-                      label="United States"
-                    />
-                  </div>
+                  <Field
+                    name="country"
+                    render={({ field, form }) => (
+                      <Select
+                        options={options}
+                        value={options.find(
+                          (option) => option.value === field.value
+                        )}
+                        onChange={(option) =>
+                          form.setFieldValue(field.name, option.value)
+                        }
+                      />
+                    )}
+                  />
                   <ErrorMessage name="country" component="div" />
 
-                  <Typography fontSize={16} fontWeight={500} lineHeight="24px">
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    lineHeight="24px"
+                    className="mt-2"
+                  >
                     Gender
                   </Typography>
                   <div
@@ -162,10 +199,11 @@ export default function Register() {
                     <FormControlLabel
                       control={
                         <Radio
-                          onChange={handleChange}
+                          type="radio"
                           name="gender"
-                          size="small"
                           value="l"
+                          checked={values.gender === "l"}
+                          onChange={handleChange}
                         />
                       }
                       label="Male"
@@ -173,10 +211,11 @@ export default function Register() {
                     <FormControlLabel
                       control={
                         <Radio
-                          onChange={handleChange}
+                          type="radio"
                           name="gender"
-                          size="small"
                           value="p"
+                          checked={values.gender === "p"}
+                          onChange={handleChange}
                         />
                       }
                       label="Female"
@@ -207,6 +246,31 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
+                    Phone Number
+                  </Typography>
+
+                  <Field name="phone_number">
+                    {({ field, form }) => (
+                      <PhoneInput
+                        defaultCountry="id"
+                        value={field.value}
+                        onChange={(value) =>
+                          form.setFieldValue("phone_number", value)
+                        }
+                        onBlur={field.onBlur}
+                        className="form-control"
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage name="phone_number" component="div" />
+
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                    className="mt-2"
+                  >
                     Password
                   </Typography>
                   <Field
@@ -218,12 +282,28 @@ export default function Register() {
                   />
                   <ErrorMessage name="password" component="div" />
 
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                  >
+                    Confirm Password
+                  </Typography>
+                  <Field
+                    type="password"
+                    onChange={handleChange}
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                  />
+                  <ErrorMessage name="confirmPassword" component="div" />
+
                   <div
                     id="btn-login"
                     sx={{
                       display: "flex",
                       justifyContent: "flex-start",
-                      marginTop: 10,
+                      marginTop: 10
                     }}
                   >
                     <Button type="submit">Register</Button>
@@ -234,7 +314,7 @@ export default function Register() {
                     sx={{
                       display: "flex",
                       justifyContent: "flex-start",
-                      marginTop: 10,
+                      marginTop: 10
                     }}
                   >
                     Sudah punya akun?

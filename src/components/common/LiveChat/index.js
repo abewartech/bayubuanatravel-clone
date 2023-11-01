@@ -154,9 +154,8 @@ export default function LiveChatComponent(props) {
       widgetId="1he4esimm"
       useRef={tawkMessengerRef}
     />
-      <div className={isChatOpen ? styles.chat_open : styles.chat_closed}>
+      {/* <div className={isChatOpen ? styles.chat_open : styles.chat_closed}>
         <div className={styles.chat_box}>
-          {/* Chat Box Header */}
           <div className={styles.chat_box_header}>
             Live Chat
             <IconButton
@@ -170,7 +169,6 @@ export default function LiveChatComponent(props) {
             </IconButton>
           </div>
 
-          {/* Chat Box Body */}
           <div className={styles.chat_box_body}>
             <Box sx={{ p: 2, height: 300 }}>
               <div className={styles.chat_box_overlay}></div>
@@ -244,7 +242,6 @@ export default function LiveChatComponent(props) {
             </Box>
           </div>
 
-          {/* Chat Box Input */}
           <div style={{ padding: "8px", backgroundColor: "#f0f0f0" }}>
             <form
               onSubmit={handleSubmit}
@@ -282,11 +279,11 @@ export default function LiveChatComponent(props) {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className={styles.liveChatBtn}>
         <div className={styles.liveChatBtnCta} onClick={toggleChat}>
           <LiveChatButton isOpen={isChatOpen} />
-          <button onClick={handleMinimize}> </button>
+          {/* <button onClick={handleMinimize}> </button> */}
         </div>
       </div>
     </>

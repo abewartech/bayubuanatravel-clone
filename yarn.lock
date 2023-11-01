@@ -2448,6 +2448,11 @@ react-infinite-scroll-component@^6.1.0:
   dependencies:
     throttle-debounce "^2.1.0"
 
+react-international-phone@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/react-international-phone/-/react-international-phone-4.0.2.tgz#b338fe4199c227810e58627a1640efd71da4aea3"
+  integrity sha512-D2SFtqrrR3YlaO0zkOMhMO78ij2QuEM4/9ZmxIZfQKw62hT5iqLeinDo+0JQcWh1mrYA3YmmGtRXa5ahM4nSvQ==
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -2494,6 +2499,11 @@ react-responsive-modal@^6.4.2:
     "@bedrock-layout/use-forwarded-ref" "^1.3.1"
     body-scroll-lock "^3.1.5"
     classnames "^2.3.1"
+
+react-select-country-list@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/react-select-country-list/-/react-select-country-list-2.2.3.tgz#af263072a7797a660e7bd67702495dd1f95268ab"
+  integrity sha512-eRgXL613dVyJiE99yKDYLvSBKDxvIlhkmvO2DVIjdKVyUQq6kBqoMUV/2zuRIAsbRXgBGmKjeL1dxjf7zTfszg==
 
 react-select@^5.7.4:
   version "5.7.4"

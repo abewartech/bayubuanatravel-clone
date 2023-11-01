@@ -88,6 +88,7 @@ export default function DetailPackages() {
   const [id, setId] = useState(0);
   const [amountChanges, setAmountChanges] = useState(0);
   const [open, setOpen] = useState(false);
+  const [errorAmount, setErrorAmount] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
   const [productData, setProductData] = useState(null);
   const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
@@ -205,6 +206,11 @@ export default function DetailPackages() {
   const handleClose = () => setOpen(false);
 
   const amountChange = (e) => {
+    if (productData && productData.minimum_payment) {
+      if (e.target.value < productData.minimum_payment) {
+        setErrorAmount(true)
+      }
+    }
     setAmountChanges(e.target.value);
   };
 
@@ -349,7 +355,9 @@ export default function DetailPackages() {
                             onChange={() => handleCheckboxChange(idx)}
                           />
                         }
-                        label={`I will participate in Hari 0${idx + 1}: Jakarta - Kansai`}
+                        label={`I will participate in Hari 0${
+                          idx + 1
+                        }: Jakarta - Kansai`}
                         className="mt-2"
                       />
                     </div>
@@ -450,26 +458,23 @@ export default function DetailPackages() {
               </Typography>
             </div>
           </div>
-          <Typography>
-            <Box fontSize={16} lineHeight="24px" fontWeight={500}>
-              Amount
-            </Box>
-          </Typography>
-
-          <input
-            placeholder="Masukkan amount"
-            className="mb-0"
+          <TextField
+            error={errorAmount}
+            label="Amount"
             type="number"
             onChange={amountChange}
+            fullWidth
           />
           <Typography
             fontSize={12}
             lineHeight="16px"
             fontWeight={400}
             marginBottom={3}
+            className="mt-2"
           >
-            *Jumlah minimum yang perlu dibayarkan adalah Rp.{" "}
-            {productData && productData.minimum_payment}
+            {`*Jumlah minimum yang perlu dibayarkan adalah
+            ${productData && productData.minimum_payment}
+            %`}
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
