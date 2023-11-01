@@ -2,6 +2,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import Layout from "../../src/components/Layout";
+import { styled } from "@mui/material/styles";
 import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import airplane from "./../../public/assets/icon/airplane-square.svg";
@@ -15,7 +16,9 @@ import {
   Grid,
   Container,
   Snackbar,
-  TextField
+  TextField,
+  Switch,
+  FormControlLabel
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -47,6 +50,38 @@ const style = {
   borderRadius: 4,
   p: 4
 };
+const Android12Switch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  "& .MuiSwitch-track": {
+    borderRadius: 22 / 2,
+    "&:before, &:after": {
+      content: '""',
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: 16,
+      height: 16
+    },
+    "&:before": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12
+    },
+    "&:after": {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12
+    }
+  },
+  "& .MuiSwitch-thumb": {
+    boxShadow: "none",
+    width: 16,
+    height: 16,
+    margin: 2
+  }
+}));
 export default function DetailPackages() {
   const { t, lang } = useTranslation("common");
   const [expand, setExpand] = useState(false);
@@ -207,7 +242,6 @@ export default function DetailPackages() {
 
   const handlePromo = async () => {
     try {
-
       const response = await API.get(
         `promo/v1/ex/eligibility?promo_code=${promoCode}`
       );
@@ -298,27 +332,26 @@ export default function DetailPackages() {
             <div className={styles.itineraryTitle}>Itinerary</div>
             {itineraryItems.map((item, idx) => {
               return (
-                <div
-                  key={idx}
-                  onClick={() => handleShowDetail(idx + 1)}
-                  className={styles.itineraryItem}
-                >
+                <div key={idx} className={styles.itineraryItem}>
                   <div className={styles.itineraryDetail}>
                     <div className={styles.number}>{idx + 1}</div>
-                    <div>Hari 0{idx + 1}: Jakarta - Kansai</div>
+                    <div onClick={() => handleShowDetail(idx + 1)}>
+                      Hari 0{idx + 1}: Jakarta - Kansai
+                    </div>
                   </div>
-                  <input
-                    type="checkbox"
-                    checked={checkedItinerary[idx]}
-                    onChange={() => handleCheckboxChange(idx)}
-                    style={{
-                      marginLeft: "10px", // Adjust the spacing as needed
-                      verticalAlign: "middle" // Align the checkbox with text
-                    }}
-                  />
                   {expand && id === idx + 1 && (
                     <div className="p-4">
                       <div>Detail Itinerary</div>
+                      <FormControlLabel
+                        control={
+                          <Android12Switch
+                            checked={checkedItinerary[idx]}
+                            onChange={() => handleCheckboxChange(idx)}
+                          />
+                        }
+                        label={`I will participate in Hari 0${idx + 1}: Jakarta - Kansai`}
+                        className="mt-2"
+                      />
                     </div>
                   )}
                 </div>
