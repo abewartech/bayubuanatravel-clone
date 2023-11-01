@@ -63,7 +63,7 @@ export default function History(props) {
               statusTrx === "all" && styles.btnFilter__active
             }`}
           >
-            All
+            {t('all')}
           </div>
           <div
             onClick={() => handleFilter("done")}

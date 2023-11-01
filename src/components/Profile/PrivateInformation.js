@@ -140,7 +140,7 @@ export default function PrivateInformation(props) {
                     type="text"
                     onChange={handleChange}
                     name="address"
-                    placeholder="Your Address"
+                    placeholder={t('yaddress')}
                   />
                   <ErrorMessage name="address" component="div" />
 

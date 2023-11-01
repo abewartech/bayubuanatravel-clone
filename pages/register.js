@@ -4,6 +4,7 @@ import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import resort from "./../public/assets/resort.jpg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import useTranslation from 'next-translate/useTranslation';
 import {
   Box,
   Button,
@@ -23,6 +24,7 @@ import { useMemo } from "react";
 
 export default function Register() {
   const router = useRouter();
+  const { t, lang } = useTranslation('common')
   const {
     isLoggedIn,
     accessToken,
@@ -138,13 +140,13 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Full Name
+                   {t('fullname')}
                   </Typography>
                   <Field
                     type="text"
                     onChange={handleChange}
                     name="full_name"
-                    placeholder="Your Full Name"
+                    placeholder={t('yfullname')}
                   />
                   <ErrorMessage name="full_name" component="div" />
 
@@ -154,18 +156,18 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Address
+                    {t('address')}
                   </Typography>
                   <Field
                     type="text"
                     onChange={handleChange}
                     name="address"
-                    placeholder="Your Address"
+                    placeholder={t('yaddress')}
                   />
                   <ErrorMessage name="address" component="div" />
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
-                    Country
+                    {t('country')}
                   </Typography>
                   <Field
                     name="country"
@@ -189,7 +191,7 @@ export default function Register() {
                     lineHeight="24px"
                     className="mt-2"
                   >
-                    Gender
+                    {t('gender')}
                   </Typography>
                   <div
                     role="group"
@@ -246,7 +248,7 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Phone Number
+                   {t('pnumber')}
                   </Typography>
 
                   <Field name="phone_number">
@@ -278,7 +280,7 @@ export default function Register() {
                     onChange={handleChange}
                     name="password"
                     autoComplete="on"
-                    placeholder="Password kamu"
+                    placeholder={t('ypassword')}
                   />
                   <ErrorMessage name="password" component="div" />
 
@@ -288,13 +290,13 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Confirm Password
+                   {t('cpassword')}
                   </Typography>
                   <Field
                     type="password"
                     onChange={handleChange}
                     name="confirmPassword"
-                    placeholder="Confirm Password"
+                    placeholder={t('cpassword')}
                   />
                   <ErrorMessage name="confirmPassword" component="div" />
 
@@ -306,7 +308,7 @@ export default function Register() {
                       marginTop: 10
                     }}
                   >
-                    <Button type="submit">Register</Button>
+                    <Button type="submit">{t('register')}</Button>
                   </div>
 
                   <div
@@ -317,9 +319,9 @@ export default function Register() {
                       marginTop: 10
                     }}
                   >
-                    Sudah punya akun?
+                    {t('ahaccount?')}
                     <Link href="/login" passHref>
-                      <Button>Login</Button>
+                      <Button>{t('login')}</Button>
                     </Link>
                   </div>
                 </Form>

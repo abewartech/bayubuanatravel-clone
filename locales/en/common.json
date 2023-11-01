@@ -47,6 +47,7 @@
   "personal":"personal information",
   "fullname":"Full Name",
   "address":"Address",
+  "yaddress":"your Address",
   "country":"Country",
   "gender":"Gender",
   "yfullname":"Your Full Name",
@@ -56,7 +57,12 @@
   "pending":"pending",
   "notpaid":"NOt Paid",
   "samount":"shopping amount",
-  "pdetails":"Package Details"
+  "pdetails":"Package Details",
+  "pnumber":"Phone Number",
+  "cpassword":"confirm password",
+  "ahaccount?":"Already have an account?",
+  "ypassword":"Password Kamu"
+
   
 }
 
