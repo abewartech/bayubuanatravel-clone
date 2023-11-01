@@ -43,7 +43,20 @@
   "register":"Register",
   "welcomeback":"Welcome Back",
   "logout":"Logout",
-  "service": "One Stop Services" 
+  "service": "One Stop Services",
+  "personal":"personal information",
+  "fullname":"Full Name",
+  "address":"Address",
+  "country":"Country",
+  "gender":"Gender",
+  "yfullname":"Your Full Name",
+  "change":"change",
+  "thistory":"Transaction History",
+  "paid":"Paid",
+  "pending":"pending",
+  "notpaid":"NOt Paid",
+  "samount":"shopping amount",
+  "pdetails":"Package Details"
   
 }
 

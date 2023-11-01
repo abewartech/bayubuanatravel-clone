@@ -53,7 +53,7 @@ export default function PrivateInformation(props) {
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
-        <h1 className="mb-4 mb-md-0">Informasi Pribadi</h1>
+        <h1 className="mb-4 mb-md-0">{t('personal')}</h1>
         <Formik
               initialValues={initialValues}
               validate={(values) => {
@@ -103,13 +103,13 @@ export default function PrivateInformation(props) {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Full Name
+                  {t('fullname')}
                   </Typography>
                   <Field
                     type="text"
                     onChange={handleChange}
                     name="full_name"
-                    placeholder="Your Full Name"
+                    placeholder={t('yfullname')}
                   />
                   <ErrorMessage name="full_name" component="div" />
                   <Typography
@@ -134,7 +134,7 @@ export default function PrivateInformation(props) {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    Address
+                    {t('address')}
                   </Typography>
                   <Field
                     type="text"
@@ -145,7 +145,7 @@ export default function PrivateInformation(props) {
                   <ErrorMessage name="address" component="div" />
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
-                    Country
+                   {t('country')}
                   </Typography>
                   <div
                     role="group"
@@ -178,7 +178,7 @@ export default function PrivateInformation(props) {
                   <ErrorMessage name="country" component="div" />
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
-                    Gender
+                     {t('gender')}
                   </Typography>
                   <div
                     role="group"
@@ -237,7 +237,7 @@ export default function PrivateInformation(props) {
                       marginTop: 10,
                     }}
                   >
-                    <Button type="submit">Ubah</Button>
+                    <Button type="submit">{t('change')}</Button>
                   </div>
                 </Form>
               )}

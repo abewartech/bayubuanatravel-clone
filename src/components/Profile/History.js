@@ -1,3 +1,5 @@
+
+import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import styles from "./Profile.module.scss";
 import { useRouter } from "next/router";
@@ -8,6 +10,7 @@ import API from "../../common/api";
 import calendar from "./calendar.svg";
 
 export default function History(props) {
+  const { t, lang } = useTranslation("common");
   const router = useRouter();
   const [statusTrx, setStatusTrx] = useState("all");
   const [data, setData] = useState([]);
@@ -51,7 +54,7 @@ export default function History(props) {
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
-        <h1 className="mb-4 mb-md-0">Transaction History</h1>
+        <h1 className="mb-4 mb-md-0">{t('thistory')}</h1>
         <div className={styles.filterHistory}>
           <div className={styles.historyMainStatus}>Status</div>
           <div
@@ -68,7 +71,7 @@ export default function History(props) {
               statusTrx === "done" && styles.btnFilter__active
             }`}
           >
-            Paid
+            {t('paid')}
           </div>
           <div
             className={`${styles.btnFilter} ${
@@ -76,7 +79,7 @@ export default function History(props) {
             }`}
             onClick={() => handleFilter("unpaid")}
           >
-            Pending
+            {t('pending')}
           </div>
         </div>
         <div className={styles.historyList}>
@@ -102,7 +105,7 @@ export default function History(props) {
                       </div>
                     </div>
                     <div className={styles.historyRight}>
-                      <div className={styles.historyLabel}>Total Belanja</div>
+                      <div className={styles.historyLabel}>{t('samount')}</div>
                       <div className={styles.historyPrice}>Rp 7.000.000</div>
                     </div>
                   </div>
@@ -118,7 +121,7 @@ export default function History(props) {
               );
             })
           ) : (
-            <div>No Transaction History</div>
+            <div>No {t('thistory')}</div>
           )}
           <div className={styles.historyItem}>
             <div className={styles.historyDate}>
@@ -131,13 +134,13 @@ export default function History(props) {
               <div className={styles.historyLeft}>
                 <div className={styles.historyImg}></div>
                 <div className={styles.historyWrap}>
-                  <div className={styles.historyStatus}>Not Paid</div>
+                  <div className={styles.historyStatus}>{t('notpaid')}</div>
                   <div className={styles.historyName}>Paket Umroh 1</div>
                   {/* <div className={styles.history}></div> */}
                 </div>
               </div>
               <div className={styles.historyRight}>
-                <div className={styles.historyLabel}>Total Belanja</div>
+                <div className={styles.historyLabel}>{t('samount')}</div>
                 <div className={styles.historyPrice}>Rp 7.000.000</div>
               </div>
             </div>
@@ -161,13 +164,13 @@ export default function History(props) {
               <div className={styles.historyLeft}>
                 <div className={styles.historyImg}></div>
                 <div className={styles.historyWrap}>
-                  <div className={styles.historyStatusPaid}>Paid</div>
+                  <div className={styles.historyStatusPaid}>{t('paid')}</div>
                   <div className={styles.historyName}>Paket Umroh 1</div>
                   {/* <div className={styles.history}></div> */}
                 </div>
               </div>
               <div className={styles.historyRight}>
-                <div className={styles.historyLabel}>Total Belanja</div>
+                <div className={styles.historyLabel}>{t('samount')}</div>
                 <div className={styles.historyPrice}>Rp 7.000.000</div>
               </div>
             </div>

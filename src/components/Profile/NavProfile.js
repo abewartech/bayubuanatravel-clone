@@ -79,7 +79,7 @@ export default function NavProfile(props) {
             "information",
             personalCardActive,
             personalCard,
-            "Personal Information"
+            t('personal')
           )}
           {navigationMenu(
             "history",
@@ -87,7 +87,7 @@ export default function NavProfile(props) {
             "information",
             personalCardActive,
             personalCard,
-            "Transaction History"
+            t('thistory')
           )}
           {navigationMenu(
             "logout",
