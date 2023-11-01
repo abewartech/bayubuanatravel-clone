@@ -139,7 +139,7 @@ export default function Header(props) {
                               width={30}
                               height={30}
                             />
-                            {t("login")}, {username}!
+                            {username}
                           </div>
                         </span>
                       )}
