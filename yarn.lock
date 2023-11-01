@@ -2141,10 +2141,10 @@ next-translate-plugin@^2.6.0:
   dependencies:
     typescript "4.5.2"
 
-next-translate@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/next-translate/-/next-translate-2.6.0.tgz#5e36373ed6f24d7f1153623f95bcb8124b48c7fe"
-  integrity sha512-hLbwFxTsGv4dWlPXwvUthQ/QQEK18dH5Lz6Vf2Po3UnndEdqfkeB9C+EK3yagWj3Pn+hYnpZ2GBvedZjWwWELA==
+next-translate@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/next-translate/-/next-translate-2.6.1.tgz#df3773e698f7209cc32e211b8514ca5421a3847c"
+  integrity sha512-R8BQChc8eW1YiLb++6X7yyBsm65RWQoyw9ZSeKZhm7rOwsd0V1hONz6FnNWy91ybMu1Z2gRNMNWjb/Xg7smdOA==
 
 next@13.4.12:
   version "13.4.12"
@@ -2505,10 +2505,10 @@ react-select-country-list@^2.2.3:
   resolved "https://registry.yarnpkg.com/react-select-country-list/-/react-select-country-list-2.2.3.tgz#af263072a7797a660e7bd67702495dd1f95268ab"
   integrity sha512-eRgXL613dVyJiE99yKDYLvSBKDxvIlhkmvO2DVIjdKVyUQq6kBqoMUV/2zuRIAsbRXgBGmKjeL1dxjf7zTfszg==
 
-react-select@^5.7.4:
-  version "5.7.4"
-  resolved "https://registry.npmjs.org/react-select/-/react-select-5.7.4.tgz"
-  integrity sha512-NhuE56X+p9QDFh4BgeygHFIvJJszO1i1KSkg/JPcIJrbovyRtI+GuOEa4XzFCEpZRAEoEI8u/cAHK+jG/PgUzQ==
+react-select@^5.7.7:
+  version "5.7.7"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.7.7.tgz#dbade9dbf711ef2a181970c10f8ab319ac37fbd0"
+  integrity sha512-HhashZZJDRlfF/AKj0a0Lnfs3sRdw/46VJIRd8IbB9/Ovr74+ZIwkAdSBjSPXsFMG+u72c5xShqwLSKIJllzqw==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
@@ -2823,10 +2823,10 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-swiper@^10.1.0:
-  version "10.1.0"
-  resolved "https://registry.npmjs.org/swiper/-/swiper-10.1.0.tgz"
-  integrity sha512-E+wh+hcSbwlRfXuwBTclcOOikOjNdSF0a2Sdg3J4cIWtHO64A7SaLRfezfrJ67CW3GEc15AduYU2YKlElsjqsQ==
+swiper@^10.3.1:
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-10.3.1.tgz#4d19d7e9d0bd184c30accf2c1b180cfe41b9f4af"
+  integrity sha512-24Wk3YUdZHxjc9faID97GTu6xnLNia+adMt6qMTZG/HgdSUt4fS0REsGUXJOgpTED0Amh/j+gRGQxsLayJUlBQ==
 
 swr@^2.2.4:
   version "2.2.4"
@@ -3070,9 +3070,9 @@ zod@3.21.4:
   resolved "https://registry.npmjs.org/zod/-/zod-3.21.4.tgz"
   integrity sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==
 
-zustand@^4.4.3:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.4.3.tgz#1d54cf7fa4507ad8bf58e2f13e08ddc8a6730128"
-  integrity sha512-oRy+X3ZazZvLfmv6viIaQmtLOMeij1noakIsK/Y47PWYhT8glfXzQ4j0YcP5i0P0qI1A4rIB//SGROGyZhx91A==
+zustand@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.4.5.tgz#0d5571affb30906b0c07c16557f2779ede9f4d8c"
+  integrity sha512-jgIrBBLKncQW74PA2Lclct3gwD4aPughwGE4FqlXrv3rDqQox7JCn8rwUiFK6ygJcbBAvfTf8fF+ICg7HLD2FQ==
   dependencies:
     use-sync-external-store "1.2.0"

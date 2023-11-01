@@ -1,15 +1,26 @@
 import Card from "../common/Card";
 import TitleSection from "../common/TitleSection";
-import styles from "./../../../styles/pages/Home.module.scss";
-import useTranslation from 'next-translate/useTranslation'
+import useTranslation from "next-translate/useTranslation";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-
+import API from "../../common/api";
+import { useState, useEffect } from "react";
 
 export default function TourList() {
-  const { t, lang } = useTranslation('common')
+  const { t, lang } = useTranslation("common");
+  const [productData, setProductData] = useState([]);
+
+  useEffect(() => {
+    API.get("/products/v1/external/list?page=1&size=10")
+      .then(response => {
+        setProductData(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
   return (
     <>
-      <TitleSection title={t('alltours')}/>
+      <TitleSection title={'All Packages'} />
       <div className="mb-4">
         <Splide
           options={{
@@ -22,24 +33,24 @@ export default function TourList() {
             breakpoints: {
               1024: {
                 perPage: 3,
-                fixedWidth: "calc(33% - 32px)",
+                fixedWidth: "calc(33% - 32px)"
               },
               992: {
                 perPage: 2,
-                fixedWidth: "calc(50% - 32px)",
+                fixedWidth: "calc(50% - 32px)"
               },
               640: {
                 perPage: 1,
-                fixedWidth: "calc(100% - 8rem)",
-              },
+                fixedWidth: "calc(100% - 8rem)"
+              }
             },
-            autoplay: true,
+            autoplay: true
           }}
         >
-          {[...Array(5)].map((item, idx) => {
+          {productData.map((item, idx) => {
             return (
               <SplideSlide key={idx}>
-                <Card />
+                <Card data={item} />
               </SplideSlide>
             );
           })}

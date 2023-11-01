@@ -80,10 +80,11 @@
   }
   .arrowIcon {
     display: inline-block;
-    margin-right: 5px; /* Adjust the margin as needed */
-    font-size: 18px; /* Adjust the font size as needed */
+    margin-right: 9px; /* Adjust the margin as needed */
+    font-size: 13px; /* Adjust the font size as needed */
     transform: rotate(0deg);
     transition: transform 0.3s ease-in-out;
+    margin-top: 2px;
   }
   
   .arrowIcon.active {

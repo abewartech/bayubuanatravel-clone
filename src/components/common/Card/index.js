@@ -1,35 +1,53 @@
-import { useEffect, useState } from "react";
 import styles from "./Card.module.scss";
 import Image from "next/image";
-import sample from "./../../../../public/assets/sample.png";
 import domestic from "./../../../../public/assets/domestic.png";
 import clock from "./../../../../public/assets/icon/clock.svg";
 import info from "./../../../../public/assets/icon/info.svg";
 import thumbnail from "./../../../../public/assets/gallery/1.jpg";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
-import useTranslation from 'next-translate/useTranslation'
-
+import useTranslation from "next-translate/useTranslation";
 
 import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
 
 export default function Card(props) {
-  
   const { type, data } = props;
-  const { t, lang } = useTranslation('common')
+  const { t, lang } = useTranslation("common");
 
   const commonCard = () => {
+    const calculateDuration = () => {
+      if (data && data.active_date && data.expired_date) {
+        const startDate = new Date(data.active_date);
+        const endDate = new Date(data.expired_date);
 
+        const durationInMilliseconds = endDate - startDate;
+
+        // Calculate days, hours, minutes, etc. as needed
+        const days = Math.floor(durationInMilliseconds / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (durationInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+
+        return `${days} days ${hours} hours`;
+      }
+
+      return "N/A"; // Handle the case where data is missing or invalid
+    };
     return (
       <div className={`${styles.card} mt-3  `}>
-        <Link href={data && data.id !== null ? `/packages/${data.id}` : '/default-url'} className="h-100">
+        <Link
+          href={
+            data && data.id !== null ? `/packages/${data.id}` : "/default-url"
+          }
+          className="h-100"
+        >
           <Image src={thumbnail} alt="thumbnail" className="w-100" />
         </Link>
         <div className={styles.date}>
           <span className="me-2">
             <Image src={clock} width={10} height={10} alt="clock" />
           </span>
-          {data && data.additional_info}
+          {calculateDuration()}
         </div>
         <div className={styles.wrapContent}>
           <div className={styles.cardInfo}>
@@ -37,10 +55,9 @@ export default function Card(props) {
             <div className={styles.total}></div>
           </div>
           <div className={styles.cardPricing}>
-            <div className={styles.price}>{t('starting')}
-            </div>
+            <div className={styles.price}>{t("starting")}</div>
             <div className={styles.priceNumber}>
-              IDR {data && data.base_price} <span>{t('person')}</span>
+              IDR {data && data.base_price} <span>{t("person")}</span>
             </div>
           </div>
           <div className={styles.cta}>
@@ -137,7 +154,7 @@ export default function Card(props) {
             <div className={styles.price}>
               <div className={styles.label}>From</div>
               <div className={styles.priceNumber}>IDR 5,679,000</div>
-              <div className={styles.label}>{t('person')}</div>
+              <div className={styles.label}>{t("person")}</div>
             </div>
           </div>
         </div>
