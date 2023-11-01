@@ -86,11 +86,11 @@ export default function Header(props) {
   const handleLogout = () => {
     setLoggedIn(false);
     setUsername("");
-    setEmail("")
-    router.push('/')
+    setEmail("");
+    router.push("/");
   };
   const handleProfile = () => {
-    router.push('/profile')
+    router.push("/profile");
   };
   return (
     <div className={styles.header}>
@@ -132,7 +132,15 @@ export default function Header(props) {
                     >
                       {typeof window !== "undefined" && (
                         <span onClick={() => setShowButton(true)}>
-                          {t("login")}, {username}!
+                          <div className={styles.avatarContainer}>
+                            <Image
+                              src={"/assets/wanna1.png"}
+                              alt="User Avatar"
+                              width={30}
+                              height={30}
+                            />
+                            {t("login")}, {username}!
+                          </div>
                         </span>
                       )}
                       {showOptions && (
@@ -187,7 +195,7 @@ export default function Header(props) {
                       variant="contained"
                       onClick={handleLogin}
                       suppressHydrationWarning
-                      style={{backgroundColor: '#0197da'}}
+                      style={{ backgroundColor: "#0197da" }}
                     >
                       {t("login")}
                     </Button>
@@ -334,7 +342,11 @@ export default function Header(props) {
                           marginTop: 16
                         }}
                       >
-                        <Button type="submit" disabled={isSubmitting} style={{backgroundColor: '#0197da'}}>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          style={{ backgroundColor: "#0197da" }}
+                        >
                           Login
                         </Button>
                       </div>

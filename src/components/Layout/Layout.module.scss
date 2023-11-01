@@ -1,4 +1,21 @@
 @import "./../../../styles/variable";
+.avatarContainer {
+  display: flex;
+  align-items: center;
+  cursor: pointer; /* Add this to make it look clickable */
+}
+
+.avatarContainer img {
+  border-radius: 50%; /* This gives a circular shape to the avatar */
+  margin-right: 8px; /* Adjust the margin as needed */
+}
+
+.avatarContainer span {
+  color: #000; /* Set the text color */
+  font-size: 16px; /* Adjust the font size as needed */
+  /* You can add more styles as per your design */
+}
+
 .layout {
   position: relative;
   &__hide {
