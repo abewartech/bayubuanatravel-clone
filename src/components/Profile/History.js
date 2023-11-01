@@ -111,7 +111,7 @@ export default function History(props) {
                   </div>
                   <div className={styles.historyAction}>
                     <div className={styles.historyDetail}>
-                      <Button>Detail Paket</Button>
+                      <Button>{t('pdetails')}</Button>
                     </div>
                     <div className={styles.historySee}>
                       <Button>Bayar</Button>
@@ -176,7 +176,7 @@ export default function History(props) {
             </div>
             <div className={styles.historyAction}>
               <div className={styles.historyDetail}>
-                <Button>Detail Paket</Button>
+                <Button>{t('pdetails')}</Button>
               </div>
               <div className={styles.historySee}>
                 <Button variant="outlined" color="success" onClick={print}>
