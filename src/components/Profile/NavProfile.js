@@ -3,12 +3,12 @@ import styles from "./Profile.module.scss";
 import Image from "next/image";
 import useAuthStore from "../../store/loginStore";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router';
-import personalCardActive from './personalcardActive.svg'
-import personalCard from './personalcard.svg'
+import { useRouter } from "next/router";
+import personalCardActive from "./personalcardActive.svg";
+import personalCard from "./personalcard.svg";
 
 export default function NavProfile(props) {
-    const { data, handleNavigateMenu, currMenu } = props;
+  const { data, handleNavigateMenu, currMenu } = props;
   const { t, lang } = useTranslation("common");
   const [userName, setUserName] = useState("");
   const router = useRouter();
@@ -21,15 +21,28 @@ export default function NavProfile(props) {
     setLoggedIn,
     setAccessToken,
     setRefreshToken,
-    setUsername
+    setUsername,
+    setEmail
   } = useAuthStore();
   useEffect(() => {
     setUserName(username);
   }, []);
   const navigationMenu = (url, curr, param, active, unActive, text) => {
+    const handleClick = () => {
+      if (url === "logout") {
+        setLoggedIn(false);
+        setUsername("");
+        setEmail("");
+        router.push("/");
+      } else {
+        // For other URLs, navigate as usual
+        handleNavigateMenu(url);
+      }
+    };
+
     return (
       <div
-        onClick={() => handleNavigateMenu(url)}
+        onClick={handleClick}
         className={`${styles.navItem} ${
           currMenu === url && styles.navItem__active
         }`}
@@ -39,6 +52,7 @@ export default function NavProfile(props) {
       </div>
     );
   };
+
   return (
     <div className="col-lg-4">
       <div className={styles.navigationLeft}>
@@ -74,6 +88,14 @@ export default function NavProfile(props) {
             personalCardActive,
             personalCard,
             "Transaction History"
+          )}
+          {navigationMenu(
+            "logout",
+            currUrl[2],
+            "information",
+            personalCardActive,
+            personalCard,
+            "Logout"
           )}
         </div>
       </div>

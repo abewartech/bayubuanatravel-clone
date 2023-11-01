@@ -131,7 +131,7 @@ export default function Header(props) {
                       onMouseLeave={() => setShowOptions(false)}
                     >
                       {typeof window !== "undefined" && (
-                        <span onClick={() => setShowButton(true)}>
+                        <span onClick={handleProfile}>
                           <div className={styles.avatarContainer}>
                             <Image
                               src={"/assets/wanna1.png"}
@@ -143,7 +143,7 @@ export default function Header(props) {
                           </div>
                         </span>
                       )}
-                      {showOptions && (
+                      {/* {showOptions && (
                         <div
                           className={styles.options}
                           style={{
@@ -188,7 +188,7 @@ export default function Header(props) {
                             </Button>
                           </div>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   ) : (
                     <Button
