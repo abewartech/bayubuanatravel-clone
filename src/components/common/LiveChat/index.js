@@ -151,7 +151,7 @@ export default function LiveChatComponent(props) {
     <>
     <TawkMessengerReact
       propertyId="6541c637a84dd54dc48753b7"
-      widgetId="default"
+      widgetId="1he4esimm"
       useRef={tawkMessengerRef}
     />
       <div className={isChatOpen ? styles.chat_open : styles.chat_closed}>
