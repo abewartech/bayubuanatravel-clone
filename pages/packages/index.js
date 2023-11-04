@@ -21,8 +21,6 @@ export default function TypeDestination() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const itemsPerPage = 10; // Number of items to display per page
-
   const breadcrumb = [
     {
       name: t("home")
@@ -34,7 +32,7 @@ export default function TypeDestination() {
 
   const fetchData = async (pageNumber) => {
     try {
-      const itemsPerPage = 10; // Set your items per page
+      const itemsPerPage = 12; // Set your items per page
       const response = await API.get(
         `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}`
       );

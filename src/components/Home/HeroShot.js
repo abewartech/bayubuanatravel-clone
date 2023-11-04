@@ -4,6 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import slider1 from "./../../../public/assets/slider/slider1.jpg";
 import slider2 from "./../../../public/assets/slider/slider2.jpg";
 import slider3 from "./../../../public/assets/slider/slider3.jpg";
+import "animate.css";
 
 // Import Swiper styles
 import "swiper/css";
@@ -16,16 +17,16 @@ export default function HeroShot() {
   const slideTexts = [
     {
       mainTitle: t("Welcome"),
-      subTitle: t("fullexperience"),
+      subTitle: t("fullexperience")
     },
     {
       mainTitle: t("WelcomeSlide2"),
-      subTitle: t("fullexperienceSlide2"),
+      subTitle: t("fullexperienceSlide2")
     },
     {
       mainTitle: t("WelcomeSlide3"),
-      subTitle: t("fullexperienceSlide3"),
-    },
+      subTitle: t("fullexperienceSlide3")
+    }
   ];
 
   return (
@@ -37,7 +38,7 @@ export default function HeroShot() {
           perMove: 1,
           arrows: false,
           autoplay: true,
-          rewind: true,
+          rewind: true
         }}
       >
         {hasSliders ? (
@@ -50,8 +51,14 @@ export default function HeroShot() {
                 <div className="container">
                   <div className="row">
                     <div className={`col-12 col-lg-8 ${styles.wrapInfo}`}>
-                      <div className={styles.mainTitle}>{slideTexts[idx].mainTitle}</div>
-                      <div className={styles.subTitle}>{slideTexts[idx].subTitle}</div>
+                      <div
+                        className={`animate__animated animate__backInLeft animate__fast ${styles.mainTitle}`}
+                      >
+                        {slideTexts[idx].mainTitle}
+                      </div>
+                      <div className={styles.subTitle}>
+                        {slideTexts[idx].subTitle}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -65,7 +72,11 @@ export default function HeroShot() {
               <div className="container">
                 <div className="row">
                   <div className={`col-12 col-lg-8 ${styles.wrapInfo}`}>
-                    <div className={styles.mainTitle}>{t("DefaultWelcome")}</div>
+                    <div
+                      className={`animate__animated animate__backInLeft animate__fast ${styles.mainTitle}`}
+                    >
+                      {t("DefaultWelcome")}
+                    </div>
                     <div className={styles.subTitle}>{t("fullexperience")}</div>
                   </div>
                 </div>

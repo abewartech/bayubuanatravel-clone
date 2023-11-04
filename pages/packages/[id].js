@@ -147,6 +147,12 @@ export default function DetailPackages() {
     }
   }, [transactionId]);
 
+  const toggleExpandedItem = (idx) => {
+    const updatedExpandedItems = [...expandedItems];
+    updatedExpandedItems[idx] = !updatedExpandedItems[idx];
+    setExpandedItems(updatedExpandedItems);
+  };
+
   const {
     isLoggedIn,
     accessToken,
@@ -195,14 +201,15 @@ export default function DetailPackages() {
   }, []);
 
   const handleShowDetail = (id) => {
-    setExpand(!expand);
+    toggleExpandedItem(id);
+    // setExpand(!expand);
     setId(id);
-    // Create a new array based on the current state
-    const updatedExpandedItems = [...expandedItems];
-    // Toggle the expanded state for the clicked item
-    updatedExpandedItems[id] = !updatedExpandedItems[id];
-    // Update the state with the new array
-    setExpandedItems(updatedExpandedItems);
+    // // Create a new array based on the current state
+    // const updatedExpandedItems = [...expandedItems];
+    // // Toggle the expanded state for the clicked item
+    // updatedExpandedItems[id] = !updatedExpandedItems[id];
+    // // Update the state with the new array
+    // setExpandedItems(updatedExpandedItems);
   };
   const handleBook = () => {
     if (isLoggedIn) {
@@ -351,7 +358,7 @@ export default function DetailPackages() {
                   <div className={styles.itineraryDetail}>
                     <div className={styles.number}>{idx + 1}</div>
                     <div
-                      onClick={() => handleShowDetail(idx + 1)}
+                      onClick={() => handleShowDetail(idx)}
                       style={{
                         display: "flex",
                         justifyContent: "space-between"
@@ -360,14 +367,14 @@ export default function DetailPackages() {
                       Hari 0{idx + 1}: Jakarta - Kansai
                       <span
                         className={`${styles.arrowIcon} ${
-                          expandedItems[idx + 1] ? styles.active : ""
+                          expandedItems[idx] ? styles.active : ""
                         }`}
                       >
-                        ▼
+                        {expandedItems[idx] ? "▼" : "▲"}
                       </span>
                     </div>
                   </div>
-                  {expand && id === idx + 1 && (
+                  {expandedItems[idx] && (
                     <div className="p-4">
                       <div>Detail Itinerary</div>
                       <FormControlLabel
@@ -388,7 +395,11 @@ export default function DetailPackages() {
               );
             })}
             <div id="book">
-              <Button variant="contained" onClick={handleBook} style={{backgroundColor: '#0197da'}}>
+              <Button
+                variant="contained"
+                onClick={handleBook}
+                style={{ backgroundColor: "#0197da" }}
+              >
                 Book Now
               </Button>
             </div>
