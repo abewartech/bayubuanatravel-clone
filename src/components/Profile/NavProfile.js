@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import personalCardActive from "./personalcardActive.svg";
 import personalCard from "./personalcard.svg";
+import FaceIcon from "@mui/icons-material/Face";
+import HistoryIcon from "@mui/icons-material/History";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { Button } from "@mui/material";
 
 export default function NavProfile(props) {
   const { data, handleNavigateMenu, currMenu } = props;
@@ -41,15 +45,20 @@ export default function NavProfile(props) {
     };
 
     return (
-      <div
+      <Button
         onClick={handleClick}
         className={`${styles.navItem} ${
           currMenu === url && styles.navItem__active
         }`}
+        startIcon={currMenu === url ? active : unActive}
+        fullWidth
+        style={{
+          backgroundColor: url === "logout" ? "red" : "", // Apply red background color only when url is "logout"
+          color: url === "logout" ? "white" : "" // Apply white text color only when url is "logout"
+        }}
       >
-        <Image src={currMenu === url ? active : unActive} alt="personal" />
         {text}
-      </div>
+      </Button>
     );
   };
 
@@ -60,14 +69,17 @@ export default function NavProfile(props) {
           <div className={styles.profile}>
             <div className={styles.profileCircle}>
               <Image
-                src={"/assets/wanna1.png"}
+                src={"/assets/wanna2.png"}
                 alt="person"
                 width={100}
                 height={100}
               />
             </div>
           </div>
-          <div className={styles.profileInformation}>
+          <div
+            className={styles.profileInformation}
+            style={{ textAlign: "center" }}
+          >
             <div className={styles.name}>{userName}</div>
             <div className={styles.subName}></div>
           </div>
@@ -77,24 +89,24 @@ export default function NavProfile(props) {
             "personal",
             currUrl[2],
             "information",
-            personalCardActive,
-            personalCard,
-            t('personal')
+            <FaceIcon />,
+            <FaceIcon />,
+            t("personal")
           )}
           {navigationMenu(
             "history",
             currUrl[2],
             "information",
-            personalCardActive,
-            personalCard,
-            t('thistory')
+            <HistoryIcon />,
+            <HistoryIcon />,
+            t("thistory")
           )}
           {navigationMenu(
             "logout",
             currUrl[2],
             "information",
-            personalCardActive,
-            personalCard,
+            <ExitToAppIcon />,
+            <ExitToAppIcon />,
             "Logout"
           )}
         </div>

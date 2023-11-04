@@ -14,6 +14,8 @@
 
     .profileWrap {
       display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
       margin-bottom: 42px;
       .profile {
         margin-right: 20px;

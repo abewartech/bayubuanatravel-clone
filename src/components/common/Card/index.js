@@ -64,9 +64,9 @@ export default function Card(props) {
             <Link href="https://wa.me/6281316776671" target="_blank">
               <button>Contact</button>
             </Link>
-            <div className={styles.infoDetail}>
+            {/* <div className={styles.infoDetail}>
               <Image src={info} alt="info" />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className={styles.overlay}></div>
