@@ -2,13 +2,15 @@ import useTranslation from "next-translate/useTranslation";
 import styles from "./Profile.module.scss";
 import Image from "next/image";
 import useAuthStore from "../../store/loginStore";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import API from "../../common/api";
-import { Button, FormControlLabel, Radio, Typography } from "@mui/material";
+import { Button, FormControlLabel, Radio, Typography, TextareaAutosize } from "@mui/material";
 import Link from "next/link";
 import { PhoneInput } from "react-international-phone";
+import Select from "react-select";
+import countryList from "react-select-country-list";
 import "react-international-phone/style.css";
 
 export default function PrivateInformation(props) {
@@ -17,6 +19,7 @@ export default function PrivateInformation(props) {
   const [userName, setUserName] = useState("");
   const router = useRouter();
   const currUrl = router.pathname.split("/");
+  const options = useMemo(() => countryList().getData(), []);
   const {
     isLoggedIn,
     accessToken,
@@ -50,233 +53,277 @@ export default function PrivateInformation(props) {
     email: email,
     full_name: username,
     gender: "",
-    password: "",
+    password: ""
   };
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
-        <h1 className="mb-4 mb-md-0">{t('personal')}</h1>
+        <h1 className="mb-4 mb-md-0">{t("personal")}</h1>
         <Formik
-              initialValues={initialValues}
-              validate={(values) => {
-                const errors = {};
-                if (!values.email) {
-                  errors.email = "Required";
-                } else if (
-                  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                  errors.email = "Invalid email address";
-                }
-                // Add more validation rules as needed
-                return errors;
-              }}
-              onSubmit={(values, { setSubmitting }) => {
-                API.post("/users/v1/register", values)
+          initialValues={initialValues}
+          validate={(values) => {
+            const errors = {};
+            if (!values.email) {
+              errors.email = "Required";
+            } else if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            ) {
+              errors.email = "Invalid email address";
+            }
+            if (!values.password) {
+              errors.password = "Required";
+            } else if (values.password.length < 6) {
+              errors.password = "Password must be at least 6 characters long";
+            } else if (!/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(values.password)) {
+              errors.password =
+                "Password must contain at least one capital letter and one symbol";
+            }
+
+            if (values.password !== values.confirmPassword) {
+              errors.confirmPassword = "Passwords do not match";
+            }
+            return errors;
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            API.post("/users/v1/register", values)
+              .then((res) => {
+                API.post("/users/v1/login", values)
                   .then((res) => {
+                    setAccessToken(res.data.access_token);
+                    setRefreshToken(res.data.refresh_token);
+                    setUsername(values.email.split("@")[0]);
+                    setEmail(values.email);
                     setSubmitting(false);
+                    setLoggedIn(true);
                     router.push("/");
                   })
-                  .catch((err) => {
+                  .catch((error) => {
+                    console.error(error);
                     setSubmitting(false);
-                    if (err.data.status === "failed") {
-                      alert(err.data.message);
-                    }
                   });
-              }}
+              })
+              .catch((err) => {
+                setSubmitting(false);
+                if (err) {
+                  console.log(err);
+                }
+              });
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting
+          }) => (
+            <Form
+              sx={{ margin: 10, height: "40px" }}
+              noValidate
+              autoComplete="off"
             >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                /* and other goodies */
-              }) => (
-                <Form
-                  sx={{ margin: 10, height: "40px" }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                  >
-                  {t('fullname')}
-                  </Typography>
-                  <Field
-                    type="text"
-                    onChange={handleChange}
-                    name="full_name"
-                    placeholder={t('yfullname')}
-                  />
-                  <ErrorMessage name="full_name" component="div" />
-                  <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                  >
-                    Email
-                  </Typography>
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                marginBottom={1}
+                lineHeight="24px"
+              >
+                {t("fullname")}
+              </Typography>
+              <Field
+                type="text"
+                onChange={handleChange}
+                name="full_name"
+                placeholder={t("yfullname")}
+              />
+              <ErrorMessage name="full_name" component="div" />
 
-                  <Field
-                    type="text"
-                    onChange={handleChange}
-                    name="email"
-                    placeholder="contoh@example.com"
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                marginBottom={1}
+                lineHeight="24px"
+              >
+                {t("address")}
+              </Typography>
+              <Field
+                type="text"
+                onChange={handleChange}
+                name="address"
+                render={({ field, form }) => (
+                  <TextareaAutosize
+                    {...field}
+                    minRows={3} // Set the number of rows as needed
+                    placeholder={t("yaddress")}
+                    style={{ width: "100%" }}
                   />
-                  <ErrorMessage name="email" component="div" />
-                  <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                  >
-                 {t('pnumber')}
-                  </Typography>
+                )}
+              />
+              <ErrorMessage name="address" component="div" />
 
-                  <Field name="phone_number">
-                    {({ field, form }) => (
-                      <PhoneInput
-                        defaultCountry="id"
-                        value={field.value}
-                        onChange={(value) =>
-                          form.setFieldValue("phone_number", value)
-                        }
-                        onBlur={field.onBlur}
-                        className="form-control"
-                      />
+              <Typography fontSize={16} fontWeight={500} lineHeight="24px">
+                {t("country")}
+              </Typography>
+              <Field
+                name="country"
+                render={({ field, form }) => (
+                  <Select
+                    options={options}
+                    value={options.find(
+                      (option) => option.value === field.value
                     )}
-                  </Field>
-                  <ErrorMessage name="phone_number" component="div" />
-
-                  <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                    className="mt-2" 
-                    >
-
-
-                  {t('address')}
-                  </Typography>
-                  <Field
-                    type="text"
-                    onChange={handleChange}
-                    name="address"
-                    placeholder={t('yaddress')}
+                    onChange={(option) =>
+                      form.setFieldValue(field.name, option.value)
+                    }
                   />
-                  <ErrorMessage name="address" component="div" />
+                )}
+              />
+              <ErrorMessage name="country" component="div" />
 
-                  <Typography fontSize={16} fontWeight={500} lineHeight="24px">
-
-
-
-
-
-
-                   {t('country')}
-                  </Typography>
-                  <div
-                    role="group"
-                    className="mb-1"
-                    aria-labelledby="my-radio-group"
-                  >
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          onChange={handleChange}
-                          name="country"
-                          value="ID"
-                          size="small"
-                        />
-                      }
-                      label="Indonesia"
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                lineHeight="24px"
+                className="mt-2"
+              >
+                {t("gender")}
+              </Typography>
+              <div
+                role="group"
+                className="mb-1"
+                aria-labelledby="my-radio-group"
+              >
+                <FormControlLabel
+                  control={
+                    <Radio
+                      type="radio"
+                      name="gender"
+                      value="l"
+                      checked={values.gender === "l"}
+                      onChange={handleChange}
                     />
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          onChange={handleChange}
-                          name="country"
-                          size="small"
-                          value="US"
-                        />
-                      }
-                      label="United States"
+                  }
+                  label="Male"
+                />
+                <FormControlLabel
+                  control={
+                    <Radio
+                      type="radio"
+                      name="gender"
+                      value="p"
+                      checked={values.gender === "p"}
+                      onChange={handleChange}
                     />
-                  </div>
-                  <ErrorMessage name="country" component="div" />
+                  }
+                  label="Female"
+                />
+              </div>
+              <ErrorMessage name="gender" component="div" />
 
-                  <Typography fontSize={16} fontWeight={500} lineHeight="24px">
-                     {t('gender')}
-                  </Typography>
-                  <div
-                    role="group"
-                    className="mb-1"
-                    aria-labelledby="my-radio-group"
-                  >
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          onChange={handleChange}
-                          name="gender"
-                          size="small"
-                          value="l"
-                        />
-                      }
-                      label={t('male')}
-                    />
-                    <FormControlLabel
-                      control={
-                        <Radio
-                          onChange={handleChange}
-                          name="gender"
-                          size="small"
-                          value="p"
-                        />
-                      }
-                      label={t('female')}
-                    />
-                  </div>
-                  <ErrorMessage name="gender" component="div" />
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                marginBottom={1}
+                lineHeight="24px"
+              >
+                Email
+              </Typography>
 
-                  
+              <Field
+                type="text"
+                onChange={handleChange}
+                name="email"
+                placeholder="contoh@example.com"
+              />
+              <ErrorMessage name="email" component="div" />
 
-                  {/* <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                  >
-                    Password
-                  </Typography>
-                  <Field
-                    type="password"
-                    onChange={handleChange}
-                    name="password"
-                    autoComplete="on"
-                    placeholder="Password kamu"
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                marginBottom={1}
+                lineHeight="24px"
+              >
+                {t("pnumber")}
+              </Typography>
+
+              <Field name="phone_number">
+                {({ field, form }) => (
+                  <PhoneInput
+                    defaultCountry="id"
+                    value={field.value}
+                    onChange={(value) =>
+                      form.setFieldValue("phone_number", value)
+                    }
+                    onBlur={field.onBlur}
+                    className="form-control"
                   />
-                  <ErrorMessage name="password" component="div" /> */}
+                )}
+              </Field>
+              <ErrorMessage name="phone_number" component="div" />
 
-                  <div
-                    id="btn-login"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      marginTop: 10,
-                    }}
-                  >
-                    <Button type="submit">{t('change')}</Button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                marginBottom={1}
+                lineHeight="24px"
+                className="mt-2"
+              >
+                Password
+              </Typography>
+              <Field
+                type="password"
+                onChange={handleChange}
+                name="password"
+                autoComplete="on"
+                placeholder={t("ypassword")}
+              />
+              <ErrorMessage name="password" component="div" />
+
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                marginBottom={1}
+                lineHeight="24px"
+              >
+                {t("cpassword")}
+              </Typography>
+              <Field
+                type="password"
+                onChange={handleChange}
+                name="confirmPassword"
+                placeholder={t("cpassword")}
+              />
+              <ErrorMessage name="confirmPassword" component="div" />
+
+              <div
+                id="btn-login"
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  marginTop: 10
+                }}
+              >
+                <Button type="submit">{t("register")}</Button>
+              </div>
+
+              <div
+                id="btn-regist"
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  marginTop: 10
+                }}
+              >
+                {t("ahaccount?")}
+                <Link href="/login" passHref>
+                  <Button>{t("login")}</Button>
+                </Link>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
