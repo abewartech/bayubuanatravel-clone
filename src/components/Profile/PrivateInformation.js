@@ -6,7 +6,13 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import API from "../../common/api";
-import { Button, FormControlLabel, Radio, Typography, TextareaAutosize } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  Radio,
+  Typography,
+  TextareaAutosize
+} from "@mui/material";
 import Link from "next/link";
 import { PhoneInput } from "react-international-phone";
 import Select from "react-select";
@@ -56,7 +62,7 @@ export default function PrivateInformation(props) {
     password: ""
   };
   return (
-    <div className="col-lg-8">
+    <div className="col-lg-8 mb-5">
       <div className={styles.menuShow}>
         <h1 className="mb-4 mb-md-0">{t("personal")}</h1>
         <Formik
@@ -85,7 +91,7 @@ export default function PrivateInformation(props) {
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            API.post("/users/v1/register", values)
+            API.post("users/v1/", values)
               .then((res) => {
                 API.post("/users/v1/login", values)
                   .then((res) => {
@@ -305,21 +311,7 @@ export default function PrivateInformation(props) {
                   marginTop: 10
                 }}
               >
-                <Button type="submit">{t("register")}</Button>
-              </div>
-
-              <div
-                id="btn-regist"
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
-                  marginTop: 10
-                }}
-              >
-                {t("ahaccount?")}
-                <Link href="/login" passHref>
-                  <Button>{t("login")}</Button>
-                </Link>
+                <Button type="submit">Update info</Button>
               </div>
             </Form>
           )}
