@@ -4,14 +4,15 @@ import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import resort from "./../public/assets/resort.jpg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from "next-translate/useTranslation";
 import {
   Box,
   Button,
   FormControlLabel,
   Radio,
   Typography,
-  TextField
+  TextField,
+  TextareaAutosize
 } from "@mui/material";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
@@ -24,7 +25,7 @@ import { useMemo } from "react";
 
 export default function Register() {
   const router = useRouter();
-  const { t, lang } = useTranslation('common')
+  const { t, lang } = useTranslation("common");
   const {
     isLoggedIn,
     accessToken,
@@ -104,7 +105,7 @@ export default function Register() {
                         setUsername(values.email.split("@")[0]);
                         setEmail(values.email);
                         setSubmitting(false);
-                        setLoggedIn(true)
+                        setLoggedIn(true);
                         router.push("/");
                       })
                       .catch((error) => {
@@ -140,13 +141,13 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                   {t('fullname')}
+                    {t("fullname")}
                   </Typography>
                   <Field
                     type="text"
                     onChange={handleChange}
                     name="full_name"
-                    placeholder={t('yfullname')}
+                    placeholder={t("yfullname")}
                   />
                   <ErrorMessage name="full_name" component="div" />
 
@@ -156,18 +157,25 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    {t('address')}
+                    {t("address")}
                   </Typography>
                   <Field
                     type="text"
                     onChange={handleChange}
                     name="address"
-                    placeholder={t('yaddress')}
+                    render={({ field, form }) => (
+                      <TextareaAutosize
+                        {...field}
+                        minRows={3} // Set the number of rows as needed
+                        placeholder={t("yaddress")}
+                        style={{ width: '100%' }}
+                      />
+                    )}
                   />
                   <ErrorMessage name="address" component="div" />
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
-                    {t('country')}
+                    {t("country")}
                   </Typography>
                   <Field
                     name="country"
@@ -191,7 +199,7 @@ export default function Register() {
                     lineHeight="24px"
                     className="mt-2"
                   >
-                    {t('gender')}
+                    {t("gender")}
                   </Typography>
                   <div
                     role="group"
@@ -248,7 +256,7 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                   {t('pnumber')}
+                    {t("pnumber")}
                   </Typography>
 
                   <Field name="phone_number">
@@ -280,7 +288,7 @@ export default function Register() {
                     onChange={handleChange}
                     name="password"
                     autoComplete="on"
-                    placeholder={t('ypassword')}
+                    placeholder={t("ypassword")}
                   />
                   <ErrorMessage name="password" component="div" />
 
@@ -290,13 +298,13 @@ export default function Register() {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                   {t('cpassword')}
+                    {t("cpassword")}
                   </Typography>
                   <Field
                     type="password"
                     onChange={handleChange}
                     name="confirmPassword"
-                    placeholder={t('cpassword')}
+                    placeholder={t("cpassword")}
                   />
                   <ErrorMessage name="confirmPassword" component="div" />
 
@@ -308,7 +316,7 @@ export default function Register() {
                       marginTop: 10
                     }}
                   >
-                    <Button type="submit">{t('register')}</Button>
+                    <Button type="submit">{t("register")}</Button>
                   </div>
 
                   <div
@@ -319,9 +327,9 @@ export default function Register() {
                       marginTop: 10
                     }}
                   >
-                    {t('ahaccount?')}
+                    {t("ahaccount?")}
                     <Link href="/login" passHref>
-                      <Button>{t('login')}</Button>
+                      <Button>{t("login")}</Button>
                     </Link>
                   </div>
                 </Form>

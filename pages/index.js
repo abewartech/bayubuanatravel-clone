@@ -34,10 +34,10 @@ export default function Homepage() {
           <TourList />
         </div>
       </div>
-      <Client />
       <TestimoniList />
       <GalleryList onClick={handleOpen} />
       <Videotron />
+      <Client />
       <ModalComponent open={open} close={handleOpen} content={content} />
     </Layout>
   );

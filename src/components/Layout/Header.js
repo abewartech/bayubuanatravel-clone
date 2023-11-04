@@ -6,6 +6,9 @@ import logo from "./../../../public/assets/logo/logo.png";
 import mail from "./../../../public/assets/icon/mail.svg";
 import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
+import PhoneIcon from "@mui/icons-material/Phone";
+import Icon from "@mui/material/Icon";
+import EmailIcon from "@mui/icons-material/Email";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
@@ -94,6 +97,24 @@ export default function Header(props) {
   };
   return (
     <div className={styles.header}>
+      <div className={styles.contactWrap}>
+        <div className="container">
+          <div className="d-flex justify-content-end">
+            <div className="me-4">
+              <span className="me-2">
+                <PhoneIcon fontSize="small" style={{ color: "white" }} />
+              </span>
+              +6221-23509999
+            </div>
+            <div>
+              <span className="me-2">
+                <EmailIcon fontSize="small" style={{ fill: "white" }} />
+              </span>
+              office@bayubuanatravel.com
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="header-landing" className={styles.mainHeader}>
         <div className="container">
           <div className="row justify-content-between">
@@ -123,6 +144,9 @@ export default function Header(props) {
               <div className={styles.navItem}>
                 <Link href="/contact-us">{t("contactus")}</Link>
               </div>
+              <div className={`${styles.navItem} language-switcher`}>
+                <LanguageSwitcher />
+              </div>
               {isClient ? (
                 <div className={styles.navItem}>
                   {isLoggedIn ? (
@@ -134,7 +158,7 @@ export default function Header(props) {
                         <span onClick={handleProfile}>
                           <div className={styles.avatarContainer}>
                             <Image
-                              src={"/assets/wanna1.png"}
+                              src={"/assets/wanna2.png"}
                               alt="User Avatar"
                               width={30}
                               height={30}
@@ -202,9 +226,6 @@ export default function Header(props) {
                   )}
                 </div>
               ) : null}
-              <div className={`${styles.navItem} language-switcher`}>
-                <LanguageSwitcher />
-              </div>
             </div>
             <div
               onClick={handleShowMenu}

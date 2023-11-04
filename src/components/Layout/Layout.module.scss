@@ -54,6 +54,17 @@
     background: #0000008c;
   }
   .header {
+    .contactWrap {
+      padding: 8px;
+      font-size: 10px;
+      @media (min-width: 576px) {
+        font-size: 12px;
+      }
+      font-weight: 600;
+      color: #fff;
+      background-color: $primary;
+      display: flex;
+    }
     .mainHeader {
       padding: 16px 0;
       background-color: #fff;
@@ -139,8 +150,14 @@
           margin-bottom: 24px;
         }
         .footerItemMenu {
+          color: #000;
           margin-bottom: 28px;
           font-size: 16px;
+          text-decoration: none; /* Remove underlines from links */
+          cursor: pointer; /* Change the cursor to a pointer on hover */
+        }
+        .footerItemMenu:hover {
+          text-decoration: underline; /* Add underline on link hover */
         }
       }
     }

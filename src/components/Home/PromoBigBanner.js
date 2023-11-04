@@ -21,7 +21,7 @@ export default function PromoBigBanner() {
           gap: "1.25rem",
           perMove: 1,
           autoplay: true,
-          arrows: false,
+          arrows: true,
         }}
       >
         {[...Array(5)].map((item, idx) => {
