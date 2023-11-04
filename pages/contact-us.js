@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import HeaderPage from "../src/components/common/HeaderPage";
 // import styles from "./../styles/pages/ContactUs.module.scss";
@@ -8,15 +9,17 @@ import TitleSection from "../src/components/common/TitleSection";
 import useTranslation from 'next-translate/useTranslation';
 import resort from "./../public/assets/resort.jpg";
 
+
 export default function ContactUs() {
+  const { t, lang } = useTranslation("common");
   const [id, setId] = useState(0);
   const [expand, setExpand] = useState(false);
   const breadcrumb = [
     {
-      name: "Home",
+      name: t("home"),
     },
     {
-      name: "Contact Us",
+      name:  t("contactus"),
     },
   ];
   const handleCollapse = (id) => {
@@ -27,7 +30,7 @@ export default function ContactUs() {
     <>
       <Layout>
         <HeaderPage
-          title="Contact Us"
+          title={t('contactus')}
           breadcrumb={breadcrumb}
           background={resort}
         />

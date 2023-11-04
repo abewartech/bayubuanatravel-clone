@@ -14,10 +14,10 @@ export default function About() {
   const { t, lang } = useTranslation('common')
   const breadcrumb = [
     {
-      name: "Home",
+      name: t('home'),
     },
     {
-      name: "About",
+      name: t('about'),
     },
   ];
  
@@ -32,7 +32,7 @@ export default function About() {
   };
   return (
     <Layout>
-      <HeaderPage title="About" breadcrumb={breadcrumb} background={resort} />
+      <HeaderPage title={t('about')} breadcrumb={breadcrumb} background={resort} />
       <div className="container">
         <div className="row">
           <div className="col-lg-5">

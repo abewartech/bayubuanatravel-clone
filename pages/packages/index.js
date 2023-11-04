@@ -7,12 +7,14 @@ import resort from "./../../public/assets/resort.jpg";
 import API from "../../src/common/api";
 import axios from "axios";
 import Pagination from "@mui/material/Pagination";
+import useTranslation from "next-translate/useTranslation";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default function TypeDestination() {
+  const { t, lang } = useTranslation("common");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,10 +25,10 @@ export default function TypeDestination() {
 
   const breadcrumb = [
     {
-      name: "Home"
+      name: t("home")
     },
     {
-      name: "Package"
+      name: t("packages")
     }
   ];
 
