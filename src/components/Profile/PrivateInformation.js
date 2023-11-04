@@ -9,6 +9,7 @@ import API from "../../common/api";
 import { Button, FormControlLabel, Radio, Typography } from "@mui/material";
 import Link from "next/link";
 import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 
 export default function PrivateInformation(props) {
   const { data, handleNavigateMenu, currMenu } = props;
