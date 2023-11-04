@@ -61,7 +61,10 @@
   "pnumber":"Phone Number",
   "cpassword":"confirm password",
   "ahaccount?":"Already have an account?",
-  "ypassword":"Password Kamu"
+  "ypassword":"Password Kamu",
+  "male":"Male",
+  "female":"Female"
+
 
   
 }

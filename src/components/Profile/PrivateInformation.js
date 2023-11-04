@@ -8,6 +8,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import API from "../../common/api";
 import { Button, FormControlLabel, Radio, Typography } from "@mui/material";
 import Link from "next/link";
+import { PhoneInput } from "react-international-phone";
 
 export default function PrivateInformation(props) {
   const { data, handleNavigateMenu, currMenu } = props;
@@ -134,7 +135,34 @@ export default function PrivateInformation(props) {
                     marginBottom={1}
                     lineHeight="24px"
                   >
-                    {t('address')}
+                 {t('pnumber')}
+                  </Typography>
+
+                  <Field name="phone_number">
+                    {({ field, form }) => (
+                      <PhoneInput
+                        defaultCountry="id"
+                        value={field.value}
+                        onChange={(value) =>
+                          form.setFieldValue("phone_number", value)
+                        }
+                        onBlur={field.onBlur}
+                        className="form-control"
+                      />
+                    )}
+                  </Field>
+                  <ErrorMessage name="phone_number" component="div" />
+
+                  <Typography
+                    fontSize={16}
+                    fontWeight={500}
+                    marginBottom={1}
+                    lineHeight="24px"
+                    className="mt-2" 
+                    >
+
+
+                  {t('address')}
                   </Typography>
                   <Field
                     type="text"
@@ -145,6 +173,12 @@ export default function PrivateInformation(props) {
                   <ErrorMessage name="address" component="div" />
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
+
+
+
+
+
+
                    {t('country')}
                   </Typography>
                   <div
@@ -194,7 +228,7 @@ export default function PrivateInformation(props) {
                           value="l"
                         />
                       }
-                      label="Male"
+                      label={t('male')}
                     />
                     <FormControlLabel
                       control={
@@ -205,7 +239,7 @@ export default function PrivateInformation(props) {
                           value="p"
                         />
                       }
-                      label="Female"
+                      label={t('female')}
                     />
                   </div>
                   <ErrorMessage name="gender" component="div" />

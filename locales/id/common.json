@@ -57,7 +57,10 @@
   "pnumber":"Nomor Telepon",
   "cpassword":"konfirmasi sandi",
   "ahaccount?":"Sudah Punya Akun?",
-  "ypassword":"Your Password"
+  "ypassword":"Your Password",
+  "male":"laki-laki",
+  "female":"Perempuan"
+  
 
 
   
