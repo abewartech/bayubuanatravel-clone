@@ -5,8 +5,8 @@ import HeaderPage from "../../src/components/common/HeaderPage";
 import MuiAlert from "@mui/material/Alert";
 import resort from "./../../public/assets/resort.jpg";
 import API from "../../src/common/api";
-import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
+import Pagination from "@mui/material/Pagination";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -17,7 +17,9 @@ export default function TypeDestination() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const itemsPerPage = 10; // Number of items to display per page
 
   const breadcrumb = [
     {
@@ -28,33 +30,36 @@ export default function TypeDestination() {
     }
   ];
 
-  const fetchData = async () => {
+  const fetchData = async (pageNumber) => {
     try {
+      const itemsPerPage = 10; // Set your items per page
       const response = await API.get(
-        `/products/v1/external/list?page=${page}&size=10`
+        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}`
       );
-  
+
       const newData = response.data;
-  
+
       // Assuming the API response is an array
-      setData((prevData) => [...prevData, ...newData]);
-      setPage((prevPage) => prevPage + 1);
-  
-      // Check if the new data is empty
-      if (newData.length === 0) {
-        setHasMore(false); // Stop infinite scrolling when there's no more data
-      }
+      setData(newData);
+      setPage(pageNumber);
+      // Calculate the total number of pages
+      const totalItems = response.totalData.total; // Assuming "total" is the total number of items
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      setTotalPages(totalPages);
     } catch (error) {
       console.error("Error fetching data:", error);
       setError(error?.message || "An error occurred");
-      setHasMore(false); // Stop infinite scrolling on error
     } finally {
       setLoading(false); // Set loading to false after data is processed
     }
   };
 
+  const handlePageChange = (event, pageNumber) => {
+    fetchData(pageNumber);
+  };
+
   useEffect(() => {
-    fetchData();
+    fetchData(1);
   }, []); // Empty dependency array ensures the effect runs once on mount
 
   return (
@@ -65,24 +70,22 @@ export default function TypeDestination() {
         background={resort}
       />
       <div className="container mb-5">
-        <InfiniteScroll
-          dataLength={data.length}
-          next={fetchData}
-          hasMore={hasMore}
-          style={{
-            overflow: "hidden"
-          }}
-        >
-          <div className="row m-1">
-            {error && <Alert severity="error">{error}</Alert>}
-            {!loading && data.length === 0 && !error && <p>No data found</p>}
-            {data.map((item, idx) => (
-              <div className={"col-lg-3 col-md-6 col-12"} key={idx}>
-                <Card type="common" data={item} />
-              </div>
-            ))}
-          </div>
-        </InfiniteScroll>
+        <div className="row m-1">
+          {error && <Alert severity="error">{error}</Alert>}
+          {!loading && data.length === 0 && !error && <p>No data found</p>}
+          {data.map((item, idx) => (
+            <div className={"col-lg-3 col-md-6 col-12"} key={idx}>
+              <Card type="common" data={item} />
+            </div>
+          ))}
+        </div>
+        <div className="d-flex justify-content-center mt-4">
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </div>
       </div>
     </Layout>
   );
