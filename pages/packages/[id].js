@@ -107,6 +107,9 @@ export default function DetailPackages() {
   const [openDialog, setOpenDialog] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
+  const [totalPrice, setTotalPrice] = useState(
+    productData ? productData.base_price : 0
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -171,10 +174,18 @@ export default function DetailPackages() {
 
     if (updatedCheckedItinerary[idx]) {
       // Item is checked, no need to modify the selectedItinerary state
+      setTotalPrice(
+        (prevTotalPrice) =>
+          prevTotalPrice + (productData ? productData.price_per_day : 0)
+      );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== idx)
+      );
+      setTotalPrice(
+        (prevTotalPrice) =>
+          prevTotalPrice - (productData ? productData.price_per_day : 0)
       );
     }
   };
@@ -394,7 +405,34 @@ export default function DetailPackages() {
                 </div>
               );
             })}
-            <div id="book">
+            <div
+              sx={{
+                backgroundColor: "#f0f0f0", // Background color
+                padding: 2, // Padding
+                borderRadius: 4, // Border radius
+                display: "flex", // Display as a flex container
+                justifyContent: "space-between", // Space between items
+                alignItems: "center" // Center vertically
+              }}
+            >
+              <div
+                sx={{
+                  fontSize: 16, // Font size
+                  fontWeight: 600 // Font weight
+                }}
+              >
+                Total Price:
+              </div>
+              <div
+                sx={{
+                  fontSize: 16, // Font size
+                  fontWeight: 600 // Font weight
+                }}
+              >
+                Rp. {totalPrice}
+              </div>
+            </div>
+            <div id="book" className="mt-2">
               <Button
                 variant="contained"
                 onClick={handleBook}
