@@ -42,6 +42,7 @@ function LanguageSwitcher() {
           height={16}
           className="img-fluid"
         />
+        {lang === "en" ? " ENG" : " IND"}
       </div>
       <Menu
         id="language-menu"

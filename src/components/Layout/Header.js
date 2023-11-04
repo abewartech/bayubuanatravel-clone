@@ -144,6 +144,9 @@ export default function Header(props) {
               <div className={styles.navItem}>
                 <Link href="/contact-us">{t("contactus")}</Link>
               </div>
+              <div className={`${styles.navItem} language-switcher`}>
+                <LanguageSwitcher />
+              </div>
               {isClient ? (
                 <div className={styles.navItem}>
                   {isLoggedIn ? (
@@ -155,7 +158,7 @@ export default function Header(props) {
                         <span onClick={handleProfile}>
                           <div className={styles.avatarContainer}>
                             <Image
-                              src={"/assets/wanna1.png"}
+                              src={"/assets/wanna2.png"}
                               alt="User Avatar"
                               width={30}
                               height={30}
@@ -223,9 +226,6 @@ export default function Header(props) {
                   )}
                 </div>
               ) : null}
-              <div className={`${styles.navItem} language-switcher`}>
-                <LanguageSwitcher />
-              </div>
             </div>
             <div
               onClick={handleShowMenu}
