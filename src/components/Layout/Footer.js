@@ -36,10 +36,10 @@ export default function Footer() {
             <div className={`${styles.footerOtherMenu}`}>
               <div className={styles.footerOtherTitle}>{t("other")}</div>
               <div className={styles.footerItemMenu}>{t("travel")}</div>
-              <Link href="/termsandconditions" passHref>
+              <Link href="/termsandconditions" passHref style={{ textDecoration: "none" }}>
                 <div className={styles.footerItemMenu}>{t("term")}</div>
               </Link>
-              <Link href="/faq" passHref>
+              <Link href="/faq" passHref style={{ textDecoration: "none" }}>
                 <div className={styles.footerItemMenu}>FAQs</div>
               </Link>
               {/* <div className={styles.footerItemMenu}>{t('privacy')}</div> */}
