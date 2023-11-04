@@ -121,7 +121,7 @@ export default function DetailPackages() {
       try {
         if (transactionId) {
           const response = await API.get(
-            `https://api.marinarajaampat.id/orders/v1/client/${transactionId}`
+            `orders/v1/client/${transactionId}`
           );
           console.log("Response data:", response.data);
           if (response.data.status !== "INITIATED") {
@@ -288,6 +288,12 @@ export default function DetailPackages() {
     }
   };
 
+  const print = () => {
+    const { id } = router.query;
+    const printURL = `/printpdfpackage?id=${id}`; // Replace with your URL and parameter
+    window.open(printURL, "_blank");
+  };
+
   return (
     <Layout>
       <div className="container my-4">
@@ -359,6 +365,15 @@ export default function DetailPackages() {
                   </span>
                 </li>
               </ul>
+            </div>
+            <div className="mt-2">
+              <Button
+                variant="contained"
+                onClick={print}
+                style={{ backgroundColor: "#feed13", color: "#0197da" }}
+              >
+                Download PDF
+              </Button>
             </div>
           </div>
           <div className="col-lg-7">
