@@ -95,13 +95,20 @@
             background-color: $secondary;
             padding: 6px 32px;
           }
-          &:hover {
-            cursor: pointer;
-            opacity: 0.75;
-          }
           a {
             text-decoration: none !important;
             color: #000;
+          }
+          &:hover {
+            cursor: pointer;
+            transform: scale(1.05); // Scale up on hover
+            transition: transform 0.2s ease; // Add a smooth transition effect
+            button {
+              background-color: lighten(
+                $secondary,
+                10%
+              ); // Lighten the background color
+            }
           }
           &__hover {
             .navWrap {
@@ -113,7 +120,7 @@
                 position: absolute;
                 z-index: 9;
                 background: white;
-                box-shadow: 3px 4px 10px rgba(86, 68, 169, 0.05);
+                box-shadow: 0 4px 10px rgba(86, 68, 169, 0.2); // Slightly modify the box shadow
                 padding: 24px 16px;
                 .navChildMenu {
                   margin-bottom: 12px;
