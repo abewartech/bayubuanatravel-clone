@@ -9,6 +9,7 @@ import "animate.css";
 // Import Swiper styles
 import "swiper/css";
 import Image from "next/image";
+import SearchBox from "./SearchBox";
 export default function HeroShot() {
   const sliders = [slider1, slider2, slider3];
   const { t, lang } = useTranslation("common");
@@ -30,7 +31,7 @@ export default function HeroShot() {
   ];
 
   return (
-    <div className={styles.heroShot} style={{ zIndex: -1 }}>
+    <div className={styles.heroShot}>
       <Splide
         options={{
           type: "fade",
@@ -85,6 +86,7 @@ export default function HeroShot() {
           </SplideSlide>
         )}
       </Splide>
+      <SearchBox />
     </div>
   );
 }
