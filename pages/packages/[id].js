@@ -211,6 +211,18 @@ export default function DetailPackages() {
     // ... your other useEffect code ...
   }, []);
 
+  useEffect(() => {
+    // Calculate total price whenever productData changes
+    if (productData) {
+      const basePrice = productData.base_price;
+      const productSubsPrice = productData.product_subs.reduce(
+        (acc, sub) => acc + sub.price,
+        0
+      );
+      setTotalPrice(basePrice + productSubsPrice);
+    }
+  }, [productData]);
+
   const handleShowDetail = (id) => {
     toggleExpandedItem(id);
     // setExpand(!expand);
