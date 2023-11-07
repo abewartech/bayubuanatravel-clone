@@ -3,23 +3,29 @@ import Layout from "../../src/components/Layout";
 import Card from "../../src/components/common/Card";
 import HeaderPage from "../../src/components/common/HeaderPage";
 import MuiAlert from "@mui/material/Alert";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import resort from "./../../public/assets/resort.jpg";
 import API from "../../src/common/api";
-import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default function TypeDestination() {
+  const router = useRouter();
   const { t, lang } = useTranslation("common");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchName, setSearchName] = useState("");
+  const [orderBy, setOrderBy] = useState("date-asc"); // Default ordering option
 
   const breadcrumb = [
     {
@@ -34,7 +40,7 @@ export default function TypeDestination() {
     try {
       const itemsPerPage = 12; // Set your items per page
       const response = await API.get(
-        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}`
+        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}&title=${searchName}&orderBy=${orderBy}`
       );
 
       const newData = response.data;
@@ -62,6 +68,20 @@ export default function TypeDestination() {
     fetchData(1);
   }, []); // Empty dependency array ensures the effect runs once on mount
 
+  useEffect(() => {
+    fetchData(1);
+  }, [searchName, orderBy]);
+
+  useEffect(() => {
+    const { searchName, orderBy } = router.query;
+    if (searchName) {
+      setSearchName(searchName);
+    }
+    if (orderBy) {
+      setOrderBy(orderBy);
+    }
+  }, [router.query]);
+
   return (
     <Layout>
       <HeaderPage
@@ -70,6 +90,31 @@ export default function TypeDestination() {
         background={resort}
       />
       <div className="container mb-5">
+        <div className="row m-1">
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <TextField
+              label="Search Name"
+              variant="standard"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              size="small"
+            />
+            <Select
+              label="Order By"
+              value={orderBy}
+              onChange={(e) => setOrderBy(e.target.value)}
+              variant="standard"
+              size="small"
+            >
+              <MenuItem value="name-asc">A-Z</MenuItem>
+              <MenuItem value="name-desc">Z-A</MenuItem>
+              <MenuItem value="price-asc">Low Price</MenuItem>
+              <MenuItem value="price-desc">High Price</MenuItem>
+              <MenuItem value="date-asc">Nearest Date</MenuItem>
+            </Select>
+          </div>
+        </div>
+
         <div className="row m-1">
           {error && <Alert severity="error">{error}</Alert>}
           {!loading && data.length === 0 && !error && <p>No data found</p>}
