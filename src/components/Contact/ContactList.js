@@ -3,8 +3,10 @@ import styles from "./../../../styles/pages/ContactUs.module.scss";
 import mail from "./../../../public/assets/icon/mail.svg";
 import Link from "next/link";
 import call from "./../../../public/assets/icon/call.svg";
+import useTranslation from 'next-translate/useTranslation';
 export default function ContactList(props) {
   const { title } = props;
+  const { t, lang } = useTranslation("common");
   return (
     <div className="col-6">
       <div className={styles.contactItem}>
@@ -37,9 +39,8 @@ export default function ContactList(props) {
                 <button>Contact</button>
               </Link>
             ) : (
-              <Link href="mailto:tourtravelmarina@gmail.com">
-                <button>Email Us</button>
-              </Link>
+              <button>{t('emailus')}</button>
+
             )}
           </>
         </div>

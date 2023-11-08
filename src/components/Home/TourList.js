@@ -25,7 +25,7 @@ export default function TourList() {
 
   return (
     <>
-      <TitleSection title={"All Packages"} />
+      <TitleSection title={t('packages')} />
       <div className="mb-4">
         {loading ? ( // Display loading indicator while waiting for data
           <div
