@@ -415,19 +415,18 @@ export default function DetailPackages() {
                   </div>
                   {expandedItems[idx] && (
                     <div className="p-4">
-                      <div>Detail Itinerary</div>
+                      <div>{t('detailitinerary')}</div>
                       <FormControlLabel
-                        control={
-                          <Android12Switch
-                            checked={checkedItinerary[idx]}
-                            onChange={() => handleCheckboxChange(idx)}
-                          />
-                        }
-                        label={`I will participate in Hari 0${
-                          idx + 1
-                        }: Jakarta - Kansai`}
-                        className="mt-2"
-                      />
+  control={
+    <Android12Switch
+      checked={checkedItinerary[idx]}
+      onChange={() => handleCheckboxChange(idx)}
+    />
+  }
+  label={`${t("iwill")} 0 ${idx + 1}: Jakarta - Kansai`}
+  className="mt-2"
+/>
+
                     </div>
                   )}
                 </div>
@@ -449,7 +448,7 @@ export default function DetailPackages() {
                   fontWeight: 600 // Font weight
                 }}
               >
-                Total Price:
+                {t('totalprice')}
               </div>
               <div
                 sx={{
@@ -466,7 +465,7 @@ export default function DetailPackages() {
                 onClick={handleBook}
                 style={{ backgroundColor: "#0197da" }}
               >
-                Book Now
+              {t('booknow')}
               </Button>
             </div>
           </div>

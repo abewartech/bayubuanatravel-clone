@@ -20,7 +20,7 @@
   "testimoni": "Testimoni Para Pengguna ",
   "testimonit": "Apa pendapat mereka tentang traveling bersama Bayu Buana?",
   "other": "Lainnya",
-  "travel": "pembaruan perjalanan",
+  "travel": "Pembaruan Perjalanan",
   "term": "Syarat & Ketentuan",
   "privacy": "Kebijakan pribadi",
   "sitemap": "Peta Situs",
@@ -65,5 +65,10 @@
   "fullexperienceSlide3": "Dapatkan Kenangan Tak Tergantikan di Liburan Anda",
   "female": "Perempuan",
   "customize":"Pelanggan Dapat Memilih Perjalanan",
-  "itinerary":"Rencana perjalanan"
+  "itinerary":"Rencana perjalanan",
+  "detailitinerary":"Detil Rencana Perjalanan",
+  "iwill":"Saya Akan Berpartisipasi Di Hari",
+  "totalprice":"Total Harga",
+  "booknow":"Pesan Sekarang"
+
 }
