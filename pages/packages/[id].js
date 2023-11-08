@@ -390,6 +390,7 @@ export default function DetailPackages() {
           </div>
           <div className="col-lg-7">
             <div className={styles.itineraryTitle}>Itinerary</div>
+            customer bisa custom perjalanan
             {itineraryItems.map((item, idx) => {
               return (
                 <div key={idx} className={styles.itineraryItem}>
@@ -408,7 +409,7 @@ export default function DetailPackages() {
                           expandedItems[idx] ? styles.active : ""
                         }`}
                       >
-                        {expandedItems[idx] ? "▼" : "▲"}
+                        {expandedItems[idx] ? "▲" :"▼" }
                       </span>
                     </div>
                   </div>
