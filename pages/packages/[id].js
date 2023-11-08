@@ -325,9 +325,9 @@ export default function DetailPackages() {
               </div>
             </div>
             <div className="mb-5">
-              <div className={styles.topLabel}>
-                Rp. {productData && productData.base_price}
-              </div>
+            <div className={styles.topLabel} style={{ fontSize: '20px' }}>
+              Rp. {productData && productData.base_price}
+                  </div>
               <div className={styles.topTitle}>
                 {productData && productData.title}
               </div>
