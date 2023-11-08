@@ -389,8 +389,8 @@ export default function DetailPackages() {
             </div>
           </div>
           <div className="col-lg-7">
-            <div className={styles.itineraryTitle}>Itinerary</div>
-            customer bisa custom perjalanan
+            <div className={styles.itineraryTitle}>{t('itinerary')}</div>
+              {t('customize')} 
             {itineraryItems.map((item, idx) => {
               return (
                 <div key={idx} className={styles.itineraryItem}>
