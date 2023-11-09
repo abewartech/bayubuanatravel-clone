@@ -120,9 +120,7 @@ export default function DetailPackages() {
       setOpenDialog(false);
       try {
         if (transactionId) {
-          const response = await API.get(
-            `orders/v1/client/${transactionId}`
-          );
+          const response = await API.get(`orders/v1/client/${transactionId}`);
           console.log("Response data:", response.data);
           if (response.data.status !== "INITIATED") {
             // If it's "ORDERED," stop the interval
@@ -325,9 +323,12 @@ export default function DetailPackages() {
               </div>
             </div>
             <div className="mb-5">
-            <div className={styles.topLabel} style={{ fontSize: '20px' }}>
-              Rp. {productData && productData.base_price}
-                  </div>
+              <div
+                className={styles.topLabel}
+                style={{ fontSize: "20px", fontWeight: "bold" }}
+              >
+                Rp. {productData && productData.base_price}
+              </div>
               <div className={styles.topTitle}>
                 {productData && productData.title}
               </div>
@@ -389,8 +390,8 @@ export default function DetailPackages() {
             </div>
           </div>
           <div className="col-lg-7">
-            <div className={styles.itineraryTitle}>{t('itinerary')}</div>
-              {t('customize')} 
+            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+            <p className="mb-3">{t("customize")} </p>
             {itineraryItems.map((item, idx) => {
               return (
                 <div key={idx} className={styles.itineraryItem}>
@@ -409,24 +410,23 @@ export default function DetailPackages() {
                           expandedItems[idx] ? styles.active : ""
                         }`}
                       >
-                        {expandedItems[idx] ? "▲" :"▼" }
+                        {expandedItems[idx] ? "▲" : "▼"}
                       </span>
                     </div>
                   </div>
                   {expandedItems[idx] && (
                     <div className="p-4">
-                      <div>{t('detailitinerary')}</div>
+                      <div>{t("detailitinerary")}</div>
                       <FormControlLabel
-  control={
-    <Android12Switch
-      checked={checkedItinerary[idx]}
-      onChange={() => handleCheckboxChange(idx)}
-    />
-  }
-  label={`${t("iwill")} 0 ${idx + 1}: Jakarta - Kansai`}
-  className="mt-2"
-/>
-
+                        control={
+                          <Android12Switch
+                            checked={checkedItinerary[idx]}
+                            onChange={() => handleCheckboxChange(idx)}
+                          />
+                        }
+                        label={`${t("iwill")} 0 ${idx + 1}: Jakarta - Kansai`}
+                        className="mt-2"
+                      />
                     </div>
                   )}
                 </div>
@@ -448,7 +448,7 @@ export default function DetailPackages() {
                   fontWeight: 600 // Font weight
                 }}
               >
-                {t('totalprice')}
+                {t("totalprice")}
               </div>
               <div
                 sx={{
@@ -465,7 +465,7 @@ export default function DetailPackages() {
                 onClick={handleBook}
                 style={{ backgroundColor: "#0197da" }}
               >
-              {t('booknow')}
+                {t("booknow")}
               </Button>
             </div>
           </div>
