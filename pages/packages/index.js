@@ -40,7 +40,7 @@ export default function TypeDestination() {
     try {
       const itemsPerPage = 12; // Set your items per page
       const response = await API.get(
-        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}&title=${searchName}&orderBy=${orderBy}`
+        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}&title=${searchName}&order=${orderBy}`
       );
 
       const newData = response.data;
