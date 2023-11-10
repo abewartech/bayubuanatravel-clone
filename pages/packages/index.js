@@ -25,7 +25,7 @@ export default function TypeDestination() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchName, setSearchName] = useState("");
-  const [orderBy, setOrderBy] = useState("date-asc"); // Default ordering option
+  const [orderBy, setOrderBy] = useState(0); // Default ordering option
 
   const breadcrumb = [
     {
@@ -106,11 +106,11 @@ export default function TypeDestination() {
               variant="standard"
               size="small"
             >
-              <MenuItem value="name-asc">A-Z</MenuItem>
-              <MenuItem value="name-desc">Z-A</MenuItem>
-              <MenuItem value="price-asc">Low Price</MenuItem>
-              <MenuItem value="price-desc">High Price</MenuItem>
-              <MenuItem value="date-asc">Nearest Date</MenuItem>
+              <MenuItem value="0">Nearest Date</MenuItem>
+              <MenuItem value="1">A-Z</MenuItem>
+              <MenuItem value="2">Z-A</MenuItem>
+              <MenuItem value="3">Low Price</MenuItem>
+              <MenuItem value="4">High Price</MenuItem>
             </Select>
           </div>
         </div>

@@ -9,17 +9,17 @@ export default function SearchBox() {
   const router = useRouter();
   const [selectedOption, setSelectedOption] = useState({
     label: "Nearest Date",
-    value: "date-asc"
+    value: 0
   });
   const [searchName, setSearchName] = useState("");
-  const [orderBy, setOrderBy] = useState("date-asc");
+  const [orderBy, setOrderBy] = useState(0);
 
   const options = [
-    { value: "name-asc", label: "A-Z" },
-    { value: "name-desc", label: "Z-A" },
-    { value: "price-asc", label: "Low Price" },
-    { value: "price-desc", label: "High Price" },
-    { value: "date-asc", label: "Nearest Date" }
+    { value: 0, label: "Nearest Date" },
+    { value: 1, label: "A-Z" },
+    { value: 2, label: "Z-A" },
+    { value: 3, label: "Low Price" },
+    { value: 4, label: "High Price" },
   ];
 
   const handleFindNow = () => {
