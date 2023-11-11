@@ -42,7 +42,7 @@ export default function TourList() {
         ) : (
           <Splide
             options={{
-              type: "loop",
+              type: "slide",
               perPage: 4,
               pagination: false,
               gap: "1.25rem",

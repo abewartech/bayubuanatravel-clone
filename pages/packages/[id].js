@@ -193,12 +193,12 @@ export default function DetailPackages() {
       const response = await axios.get(
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
-      setProductData(response.data.data); // Store the product data in state
-      console.log(response.data.data);
-      if (productData && productData.product_subs) {
-        const updatedItineraryItems = productData.product_subs.map((sub) => {
+      setProductData(response.data.data);
+      if (response.data.data && response.data.data.product_subs) {
+        const updatedItineraryItems = response.data.data.product_subs.map((sub) => {
           return {
             title: sub.title, // You can modify this based on your product_sub structure
+            description: lang === 'en' ? sub.description_en : sub.description_id,
             // Add other properties as needed
           };
         });
@@ -414,7 +414,7 @@ export default function DetailPackages() {
                         justifyContent: "space-between"
                       }}
                     >
-                     {item.title}
+                     {item?.title}
                       <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""
@@ -426,7 +426,7 @@ export default function DetailPackages() {
                   </div>
                   {expandedItems[idx] && (
                     <div className="p-4">
-                      <div>{t("detailitinerary")}</div>
+                      <div dangerouslySetInnerHTML={{ __html: item?.description }} />
                       <FormControlLabel
                         control={
                           <Android12Switch
