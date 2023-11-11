@@ -543,7 +543,7 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                Rp. {productData && productData.base_price}
+                Rp. {totalPrice}
               </Typography>
             </div>
           </div>
