@@ -367,7 +367,7 @@ export default function DetailPackages() {
                 {lang === "en"
                   ? `USD ${
                       (productData && productData.base_price_usd) ||
-                      productData.base_price
+                      productData?.base_price
                     }`
                   : `Rp. ${productData && productData.base_price}`}
               </div>
