@@ -74,5 +74,11 @@
   "iwill":"I Will Participate In The Day",
   "totalprice":"Total Price:",
   "booknow":"Book Now",
-  "emailus":"Email Kami"
+  "emailus":"Email Kami",
+  "searchpackages": "Search Packages",
+  "orderby": "Order By",
+  "lowprice": "Low Price",
+  "highprice": "High Price",
+  "nearestdate": "Nearest Date",
+  "findnow": "Find Now"
 }

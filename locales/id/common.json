@@ -70,6 +70,11 @@
   "iwill":"Saya Akan Berpartisipasi Di Hari",
   "totalprice":"Total Harga",
   "booknow":"Pesan Sekarang",
-  "emailus":"Email Kami"
-
+  "emailus":"Email Kami",
+  "searchpackages": "Cari Paket",
+  "orderby": "Urutkan dari",
+  "lowprice": "Harga Terendah",
+  "highprice": "Harga Tertinggi",
+  "nearestdate": "Tanggal Terdekat",
+  "findnow": "Cari Sekarang"
 }
