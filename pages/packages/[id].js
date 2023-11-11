@@ -313,8 +313,14 @@ export default function DetailPackages() {
 
   const print = () => {
     const { id } = router.query;
-    const printURL = `/printpdfpackage?id=${id}`; // Replace with your URL and parameter
-    window.open(printURL, "_blank");
+    // const printURL = `/printpdfpackage?id=${id}`; // Replace with your URL and parameter
+    if (lang === "id") {
+      const printURL = `/id/printpdfpackage?id=${id}`;
+      window.open(printURL, "_blank");
+    } else {
+      const printURL = `/printpdfpackage?id=${id}`;
+      window.open(printURL, "_blank");
+    }
   };
 
   return (
@@ -355,54 +361,10 @@ export default function DetailPackages() {
                 />
               ) : (
                 <div
-                  dangerouslySetInnerHTML={{ __html: productData?.description }}
+                  dangerouslySetInnerHTML={{ __html: productData?.description_id }}
                 />
               )}
-              {/* <div className={styles.labelDetail}>Tour Details</div>
-              <div className={styles.infoDetail}>
-                <div className="mb-1">
-                  Depart: 17 Juli 2023, 24 Juli 2023, 7 Agustus 2023
-                </div>
-                <div className="d-flex align-items-center">
-                  <span className="me-1">
-                    <Image src={airplane} alt="airplane" />
-                  </span>
-                  Malaysia Airlines
-                </div>
-              </div>
-              <div className={styles.infoDetail}>
-                <div className="mb-1">
-                  {productData && productData.description}
-                </div>
-              </div> */}
             </div>
-            {/* <div>
-              <div className={styles.labelDetail}>Highlights</div>
-              <ul className={styles.infoDetail}>
-                <li>
-                  Berpakaian khas jepang{" "}
-                  <span>
-                    <b>Kimono</b>
-                  </span>
-                </li>
-                <li>
-                  Berbelanja di{" "}
-                  <span>
-                    <b>Gotemba Premium Outlet</b>
-                  </span>
-                </li>
-                <li>
-                  Berkeliling komplek{" "}
-                  <span>
-                    <b>Asakusa Kannon Temple</b>{" "}
-                  </span>
-                  dengan becak unik khas Jepang{" "}
-                  <span>
-                    <b>Jinrikisha</b>
-                  </span>
-                </li>
-              </ul>
-            </div> */}
             <div className="mt-2">
               <Button
                 variant="contained"

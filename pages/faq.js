@@ -50,6 +50,7 @@ export default function Faq({ serverRenderedData }) {
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel${index + 1}-content`}
             id={`panel${index + 1}-header`}
+            style={{fontWeight: 'bold', fontSize: 18}}
           >
             {item.q}
           </AccordionSummary>
