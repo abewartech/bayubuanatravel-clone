@@ -66,12 +66,14 @@ export default function Card(props) {
                 lang === "en"
                   ? "I want to inquire about the package"
                   : "Saya ingin menanyakan detail terkait paket"
-              }%20${encodeURIComponent(data.title)}`}
-              target="_blank"
+              }%20${encodeURIComponent(
+                data.title
+              )}%0A%0A https://marinarajaampat.id/id/packages/${
+                data.id
+              }`}
             >
               <button>Contact</button>
             </Link>
-
             {/* <div className={styles.infoDetail}>
               <Image src={info} alt="info" />
             </div> */}

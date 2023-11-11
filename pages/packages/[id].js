@@ -195,6 +195,16 @@ export default function DetailPackages() {
       );
       setProductData(response.data.data); // Store the product data in state
       console.log(response.data.data);
+      if (productData && productData.product_subs) {
+        const updatedItineraryItems = productData.product_subs.map((sub) => {
+          return {
+            title: sub.title, // You can modify this based on your product_sub structure
+            // Add other properties as needed
+          };
+        });
+  
+        setItineraryItems(updatedItineraryItems);
+      }
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
@@ -404,7 +414,7 @@ export default function DetailPackages() {
                         justifyContent: "space-between"
                       }}
                     >
-                      Hari 0{idx + 1}: Jakarta - Kansai
+                     {item.title}
                       <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""
