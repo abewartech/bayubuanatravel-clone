@@ -6,5 +6,8 @@ module.exports = nextTranslate({
   swcMinify: true,
   ssr: {
     excludeComponents: ["Button"]
-  }
+  },
+  images: {
+    domains: ['static.marinarajaampat.id'],
+},
 });

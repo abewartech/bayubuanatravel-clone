@@ -347,11 +347,7 @@ export default function DetailPackages() {
         <div className="row">
           <div className="col-lg-5">
             <div className="mb-3 position-relative">
-              <Image
-                src={thumbnail}
-                alt="thumbnail"
-                className={`w-100 h-50 ${styles.img}`}
-              />
+              <Image src={productData && productData.image_url} alt="thumbnail" className={`w-100 h-50 ${styles.img}`} width={500} height={200} />
               <div className={styles.date}>
                 <span className="me-2">
                   <Image src={clock} width={10} height={10} alt="clock" />
@@ -416,7 +412,7 @@ export default function DetailPackages() {
                         justifyContent: "space-between"
                       }}
                     >
-                      {item?.title}
+                      <span style={{fontWeight: "bold"}}>{item?.title}</span>
                       <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""
@@ -470,7 +466,7 @@ export default function DetailPackages() {
                   fontWeight: 600 // Font weight
                 }}
               >
-                {lang === "en" ? `USD` : `Rp`}. {totalPrice}
+                {lang === "en" ? `USD` : `Rp.`} {totalPrice}
               </div>
             </div>
             <div id="book" className="mt-2">
@@ -565,7 +561,7 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                {lang === "en" ? `USD` : `Rp`}. {totalPrice}
+                {lang === "en" ? `USD` : `Rp.`} {totalPrice}
               </Typography>
             </div>
           </div>
