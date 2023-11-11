@@ -347,7 +347,15 @@ export default function DetailPackages() {
         <div className="row">
           <div className="col-lg-5">
             <div className="mb-3 position-relative">
-              <Image src={productData && productData.image_url} alt="thumbnail" className={`w-100 h-50 ${styles.img}`} width={500} height={200} />
+              {productData && productData.image_url && (
+                <Image
+                  src={productData && productData.image_url}
+                  alt="thumbnail"
+                  className={`w-100 h-50 ${styles.img}`}
+                  width={500}
+                  height={200}
+                />
+              )}
               <div className={styles.date}>
                 <span className="me-2">
                   <Image src={clock} width={10} height={10} alt="clock" />
@@ -412,7 +420,7 @@ export default function DetailPackages() {
                         justifyContent: "space-between"
                       }}
                     >
-                      <span style={{fontWeight: "bold"}}>{item?.title}</span>
+                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
                       <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""

@@ -41,7 +41,15 @@ export default function Card(props) {
           }
           className="h-100"
         >
-          <Image src={data && data.image_url} alt="thumbnail" className="w-100" width={400} height={200} />
+          {data && data.image_url && (
+            <Image
+              src={data && data.image_url}
+              alt="thumbnail"
+              className="w-100"
+              width={400}
+              height={200}
+            />
+          )}
         </Link>
         <div className={styles.date}>
           <span className="me-2">
@@ -68,9 +76,7 @@ export default function Card(props) {
                   : "Saya ingin menanyakan detail terkait paket"
               }%20${encodeURIComponent(
                 data.title
-              )}%0A%0A https://marinarajaampat.id/id/packages/${
-                data.id
-              }`}
+              )}%0A%0A https://marinarajaampat.id/id/packages/${data.id}`}
             >
               <button>Contact</button>
             </Link>
