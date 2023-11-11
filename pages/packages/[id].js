@@ -108,7 +108,11 @@ export default function DetailPackages() {
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [totalPrice, setTotalPrice] = useState(
-    productData ? productData.base_price : 0
+    productData
+      ? lang === "en" && productData.base_price_usd !== null
+        ? productData.base_price_usd
+        : productData.base_price
+      : 0
   );
   const router = useRouter();
 
@@ -175,16 +179,26 @@ export default function DetailPackages() {
       setTotalPrice(
         (prevTotalPrice) =>
           prevTotalPrice +
-          (productData ? productData.product_subs[idx].price : 0)
+          (productData
+            ? lang === "en" && productData.product_subs[idx].price_usd !== null
+              ? productData.product_subs[idx].price_usd
+              : productData.product_subs[idx].price
+            : 0)
       );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== idx)
       );
+
       const productSubsPrice = productData.product_subs.reduce(
         (acc, sub, subIdx) =>
-          updatedCheckedItinerary[subIdx] ? acc + sub.price : acc,
+          updatedCheckedItinerary[subIdx]
+            ? acc +
+              (lang === "en" && sub.price_usd !== null
+                ? sub.price_usd
+                : sub.price)
+            : acc,
         0
       );
       setTotalPrice(productSubsPrice);
@@ -229,12 +243,14 @@ export default function DetailPackages() {
     // Calculate total price whenever productData changes
     if (productData) {
       const productSubsPrice = productData.product_subs.reduce(
-        (acc, sub) => acc + sub.price,
+        (acc, sub) =>
+          acc +
+          (lang === "en" && sub.price_usd !== null ? sub.price_usd : sub.price),
         0
       );
       setTotalPrice(productSubsPrice);
     }
-  }, [productData]);
+  }, [productData, lang]);
 
   const handleShowDetail = (id) => {
     toggleExpandedItem(id);
@@ -348,8 +364,14 @@ export default function DetailPackages() {
                 className={styles.topLabel}
                 style={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                Rp. {productData && productData.base_price}
+                {lang === "en"
+                  ? `USD ${
+                      (productData && productData.base_price_usd) ||
+                      productData.base_price
+                    }`
+                  : `Rp. ${productData && productData.base_price}`}
               </div>
+
               <div className={styles.topTitle}>
                 {productData && productData.title}
               </div>
@@ -448,7 +470,7 @@ export default function DetailPackages() {
                   fontWeight: 600 // Font weight
                 }}
               >
-                Rp. {totalPrice}
+                {lang === "en" ? `USD` : `Rp`}. {totalPrice}
               </div>
             </div>
             <div id="book" className="mt-2">
@@ -543,7 +565,7 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                Rp. {totalPrice}
+                {lang === "en" ? `USD` : `Rp`}. {totalPrice}
               </Typography>
             </div>
           </div>
