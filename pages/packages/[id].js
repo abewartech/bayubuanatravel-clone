@@ -174,17 +174,20 @@ export default function DetailPackages() {
       // Item is checked, no need to modify the selectedItinerary state
       setTotalPrice(
         (prevTotalPrice) =>
-          prevTotalPrice + (productData ? productData.price_per_day : 0)
+          prevTotalPrice +
+          (productData ? productData.product_subs[idx].price : 0)
       );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== idx)
       );
-      setTotalPrice(
-        (prevTotalPrice) =>
-          prevTotalPrice - (productData ? productData.price_per_day : 0)
+      const productSubsPrice = productData.product_subs.reduce(
+        (acc, sub, subIdx) =>
+          updatedCheckedItinerary[subIdx] ? acc + sub.price : acc,
+        0
       );
+      setTotalPrice(productSubsPrice);
     }
   };
 
@@ -225,12 +228,11 @@ export default function DetailPackages() {
   useEffect(() => {
     // Calculate total price whenever productData changes
     if (productData) {
-      const basePrice = 0;
       const productSubsPrice = productData.product_subs.reduce(
         (acc, sub) => acc + sub.price,
         0
       );
-      setTotalPrice(basePrice + productSubsPrice);
+      setTotalPrice(productSubsPrice);
     }
   }, [productData]);
 
@@ -361,7 +363,9 @@ export default function DetailPackages() {
                 />
               ) : (
                 <div
-                  dangerouslySetInnerHTML={{ __html: productData?.description_id }}
+                  dangerouslySetInnerHTML={{
+                    __html: productData?.description_id
+                  }}
                 />
               )}
             </div>
@@ -780,7 +784,7 @@ export default function DetailPackages() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={() => setOpenDialog(false)}>Close</Button>
         </DialogActions>
       </Dialog>
     </Layout>

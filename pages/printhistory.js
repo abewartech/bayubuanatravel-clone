@@ -14,8 +14,12 @@ import {
   Typography,
   Box
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import API from "../src/common/api";
 export default function PrintHistory() {
+  const [orderData, setOrderData] = useState(null);
+  const router = useRouter();
   useEffect(() => {
     const css = `
       @page {
@@ -52,6 +56,19 @@ export default function PrintHistory() {
     head.appendChild(style);
     // setTimeout(() => window.print(), 1000); //uncomment print
   }, []);
+
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const response = await API.get(`/orders/v1/client/${router.query.id}`);
+        setOrderData(response.data);
+      } catch (error) {
+        console.error("Error fetching order data:", error);
+      }
+    };
+
+    fetchOrderData();
+  }, [router.query.id]);
 
   const paymentData = [
     {
@@ -176,7 +193,7 @@ export default function PrintHistory() {
           <Grid item xs={12}>
             <Paper>
               <Typography variant="h6" align="center">
-                PERCAYA UMROH Head Office (Jakarta)
+                MARINA RAJA AMPAT
               </Typography>
               <Typography align="center">
                 Ruko Dharmawangsa No 29. Jl Dharmawangsa VI Kebayoran Baru -
@@ -197,13 +214,13 @@ export default function PrintHistory() {
                   <Typography variant="subtitle1">Kode Booking :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>PKMRV8SLI6</Typography>
+                  <Typography>{orderData && orderData.id}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography align="right">Tanggal Pendaftaran :</Typography>
+                  <Typography align="right">Tanggal :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>29-May-2023</Typography>
+                  <Typography>{orderData && orderData.created_at}</Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -211,7 +228,7 @@ export default function PrintHistory() {
                   <Typography variant="subtitle1">Kontak Booking :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>RAJA Travel - Hendra</Typography>
+                  <Typography>admin@marinarajaampat.com</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography align="right">Status :</Typography>
@@ -225,13 +242,13 @@ export default function PrintHistory() {
                   <Typography variant="subtitle1">Nomor Kontak :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>083820028855</Typography>
+                  <Typography>081316776671</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography align="right">Jumlah Jemaah :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>5 Pax</Typography>
+                  <Typography>{orderData && orderData.OrderPayements[0]}</Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -422,26 +439,44 @@ export default function PrintHistory() {
           </Typography>
           <Grid container spacing={0} className="mt-2">
             <Grid item xs={4}>
-              <Typography className="s6 mb-5" sx={{ pl: 10, textAlign: "left" }}>
+              <Typography
+                className="s6 mb-5"
+                sx={{ pl: 10, textAlign: "left" }}
+              >
                 Tanda Tangan Pelanggan
               </Typography>
-              <Typography className="s6 mt-5" sx={{ pl: 10, textAlign: "left" }}>
+              <Typography
+                className="s6 mt-5"
+                sx={{ pl: 10, textAlign: "left" }}
+              >
                 ( <strong>RAJA Travel - Hendra</strong> )
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography className="s6 mb-5" sx={{ pl: 10, textAlign: "left" }}>
+              <Typography
+                className="s6 mb-5"
+                sx={{ pl: 10, textAlign: "left" }}
+              >
                 Customer Service
               </Typography>
-              <Typography className="s6 mt-5" sx={{ pl: 10, textAlign: "left" }}>
+              <Typography
+                className="s6 mt-5"
+                sx={{ pl: 10, textAlign: "left" }}
+              >
                 ( <strong>Leiga Adilawati</strong> )
               </Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography className="s6 mb-5" sx={{ pl: 10, textAlign: "center" }}>
+              <Typography
+                className="s6 mb-5"
+                sx={{ pl: 10, textAlign: "center" }}
+              >
                 Kasir
               </Typography>
-              <Typography className="s6 mt-5" sx={{ pl: 10, textAlign: "center" }}>
+              <Typography
+                className="s6 mt-5"
+                sx={{ pl: 10, textAlign: "center" }}
+              >
                 ( )
               </Typography>
             </Grid>
