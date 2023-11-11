@@ -195,14 +195,17 @@ export default function DetailPackages() {
       );
       setProductData(response.data.data);
       if (response.data.data && response.data.data.product_subs) {
-        const updatedItineraryItems = response.data.data.product_subs.map((sub) => {
-          return {
-            title: sub.title, // You can modify this based on your product_sub structure
-            description: lang === 'en' ? sub.description_en : sub.description_id,
-            // Add other properties as needed
-          };
-        });
-  
+        const updatedItineraryItems = response.data.data.product_subs.map(
+          (sub) => {
+            return {
+              title: sub.title, // You can modify this based on your product_sub structure
+              description:
+                lang === "en" ? sub.description_en : sub.description_id
+              // Add other properties as needed
+            };
+          }
+        );
+
         setItineraryItems(updatedItineraryItems);
       }
     } catch (error) {
@@ -344,7 +347,18 @@ export default function DetailPackages() {
               </div>
             </div>
             <div>
-              <div className={styles.labelDetail}>Tour Details</div>
+              {lang === "en" ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: productData?.description_en
+                  }}
+                />
+              ) : (
+                <div
+                  dangerouslySetInnerHTML={{ __html: productData?.description }}
+                />
+              )}
+              {/* <div className={styles.labelDetail}>Tour Details</div>
               <div className={styles.infoDetail}>
                 <div className="mb-1">
                   Depart: 17 Juli 2023, 24 Juli 2023, 7 Agustus 2023
@@ -360,9 +374,9 @@ export default function DetailPackages() {
                 <div className="mb-1">
                   {productData && productData.description}
                 </div>
-              </div>
+              </div> */}
             </div>
-            <div>
+            {/* <div>
               <div className={styles.labelDetail}>Highlights</div>
               <ul className={styles.infoDetail}>
                 <li>
@@ -388,7 +402,7 @@ export default function DetailPackages() {
                   </span>
                 </li>
               </ul>
-            </div>
+            </div> */}
             <div className="mt-2">
               <Button
                 variant="contained"
@@ -414,7 +428,7 @@ export default function DetailPackages() {
                         justifyContent: "space-between"
                       }}
                     >
-                     {item?.title}
+                      {item?.title}
                       <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""
@@ -426,7 +440,9 @@ export default function DetailPackages() {
                   </div>
                   {expandedItems[idx] && (
                     <div className="p-4">
-                      <div dangerouslySetInnerHTML={{ __html: item?.description }} />
+                      <div
+                        dangerouslySetInnerHTML={{ __html: item?.description }}
+                      />
                       <FormControlLabel
                         control={
                           <Android12Switch
@@ -434,7 +450,7 @@ export default function DetailPackages() {
                             onChange={() => handleCheckboxChange(idx)}
                           />
                         }
-                        label={`${t("iwill")} 0 ${idx + 1}: Jakarta - Kansai`}
+                        label={`${t("iwill")} ${item?.title}`}
                         className="mt-2"
                       />
                     </div>
