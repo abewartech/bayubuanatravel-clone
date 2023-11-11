@@ -587,7 +587,7 @@ export default function DetailPackages() {
             marginBottom={3}
             className="mt-2"
           >
-            {`*Jumlah minimum yang perlu dibayarkan adalah
+            {`*${t("Jumlahminimumyangperludibayarkan")}
             ${productData && productData.minimum_payment}
             %`}
           </Typography>
