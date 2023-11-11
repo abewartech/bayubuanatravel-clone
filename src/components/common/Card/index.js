@@ -61,9 +61,17 @@ export default function Card(props) {
             </div>
           </div>
           <div className={styles.cta}>
-            <Link href="https://wa.me/6281316776671" target="_blank">
+            <Link
+              href={`https://wa.me/6281316776671?text=Hi%2C%20${
+                lang === "en"
+                  ? "I want to inquire about the package"
+                  : "Saya ingin menanyakan detail terkait paket"
+              }%20${encodeURIComponent(data.title)}`}
+              target="_blank"
+            >
               <button>Contact</button>
             </Link>
+
             {/* <div className={styles.infoDetail}>
               <Image src={info} alt="info" />
             </div> */}
