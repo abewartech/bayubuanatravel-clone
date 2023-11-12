@@ -950,7 +950,7 @@ export default function DetailPackages() {
                         }}
                       >
                         <Button type="submit" disabled={isSubmitting}>
-                          Login
+                          {t('login')}
                         </Button>
                       </div>
                       <div
