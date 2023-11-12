@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import API from "../src/common/api";
 export default function PrintHistory() {
+  const { t, lang } = useTranslation("common");
   const [orderData, setOrderData] = useState(null);
   const router = useRouter();
   useEffect(() => {
