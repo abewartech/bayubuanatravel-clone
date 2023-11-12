@@ -95,9 +95,7 @@ export default function DetailPackages() {
   const [checkedItinerary, setCheckedItinerary] = useState(
     new Array(8).fill(true)
   );
-  const [selectedItinerary, setSelectedItinerary] = useState([
-    ...Array(8).keys()
-  ]);
+  const [selectedItinerary, setSelectedItinerary] = useState([]);
   const [expandedItems, setExpandedItems] = useState(
     Array(itineraryItems.length).fill(false)
   );
@@ -115,6 +113,11 @@ export default function DetailPackages() {
       : 0
   );
   const router = useRouter();
+
+  const successPayment = () => {
+    setOpenDialog(false);
+    router.push("profile?menu=history");
+  };
 
   useEffect(() => {
     let intervalId; // Define intervalId here
@@ -187,8 +190,9 @@ export default function DetailPackages() {
       );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
+      const productSubIdToRemove = productData.product_subs[idx].id; // assuming id is the product sub id
       setSelectedItinerary((prevSelected) =>
-        prevSelected.filter((item) => item !== idx)
+        prevSelected.filter((item) => item !== productSubIdToRemove)
       );
 
       const productSubsPrice = productData.product_subs.reduce(
@@ -224,6 +228,10 @@ export default function DetailPackages() {
         );
 
         setItineraryItems(updatedItineraryItems);
+        const productSubIds = response.data.data.product_subs.map(
+          (sub) => sub.id
+        );
+        setSelectedItinerary(productSubIds);
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -295,7 +303,7 @@ export default function DetailPackages() {
       const payload = {
         amount: parseInt(amountChanges, 10), // Parse 'amountChanges' to an integer
         product_id: parseInt(id, 10), // Parse 'id' to an integer
-        product_subs: [],
+        product_subs: selectedItinerary,
         voucher_code: ""
       };
 
@@ -798,7 +806,7 @@ export default function DetailPackages() {
       />
       <Dialog
         open={openDialog}
-        onClose={() => setOpenDialog(false)}
+        onClose={successPayment}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -816,7 +824,7 @@ export default function DetailPackages() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Close</Button>
+          <Button onClick={successPayment}>Close</Button>
         </DialogActions>
       </Dialog>
     </Layout>

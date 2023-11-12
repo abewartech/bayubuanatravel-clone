@@ -41,6 +41,39 @@ export default function History(props) {
     fetchData();
   }, []); // The empty dependency array ensures this effect runs once when the component mounts.
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - 7);
+        const apiParams = {
+          page: page,
+          limit: 10,
+          start_date: startDate.toISOString().slice(0, 10),
+          end_date: endDate.toISOString().slice(0, 10)
+        };
+  
+        if (statusTrx === "all") {
+          delete apiParams.status;
+        } else if (statusTrx === "done") {
+          apiParams.status = "PAID";
+        } else if (statusTrx === "unpaid") {
+          apiParams.status = "INITIATED";
+        }
+  
+        const response = await API.get(`orders/v1/client/history`, {
+          params: apiParams
+        });
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+  
+    fetchData();
+  }, [page, statusTrx]);
+
   const handleFilter = (status) => {
     setStatusTrx(status);
   };
@@ -97,10 +130,9 @@ export default function History(props) {
                       <div className={styles.historyImg}></div>
                       <div className={styles.historyWrap}>
                         <div className={styles.historyStatus}>
-                          Belum Dibayar
+                          {item.status === "PAID" ? "Lunas" : "Belum Lunas"}
                         </div>
                         <div className={styles.historyName}>Paket Umroh 1</div>
-                        {/* <div className={styles.history}></div> */}
                       </div>
                     </div>
                     <div className={styles.historyRight}>
@@ -117,14 +149,14 @@ export default function History(props) {
                         variant="outlined"
                         color="success"
                         onClick={() => {
-                          if (item.status === "paid") {
-                            handlePayment();
-                          } else {
+                          if (item.status === "PAID") {
                             print(item.id);
+                          } else {
+                            handlePayment();
                           }
                         }}
                       >
-                        {item.status === "paid" ? "Bayar" : "Print"}
+                        {item.status === "PAID" ? "Print" : "Bayar"}
                       </Button>
                     </div>
                   </div>
