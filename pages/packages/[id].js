@@ -589,7 +589,7 @@ export default function DetailPackages() {
           </div>
           <TextField
             error={errorAmount}
-            label="Amount"
+            label={t('amount')}
             type="number"
             onChange={amountChange}
             fullWidth
@@ -608,7 +608,7 @@ export default function DetailPackages() {
           <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
-                label="Promo Code"
+                label={t('promocode')}
                 variant="outlined"
                 size="small"
                 fullWidth
