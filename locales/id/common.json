@@ -33,7 +33,7 @@
   "jetty": "Jetty Marina Star",
   "Speed": "Speed Boat",
   "reserv": "Reservasi Sekarang",
-  "open": "Open trip (setiap akhir pekan)",
+  "open": "Open trip (Setiap Akhir Pekan)",
   "dont": "Belum Mempunyai Akun ?",
   "forgot": "Lupa Password?",
   "register": "Daftar",
@@ -91,7 +91,8 @@
  "usepromo":"Gunakan Kode Promo",
  "promocode":"Kode Promo",
  "amount":"Jumlah",
- "detailpackagetour":"Detil Paket Tour"
+ "detailpackagetour":"Detil Paket Tour",
+ "activity":"Aktifitas"
 
   
 

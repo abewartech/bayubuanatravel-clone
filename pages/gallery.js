@@ -5,8 +5,10 @@ import { useState } from "react";
 import styles from "./../styles/pages/Gallery.module.scss";
 import resort from "./../public/assets/resort.jpg";
 import TitleSection from "../src/components/common/TitleSection";
+import useTranslation from "next-translate/useTranslation";
 export default function Gallery() {
   const [active, setActive] = useState("All");
+  const { t, lang } = useTranslation("common");
   const [activeGallery, setActiveGallery] = useState("All");
   const breadcrumb = [
     {
@@ -16,8 +18,8 @@ export default function Gallery() {
       name: "Gallery",
     },
   ];
-  const menuGallery = ["All", "Piaynemo", "Kalibiru", "Wayag"];
-  const activityGallery = ["All", "Piaynemo", "Kalibiru", "Wayag"];
+  const menuGallery = [t('all'), "Piaynemo", "Kalibiru", "Wayag"];
+  const activityGallery = [t('all'), "Piaynemo", "Kalibiru", "Wayag"];
 
   const handleActive = (type, name) => {
     if (name === "activity") {
@@ -60,7 +62,7 @@ export default function Gallery() {
       </div>
       <div className={styles.activityContainer}>
         <div className="container">
-          <TitleSection title="Activity" more={false} align="center" />
+          <TitleSection title={t('activity')} more={false} align="center" />
           <div className="row">
             <div className="col-12">
               <div className={styles.menuActivity}>
