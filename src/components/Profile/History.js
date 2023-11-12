@@ -1,12 +1,39 @@
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import styles from "./Profile.module.scss";
 import { useRouter } from "next/router";
-import { Button } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+import TimelineDot from "@mui/lab/TimelineDot";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Import Axios
 import API from "../../common/api";
 import calendar from "./calendar.svg";
+import dayjs from "dayjs";
+import "dayjs/locale/id";
+
+const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
+  ssr: false
+});
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 650,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  borderRadius: 4,
+  p: 4
+};
 
 export default function History(props) {
   const { t, lang } = useTranslation("common");
@@ -14,6 +41,8 @@ export default function History(props) {
   const [statusTrx, setStatusTrx] = useState("all");
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedHistory, setSelectedHistory] = useState(null);
 
   // Use useEffect to fetch data from the API
   useEffect(() => {
@@ -53,7 +82,7 @@ export default function History(props) {
           start_date: startDate.toISOString().slice(0, 10),
           end_date: endDate.toISOString().slice(0, 10)
         };
-  
+
         if (statusTrx === "all") {
           delete apiParams.status;
         } else if (statusTrx === "done") {
@@ -61,7 +90,7 @@ export default function History(props) {
         } else if (statusTrx === "unpaid") {
           apiParams.status = "INITIATED";
         }
-  
+
         const response = await API.get(`orders/v1/client/history`, {
           params: apiParams
         });
@@ -70,7 +99,7 @@ export default function History(props) {
         console.error("Error fetching data: ", error);
       }
     };
-  
+
     fetchData();
   }, [page, statusTrx]);
 
@@ -81,6 +110,15 @@ export default function History(props) {
   const print = (id) => {
     const printURL = `/printhistory?id=${id}`; // Replace with your URL and parameter
     window.open(printURL, "_blank");
+  };
+
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const handleDetails = (history) => {
+    setSelectedHistory(history);
+    toggleModal();
   };
 
   return (
@@ -123,7 +161,7 @@ export default function History(props) {
                     <span>
                       <Image src={calendar} alt="calendar" />
                     </span>
-                    12 Juli 2023 23:00
+                    {dayjs(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
                   </div>
                   <div className={styles.historyContainer}>
                     <div className={styles.historyLeft}>
@@ -132,17 +170,23 @@ export default function History(props) {
                         <div className={styles.historyStatus}>
                           {item.status === "PAID" ? "Lunas" : "Belum Lunas"}
                         </div>
-                        <div className={styles.historyName}>Paket Umroh 1</div>
+                        <div className={styles.historyName}>
+                          {item.product_id}
+                        </div>
                       </div>
                     </div>
                     <div className={styles.historyRight}>
-                      <div className={styles.historyLabel}>{t("samount")}</div>
-                      <div className={styles.historyPrice}>Rp 7.000.000</div>
+                      <div className={styles.historyLabel}>
+                        {t("samount")} {item.price}
+                      </div>
+                      <div>Remaining Payment: {item.price - item.amount}</div>
                     </div>
                   </div>
                   <div className={styles.historyAction}>
                     <div className={styles.historyDetail}>
-                      <Button>{t("pdetails")}</Button>
+                      <Button onClick={() => handleDetails(item)}>
+                        {t("pdetails")}
+                      </Button>
                     </div>
                     <div className={styles.historySee}>
                       <Button
@@ -166,68 +210,63 @@ export default function History(props) {
           ) : (
             <div>No {t("thistory")}</div>
           )}
-          {/* <div className={styles.historyItem}>
-            <div className={styles.historyDate}>
-              <span>
-                <Image src={calendar} alt="calendar" />
-              </span>
-              12 Juli 2023 23:00
-            </div>
-            <div className={styles.historyContainer}>
-              <div className={styles.historyLeft}>
-                <div className={styles.historyImg}></div>
-                <div className={styles.historyWrap}>
-                  <div className={styles.historyStatus}>{t('notpaid')}</div>
-                  <div className={styles.historyName}>Paket Umroh 1</div>
-                </div>
-              </div>
-              <div className={styles.historyRight}>
-                <div className={styles.historyLabel}>{t('samount')}</div>
-                <div className={styles.historyPrice}>Rp 7.000.000</div>
-              </div>
-            </div>
-            <div className={styles.historyAction}>
-              <div className={styles.historyDetail}>
-                <Button>Detail Paket</Button>
-              </div>
-              <div className={styles.historySee}>
-                <Button>Bayar</Button>
-              </div>
-            </div>
-          </div>
-          <div className={styles.historyItem}>
-            <div className={styles.historyDate}>
-              <span>
-                <Image src={calendar} alt="calendar" />
-              </span>
-              12 Juli 2023 23:00
-            </div>
-            <div className={styles.historyContainer}>
-              <div className={styles.historyLeft}>
-                <div className={styles.historyImg}></div>
-                <div className={styles.historyWrap}>
-                  <div className={styles.historyStatusPaid}>{t('paid')}</div>
-                  <div className={styles.historyName}>Paket Umroh 1</div>
-                </div>
-              </div>
-              <div className={styles.historyRight}>
-                <div className={styles.historyLabel}>{t('samount')}</div>
-                <div className={styles.historyPrice}>Rp 7.000.000</div>
-              </div>
-            </div>
-            <div className={styles.historyAction}>
-              <div className={styles.historyDetail}>
-                <Button>{t('pdetails')}</Button>
-              </div>
-              <div className={styles.historySee}>
-                <Button variant="outlined" color="success" onClick={print}>
-                  Print
-                </Button>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
+      <DynamicModal open={modalOpen} onClose={toggleModal}>
+        <Box sx={style}>
+          <Container
+            maxWidth="sm"
+            sx={{ height: "65vh", display: "flex", alignItems: "center" }}
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12}>
+                <Typography>
+                  <Box fontSize={32} fontWeight={600}>
+                    Detail Transaksi
+                  </Box>
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                {selectedHistory && (
+                  <>
+                    <div>
+                      {dayjs(selectedHistory.created_at).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      )}
+                    </div>
+                    <div>{selectedHistory.product_id}</div>
+                  </>
+                )}
+              </Grid>
+              <Grid item xs={12} md={12}>
+                {selectedHistory &&
+                  selectedHistory.OrderPayments &&
+                  selectedHistory.OrderPayments.length > 0 && (
+                    <Timeline position="alternate">
+                      {selectedHistory.OrderPayments.map((payment, index) => (
+                        <TimelineItem key={index}>
+                          <TimelineOppositeContent color="text.secondary">
+                            {payment.created_at}
+                          </TimelineOppositeContent>
+                          <TimelineSeparator>
+                            <TimelineDot />
+                            {index < payment.length - 1 && (
+                              <TimelineConnector />
+                            )}
+                          </TimelineSeparator>
+                          <TimelineContent>{payment.status}</TimelineContent>
+                          <TimelineContent>
+                            Amount: {payment.amount}
+                          </TimelineContent>
+                        </TimelineItem>
+                      ))}
+                    </Timeline>
+                  )}
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </DynamicModal>
     </div>
   );
 }

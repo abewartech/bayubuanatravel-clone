@@ -248,7 +248,7 @@ export default function PrintHistory() {
                   <Typography align="right">Jumlah Jemaah :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{orderData && orderData.OrderPayements[0]}</Typography>
+                  <Typography></Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
