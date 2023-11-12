@@ -1,5 +1,6 @@
 import axios from "axios";
 import API_URL from "./variable";
+import useAuthStore from "../store/loginStore";
 
 // Create an Axios instance with the base URL
 const API = axios.create({
@@ -40,6 +41,11 @@ API.interceptors.response.use(
   function (error) {
     if (error?.response?.status === 403) {
       const redirectTo = API_URL;
+      useAuthStore.setState({
+				isLoggedIn:false,
+				username:''
+			})
+			window.location.href = '/';
       // You may want to handle the redirection logic here
       // Example: window.location.replace(redirectTo + "login");
     }

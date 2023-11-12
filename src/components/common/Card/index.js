@@ -65,7 +65,10 @@ export default function Card(props) {
           <div className={styles.cardPricing}>
             <div className={styles.price}>{t("starting")}</div>
             <div className={styles.priceNumber}>
-              IDR {data && data.base_price} <span>{t("person")}</span>
+              {lang === "en"
+                ? `USD ${(data && data.base_price_usd) || data?.base_price}`
+                : `Rp. ${data && data.base_price}`}
+              <span>{t("person")}</span>
             </div>
           </div>
           <div className={styles.cta}>

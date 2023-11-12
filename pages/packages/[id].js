@@ -275,8 +275,14 @@ export default function DetailPackages() {
 
   const amountChange = (e) => {
     if (productData && productData.minimum_payment) {
-      if (e.target.value < productData.minimum_payment) {
+      const minimumPaymentPercentage = productData.minimum_payment;
+      const calculatedMinimumAmount =
+        (minimumPaymentPercentage / 100) * productData.base_price;
+
+      if (e.target.value > calculatedMinimumAmount) {
         setErrorAmount(true);
+      } else {
+        setErrorAmount(false);
       }
     }
     setAmountChanges(e.target.value);

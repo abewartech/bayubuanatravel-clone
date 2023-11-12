@@ -13,7 +13,11 @@ export default function PrintPDF() {
     Array(itineraryItems.length).fill(false)
   );
   const [totalPrice, setTotalPrice] = useState(
-    productData ? productData.base_price : 0
+    productData
+      ? lang === "en" && productData.base_price_usd !== null
+        ? productData.base_price_usd
+        : productData.base_price
+      : 0
   );
   useEffect(() => {
     const fetchProductData = async () => {
@@ -87,7 +91,12 @@ export default function PrintPDF() {
                     {productData && productData.title}
                   </div>
                   <div style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Rp. {productData && productData.base_price}
+                  {lang === "en"
+                  ? `USD ${
+                      (productData && productData.base_price_usd) ||
+                      productData?.base_price
+                    }`
+                  : `Rp. ${productData && productData.base_price}`}
                   </div>
                 </div>
                 <div>
