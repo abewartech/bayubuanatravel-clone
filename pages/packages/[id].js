@@ -263,7 +263,7 @@ export default function DetailPackages() {
 
   const successPayment = () => {
     setOpenDialog(false);
-    router.push("profile?menu=history");
+    router.push("/profile?menu=history");
   };
 
   useEffect(() => {
@@ -466,13 +466,14 @@ export default function DetailPackages() {
     try {
       const { id } = router.query;
       const payload = {
-        amount: parseInt(amountChanges, 10), // Parse 'amountChanges' to an integer
+        amount: parseFloat(amountChanges), // Parse 'amountChanges' to an integer
         product_id: parseInt(id, 10), // Parse 'id' to an integer
         product_subs: selectedItinerary,
         voucher_code: promoCode,
         qty: qty,
         metadata: JSON.stringify({
           product_name: productData.title,
+          product_image: productData.image_url,
           nama: username,
           no_hp: "",
           no_identitas: "",
@@ -660,8 +661,9 @@ export default function DetailPackages() {
               <div class="col-auto">
                 <div>{t("totalprice")}</div>
                 <div style={{ fontWeight: "bold" }}>
-                  {lang === "en" ? `USD` : `Rp.`}{" "}
-                  {numeral(totalPriceFix).format("0,0")}
+                  {lang === "en"
+                    ? `USD ${numeral(totalPriceFix).format("0,0.00")}`
+                    : `Rp. ${numeral(totalPriceFix).format("0,0")}`}
                 </div>
               </div>
             </div>
@@ -757,8 +759,9 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                {lang === "en" ? `USD` : `Rp.`}{" "}
-                {numeral(totalPriceFix).format("0,0")}
+                {lang === "en"
+                  ? `USD ${numeral(totalPriceFix).format("0,0.00")}`
+                  : `Rp. ${numeral(totalPriceFix).format("0,0")}`}
               </Typography>
             </div>
           </div>

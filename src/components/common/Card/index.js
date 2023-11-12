@@ -6,6 +6,7 @@ import info from "./../../../../public/assets/icon/info.svg";
 import thumbnail from "./../../../../public/assets/gallery/1.jpg";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
 import useTranslation from "next-translate/useTranslation";
+import numeral from "numeral";
 
 import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
@@ -65,7 +66,7 @@ export default function Card(props) {
             <div className={styles.priceNumber}>
               {lang === "en"
                 ? `USD ${(data && data.base_price_usd) || data?.base_price}`
-                : `Rp. ${data && data.base_price}`}
+                : `Rp. ${data && numeral(data.base_price).format("0,0")}`}
               <span>{t("person")}</span>
             </div>
           </div>

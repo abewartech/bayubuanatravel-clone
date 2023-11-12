@@ -14,7 +14,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Import Axios
 import API from "../../common/api";
-import numeral from 'numeral';
+import numeral from "numeral";
 import calendar from "./calendar.svg";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
@@ -159,14 +159,23 @@ export default function History(props) {
               return (
                 <div className={styles.historyItem} key={idx}>
                   <div className={styles.historyDate}>
-                    <span>
-                      <Image src={calendar} alt="calendar" />
-                    </span>
                     {dayjs(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
                   </div>
                   <div className={styles.historyContainer}>
                     <div className={styles.historyLeft}>
-                      <div className={styles.historyImg}></div>
+                      <div className={styles.historyImg}>
+                      {item.metadata &&
+                        typeof item.metadata === "string" &&
+                        JSON.parse(item.metadata)?.product_image && (
+                          <Image
+                            src={JSON.parse(item.metadata).product_image}
+                            alt="thumbnail"
+                            className={`${styles.img}`}
+                            width={62}
+                            height={50}
+                          />
+                        )}
+                      </div>
                       <div className={styles.historyWrap}>
                         <div className={styles.historyStatus}>
                           {item.status === "PAID" ? t("paidoff") : t("notyet")}
@@ -180,9 +189,14 @@ export default function History(props) {
                     </div>
                     <div className={styles.historyRight}>
                       <div className={styles.historyLabel}>
-                        {t("samount")} Rp.{numeral(item.price).format('0,0')}
+                        {t("samount")} Rp.{numeral(item.price).format("0,0")}
                       </div>
-                      <div>Remaining Payment: Rp.{numeral(item.price * item.qty - item.amount).format('0,0')}</div>
+                      <div>
+                        Remaining Payment: Rp.
+                        {numeral(item.price * item.qty - item.amount).format(
+                          "0,0"
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className={styles.historyAction}>
@@ -249,7 +263,9 @@ export default function History(props) {
                       {selectedHistory.OrderPayments.map((payment, index) => (
                         <TimelineItem key={index}>
                           <TimelineOppositeContent color="text.secondary">
-                            {dayjs(payment.created_at).format('YYYY-MM-DD HH:mm:ss')}
+                            {dayjs(payment.created_at).format(
+                              "YYYY-MM-DD HH:mm:ss"
+                            )}
                           </TimelineOppositeContent>
                           <TimelineSeparator>
                             <TimelineDot />

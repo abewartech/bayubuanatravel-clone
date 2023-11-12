@@ -10,6 +10,7 @@ import resort from "./../../public/assets/resort.jpg";
 import API from "../../src/common/api";
 import Pagination from "@mui/material/Pagination";
 import useTranslation from "next-translate/useTranslation";
+import numeral from "numeral";
 import { useRouter } from "next/router";
 
 function Alert(props) {
