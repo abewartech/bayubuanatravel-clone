@@ -81,5 +81,7 @@
   "highprice": "High Price",
   "nearestdate": "Nearest Date",
   "findnow": "Find Now",
-  "Jumlahminimumyangperludibayarkan": "Minimum amount to be paid is"
+  "Jumlahminimumyangperludibayarkan": "Minimum amount to be paid is",
+  "continuepaying": "Continue Paying",
+  "proceedtopayment" :"proceed to payment"
 }

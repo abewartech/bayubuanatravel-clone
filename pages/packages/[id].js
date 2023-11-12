@@ -528,7 +528,7 @@ export default function DetailPackages() {
           ></div>
           <Typography component="div">
             <Box fontSize={24} lineHeight="32px" fontWeight={500}>
-              Lanjut Bayar
+              {t('continuepaying')}
             </Box>
 
             <Box
@@ -624,7 +624,7 @@ export default function DetailPackages() {
           <Grid container spacing={2} className="mt-2">
             <Grid item xs={12} md={6}>
               <Button variant="contained" onClick={handleMidtrans}>
-                Lanjut ke Pembayaran
+               {t('proceedtopayment')}
               </Button>
             </Grid>
           </Grid>
