@@ -85,7 +85,9 @@
   "continuepaying": "Continue Paying",
   "proceedtopayment" :"Proceed to payment",
   "days":"Days",
-  "hours":"Jam"
+  "hours":"Jam",
+  "daybyrequest":"Private trip (day by request)",
+  "everyweekend":"Every Weekend"
   
 
 }

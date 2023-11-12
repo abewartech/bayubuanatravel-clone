@@ -33,7 +33,7 @@
   "jetty": "Jetty Marina Star",
   "Speed": "Speed Boat",
   "reserv": "Reservasi Sekarang",
-  "open": "Trip Terbuka (setiap akhir pekan)",
+  "open": "Open trip (setiap akhir pekan)",
   "dont": "Belum Mempunyai Akun ?",
   "forgot": "Lupa Password?",
   "register": "Daftar",
@@ -81,7 +81,8 @@
   "continuepaying": "Lanjut Bayar",
   "proceedtopayment" :"Lanjut Ke Pembayaran",
   "days":"Hari",
-  "hours":"Jam"
+  "hours":"Jam",
+  "daybyrequest":"Perjalanan pribadi (hari berdasarkan permintaan)"
 
 
   

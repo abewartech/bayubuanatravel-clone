@@ -82,7 +82,7 @@ export default function Card(props) {
                 data.title
               )}%0A%0A https://marinarajaampat.id/id/packages/${data.id}`}
             >
-              <button>Contact</button>
+              <button>{t('contact')}</button>
             </Link>
             {/* <div className={styles.infoDetail}>
               <Image src={info} alt="info" />
