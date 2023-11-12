@@ -222,7 +222,7 @@ export default function History(props) {
               <Grid item xs={12} md={12}>
                 <Typography>
                   <Box fontSize={32} fontWeight={600}>
-                    Detail Transaksi
+                   {t('pdetails')}
                   </Box>
                 </Typography>
               </Grid>
