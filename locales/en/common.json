@@ -83,5 +83,11 @@
   "findnow": "Find Now",
   "Jumlahminimumyangperludibayarkan": "Minimum amount to be paid is",
   "continuepaying": "Continue Paying",
-  "proceedtopayment" :"proceed to payment"
+  "proceedtopayment" :"Proceed to payment",
+  "days":"Days",
+  "hours":"Jam",
+  "daybyrequest":"Private trip (day by request)",
+  "everyweekend":"Every Weekend"
+  
+
 }

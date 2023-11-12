@@ -31,12 +31,12 @@ export default function ContactList(props) {
               )}
             </div>
             <div className={styles.contactMe}>
-              Open trip (every weekend)
-              <br /> Private trip (day by request)
+              {t('open')}
+              <br /> {t('daybyrequest')}
             </div>
             {title.toLowerCase() === "contact" ? (
               <Link href="https://wa.me/6281316776671" target="_blank">
-                <button>Contact</button>
+                <button>{t('contact')}</button>
               </Link>
             ) : (
               <button>{t('emailus')}</button>
