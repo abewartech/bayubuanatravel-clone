@@ -14,6 +14,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Import Axios
 import API from "../../common/api";
+import numeral from 'numeral';
 import calendar from "./calendar.svg";
 import dayjs from "dayjs";
 import "dayjs/locale/id";
@@ -179,9 +180,9 @@ export default function History(props) {
                     </div>
                     <div className={styles.historyRight}>
                       <div className={styles.historyLabel}>
-                        {t("samount")} {item.price}
+                        {t("samount")} Rp.{numeral(item.price).format('0,0')}
                       </div>
-                      <div>Remaining Payment: {item.price * item.qty - item.amount}</div>
+                      <div>Remaining Payment: Rp.{numeral(item.price * item.qty - item.amount).format('0,0')}</div>
                     </div>
                   </div>
                   <div className={styles.historyAction}>
