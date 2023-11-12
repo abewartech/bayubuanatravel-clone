@@ -87,7 +87,16 @@
   "days":"Days",
   "hours":"Jam",
   "daybyrequest":"Private trip (day by request)",
-  "everyweekend":"Every Weekend"
+  "everyweekend":"Every Weekend",
+  "notyet":"Not Yet Paid Off",
+  "paidoff":"Paid Off",
+  "transactionsuccess":" Transaction Success",
+  "thankyou":"Congratulations! Your transaction was successful. We're thrilled to inform you that your payment has been processed without any issues. Thank you for choosing our services, and we look forward to serving  you again in the future. If you have any questions or need further  assistance, please don't hesitate to reach out to our customersupport team. Have a fantastic day!",
+  "amountk":"amount cannot be empty",
+  "usepromo":"Use Promo",
+  "promocode":"Promo code",
+  "amount":"Amount"
+  
   
 
 }

@@ -168,7 +168,7 @@ export default function History(props) {
                       <div className={styles.historyImg}></div>
                       <div className={styles.historyWrap}>
                         <div className={styles.historyStatus}>
-                          {item.status === "PAID" ? "Lunas" : "Belum Lunas"}
+                          {item.status === "PAID" ? t('paidoff') : t('notyet')}
                         </div>
                         <div className={styles.historyName}>
                           {item.product_id}

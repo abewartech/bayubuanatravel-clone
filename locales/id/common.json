@@ -82,8 +82,15 @@
   "proceedtopayment" :"Lanjut Ke Pembayaran",
   "days":"Hari",
   "hours":"Jam",
-  "daybyrequest":"Perjalanan pribadi (hari berdasarkan permintaan)"
-
+  "daybyrequest":"Perjalanan Pribadi (Hari Berdasarkan Permintaan)",
+  "notyet":"Belum Lunas",
+  "paidoff":"Lunas",
+  "transactionsuccess":" Transaksi Berhasil",
+  "thankyou":"Selamat! Transaksi Anda berhasil. Kami senangmemberi tahu Anda bahwa pembayaran Anda telah diproses tanpa masalah apa pun.Terima kasih telah memilih layanan kami, dan kami berharap dapat melayani  kamu lagi di masa depan. Jika Anda memiliki pertanyaan atau membutuhkan lebih lanjutbantuan, jangan ragu untuk menghubungi pelanggan kami  tim pendukung. Semoga harimu menyenangkan!",
+ "amountk":"Jumlah tidak boleh Kosong",
+ "usepromo":"Gunakan Kode Promo",
+ "promocode":"Kode Promo",
+ "amount":"Jumlah"
 
   
 
