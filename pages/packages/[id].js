@@ -21,6 +21,7 @@ import {
   FormControlLabel
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
+import numeral from "numeral";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
@@ -323,9 +324,7 @@ export default function DetailPackages() {
   };
 
   useEffect(() => {
-    setTotalPriceFix(
-      parseFloat((totalPrice * qty).toFixed(2))
-    );
+    setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
   }, [qty]);
 
   const handleCheckboxChange = (idx) => {
@@ -338,21 +337,23 @@ export default function DetailPackages() {
       setTotalPrice(
         (prevTotalPrice) =>
           prevTotalPrice +
-          (productData
-            ? lang === "en" && productData.product_subs[idx].price_usd !== null
-              ? productData.product_subs[idx].price_usd
-              : productData.product_subs[idx].price
-            : 0)
+          (productData &&
+          lang === "en" &&
+          productData.product_subs[idx].price_usd !== null
+            ? productData.product_subs[idx].price_usd
+            : productData.product_subs[idx].price) *
+            qty
       );
       setTotalPriceFix(
         (prevTotalPrice) =>
           prevTotalPrice +
-          (productData
-            ? lang === "en" && productData.product_subs[idx].price_usd !== null
-              ? productData.product_subs[idx].price_usd
-              : productData.product_subs[idx].price
-            : 0)
-      )
+          (productData &&
+          lang === "en" &&
+          productData.product_subs[idx].price_usd !== null
+            ? productData.product_subs[idx].price_usd
+            : productData.product_subs[idx].price) *
+            qty
+      );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       const productSubIdToRemove = productData.product_subs[idx].id; // assuming id is the product sub id
@@ -366,12 +367,13 @@ export default function DetailPackages() {
             ? acc +
               (lang === "en" && sub.price_usd !== null
                 ? sub.price_usd
-                : sub.price)
+                : sub.price) *
+                qty
             : acc,
         0
       );
       setTotalPrice(productSubsPrice);
-      setTotalPriceFix(productSubsPrice)
+      setTotalPriceFix(productSubsPrice);
     }
   };
 
@@ -423,7 +425,7 @@ export default function DetailPackages() {
         0
       );
       setTotalPrice(productSubsPrice);
-      setTotalPriceFix(productSubsPrice)
+      setTotalPriceFix(productSubsPrice);
     }
   }, [productData, lang]);
 
@@ -561,7 +563,10 @@ export default function DetailPackages() {
                       (productData && productData.base_price_usd) ||
                       productData?.base_price
                     }`
-                  : `Rp. ${productData && productData.base_price}`}
+                  : `Rp. ${
+                      productData &&
+                      numeral(productData.base_price).format("0,0")
+                    }`}
               </div>
 
               <div className={styles.topTitle}>
@@ -655,7 +660,8 @@ export default function DetailPackages() {
               <div class="col-auto">
                 <div>{t("totalprice")}</div>
                 <div style={{ fontWeight: "bold" }}>
-                  {lang === "en" ? `USD` : `Rp.`} {totalPriceFix}
+                  {lang === "en" ? `USD` : `Rp.`}{" "}
+                  {numeral(totalPriceFix).format("0,0")}
                 </div>
               </div>
             </div>
@@ -751,7 +757,8 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                {lang === "en" ? `USD` : `Rp.`} {totalPriceFix}
+                {lang === "en" ? `USD` : `Rp.`}{" "}
+                {numeral(totalPriceFix).format("0,0")}
               </Typography>
             </div>
           </div>
@@ -950,7 +957,7 @@ export default function DetailPackages() {
                         }}
                       >
                         <Button type="submit" disabled={isSubmitting}>
-                          {t('login')}
+                          {t("login")}
                         </Button>
                       </div>
                       <div
