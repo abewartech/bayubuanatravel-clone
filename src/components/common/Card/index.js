@@ -28,7 +28,8 @@ export default function Card(props) {
           (durationInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
 
-        return `${days} days ${hours} hours`;
+        return `${days} ${t('days')} ${hours} ${t('hours')}`;
+
       }
 
       return "N/A"; // Handle the case where data is missing or invalid

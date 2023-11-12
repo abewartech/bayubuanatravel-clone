@@ -79,7 +79,11 @@
   "findnow": "Cari Sekarang",
   "Jumlahminimumyangperludibayarkan": "Jumlah minimum yang perlu dibayarkan adalah",
   "continuepaying": "Lanjut Bayar",
-  "proceedtopayment" :"Lanjut Ke Pembayaran"
+  "proceedtopayment" :"Lanjut Ke Pembayaran",
+  "days":"Hari",
+  "hours":"Jam"
+
+
   
 
 }
