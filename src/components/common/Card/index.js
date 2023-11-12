@@ -24,11 +24,8 @@ export default function Card(props) {
 
         // Calculate days, hours, minutes, etc. as needed
         const days = Math.floor(durationInMilliseconds / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (durationInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
 
-        return `${days} ${t('days')} ${hours} ${t('hours')}`;
+        return `${days} ${t('days')}`;
 
       }
 

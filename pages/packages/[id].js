@@ -7,7 +7,7 @@ import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import airplane from "./../../public/assets/icon/airplane-square.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -23,7 +23,10 @@ import {
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
 import DialogContentText from "@mui/material/DialogContentText";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 import DialogTitle from "@mui/material/DialogTitle";
 import bi from "../../public/assets/bi.png";
 import useTranslation from "next-translate/useTranslation";
@@ -82,11 +85,147 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
     margin: 2
   }
 }));
+
+const blue = {
+  100: "#daecff",
+  200: "#b6daff",
+  300: "#66b2ff",
+  400: "#3399ff",
+  500: "#007fff",
+  600: "#0072e5",
+  700: "#0059B2",
+  800: "#004c99"
+};
+
+const grey = {
+  50: "#F3F6F9",
+  100: "#E5EAF2",
+  200: "#DAE2ED",
+  300: "#C7D0DD",
+  400: "#B0B8C4",
+  500: "#9DA8B7",
+  600: "#6B7A90",
+  700: "#434D5B",
+  800: "#303740",
+  900: "#1C2025"
+};
+
+const StyledInputRoot = styled("div")(
+  ({ theme }) => `
+  font-family: IBM Plex Sans, sans-serif;
+  font-weight: 400;
+  color: ${theme.palette.mode === "dark" ? grey[300] : grey[500]};
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+`
+);
+
+const StyledInput = styled("input")(
+  ({ theme }) => `
+  font-size: 0.875rem;
+  font-family: inherit;
+  font-weight: 400;
+  line-height: 1.375;
+  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+  border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+  box-shadow: 0px 2px 4px ${
+    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
+  };
+  border-radius: 8px;
+  margin: 0 8px;
+  padding: 10px 12px;
+  outline: 0;
+  min-width: 0;
+  width: 4rem;
+  text-align: center;
+
+  &:hover {
+    border-color: ${blue[400]};
+  }
+
+  &:focus {
+    border-color: ${blue[400]};
+    box-shadow: 0 0 0 3px ${
+      theme.palette.mode === "dark" ? blue[700] : blue[200]
+    };
+  }
+
+  &:focus-visible {
+    outline: 0;
+  }
+`
+);
+
+const StyledButton = styled("button")(
+  ({ theme }) => `
+  font-family: IBM Plex Sans, sans-serif;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  line-height: 1.5;
+  border: 1px solid;
+  border-radius: 999px;
+  border-color: ${theme.palette.mode === "dark" ? grey[800] : grey[200]};
+  background: ${theme.palette.mode === "dark" ? grey[900] : grey[50]};
+  color: ${theme.palette.mode === "dark" ? grey[200] : grey[900]};
+  width: 32px;
+  height: 32px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 120ms;
+
+  &:hover {
+    cursor: pointer;
+    background: ${theme.palette.mode === "dark" ? blue[700] : blue[500]};
+    border-color: ${theme.palette.mode === "dark" ? blue[500] : blue[400]};
+    color: ${grey[50]};
+  }
+
+  &:focus-visible {
+    outline: 0;
+  }
+
+  &.increment {
+    order: 1;
+  }
+`
+);
+
+const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
+  return (
+    <BaseNumberInput
+      slots={{
+        root: StyledInputRoot,
+        input: StyledInput,
+        incrementButton: StyledButton,
+        decrementButton: StyledButton
+      }}
+      slotProps={{
+        incrementButton: {
+          children: <AddIcon fontSize="small" />,
+          className: "increment"
+        },
+        decrementButton: {
+          children: <RemoveIcon fontSize="small" />
+        }
+      }}
+      {...props}
+      ref={ref}
+    />
+  );
+});
 export default function DetailPackages() {
   const { t, lang } = useTranslation("common");
   const [expand, setExpand] = useState(false);
   const [id, setId] = useState(0);
   const [amountChanges, setAmountChanges] = useState(0);
+  const [qty, setQty] = useState(1);
   const [open, setOpen] = useState(false);
   const [errorAmount, setErrorAmount] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
@@ -106,6 +245,13 @@ export default function DetailPackages() {
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [totalPrice, setTotalPrice] = useState(
+    productData
+      ? lang === "en" && productData.base_price_usd !== null
+        ? productData.base_price_usd
+        : productData.base_price
+      : 0
+  );
+  const [totalPriceFix, setTotalPriceFix] = useState(
     productData
       ? lang === "en" && productData.base_price_usd !== null
         ? productData.base_price_usd
@@ -172,6 +318,16 @@ export default function DetailPackages() {
     setUsername
   } = useAuthStore();
 
+  const handleQtyChange = (e, val) => {
+    setQty(val);
+  };
+
+  useEffect(() => {
+    setTotalPriceFix(
+      parseFloat((totalPrice * qty).toFixed(2))
+    );
+  }, [qty]);
+
   const handleCheckboxChange = (idx) => {
     const updatedCheckedItinerary = [...checkedItinerary];
     updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
@@ -188,6 +344,15 @@ export default function DetailPackages() {
               : productData.product_subs[idx].price
             : 0)
       );
+      setTotalPriceFix(
+        (prevTotalPrice) =>
+          prevTotalPrice +
+          (productData
+            ? lang === "en" && productData.product_subs[idx].price_usd !== null
+              ? productData.product_subs[idx].price_usd
+              : productData.product_subs[idx].price
+            : 0)
+      )
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       const productSubIdToRemove = productData.product_subs[idx].id; // assuming id is the product sub id
@@ -206,6 +371,7 @@ export default function DetailPackages() {
         0
       );
       setTotalPrice(productSubsPrice);
+      setTotalPriceFix(productSubsPrice)
     }
   };
 
@@ -257,6 +423,7 @@ export default function DetailPackages() {
         0
       );
       setTotalPrice(productSubsPrice);
+      setTotalPriceFix(productSubsPrice)
     }
   }, [productData, lang]);
 
@@ -284,12 +451,8 @@ export default function DetailPackages() {
   const amountChange = (e) => {
     if (productData && productData.minimum_payment) {
       const minimumPaymentPercentage = productData.minimum_payment;
-      const basePrice =
-        lang === "en" && productData.base_price_usd !== null
-          ? productData.base_price_usd
-          : productData.base_price;
       const calculatedMinimumAmount =
-        (minimumPaymentPercentage / 100) * basePrice;
+        (minimumPaymentPercentage / 100) * totalPriceFix;
 
       setErrorAmount(e.target.value < calculatedMinimumAmount);
     }
@@ -299,13 +462,23 @@ export default function DetailPackages() {
 
   const fetchBookingCash = async () => {
     try {
-      console.log(selectedItinerary);
       const { id } = router.query;
       const payload = {
         amount: parseInt(amountChanges, 10), // Parse 'amountChanges' to an integer
         product_id: parseInt(id, 10), // Parse 'id' to an integer
         product_subs: selectedItinerary,
-        voucher_code: ""
+        voucher_code: promoCode,
+        qty: qty,
+        metadata: JSON.stringify({
+          product_name: productData.title,
+          nama: username,
+          no_hp: "",
+          no_identitas: "",
+          email: "",
+          alamat: ""
+        }),
+        currency: lang === "en" ? "USD" : "IDR",
+        price: productData.price
       };
 
       const response = await API.post("orders/v1/client", payload);
@@ -375,7 +548,7 @@ export default function DetailPackages() {
                 <span className="me-2">
                   <Image src={clock} width={10} height={10} alt="clock" />
                 </span>
-                {productData && productData.additional_info}
+                {productData && productData.duration} Days
               </div>
             </div>
             <div className="mb-5">
@@ -465,31 +638,25 @@ export default function DetailPackages() {
                 </div>
               );
             })}
-            <div
-              sx={{
-                backgroundColor: "#f0f0f0", // Background color
-                padding: 2, // Padding
-                borderRadius: 4, // Border radius
-                display: "flex", // Display as a flex container
-                justifyContent: "space-between", // Space between items
-                alignItems: "center" // Center vertically
-              }}
-            >
-              <div
-                sx={{
-                  fontSize: 16, // Font size
-                  fontWeight: 600 // Font weight
-                }}
-              >
-                {t("totalprice")}
+            <div className="row">
+              <div class="col-auto me-auto"></div>
+              <div class="col-auto">
+                <NumberInput
+                  aria-label="Quantity Input"
+                  min={1}
+                  max={999}
+                  value={qty}
+                  onChange={handleQtyChange}
+                />
               </div>
-              <div
-                sx={{
-                  fontSize: 16, // Font size
-                  fontWeight: 600 // Font weight
-                }}
-              >
-                {lang === "en" ? `USD` : `Rp.`} {totalPrice}
+            </div>
+            <div class="row mt-3">
+              <div class="col-auto me-auto"></div>
+              <div class="col-auto">
+                <div>{t("totalprice")}</div>
+                <div style={{ fontWeight: "bold" }}>
+                  {lang === "en" ? `USD` : `Rp.`} {totalPriceFix}
+                </div>
               </div>
             </div>
             <div id="book" className="mt-2">
@@ -584,7 +751,7 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                {lang === "en" ? `USD` : `Rp.`} {totalPrice}
+                {lang === "en" ? `USD` : `Rp.`} {totalPriceFix}
               </Typography>
             </div>
           </div>
@@ -606,6 +773,13 @@ export default function DetailPackages() {
             ${productData && productData.minimum_payment}
             %`}
           </Typography>
+          {/* <TextField
+            label='Quantity'
+            type="number"
+            onChange={(e) => setQty(e.target.value)}
+            fullWidth
+            className="mb-4"
+          /> */}
           <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
@@ -624,7 +798,11 @@ export default function DetailPackages() {
           </Grid>
           <Grid container spacing={2} className="mt-2">
             <Grid item xs={12} md={6}>
-              <Button variant="contained" onClick={handleMidtrans} disabled={errorAmount}>
+              <Button
+                variant="contained"
+                onClick={handleMidtrans}
+                disabled={errorAmount}
+              >
                 {t("proceedtopayment")}
               </Button>
             </Grid>
@@ -634,7 +812,7 @@ export default function DetailPackages() {
               <Typography>
                 <Box fontSize="12px" lineHeight="16px">
                   Support By
-                </Box>  
+                </Box>
               </Typography>
             </Grid>
             <Grid item xs={2} md={2}>
@@ -816,7 +994,7 @@ export default function DetailPackages() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {t('thankyou')}
+            {t("thankyou")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
