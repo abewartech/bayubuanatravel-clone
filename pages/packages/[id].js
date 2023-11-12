@@ -284,15 +284,16 @@ export default function DetailPackages() {
   const amountChange = (e) => {
     if (productData && productData.minimum_payment) {
       const minimumPaymentPercentage = productData.minimum_payment;
+      const basePrice =
+        lang === "en" && productData.base_price_usd !== null
+          ? productData.base_price_usd
+          : productData.base_price;
       const calculatedMinimumAmount =
-        (minimumPaymentPercentage / 100) * productData.base_price;
+        (minimumPaymentPercentage / 100) * basePrice;
 
-      if (e.target.value > calculatedMinimumAmount) {
-        setErrorAmount(true);
-      } else {
-        setErrorAmount(false);
-      }
+      setErrorAmount(e.target.value < calculatedMinimumAmount);
     }
+
     setAmountChanges(e.target.value);
   };
 
@@ -323,7 +324,7 @@ export default function DetailPackages() {
     if (amountChanges) {
       fetchBookingCash();
     } else {
-      setPesanError(t('amountk'));
+      setPesanError(t("amountk"));
       setOpenSnackbar(true);
     }
   };
@@ -528,7 +529,7 @@ export default function DetailPackages() {
           ></div>
           <Typography component="div">
             <Box fontSize={24} lineHeight="32px" fontWeight={500}>
-              {t('continuepaying')}
+              {t("continuepaying")}
             </Box>
 
             <Box
@@ -589,7 +590,7 @@ export default function DetailPackages() {
           </div>
           <TextField
             error={errorAmount}
-            label={t('amount')}
+            label={t("amount")}
             type="number"
             onChange={amountChange}
             fullWidth
@@ -608,7 +609,7 @@ export default function DetailPackages() {
           <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
-                label={t('promocode')}
+                label={t("promocode")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -617,14 +618,14 @@ export default function DetailPackages() {
             </Grid>
             <Grid item xs={4} md={4}>
               <Button variant="outlined" onClick={handlePromo}>
-               {t('usepromo')}
+                {t("usepromo")}
               </Button>
             </Grid>
           </Grid>
           <Grid container spacing={2} className="mt-2">
             <Grid item xs={12} md={6}>
-              <Button variant="contained" onClick={handleMidtrans}>
-               {t('proceedtopayment')}
+              <Button variant="contained" onClick={handleMidtrans} disabled={errorAmount}>
+                {t("proceedtopayment")}
               </Button>
             </Grid>
           </Grid>
@@ -633,7 +634,7 @@ export default function DetailPackages() {
               <Typography>
                 <Box fontSize="12px" lineHeight="16px">
                   Support By
-                </Box>
+                </Box>  
               </Typography>
             </Grid>
             <Grid item xs={2} md={2}>
@@ -811,7 +812,7 @@ export default function DetailPackages() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {t('transactionsuccess')}
+          {t("transactionsuccess")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
