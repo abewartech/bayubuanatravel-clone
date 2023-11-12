@@ -377,7 +377,7 @@ export default function DetailPackages() {
                   </span>
                 </li>
               </ul>
-            </div>
+            </div>   
             <div className="mt-2">
               <Button
                 variant="contained"
