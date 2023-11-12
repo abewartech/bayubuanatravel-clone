@@ -9,7 +9,7 @@ import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Import Axios
@@ -168,10 +168,12 @@ export default function History(props) {
                       <div className={styles.historyImg}></div>
                       <div className={styles.historyWrap}>
                         <div className={styles.historyStatus}>
-                          {item.status === "PAID" ? t('paidoff') : t('notyet')}
+                          {item.status === "PAID" ? t("paidoff") : t("notyet")}
                         </div>
                         <div className={styles.historyName}>
-                          {item.product_id}
+                          {item.metadata && typeof item.metadata === "string"
+                            ? JSON.parse(item.metadata).product_name
+                            : ""}
                         </div>
                       </div>
                     </div>
@@ -179,7 +181,7 @@ export default function History(props) {
                       <div className={styles.historyLabel}>
                         {t("samount")} {item.price}
                       </div>
-                      <div>Remaining Payment: {item.price - item.amount}</div>
+                      <div>Remaining Payment: {item.price * item.qty - item.amount}</div>
                     </div>
                   </div>
                   <div className={styles.historyAction}>
@@ -222,7 +224,7 @@ export default function History(props) {
               <Grid item xs={12} md={12}>
                 <Typography>
                   <Box fontSize={32} fontWeight={600}>
-                   {t('pdetails')}
+                    {t("pdetails")}
                   </Box>
                 </Typography>
               </Grid>
@@ -246,7 +248,7 @@ export default function History(props) {
                       {selectedHistory.OrderPayments.map((payment, index) => (
                         <TimelineItem key={index}>
                           <TimelineOppositeContent color="text.secondary">
-                            {payment.created_at}
+                            {dayjs(payment.created_at).format('YYYY-MM-DD HH:mm:ss')}
                           </TimelineOppositeContent>
                           <TimelineSeparator>
                             <TimelineDot />
