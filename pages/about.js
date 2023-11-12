@@ -24,7 +24,7 @@ export default function About() {
   ];
 
   const oneStopServices = [
-    "All",
+    t('all'),
     "Marina Star Resto",
     "Jetty Marina Star",
     "Speed Boat"
