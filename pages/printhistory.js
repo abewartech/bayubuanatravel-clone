@@ -254,7 +254,7 @@ export default function PrintHistory() {
               </TableRow>
               <TableRow>
                 <TableCell style={{ borderBottom: "1pt solid #999999" }}>
-                  <Typography variant="subtitle1">Detail Tagihan</Typography>
+                  <Typography variant="subtitle1">{t('pdetails')}</Typography>
                 </TableCell>
                 <TableCell style={{ borderBottom: "1pt solid #999999" }}>
                   <Typography>

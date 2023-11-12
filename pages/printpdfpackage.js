@@ -79,7 +79,7 @@ export default function PrintPDF() {
               </Typography>
               <Typography align="center">Jakarta</Typography>
               <Typography variant="h4" align="center">
-                Detail Packages Tour
+               {t('detailpackagetour')}
               </Typography>
             </Paper>
           </Grid>
