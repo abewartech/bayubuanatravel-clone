@@ -815,12 +815,7 @@ export default function DetailPackages() {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {`Congratulations! Your transaction was successful. We're thrilled to
-            inform you that your payment has been processed without any issues.
-            Thank you for choosing our services, and we look forward to serving
-            you again in the future. If you have any questions or need further
-            assistance, please don't hesitate to reach out to our customer
-            support team. Have a fantastic day!`}
+            {t('thankyou')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
