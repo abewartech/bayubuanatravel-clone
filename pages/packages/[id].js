@@ -323,7 +323,7 @@ export default function DetailPackages() {
     if (amountChanges) {
       fetchBookingCash();
     } else {
-      setPesanError("Amount Tidak Boleh Kosong");
+      setPesanError(t('amountk'));
       setOpenSnackbar(true);
     }
   };
@@ -617,7 +617,7 @@ export default function DetailPackages() {
             </Grid>
             <Grid item xs={4} md={4}>
               <Button variant="outlined" onClick={handlePromo}>
-                Use Promo
+               {t('usepromo')}
               </Button>
             </Grid>
           </Grid>
@@ -811,7 +811,7 @@ export default function DetailPackages() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Transaction Success"}
+          {t('transactionsuccess')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
