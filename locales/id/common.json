@@ -82,7 +82,9 @@
   "proceedtopayment" :"Lanjut Ke Pembayaran",
   "days":"Hari",
   "hours":"Jam",
-  "daybyrequest":"Perjalanan pribadi (hari berdasarkan permintaan)"
+  "daybyrequest":"Perjalanan Pribadi (Hari Berdasarkan Permintaan)",
+  "notyet":"Belum Lunas",
+  "paidoff":"Lunas"
 
 
   
