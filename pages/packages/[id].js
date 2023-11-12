@@ -108,7 +108,11 @@ export default function DetailPackages() {
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [totalPrice, setTotalPrice] = useState(
-    productData ? productData.base_price : 0
+    productData
+      ? lang === "en" && productData.base_price_usd !== null
+        ? productData.base_price_usd
+        : productData.base_price
+      : 0
   );
   const router = useRouter();
 
@@ -120,9 +124,7 @@ export default function DetailPackages() {
       setOpenDialog(false);
       try {
         if (transactionId) {
-          const response = await API.get(
-            `orders/v1/client/${transactionId}`
-          );
+          const response = await API.get(`orders/v1/client/${transactionId}`);
           console.log("Response data:", response.data);
           if (response.data.status !== "INITIATED") {
             // If it's "ORDERED," stop the interval
@@ -176,17 +178,30 @@ export default function DetailPackages() {
       // Item is checked, no need to modify the selectedItinerary state
       setTotalPrice(
         (prevTotalPrice) =>
-          prevTotalPrice + (productData ? productData.price_per_day : 0)
+          prevTotalPrice +
+          (productData
+            ? lang === "en" && productData.product_subs[idx].price_usd !== null
+              ? productData.product_subs[idx].price_usd
+              : productData.product_subs[idx].price
+            : 0)
       );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== idx)
       );
-      setTotalPrice(
-        (prevTotalPrice) =>
-          prevTotalPrice - (productData ? productData.price_per_day : 0)
+
+      const productSubsPrice = productData.product_subs.reduce(
+        (acc, sub, subIdx) =>
+          updatedCheckedItinerary[subIdx]
+            ? acc +
+              (lang === "en" && sub.price_usd !== null
+                ? sub.price_usd
+                : sub.price)
+            : acc,
+        0
       );
+      setTotalPrice(productSubsPrice);
     }
   };
 
@@ -195,8 +210,21 @@ export default function DetailPackages() {
       const response = await axios.get(
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
-      setProductData(response.data.data); // Store the product data in state
-      console.log(response.data.data);
+      setProductData(response.data.data);
+      if (response.data.data && response.data.data.product_subs) {
+        const updatedItineraryItems = response.data.data.product_subs.map(
+          (sub) => {
+            return {
+              title: sub.title, // You can modify this based on your product_sub structure
+              description:
+                lang === "en" ? sub.description_en : sub.description_id
+              // Add other properties as needed
+            };
+          }
+        );
+
+        setItineraryItems(updatedItineraryItems);
+      }
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
@@ -214,14 +242,15 @@ export default function DetailPackages() {
   useEffect(() => {
     // Calculate total price whenever productData changes
     if (productData) {
-      const basePrice = productData.base_price;
       const productSubsPrice = productData.product_subs.reduce(
-        (acc, sub) => acc + sub.price,
+        (acc, sub) =>
+          acc +
+          (lang === "en" && sub.price_usd !== null ? sub.price_usd : sub.price),
         0
       );
-      setTotalPrice(basePrice + productSubsPrice);
+      setTotalPrice(productSubsPrice);
     }
-  }, [productData]);
+  }, [productData, lang]);
 
   const handleShowDetail = (id) => {
     toggleExpandedItem(id);
@@ -246,8 +275,14 @@ export default function DetailPackages() {
 
   const amountChange = (e) => {
     if (productData && productData.minimum_payment) {
-      if (e.target.value < productData.minimum_payment) {
+      const minimumPaymentPercentage = productData.minimum_payment;
+      const calculatedMinimumAmount =
+        (minimumPaymentPercentage / 100) * productData.base_price;
+
+      if (e.target.value > calculatedMinimumAmount) {
         setErrorAmount(true);
+      } else {
+        setErrorAmount(false);
       }
     }
     setAmountChanges(e.target.value);
@@ -302,8 +337,14 @@ export default function DetailPackages() {
 
   const print = () => {
     const { id } = router.query;
-    const printURL = `/printpdfpackage?id=${id}`; // Replace with your URL and parameter
-    window.open(printURL, "_blank");
+    // const printURL = `/printpdfpackage?id=${id}`; // Replace with your URL and parameter
+    if (lang === "id") {
+      const printURL = `/id/printpdfpackage?id=${id}`;
+      window.open(printURL, "_blank");
+    } else {
+      const printURL = `/printpdfpackage?id=${id}`;
+      window.open(printURL, "_blank");
+    }
   };
 
   return (
@@ -312,11 +353,15 @@ export default function DetailPackages() {
         <div className="row">
           <div className="col-lg-5">
             <div className="mb-3 position-relative">
-              <Image
-                src={thumbnail}
-                alt="thumbnail"
-                className={`w-100 h-50 ${styles.img}`}
-              />
+              {productData && productData.image_url && (
+                <Image
+                  src={productData && productData.image_url}
+                  alt="thumbnail"
+                  className={`w-100 h-50 ${styles.img}`}
+                  width={500}
+                  height={200}
+                />
+              )}
               <div className={styles.date}>
                 <span className="me-2">
                   <Image src={clock} width={10} height={10} alt="clock" />
@@ -325,59 +370,37 @@ export default function DetailPackages() {
               </div>
             </div>
             <div className="mb-5">
-              <div className={styles.topLabel}>
-                Rp. {productData && productData.base_price}
+              <div
+                className={styles.topLabel}
+                style={{ fontSize: "20px", fontWeight: "bold" }}
+              >
+                {lang === "en"
+                  ? `USD ${
+                      (productData && productData.base_price_usd) ||
+                      productData?.base_price
+                    }`
+                  : `Rp. ${productData && productData.base_price}`}
               </div>
+
               <div className={styles.topTitle}>
                 {productData && productData.title}
               </div>
             </div>
             <div>
-              <div className={styles.labelDetail}>Tour Details</div>
-              <div className={styles.infoDetail}>
-                <div className="mb-1">
-                  Depart: 17 Juli 2023, 24 Juli 2023, 7 Agustus 2023
-                </div>
-                <div className="d-flex align-items-center">
-                  <span className="me-1">
-                    <Image src={airplane} alt="airplane" />
-                  </span>
-                  Malaysia Airlines
-                </div>
-              </div>
-              <div className={styles.infoDetail}>
-                <div className="mb-1">
-                  {productData && productData.description}
-                </div>
-              </div>
+              {lang === "en" ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: productData?.description_en
+                  }}
+                />
+              ) : (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: productData?.description_id
+                  }}
+                />
+              )}
             </div>
-            <div>
-              <div className={styles.labelDetail}>Highlights</div>
-              <ul className={styles.infoDetail}>
-                <li>
-                  Berpakaian khas jepang{" "}
-                  <span>
-                    <b>Kimono</b>
-                  </span>
-                </li>
-                <li>
-                  Berbelanja di{" "}
-                  <span>
-                    <b>Gotemba Premium Outlet</b>
-                  </span>
-                </li>
-                <li>
-                  Berkeliling komplek{" "}
-                  <span>
-                    <b>Asakusa Kannon Temple</b>{" "}
-                  </span>
-                  dengan becak unik khas Jepang{" "}
-                  <span>
-                    <b>Jinrikisha</b>
-                  </span>
-                </li>
-              </ul>
-            </div>   
             <div className="mt-2">
               <Button
                 variant="contained"
@@ -389,7 +412,8 @@ export default function DetailPackages() {
             </div>
           </div>
           <div className="col-lg-7">
-            <div className={styles.itineraryTitle}>Itinerary</div>
+            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+            <p className="mb-3">{t("customize")} </p>
             {itineraryItems.map((item, idx) => {
               return (
                 <div key={idx} className={styles.itineraryItem}>
@@ -402,19 +426,21 @@ export default function DetailPackages() {
                         justifyContent: "space-between"
                       }}
                     >
-                      Hari 0{idx + 1}: Jakarta - Kansai
+                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
                       <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""
                         }`}
                       >
-                        {expandedItems[idx] ? "▼" : "▲"}
+                        {expandedItems[idx] ? "▲" : "▼"}
                       </span>
                     </div>
                   </div>
                   {expandedItems[idx] && (
                     <div className="p-4">
-                      <div>Detail Itinerary</div>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: item?.description }}
+                      />
                       <FormControlLabel
                         control={
                           <Android12Switch
@@ -422,9 +448,7 @@ export default function DetailPackages() {
                             onChange={() => handleCheckboxChange(idx)}
                           />
                         }
-                        label={`I will participate in Hari 0${
-                          idx + 1
-                        }: Jakarta - Kansai`}
+                        label={`${t("iwill")} ${item?.title}`}
                         className="mt-2"
                       />
                     </div>
@@ -448,7 +472,7 @@ export default function DetailPackages() {
                   fontWeight: 600 // Font weight
                 }}
               >
-                Total Price:
+                {t("totalprice")}
               </div>
               <div
                 sx={{
@@ -456,7 +480,7 @@ export default function DetailPackages() {
                   fontWeight: 600 // Font weight
                 }}
               >
-                Rp. {totalPrice}
+                {lang === "en" ? `USD` : `Rp.`} {totalPrice}
               </div>
             </div>
             <div id="book" className="mt-2">
@@ -465,7 +489,7 @@ export default function DetailPackages() {
                 onClick={handleBook}
                 style={{ backgroundColor: "#0197da" }}
               >
-                Book Now
+                {t("booknow")}
               </Button>
             </div>
           </div>
@@ -551,7 +575,7 @@ export default function DetailPackages() {
                 lineHeight="24px"
                 fontWeight={700}
               >
-                Rp. {productData && productData.base_price}
+                {lang === "en" ? `USD` : `Rp.`} {totalPrice}
               </Typography>
             </div>
           </div>
@@ -569,7 +593,7 @@ export default function DetailPackages() {
             marginBottom={3}
             className="mt-2"
           >
-            {`*Jumlah minimum yang perlu dibayarkan adalah
+            {`*${t("Jumlahminimumyangperludibayarkan")}
             ${productData && productData.minimum_payment}
             %`}
           </Typography>
@@ -792,7 +816,7 @@ export default function DetailPackages() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={() => setOpenDialog(false)}>Close</Button>
         </DialogActions>
       </Dialog>
     </Layout>

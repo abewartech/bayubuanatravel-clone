@@ -41,7 +41,15 @@ export default function Card(props) {
           }
           className="h-100"
         >
-          <Image src={thumbnail} alt="thumbnail" className="w-100" />
+          {data && data.image_url && (
+            <Image
+              src={data && data.image_url}
+              alt="thumbnail"
+              className="w-100"
+              width={400}
+              height={200}
+            />
+          )}
         </Link>
         <div className={styles.date}>
           <span className="me-2">
@@ -57,11 +65,22 @@ export default function Card(props) {
           <div className={styles.cardPricing}>
             <div className={styles.price}>{t("starting")}</div>
             <div className={styles.priceNumber}>
-              IDR {data && data.base_price} <span>{t("person")}</span>
+              {lang === "en"
+                ? `USD ${(data && data.base_price_usd) || data?.base_price}`
+                : `Rp. ${data && data.base_price}`}
+              <span>{t("person")}</span>
             </div>
           </div>
           <div className={styles.cta}>
-            <Link href="https://wa.me/6281316776671" target="_blank">
+            <Link
+              href={`https://wa.me/6281316776671?text=Hi%2C%20${
+                lang === "en"
+                  ? "I want to inquire about the package"
+                  : "Saya ingin menanyakan detail terkait paket"
+              }%20${encodeURIComponent(
+                data.title
+              )}%0A%0A https://marinarajaampat.id/id/packages/${data.id}`}
+            >
               <button>Contact</button>
             </Link>
             {/* <div className={styles.infoDetail}>

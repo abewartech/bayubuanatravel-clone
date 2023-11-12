@@ -1,6 +1,6 @@
 {
   "Welcome": "Selamat Datang di Marina Raja Ampat",
-  "home": "Halaman Utama",
+  "home": "Beranda",
   "about": "Tentang",
   "packages": "Pilihan Paket",
   "resort": "Resor",
@@ -20,7 +20,7 @@
   "testimoni": "Testimoni Para Pengguna ",
   "testimonit": "Apa pendapat mereka tentang traveling bersama Bayu Buana?",
   "other": "Lainnya",
-  "travel": "pembaruan perjalanan",
+  "travel": "Pembaruan Perjalanan",
   "term": "Syarat & Ketentuan",
   "privacy": "Kebijakan pribadi",
   "sitemap": "Peta Situs",
@@ -63,5 +63,19 @@
   "fullexperienceSlide2": "Nikmati Keindahan Alam Sambil Beristirahat dan Bersantai",
   "WelcomeSlide3": "Menikmati Pemandangan Alam",
   "fullexperienceSlide3": "Dapatkan Kenangan Tak Tergantikan di Liburan Anda",
-  "female": "Perempuan"
+  "female": "Perempuan",
+  "customize":"Pelanggan Dapat Memilih Perjalanan",
+  "itinerary":"Rencana perjalanan",
+  "detailitinerary":"Detil Rencana Perjalanan",
+  "iwill":"Saya Akan Berpartisipasi di",
+  "totalprice":"Total Harga",
+  "booknow":"Pesan Sekarang",
+  "emailus":"Email Kami",
+  "searchpackages": "Cari Paket",
+  "orderby": "Urutkan dari",
+  "lowprice": "Harga Terendah",
+  "highprice": "Harga Tertinggi",
+  "nearestdate": "Tanggal Terdekat",
+  "findnow": "Cari Sekarang",
+  "Jumlahminimumyangperludibayarkan": "Jumlah minimum yang perlu dibayarkan adalah"
 }

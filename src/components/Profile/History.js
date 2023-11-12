@@ -1,4 +1,3 @@
-
 import useTranslation from "next-translate/useTranslation";
 import Image from "next/image";
 import styles from "./Profile.module.scss";
@@ -46,15 +45,15 @@ export default function History(props) {
     setStatusTrx(status);
   };
 
-  const print = () => {
-    const printURL = "/printhistory?id=yourParameterHere"; // Replace with your URL and parameter
+  const print = (id) => {
+    const printURL = `/printhistory?id=${id}`; // Replace with your URL and parameter
     window.open(printURL, "_blank");
   };
 
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
-        <h1 className="mb-4 mb-md-0">{t('thistory')}</h1>
+        <h1 className="mb-4 mb-md-0">{t("thistory")}</h1>
         <div className={styles.filterHistory}>
           <div className={styles.historyMainStatus}>Status</div>
           <div
@@ -63,7 +62,7 @@ export default function History(props) {
               statusTrx === "all" && styles.btnFilter__active
             }`}
           >
-            {t('all')}
+            {t("all")}
           </div>
           <div
             onClick={() => handleFilter("done")}
@@ -71,7 +70,7 @@ export default function History(props) {
               statusTrx === "done" && styles.btnFilter__active
             }`}
           >
-            {t('paid')}
+            {t("paid")}
           </div>
           <div
             className={`${styles.btnFilter} ${
@@ -79,7 +78,7 @@ export default function History(props) {
             }`}
             onClick={() => handleFilter("unpaid")}
           >
-            {t('pending')}
+            {t("pending")}
           </div>
         </div>
         <div className={styles.historyList}>
@@ -105,25 +104,37 @@ export default function History(props) {
                       </div>
                     </div>
                     <div className={styles.historyRight}>
-                      <div className={styles.historyLabel}>{t('samount')}</div>
+                      <div className={styles.historyLabel}>{t("samount")}</div>
                       <div className={styles.historyPrice}>Rp 7.000.000</div>
                     </div>
                   </div>
                   <div className={styles.historyAction}>
                     <div className={styles.historyDetail}>
-                      <Button>{t('pdetails')}</Button>
+                      <Button>{t("pdetails")}</Button>
                     </div>
                     <div className={styles.historySee}>
-                      <Button>Bayar</Button>
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        onClick={() => {
+                          if (item.status === "paid") {
+                            handlePayment();
+                          } else {
+                            print(item.id);
+                          }
+                        }}
+                      >
+                        {item.status === "paid" ? "Bayar" : "Print"}
+                      </Button>
                     </div>
                   </div>
                 </div>
               );
             })
           ) : (
-            <div>No {t('thistory')}</div>
+            <div>No {t("thistory")}</div>
           )}
-          <div className={styles.historyItem}>
+          {/* <div className={styles.historyItem}>
             <div className={styles.historyDate}>
               <span>
                 <Image src={calendar} alt="calendar" />
@@ -136,7 +147,6 @@ export default function History(props) {
                 <div className={styles.historyWrap}>
                   <div className={styles.historyStatus}>{t('notpaid')}</div>
                   <div className={styles.historyName}>Paket Umroh 1</div>
-                  {/* <div className={styles.history}></div> */}
                 </div>
               </div>
               <div className={styles.historyRight}>
@@ -166,7 +176,6 @@ export default function History(props) {
                 <div className={styles.historyWrap}>
                   <div className={styles.historyStatusPaid}>{t('paid')}</div>
                   <div className={styles.historyName}>Paket Umroh 1</div>
-                  {/* <div className={styles.history}></div> */}
                 </div>
               </div>
               <div className={styles.historyRight}>
@@ -184,7 +193,7 @@ export default function History(props) {
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

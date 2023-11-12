@@ -1,8 +1,21 @@
+import { useRouter } from "next/router";
 import styles from "./TitleSection.module.scss";
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from "next-translate/useTranslation";
+
 export default function TitleSection(props) {
-  const { title, subtitle, more, align } = props;
-  const { t, lang } = useTranslation('common')
+  const { title, subtitle, more, align, tours } = props;
+  const { t, lang } = useTranslation("common");
+  const router = useRouter();
+
+  // Redirect to the "package" page if tours is true
+  const handleViewClick = () => {
+    if (tours) {
+      router.push("packages"); // Replace '/package' with the actual path of your "package" page
+    } else {
+      // Handle other logic for the view click
+    }
+  };
+
   return (
     <>
       <div
@@ -17,7 +30,9 @@ export default function TitleSection(props) {
         ""
       ) : (
         <div className="d-none d-lg-flex col-lg-4 align-items-center justify-content-end">
-          <a className={styles.link}>{t('view')}</a>
+          <a className={styles.link} onClick={handleViewClick}>
+            {t("view")}
+          </a>
         </div>
       )}
     </>

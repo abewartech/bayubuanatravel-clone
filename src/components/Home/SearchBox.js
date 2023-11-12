@@ -4,22 +4,24 @@ import Select from "react-select";
 import Search from "@mui/icons-material/Search";
 import Toc from "@mui/icons-material/Toc";
 import { TextField } from "@mui/material";
+import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 export default function SearchBox() {
   const router = useRouter();
+  const { t, lang } = useTranslation("common");
   const [selectedOption, setSelectedOption] = useState({
-    label: "Nearest Date",
-    value: "date-asc"
+    label: t("nearestdate"),
+    value: 0
   });
   const [searchName, setSearchName] = useState("");
-  const [orderBy, setOrderBy] = useState("date-asc");
+  const [orderBy, setOrderBy] = useState(0);
 
   const options = [
-    { value: "name-asc", label: "A-Z" },
-    { value: "name-desc", label: "Z-A" },
-    { value: "price-asc", label: "Low Price" },
-    { value: "price-desc", label: "High Price" },
-    { value: "date-asc", label: "Nearest Date" }
+    { value: 0, label: t("nearestdate") },
+    { value: 1, label: "A-Z" },
+    { value: 2, label: "Z-A" },
+    { value: 3, label: t("lowprice") },
+    { value: 4, label: t("highprice") },
   ];
 
   const handleFindNow = () => {
@@ -44,7 +46,7 @@ export default function SearchBox() {
                 <Search />
               </div>
               <div className={styles.filterForm}>
-                <label className="mb-1">Search Packages</label>
+                <label className="mb-1">{t("searchpackages")}</label>
                 <TextField
                   label=""
                   variant="standard"
@@ -64,7 +66,7 @@ export default function SearchBox() {
                   <Toc />
                 </div>
                 <div className="w-100">
-                  <label>Order by</label>
+                  <label>{t("orderby")}</label>
                   <Select
                     id="search"
                     classNamePrefix="select"
@@ -85,7 +87,7 @@ export default function SearchBox() {
         </div>
         <div className="col-12 col-lg-2 p-0">
           <button className={styles.cta} onClick={handleFindNow}>
-            Find Now
+            {t('findnow')}
           </button>
         </div>
       </div>

@@ -25,7 +25,7 @@ export default function TypeDestination() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchName, setSearchName] = useState("");
-  const [orderBy, setOrderBy] = useState("date-asc"); // Default ordering option
+  const [orderBy, setOrderBy] = useState(0); // Default ordering option
 
   const breadcrumb = [
     {
@@ -40,7 +40,7 @@ export default function TypeDestination() {
     try {
       const itemsPerPage = 12; // Set your items per page
       const response = await API.get(
-        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}&title=${searchName}&orderBy=${orderBy}`
+        `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}&title=${searchName}&order=${orderBy}`
       );
 
       const newData = response.data;
@@ -106,11 +106,11 @@ export default function TypeDestination() {
               variant="standard"
               size="small"
             >
-              <MenuItem value="name-asc">A-Z</MenuItem>
-              <MenuItem value="name-desc">Z-A</MenuItem>
-              <MenuItem value="price-asc">Low Price</MenuItem>
-              <MenuItem value="price-desc">High Price</MenuItem>
-              <MenuItem value="date-asc">Nearest Date</MenuItem>
+              <MenuItem value="0">{t("nearestdate")}</MenuItem>
+              <MenuItem value="1">A-Z</MenuItem>
+              <MenuItem value="2">Z-A</MenuItem>
+              <MenuItem value="3">{t("lowprice")}</MenuItem>
+              <MenuItem value="4">{t("highprice")}</MenuItem>
             </Select>
           </div>
         </div>

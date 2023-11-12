@@ -36,8 +36,8 @@ export default function ContactUs() {
         />
         <div className="container mb-5">
           <div className="row">
-            <TitleSection title="Reservation Now" more={false} />
-            <ContactList title="Contact" />
+            <TitleSection title={t("reserv")} more={false} />
+            <ContactList title={t("contact")} />
             <ContactList title="Email" />
           </div>
         </div>

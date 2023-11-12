@@ -25,7 +25,7 @@ export default function TourList() {
 
   return (
     <>
-      <TitleSection title={"All Packages"} />
+      <TitleSection title={t('packages')} tours/>
       <div className="mb-4">
         {loading ? ( // Display loading indicator while waiting for data
           <div
@@ -42,7 +42,7 @@ export default function TourList() {
         ) : (
           <Splide
             options={{
-              type: "loop",
+              type: "slide",
               perPage: 4,
               pagination: false,
               gap: "1.25rem",
