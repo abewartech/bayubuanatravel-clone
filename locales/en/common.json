@@ -97,7 +97,8 @@
   "promocode":"Promo code",
   "amount":"Amount",
   "detailpackagetour":"Detail Package Tour",
-  "activity":"Activity"
+  "activity":"Activity",
+  "remainingpayment" :"Remaining Payment"
   
   
 

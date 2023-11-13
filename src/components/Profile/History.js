@@ -192,7 +192,7 @@ export default function History(props) {
                         {t("samount")} Rp.{numeral(item.price).format("0,0")}
                       </div>
                       <div>
-                        Remaining Payment: Rp.
+                        {t('remainingpayment')}: Rp.
                         {numeral(item.price * item.qty - item.amount).format(
                           "0,0"
                         )}
