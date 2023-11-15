@@ -18,9 +18,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import API from "../src/common/api";
 import useTranslation from "next-translate/useTranslation";
+import dayjs from "dayjs";
+import numeral from "numeral";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import TimelineDot from "@mui/lab/TimelineDot";
 export default function PrintHistory() {
   const { t, lang } = useTranslation("common");
   const [orderData, setOrderData] = useState(null);
+  const [productData, setProductData] = useState(null);
   const router = useRouter();
   useEffect(() => {
     const css = `
@@ -56,16 +66,28 @@ export default function PrintHistory() {
     }
 
     head.appendChild(style);
-    // setTimeout(() => window.print(), 1000); //uncomment print
+    setTimeout(() => window.print(), 1000); //uncomment print
   }, []);
 
   useEffect(() => {
     const fetchOrderData = async () => {
-      try {
-        const response = await API.get(`/orders/v1/client/${router.query.id}`);
-        setOrderData(response.data);
-      } catch (error) {
-        console.error("Error fetching order data:", error);
+      if (router.query.id) {
+        try {
+          const response = await API.get(
+            `/orders/v1/client/${router.query.id}`
+          );
+          setOrderData(response.data);
+
+          // Make the second API call
+          if (response.data && response.data.product_id) {
+            const productResponse = await API.get(
+              `/products/v1/external/${response.data.product_id}`
+            );
+            setProductData(productResponse.data);
+          }
+        } catch (error) {
+          console.error("Error fetching order data:", error);
+        }
       }
     };
 
@@ -222,7 +244,10 @@ export default function PrintHistory() {
                   <Typography align="right">Tanggal :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{orderData && orderData.created_at}</Typography>
+                  <Typography>
+                    {orderData &&
+                      dayjs(orderData.created_at).format("YYYY-MM-DD HH:mm:ss")}
+                  </Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -236,7 +261,15 @@ export default function PrintHistory() {
                   <Typography align="right">Status :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>Booked</Typography>
+                  <Typography>
+                    {orderData && orderData.status
+                      ? orderData.status === "PAID"
+                        ? t("paidoff")
+                        : orderData.status === "FAILED"
+                        ? "Failed"
+                        : t("notyet")
+                      : "Status not available"}
+                  </Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -247,15 +280,15 @@ export default function PrintHistory() {
                   <Typography>081316776671</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography align="right">Jumlah Jemaah :</Typography>
+                  <Typography align="right">Jumlah :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography></Typography>
+                  <Typography>{orderData && orderData.qty}</Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell style={{ borderBottom: "1pt solid #999999" }}>
-                  <Typography variant="subtitle1">{t('pdetails')}</Typography>
+                  <Typography variant="subtitle1">{t("pdetails")}</Typography>
                 </TableCell>
                 <TableCell style={{ borderBottom: "1pt solid #999999" }}>
                   <Typography>
@@ -288,78 +321,90 @@ export default function PrintHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {packageData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    {row.description} ({row.dateRange})
-                    <br />
-                    {row.packageType}
-                  </TableCell>
-                  <TableCell>{row.biaya}</TableCell>
-                  <TableCell>{row.quantity}</TableCell>
-                  <TableCell>{row.subTotal}</TableCell>
-                </TableRow>
-              ))}
+              {productData &&
+                productData.product_subs.map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {row.title} (
+                      {lang === "en" ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: productData?.description_en
+                          }}
+                        />
+                      ) : (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: productData?.description_id
+                          }}
+                        />
+                      )}
+                      )
+                      <br />
+                      {row.additional_info}
+                    </TableCell>
+                    <TableCell>
+                      {" "}
+                      Rp. {numeral(row.price).format("0,0")}
+                    </TableCell>
+                    <TableCell>{orderData && orderData.qty}</TableCell>
+                    <TableCell>
+                      {" "}
+                      Rp. {numeral(row.price).format("0,0")}
+                    </TableCell>
+                  </TableRow>
+                ))}
               <TableRow>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell>Total Paket</TableCell>
-                <TableCell>{totalData.totalPackage}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell>Total Lain-Lain</TableCell>
-                <TableCell>{totalData.totalOther}</TableCell>
+                <TableCell>
+                  {orderData && orderData.price
+                    ? `Rp. ${numeral(orderData.price * orderData.qty).format(
+                        "0,0"
+                      )}`
+                    : "Price not available"}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
         <Typography variant="h6" className="mt-4 mb-1">
-          Daftar Jamaah & Kelengkapan Dokumen
+          History Pembayaran
         </Typography>
 
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Nama Jamaah</TableCell>
-                <TableCell>Usia</TableCell>
-                <TableCell>Berpasangan</TableCell>
-                <TableCell>Kartu ID Passport</TableCell>
-                <TableCell>Passport Asli</TableCell>
-                <TableCell>Photo</TableCell>
-                <TableCell>Meningitis</TableCell>
-                <TableCell>Mahram</TableCell>
-                <TableCell>Vax Covid</TableCell>
-                <TableCell>Kartu Keluarga</TableCell>
-                <TableCell>Surat Nikah</TableCell>
-                <TableCell>Akte Lahir</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {jamaahData.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.age}</TableCell>
-                  <TableCell>{row.partner}</TableCell>
-                  <TableCell>{row.passport}</TableCell>
-                  <TableCell>{row.originalPassport}</TableCell>
-                  <TableCell>{row.photo}</TableCell>
-                  <TableCell>{row.meningitis}</TableCell>
-                  <TableCell>{row.mahram}</TableCell>
-                  <TableCell>{row.vaxCovid}</TableCell>
-                  <TableCell>{row.familyCard}</TableCell>
-                  <TableCell>{row.marriageCertificate}</TableCell>
-                  <TableCell>{row.birthCertificate}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Grid item xs={12} md={12} className="mt-1">
+          {orderData &&
+            orderData.OrderPayments &&
+            orderData.OrderPayments.length > 0 && (
+              <Timeline position="alternate">
+                {orderData.OrderPayments.map((payment, index) => (
+                  <TimelineItem key={index}>
+                    <TimelineOppositeContent
+                      sx={{ m: "auto 0" }}
+                      color="text.secondary"
+                    >
+                      {dayjs(payment.created_at).format("YYYY-MM-DD HH:mm:ss")}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineConnector />
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent sx={{ py: "12px", px: 2 }}>
+                      <Typography variant="h6" component="span">
+                        {payment.status}
+                      </Typography>
+                      <Typography>Amount: {payment.amount}</Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            )}
+        </Grid>
 
-        <Typography variant="h6" className="mt-3">
+        {/* <Typography variant="h6" className="mt-3">
           Syarat & Ketentuan
         </Typography>
         <Typography variant="subtitle1">Umrah :</Typography>
@@ -487,7 +532,7 @@ export default function PrintHistory() {
             ** Harap membawa slip ini atau memberikan kode booking pada saat
             pengambilan perlengkapan keberangkatan
           </Typography>
-        </Box>
+        </Box> */}
       </Container>
     </>
   );
