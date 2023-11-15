@@ -164,21 +164,25 @@ export default function History(props) {
                   <div className={styles.historyContainer}>
                     <div className={styles.historyLeft}>
                       <div className={styles.historyImg}>
-                      {item.metadata &&
-                        typeof item.metadata === "string" &&
-                        JSON.parse(item.metadata)?.product_image && (
-                          <Image
-                            src={JSON.parse(item.metadata).product_image}
-                            alt="thumbnail"
-                            className={`${styles.img}`}
-                            width={62}
-                            height={50}
-                          />
-                        )}
+                        {item.metadata &&
+                          typeof item.metadata === "string" &&
+                          JSON.parse(item.metadata)?.product_image && (
+                            <Image
+                              src={JSON.parse(item.metadata).product_image}
+                              alt="thumbnail"
+                              className={`${styles.img}`}
+                              width={62}
+                              height={50}
+                            />
+                          )}
                       </div>
                       <div className={styles.historyWrap}>
                         <div className={styles.historyStatus}>
-                          {item.status === "PAID" ? t("paidoff") : t("notyet")}
+                          {item.status === "PAID"
+                            ? t("paidoff")
+                            : item.status === "FAILED"
+                            ? "Failed"
+                            : t("notyet")}
                         </div>
                         <div className={styles.historyName}>
                           {item.metadata && typeof item.metadata === "string"
@@ -192,7 +196,7 @@ export default function History(props) {
                         {t("samount")} Rp.{numeral(item.price).format("0,0")}
                       </div>
                       <div>
-                        {t('remainingpayment')}: Rp.
+                        {t("remainingpayment")}: Rp.
                         {numeral(item.price * item.qty - item.amount).format(
                           "0,0"
                         )}
