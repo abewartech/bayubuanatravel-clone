@@ -3,7 +3,18 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import styles from "./Profile.module.scss";
 import { useRouter } from "next/router";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Typography,
+  Divider,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell
+} from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
@@ -33,7 +44,8 @@ const style = {
   boxShadow: 24,
   border: "none",
   borderRadius: 4,
-  p: 4
+  p: 4,
+  overflow: "auto" // Add this line to enable scrolling
 };
 
 export default function History(props) {
@@ -234,10 +246,19 @@ export default function History(props) {
         </div>
       </div>
       <DynamicModal open={modalOpen} onClose={toggleModal}>
-        <Box sx={style}>
+        <Box
+          sx={{
+            ...style
+          }}
+        >
           <Container
             maxWidth="sm"
-            sx={{ height: "65vh", display: "flex", alignItems: "center" }}
+            sx={{
+              overflow: "auto",
+              maxHeight: "65vh",
+              display: "flex",
+              flexDirection: "column"
+            }}
           >
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
@@ -255,31 +276,89 @@ export default function History(props) {
                         "YYYY-MM-DD HH:mm:ss"
                       )}
                     </div>
-                    <div>{selectedHistory.product_id}</div>
+                    <div
+                      style={{
+                        color:
+                          selectedHistory.status === "PAID"
+                            ? "#00854C"
+                            : selectedHistory.status === "FAILED"
+                            ? "red"
+                            : "#0199da"
+                      }}
+                    >
+                      Status: {selectedHistory.status}
+                    </div>
+
+                    <div>Amount: {selectedHistory.amount}</div>
+                    <div style={{ color: "#0199da" }}>
+                      Order ID: {selectedHistory.id}
+                    </div>
+                    <div>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Metadata:
+                      </Typography>
+                      <Table>
+                        <TableBody>
+                          {selectedHistory.metadata &&
+                            Object.entries(
+                              JSON.parse(selectedHistory.metadata)
+                            ).map(
+                              ([key, value], index) =>
+                                value !== "" && (
+                                  <TableRow key={index}>
+                                    <TableCell>{key}</TableCell>
+                                    <TableCell>
+                                      {key === "product_image" ? (
+                                        <Image
+                                          src={value}
+                                          alt="Product Image"
+                                          width={100}
+                                          height={100}
+                                        />
+                                      ) : (
+                                        value
+                                      )}
+                                    </TableCell>
+                                  </TableRow>
+                                )
+                            )}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <div>Qty: {selectedHistory.qty || "N/A"}</div>
+                    <div>
+                      Voucher Code: {selectedHistory.voucher_code || "N/A"}
+                    </div>
+                    <Divider />
                   </>
                 )}
               </Grid>
-              <Grid item xs={12} md={12}>
+
+              <Grid item xs={12} md={12} className="mt-1">
                 {selectedHistory &&
                   selectedHistory.OrderPayments &&
                   selectedHistory.OrderPayments.length > 0 && (
                     <Timeline position="alternate">
                       {selectedHistory.OrderPayments.map((payment, index) => (
                         <TimelineItem key={index}>
-                          <TimelineOppositeContent color="text.secondary">
+                          <TimelineOppositeContent
+                            sx={{ m: "auto 0" }}
+                            color="text.secondary"
+                          >
                             {dayjs(payment.created_at).format(
                               "YYYY-MM-DD HH:mm:ss"
                             )}
                           </TimelineOppositeContent>
                           <TimelineSeparator>
+                            <TimelineConnector />
                             <TimelineDot />
-                            {index < payment.length - 1 && (
-                              <TimelineConnector />
-                            )}
+                            <TimelineConnector />
                           </TimelineSeparator>
-                          <TimelineContent>{payment.status}</TimelineContent>
-                          <TimelineContent>
-                            Amount: {payment.amount}
+                          <TimelineContent sx={{ py: "12px", px: 2 }}>
+                            <Typography variant="h6" component="span">
+                              {payment.status}
+                            </Typography>
+                            <Typography>Amount: {payment.amount}</Typography>
                           </TimelineContent>
                         </TimelineItem>
                       ))}
