@@ -42,3 +42,7 @@ export default function Homepage() {
     </Layout>
   );
 }
+export const metadata = {
+  title: 'Marina Raja Ampat',
+  description: '...',
+}
