@@ -10,6 +10,7 @@ import resort from "./../public/assets/resort.jpg";
 import Card from "../src/components/common/Card";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
+import Head from "next/head";
 export default function About() {
   const [active, setActive] = useState("All");
   const { t, lang } = useTranslation("common");
@@ -24,7 +25,7 @@ export default function About() {
   ];
 
   const oneStopServices = [
-    t('all'),
+    t("all"),
     "Marina Star Resto",
     "Jetty Marina Star",
     "Speed Boat"
@@ -52,6 +53,13 @@ export default function About() {
   }, []); // Empty dependency array means this effect runs once when the component mounts
   return (
     <Layout>
+      <Head>
+        <title>Marina Raja Ampat - About</title>
+        <meta
+          name="description"
+          content="Is a company that handles Raja Ampat tourism, from arrival to departure to your hometown. Once again, we also have complete services to meet your Raja Ampat tourism needs."
+        />
+      </Head>
       <HeaderPage
         title={t("about")}
         breadcrumb={breadcrumb}

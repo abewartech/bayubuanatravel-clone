@@ -12,6 +12,7 @@ import Client from "../src/components/common/Client";
 import ModalComponent from "../src/components/common/Modal";
 import { useState } from "react";
 import Image from "next/image";
+import Head from "next/head";
 export default function Homepage() {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState();
@@ -27,6 +28,13 @@ export default function Homepage() {
   );
   return (
     <Layout>
+      <Head>
+        <title>Marina Raja Ampat</title>
+        <meta
+          name="description"
+          content="Marina Raja Ampat is a breathtaking waterfront destination nestled in the heart of the enchanting Raja Ampat archipelago, Indonesia. Surrounded by turquoise waters and lush greenery"
+        />
+      </Head>
       <HeroShot />
       <div className="container">
         <div className="row">
@@ -41,8 +49,4 @@ export default function Homepage() {
       <ModalComponent open={open} close={handleOpen} content={content} />
     </Layout>
   );
-}
-export const metadata = {
-  title: 'Marina Raja Ampat',
-  description: '...',
 }
