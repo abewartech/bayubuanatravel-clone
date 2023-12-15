@@ -21,8 +21,11 @@ import {
   Typography,
   Container,
   Grid,
-  Snackbar
+  Snackbar,
+  SnackbarContent,
+  CircularProgress
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { ErrorMessage, Field, Formik } from "formik";
 import axios from "axios";
 import API from "../../common/api";
@@ -49,6 +52,8 @@ export default function Header(props) {
   const [showButton, setShowButton] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     setIsClient(true);
@@ -293,6 +298,10 @@ export default function Header(props) {
                       .catch((error) => {
                         console.error(error);
                         setSubmitting(false);
+                        setSnackbarMessage(
+                          "Login failed. Please check your credentials."
+                        );
+                        setSnackbarOpen(true);
                       });
                   }}
                 >
@@ -362,13 +371,23 @@ export default function Header(props) {
                           marginTop: 16
                         }}
                       >
-                        <Button
+                        <LoadingButton
+                          loading={isSubmitting}
+                          loadingIndicator={
+                            <CircularProgress
+                              color="inherit"
+                              size={22}
+                              style={{ color: "white" }}
+                            />
+                          }
                           type="submit"
-                          disabled={isSubmitting}
-                          style={{ backgroundColor: "#0197da" }}
+                          style={{
+                            backgroundColor: "#0197da",
+                            color: isSubmitting ? "grey" : "white"
+                          }}
                         >
-                          Login
-                        </Button>
+                          {t("login")}
+                        </LoadingButton>
                       </div>
                       <div
                         id="btn-regist"
@@ -399,6 +418,20 @@ export default function Header(props) {
           </Container>
         </Box>
       </DynamicModal>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right"
+        }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          message={snackbarMessage}
+          style={{ backgroundColor: "#ff0000" }} // You can customize the color
+        />
+      </Snackbar>
     </div>
   );
 }
