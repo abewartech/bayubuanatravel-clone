@@ -21,7 +21,11 @@ import API from "../src/common/api";
 import useAuthStore from "../src/store/loginStore";
 import Select from "react-select";
 import countryList from "react-select-country-list";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function Register() {
   const router = useRouter();
@@ -57,6 +61,7 @@ export default function Register() {
     confirmPassword: ""
   };
   const options = useMemo(() => countryList().getData(), []);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <Layout>
       <HeaderPage
@@ -168,7 +173,7 @@ export default function Register() {
                         {...field}
                         minRows={3} // Set the number of rows as needed
                         placeholder={t("yaddress")}
-                        style={{ width: '100%' }}
+                        style={{ width: "100%" }}
                       />
                     )}
                   />
@@ -283,13 +288,38 @@ export default function Register() {
                   >
                     Password
                   </Typography>
-                  <Field
-                    type="password"
-                    onChange={handleChange}
-                    name="password"
-                    autoComplete="on"
-                    placeholder={t("ypassword")}
-                  />
+                  <Field name="password">
+                    {({ field, form }) => (
+                      <TextField
+                        type={showPassword ? "text" : "password"}
+                        onChange={(e) => {
+                          form.handleChange(e);
+                          form.setFieldValue("password", e.target.value);
+                        }}
+                        onBlur={() => form.handleBlur("password")}
+                        value={field.value}
+                        autoComplete="on"
+                        placeholder={t("ypassword")}
+                        fullWidth
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setShowPassword(!showPassword)}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <Visibility />
+                                ) : (
+                                  <VisibilityOff />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    )}
+                  </Field>
                   <ErrorMessage name="password" component="div" />
 
                   <Typography
@@ -300,12 +330,38 @@ export default function Register() {
                   >
                     {t("cpassword")}
                   </Typography>
-                  <Field
-                    type="password"
-                    onChange={handleChange}
-                    name="confirmPassword"
-                    placeholder={t("cpassword")}
-                  />
+                  <Field name="confirmPassword">
+                    {({ field, form }) => (
+                      <TextField
+                        type={showPassword ? "text" : "password"}
+                        onChange={(e) => {
+                          form.handleChange(e);
+                          form.setFieldValue("confirmPassword", e.target.value);
+                        }}
+                        onBlur={() => form.handleBlur("confirmPassword")}
+                        value={field.value}
+                        autoComplete="on"
+                        placeholder={t("cpassword")}
+                        fullWidth
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() => setShowPassword(!showPassword)}
+                                edge="end"
+                              >
+                                {showPassword ? (
+                                  <Visibility />
+                                ) : (
+                                  <VisibilityOff />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    )}
+                  </Field>
                   <ErrorMessage name="confirmPassword" component="div" />
 
                   <div

@@ -272,6 +272,9 @@ export default function Header(props) {
                     ) {
                       errors.email = "Invalid email address";
                     }
+                    if (!values.password) {
+                      errors.password = "Required";
+                    }
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
@@ -316,11 +319,7 @@ export default function Header(props) {
                       >
                         Email
                       </Typography>
-                      <Field
-                        type="text"
-                        name="email"
-                        placeholder="Your Email"
-                      />
+                      <Field type="text" name="email" placeholder="Email" />
                       <ErrorMessage name="email" component="div" />
 
                       <Typography

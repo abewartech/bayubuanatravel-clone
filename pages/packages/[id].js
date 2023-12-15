@@ -915,7 +915,7 @@ export default function DetailPackages() {
                       <Field
                         type="text"
                         name="email"
-                        placeholder="Your Email"
+                        placeholder="Email"
                       />
                       <ErrorMessage name="email" component="div" />
 
@@ -930,7 +930,7 @@ export default function DetailPackages() {
                       <Field
                         type="password"
                         name="password"
-                        placeholder="Your Password"
+                        placeholder="Password"
                       />
                       <ErrorMessage name="password" component="div" />
 
