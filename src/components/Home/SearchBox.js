@@ -51,6 +51,7 @@ export default function SearchBox() {
                   label=""
                   variant="standard"
                   value={searchName}
+                  placeholder="What package are you looking for ?"
                   onChange={(e) => setSearchName(e.target.value)}
                 />
               </div>

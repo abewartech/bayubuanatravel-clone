@@ -162,6 +162,10 @@
         transition: all 0.3s;
         margin-top: 8px;
         margin-right: 8px;
+        &:hover {
+          background-color: #f26f49;
+          color: #fff;
+        }
       }
     }
   }

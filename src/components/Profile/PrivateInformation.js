@@ -40,6 +40,15 @@ export default function PrivateInformation(props) {
   useEffect(() => {
     setUserName(username);
   }, []);
+  useEffect(() => {
+    API.get("/users/v1/detail")
+      .then((response) => {
+        const userData = response.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching user details", error);
+      });
+  }, []);
   const navigationMenu = (url, curr, param, active, unActive, text) => {
     return (
       <div
@@ -163,7 +172,7 @@ export default function PrivateInformation(props) {
                     {...field}
                     minRows={3} // Set the number of rows as needed
                     placeholder={t("yaddress")}
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", padding: 10 }}
                   />
                 )}
               />
@@ -268,40 +277,6 @@ export default function PrivateInformation(props) {
                 )}
               </Field>
               <ErrorMessage name="phone_number" component="div" />
-
-              <Typography
-                fontSize={16}
-                fontWeight={500}
-                marginBottom={1}
-                lineHeight="24px"
-                className="mt-2"
-              >
-                Password
-              </Typography>
-              <Field
-                type="password"
-                onChange={handleChange}
-                name="password"
-                autoComplete="on"
-                placeholder={t("ypassword")}
-              />
-              <ErrorMessage name="password" component="div" />
-
-              <Typography
-                fontSize={16}
-                fontWeight={500}
-                marginBottom={1}
-                lineHeight="24px"
-              >
-                {t("cpassword")}
-              </Typography>
-              <Field
-                type="password"
-                onChange={handleChange}
-                name="confirmPassword"
-                placeholder={t("cpassword")}
-              />
-              <ErrorMessage name="confirmPassword" component="div" />
 
               <div
                 id="btn-login"

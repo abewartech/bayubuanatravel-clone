@@ -8,11 +8,11 @@
   .imageContainer {
     position: relative; /* Required for absolutely positioned child (Image) */
     width: 100%; /* Set the desired width for the image */
-    height: calc(100vh - 32px);
+    height: calc(100vh - 92px);
   }
   .bannerBig {
     width: 100%;
-    height: calc(100vh - 32px);
+    height: calc(100vh - 92px);
     // position: absolute;
     object-fit: cover;
     // left: 1%;
@@ -162,8 +162,8 @@
 
 .iframeVideo {
   iframe {
-    width: 100%;
-    height: 700px;
+    width: 98%;
+    height: 600px;
     margin-bottom: 62px;
   }
 }

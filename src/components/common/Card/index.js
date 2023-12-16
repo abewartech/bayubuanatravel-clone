@@ -82,9 +82,6 @@ export default function Card(props) {
             >
               <button>{t('contact')}</button>
             </Link>
-            {/* <div className={styles.infoDetail}>
-              <Image src={info} alt="info" />
-            </div> */}
           </div>
         </div>
         <div className={styles.overlay}></div>

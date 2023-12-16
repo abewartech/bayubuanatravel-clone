@@ -5,12 +5,14 @@ export default function Videotron() {
   return (
     <>
       <div className="container">
-        <div className="col-12">
-          <div className={styles.iframeVideo}>
-            <iframe
-              src="https://www.youtube.com/embed/xTS5RmnIlOE?controls=1&rel=0&playsinline=0&modestbranding=0&autoplay=0&enablejsapi=1&origin=https%3A%2F%2Fmarinarajaampat.com&widgetid=1"
-              frameBorder="0"
-            />
+        <div className="row justify-content-center">
+          <div className="col-12 text-center">
+            <div className={styles.iframeVideo}>
+              <iframe
+                src="https://www.youtube.com/embed/xTS5RmnIlOE?controls=1&rel=0&playsinline=0&modestbranding=0&autoplay=0&enablejsapi=1&origin=https%3A%2F%2Fmarinarajaampat.com&widgetid=1"
+                frameBorder="0"
+              />
+            </div>
           </div>
         </div>
       </div>
