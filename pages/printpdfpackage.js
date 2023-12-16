@@ -1,9 +1,12 @@
 import { Container, Grid, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import API from "../src/common/api";
 import styles from "./../styles/pages/DetailPackages.module.scss";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import autoTable from "jspdf-autotable";
 export default function PrintPDF() {
   const { t, lang } = useTranslation("common");
   const router = useRouter();
@@ -19,6 +22,7 @@ export default function PrintPDF() {
         : productData.base_price
       : 0
   );
+  const componentRef = useRef();
   useEffect(() => {
     const fetchProductData = async () => {
       try {
@@ -60,12 +64,41 @@ export default function PrintPDF() {
 
     // Check if both productData and itineraryItems are available before printing
     if (productData && itineraryItems.every((item) => item !== null)) {
-      window.print();
+      const pdf = new jsPDF();
+
+      // Set options for html2canvas
+      const options = {
+        scrollY: -window.scrollY // Fixes an issue with scrolling capturing only visible content
+      };
+
+      // Capture the content with html2canvas
+      html2canvas(componentRef.current, options).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+
+        // Add the image to the PDF
+        pdf.addImage(imgData, "PNG", 0, 0);
+
+        // Add a new page for the table
+        pdf.addPage();
+
+        // Use autoTable to add HTML content to the PDF
+        autoTable(pdf, { html: "#itinerary-table" });
+
+        // Save the PDF
+        pdf.save("document.pdf");
+
+        const printConfirmed = window.confirm(
+          "Do you want to print the document?"
+        );
+        if (printConfirmed) {
+          window.print();
+        }
+      });
     }
   }, [productData, itineraryItems]);
 
   return (
-    <>
+    <div ref={componentRef}>
       <Container>
         <Grid container spacing={2} className="mb-3">
           <Grid item xs={12}>
@@ -79,7 +112,7 @@ export default function PrintPDF() {
               </Typography>
               <Typography align="center">Jakarta</Typography>
               <Typography variant="h4" align="center">
-               {t('detailpackagetour')}
+                {t("detailpackagetour")}
               </Typography>
             </Paper>
           </Grid>
@@ -91,12 +124,12 @@ export default function PrintPDF() {
                     {productData && productData.title}
                   </div>
                   <div style={{ fontWeight: "bold", fontSize: 18 }}>
-                  {lang === "en"
-                  ? `USD ${
-                      (productData && productData.base_price_usd) ||
-                      productData?.base_price
-                    }`
-                  : `Rp. ${productData && productData.base_price}`}
+                    {lang === "en"
+                      ? `USD ${
+                          (productData && productData.base_price_usd) ||
+                          productData?.base_price
+                        }`
+                      : `Rp. ${productData && productData.base_price}`}
                   </div>
                 </div>
                 <div>
@@ -145,6 +178,6 @@ export default function PrintPDF() {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </div>
   );
 }
