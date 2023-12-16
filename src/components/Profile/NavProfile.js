@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import personalCardActive from "./personalcardActive.svg";
 import personalCard from "./personalcard.svg";
 import FaceIcon from "@mui/icons-material/Face";
+import KeyIcon from '@mui/icons-material/Key';
 import HistoryIcon from "@mui/icons-material/History";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Button } from "@mui/material";
@@ -100,6 +101,14 @@ export default function NavProfile(props) {
             <HistoryIcon />,
             <HistoryIcon />,
             t("thistory")
+          )}
+          {navigationMenu(
+            "password",
+            currUrl[2],
+            "change",
+            <KeyIcon />,
+            <KeyIcon />,
+            "Change Password"
           )}
           {navigationMenu(
             "logout",

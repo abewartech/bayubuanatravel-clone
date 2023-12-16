@@ -7,6 +7,7 @@ import styles from "../src/components/Profile/Profile.module.scss";
 import { useState } from "react";
 import PrivateInformation from "../src/components/Profile/PrivateInformation";
 import History from "../src/components/Profile/History";
+import PasswordChange from "../src/components/Profile/PasswordChange";
 
 export default function Profile() {
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function Profile() {
             />
             {currMenu === "personal" && <PrivateInformation />}
             {currMenu === "history" && <History />}
+            {currMenu === "password" && <PasswordChange />}
           </div>
         </div>
       </div>
