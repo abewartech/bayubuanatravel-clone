@@ -80,9 +80,9 @@ export default function PrivateInformation(props) {
               errors.password = "Required";
             } else if (values.password.length < 6) {
               errors.password = "Password must be at least 6 characters long";
-            } else if (!/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(values.password)) {
+            } else if (!/[A-Z]/.test(values.password)) {
               errors.password =
-                "Password must contain at least one capital letter and one symbol";
+                "Password must contain at least one capital letter";
             }
 
             if (values.password !== values.confirmPassword) {

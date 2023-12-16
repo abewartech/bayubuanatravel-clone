@@ -88,11 +88,9 @@ export default function Register() {
                 } else if (values.password.length < 6) {
                   errors.password =
                     "Password must be at least 6 characters long";
-                } else if (
-                  !/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(values.password)
-                ) {
+                } else if (!/[A-Z]/.test(values.password)) {
                   errors.password =
-                    "Password must contain at least one capital letter and one symbol";
+                    "Password must contain at least one capital letter";
                 }
 
                 if (values.password !== values.confirmPassword) {
@@ -153,10 +151,11 @@ export default function Register() {
                     onChange={handleChange}
                     name="full_name"
                     placeholder={t("yfullname")}
+                    style={{ height: "50px" }}
                   />
                   <ErrorMessage name="full_name" component="div" />
 
-                  <Typography
+                  {/* <Typography
                     fontSize={16}
                     fontWeight={500}
                     marginBottom={1}
@@ -173,11 +172,11 @@ export default function Register() {
                         {...field}
                         minRows={3} // Set the number of rows as needed
                         placeholder={t("yaddress")}
-                        style={{ width: "100%" }}
+                        style={{ width: "100%", padding: 10 }}
                       />
                     )}
                   />
-                  <ErrorMessage name="address" component="div" />
+                  <ErrorMessage name="address" component="div" /> */}
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
                     {t("country")}
@@ -185,15 +184,20 @@ export default function Register() {
                   <Field
                     name="country"
                     render={({ field, form }) => (
-                      <Select
-                        options={options}
-                        value={options.find(
-                          (option) => option.value === field.value
-                        )}
-                        onChange={(option) =>
-                          form.setFieldValue(field.name, option.value)
-                        }
-                      />
+                      <div style={{ height: "50px" }}>
+                        <Select
+                          options={options}
+                          value={options.find(
+                            (option) => option.value === field.value
+                          )}
+                          onChange={(option) =>
+                            form.setFieldValue(field.name, option.value)
+                          }
+                          styles={{
+                            control: (provided) => ({ ...provided, height: 50 })
+                          }}
+                        />
+                      </div>
                     )}
                   />
                   <ErrorMessage name="country" component="div" />
@@ -210,6 +214,7 @@ export default function Register() {
                     role="group"
                     className="mb-1"
                     aria-labelledby="my-radio-group"
+                    style={{ height: "50px" }}
                   >
                     <FormControlLabel
                       control={
@@ -247,13 +252,36 @@ export default function Register() {
                     Email
                   </Typography>
 
-                  <Field
-                    type="text"
-                    onChange={handleChange}
-                    name="email"
-                    placeholder="contoh@example.com"
-                  />
-                  <ErrorMessage name="email" component="div" />
+                  <div style={{ position: "relative", marginBottom: "16px" }}>
+                    <Field
+                      type="text"
+                      onChange={handleChange}
+                      name="email"
+                      placeholder="contoh@example.com"
+                      className={
+                        touched.email && errors.email ? "error-input" : ""
+                      }
+                      style={{
+                        height: "50px",
+                        borderRadius: "4px",
+                        padding: "8px",
+                        width: "100%",
+                        backgroundColor: "rgb(254, 247, 247)"
+                      }}
+                    />
+                    {errors.email && touched.email && (
+                      <div
+                        style={{
+                          color: "red",
+                          position: "absolute",
+                          bottom: "-13px"
+                        }}
+                      >
+                        {errors.email}
+                      </div>
+                    )}
+                  </div>
+                  {/* <ErrorMessage name="email" component="div" /> */}
 
                   <Typography
                     fontSize={16}
@@ -274,6 +302,7 @@ export default function Register() {
                         }
                         onBlur={field.onBlur}
                         className="form-control"
+                        style={{ height: "50px" }}
                       />
                     )}
                   </Field>

@@ -14,7 +14,7 @@ body {
 }
 
 input {
-  border: none !important;
+  border: none;
   background-color: rgb(254, 247, 247);
   padding: 12px;
   width: 100%;
@@ -23,6 +23,10 @@ input {
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.error-input {
+  border: 1px solid red !important;
 }
 
 #book {
