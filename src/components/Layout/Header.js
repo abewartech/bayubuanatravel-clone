@@ -115,7 +115,7 @@ export default function Header(props) {
               <span className="me-2">
                 <EmailIcon fontSize="small" style={{ fill: "white" }} />
               </span>
-              office@bayubuanatravel.com
+              office@marinarajaampat.com
             </div>
           </div>
         </div>

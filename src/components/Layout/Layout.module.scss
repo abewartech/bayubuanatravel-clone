@@ -200,3 +200,28 @@
     }
   }
 }
+
+.socialMedia {
+  display: flex;
+  gap: 10px; // Adjust the gap between social media buttons as needed
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; // Adjust the width of each button as needed
+    height: 40px; // Adjust the height of each button as needed
+    background-color: #3f51b5; // Set background color as needed
+    color: #fff; // Set text color as needed
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #303f9f; // Set hover background color as needed
+    }
+
+    svg {
+      font-size: 20px; // Set the icon size as needed
+    }
+  }
+}
