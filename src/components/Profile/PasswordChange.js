@@ -1,22 +1,11 @@
 import useTranslation from "next-translate/useTranslation";
 import styles from "./Profile.module.scss";
-import Image from "next/image";
 import useAuthStore from "../../store/loginStore";
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import API from "../../common/api";
-import {
-  Button,
-  FormControlLabel,
-  Radio,
-  Typography,
-  TextareaAutosize,
-  TextField
-} from "@mui/material";
-import Link from "next/link";
-import { PhoneInput } from "react-international-phone";
-import Select from "react-select";
+import { Button, Typography, TextField } from "@mui/material";
 import countryList from "react-select-country-list";
 import "react-international-phone/style.css";
 import InputAdornment from "@mui/material/InputAdornment";

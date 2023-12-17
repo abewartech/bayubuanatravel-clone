@@ -4,8 +4,6 @@ import Image from "next/image";
 import useAuthStore from "../../store/loginStore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import personalCardActive from "./personalcardActive.svg";
-import personalCard from "./personalcard.svg";
 import FaceIcon from "@mui/icons-material/Face";
 import KeyIcon from '@mui/icons-material/Key';
 import HistoryIcon from "@mui/icons-material/History";
