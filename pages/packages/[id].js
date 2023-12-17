@@ -7,6 +7,7 @@ import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import React, { useEffect, useState } from "react";
+import { md5 } from "js-md5";
 import {
   Button,
   Modal,
@@ -21,6 +22,7 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
+import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
@@ -498,7 +500,33 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     if (amountChanges) {
-      fetchBookingCash();
+      const queryParams = {
+        amount: amountChanges,
+        product_id: router.query.id,
+        product_subs: selectedItinerary,
+        voucher_code: promoCode,
+        qty: qty,
+        metadata: {
+          product_name: productData.title,
+          product_image: productData.image_url,
+          nama: username,
+          no_hp: "",
+          no_identitas: "",
+          email: "",
+          alamat: ""
+        },
+        currency: lang === "en" ? "USD" : "IDR",
+        price: productData.price
+      };
+
+      const queryParamsString = btoa(JSON.stringify(queryParams));
+
+      router.push({
+        pathname: "/detailorder",
+        query: { id: queryParamsString }
+      });
+
+      // fetchBookingCash();
     } else {
       setPesanError(t("amountk"));
       setOpenSnackbar(true);
@@ -793,6 +821,16 @@ export default function DetailPackages() {
             onChange={amountChange}
             fullWidth
           />
+          {/* <NumberFormat
+      customInput={TextField}
+      error={errorAmount}
+      label={t("amount")}
+      type="tel" // 'tel' allows entering only numeric values
+      onChange={amountChange}
+      fullWidth
+      thousandSeparator // Add thousand separator
+      value={amountChanges}
+    /> */}
           <Typography
             fontSize={12}
             lineHeight="16px"
@@ -804,13 +842,6 @@ export default function DetailPackages() {
             ${productData && productData.minimum_payment}
             %`}
           </Typography>
-          {/* <TextField
-            label='Quantity'
-            type="number"
-            onChange={(e) => setQty(e.target.value)}
-            fullWidth
-            className="mb-4"
-          /> */}
           <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
@@ -834,7 +865,7 @@ export default function DetailPackages() {
                 onClick={handleMidtrans}
                 disabled={errorAmount}
               >
-                {t("proceedtopayment")}
+                Next
               </Button>
             </Grid>
           </Grid>
