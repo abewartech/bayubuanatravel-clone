@@ -501,8 +501,8 @@ export default function DetailPackages() {
   const handleMidtrans = () => {
     if (amountChanges) {
       const queryParams = {
-        amount: amountChanges,
-        product_id: router.query.id,
+        amount: parseFloat(amountChanges),
+        product_id: parseInt(router.query.id, 10),
         product_subs: selectedItinerary,
         voucher_code: promoCode,
         qty: qty,
@@ -516,7 +516,8 @@ export default function DetailPackages() {
           alamat: ""
         },
         currency: lang === "en" ? "USD" : "IDR",
-        price: productData.price
+        price: productData.price,
+        totalPriceFix
       };
 
       const queryParamsString = btoa(JSON.stringify(queryParams));

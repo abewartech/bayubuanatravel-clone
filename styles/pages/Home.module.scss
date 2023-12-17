@@ -8,11 +8,11 @@
   .imageContainer {
     position: relative; /* Required for absolutely positioned child (Image) */
     width: 100%; /* Set the desired width for the image */
-    height: calc(100vh - 92px);
+    height: calc(100vh - 102px);
   }
   .bannerBig {
     width: 100%;
-    height: calc(100vh - 92px);
+    height: calc(100vh - 102px);
     // position: absolute;
     object-fit: cover;
     // left: 1%;
@@ -39,7 +39,7 @@
       justify-content: center;
       position: relative;
       z-index: 9;
-      height: calc(100vh - 32px);
+      height: calc(100vh - 332px);
 
       // padding: 72px 42px 16px !important;
       .mainTitle {
@@ -72,11 +72,11 @@
     border-radius: 10px;
     padding: 32px 16px;
     margin: 0 -4px;
-    bottom: 80px;
+    bottom: 120px;
     @media (min-width: 991px) {
       padding: 15px 25px;
       margin: auto;
-      bottom: 50px;
+      bottom: 140px;
     }
     position: relative;
     background-color: #fff;

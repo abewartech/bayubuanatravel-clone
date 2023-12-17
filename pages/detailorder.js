@@ -1,72 +1,383 @@
 // pages/detailorder.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../src/components/Layout";
-import { Box, Typography, TextField, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+  InputAdornment,
+  Divider,
+  Grid,
+  Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from "@mui/material";
 import { useRouter } from "next/router";
+import BackIcon from "@mui/icons-material/ArrowBack";
+import useTranslation from "next-translate/useTranslation";
+import axios from "axios";
+import numeral from "numeral";
+import Card from "../src/components/common/Card";
+import API from "../src/common/api";
 
 const DetailOrder = () => {
+  const { t, lang } = useTranslation("common");
   const router = useRouter();
+  const [decodedInfo, setDecodedInfo] = useState(null);
+  const [productData, setProductData] = useState(null);
+  const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
+  const [selectedItinerary, setSelectedItinerary] = useState([]);
+  const [promoCode, setPromoCode] = useState("");
+  const [transactionId, setTransactionId] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [orderStatus, setOrderStatus] = useState(null);
+  const [pesanError, setPesanError] = useState("");
+
   useEffect(() => {
     const sanitizedId = router.query.id?.replace(/\s/g, "");
 
     try {
       const decodedId = decodeURIComponent(atob(sanitizedId || ""));
+      const decodedData = JSON.parse(decodedId);
 
-      console.log(decodedId);
+      setDecodedInfo(decodedData);
+      fetchProductData(decodedData.product_id);
+      setPromoCode(decodedData.voucher_code);
     } catch (error) {
       console.error("Error decoding ID:", error);
     }
   }, [router.query.id]);
+
+  useEffect(() => {
+    let intervalId; // Define intervalId here
+
+    const fetchData = async () => {
+      setOpenSnackbar(false);
+      setOpenDialog(false);
+      try {
+        if (transactionId) {
+          const response = await API.get(`orders/v1/client/${transactionId}`);
+          if (response.data.status !== "INITIATED") {
+            clearInterval(intervalId);
+            setPesanError("Order Success");
+            setOpenSnackbar(true);
+            setOpenDialog(true);
+            setOpen(false);
+          }
+          setOrderStatus(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setOpenSnackbar(false);
+        setOpenDialog(false);
+      }
+    };
+
+    if (transactionId) {
+      fetchData();
+      intervalId = setInterval(fetchData, 5000); // Set intervalId
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [transactionId]);
+
+  const handleBack = () => {
+    router.back(); // Go back to the previous page
+  };
+
+  const successPayment = () => {
+    setOpenDialog(false);
+    router.push("/profile?menu=history");
+  };
+
+  const fetchProductData = async (productId) => {
+    try {
+      const response = await axios.get(
+        `https://api.marinarajaampat.id/products/v1/external/${productId}`
+      );
+      setProductData(response.data.data);
+      if (response.data.data && response.data.data.product_subs) {
+        const updatedItineraryItems = response.data.data.product_subs.map(
+          (sub) => {
+            return {
+              title: sub.title, // You can modify this based on your product_sub structure
+              description:
+                lang === "en" ? sub.description_en : sub.description_id
+              // Add other properties as needed
+            };
+          }
+        );
+
+        setItineraryItems(updatedItineraryItems);
+        const productSubIds = response.data.data.product_subs.map(
+          (sub) => sub.id
+        );
+        setSelectedItinerary(productSubIds);
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
+  const handleApplyPromoCode = () => {
+    // Add logic to apply the promo code
+    console.log("Promo code applied:", promoCode);
+  };
+
+  const handlePayment = async () => {
+    try {
+      const stringifiedMetadata = JSON.stringify(decodedInfo.metadata);
+      const response = await API.post("orders/v1/client", {
+        ...decodedInfo,
+        metadata: stringifiedMetadata
+      });
+
+      if (response.data) {
+        setTransactionId(response.data.order.id);
+        window.open(`${response.data.link.redirect_url}`, "_blank");
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
 
   return (
     <Layout>
       <Box sx={{ my: 4 }}>
         <div className="container">
           <div className="row">
+            {/* Back Button */}
+            <div className="col-lg-1 mb-4">
+              <IconButton onClick={handleBack} aria-label="back">
+                <BackIcon />
+              </IconButton>
+            </div>
+
             {/* Title */}
-            <div className="col-lg-12 mb-4">
+            <div className="col-lg-11 mb-4">
               <Typography variant="h5" textAlign="center">
                 Order Details
               </Typography>
             </div>
 
             {/* Detail Package & Summary Price */}
-            <div className="col-lg-7">
+            <div className="col-lg-8">
               <Box mb={3} sx={{ position: "relative" }}>
                 {/* Add your detail package content here */}
                 {/* For example: */}
-                <Typography variant="h4">Detail Package</Typography>
-                {/* ... */}
+                <Typography variant="h6">Promo</Typography>
+                <TextField
+                  fullWidth
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">%</InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Button onClick={handleApplyPromoCode} variant="text">
+                          Apply
+                        </Button>
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <Divider />
 
-                {/* Add your summary price content here */}
-                {/* For example: */}
-                <Typography>Total Price: $100</Typography>
-                {/* ... */}
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-4"
+                >
+                  <Grid item>
+                    <Typography variant="h6">Rincian Biaya</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="body1">
+                      Harga Dalam {lang === "en" ? `USD` : `IDR`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-2"
+                >
+                  <Grid item>
+                    <Typography variant="body1">{`${decodedInfo?.metadata.product_name} (x${decodedInfo?.qty})`}</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="body1">
+                      {lang === "en"
+                        ? `USD ${numeral(decodedInfo?.totalPriceFix).format(
+                            "0,0.00"
+                          )}`
+                        : `Rp. ${numeral(decodedInfo?.totalPriceFix).format(
+                            "0,0"
+                          )}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-2"
+                >
+                  <Grid item>
+                    <Typography variant="h6">Total Biaya</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h6">
+                      {lang === "en"
+                        ? `USD ${numeral(decodedInfo?.totalPriceFix).format(
+                            "0,0.00"
+                          )}`
+                        : `Rp. ${numeral(decodedInfo?.totalPriceFix).format(
+                            "0,0"
+                          )}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-4"
+                >
+                  <Grid item>
+                    <Typography variant="h6">Rencana Bayar</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h6">
+                      {lang === "en"
+                        ? `USD ${numeral(decodedInfo?.amount).format("0,0.00")}`
+                        : `Rp. ${numeral(decodedInfo?.amount).format("0,0")}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-3"
+                >
+                  <Grid item>
+                    <Typography variant="body1">Sisa Biaya</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="h6">
+                      {lang === "en"
+                        ? `USD ${numeral(
+                            decodedInfo?.totalPriceFix - decodedInfo?.amount
+                          ).format("0,0.00")}`
+                        : `Rp. ${numeral(
+                            decodedInfo?.totalPriceFix - decodedInfo?.amount
+                          ).format("0,0")}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-3"
+                >
+                  <Grid item>
+                    <Typography variant="caption">
+                      *Sisa Biaya maximal dibayarkan 2 minggu sebelum
+                      keberangkatan
+                    </Typography>
+                  </Grid>
+                </Grid>
+
+                {/* {decodedInfo && (
+                  <div>
+                    <Typography variant="h6">Decoded Information:</Typography>
+                    <pre>{JSON.stringify(decodedInfo, null, 2)}</pre>
+                  </div>
+                )} */}
               </Box>
             </div>
 
             {/* Detail Price & Voucher Field */}
-            <div className="col-lg-5">
+            <div className="col-lg-4">
               <Box mb={3}>
-                {/* Add your detail price content here */}
-                {/* For example: */}
-                <Typography variant="h4">Detail Price</Typography>
-                {/* ... */}
+                {productData && <Card type="common" data={productData} />}
+                <Divider variant="middle" />
+                <Typography variant="h6">
+                  DP{" "}
+                  {lang === "en"
+                    ? `USD ${numeral(decodedInfo?.amount).format("0,0.00")}`
+                    : `Rp. ${numeral(decodedInfo?.amount).format("0,0")}`}
+                </Typography>
+                <div className="row">
+                  <div className="col">
+                    <Typography variant="h6">
+                      Total{" "}
+                      {lang === "en"
+                        ? `USD ${numeral(decodedInfo?.totalPriceFix).format(
+                            "0,0.00"
+                          )}`
+                        : `Rp. ${numeral(decodedInfo?.totalPriceFix).format(
+                            "0,0"
+                          )}`}
+                    </Typography>
+                  </div>
+                </div>
 
-                {/* Add your voucher field here */}
-                {/* For example: */}
-                <TextField
-                  label="Voucher Code"
-                  variant="outlined"
-                  fullWidth
-                  placeholder="Enter voucher code"
-                />
-                {/* ... */}
+                <Button className="mt-2" variant="contained" onClick={handlePayment}>
+                  {t("proceedtopayment")}
+                </Button>
               </Box>
             </div>
           </div>
         </div>
       </Box>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right"
+        }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        message={pesanError}
+        onClose={() => setOpenSnackbar(false)}
+      />
+      <Dialog
+        open={openDialog}
+        onClose={successPayment}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("transactionsuccess")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("thankyou")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={successPayment}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Layout>
   );
 };
