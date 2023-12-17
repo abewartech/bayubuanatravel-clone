@@ -15,7 +15,7 @@ export default function GalleryList(props) {
   return (
     <div className={`${styles.galleryList} container`}>
       <div className="row">
-        <TitleSection title="Gallery" />
+        <TitleSection title="Gallery" more={false} />
         <Splide
           options={{
             type: "loop",

@@ -47,7 +47,23 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className={` col-12 col-lg-3 offset-lg-5`}>
+          <div
+            className={`col-12 ${styles.socialMedia} col-lg-5`}
+            style={{ marginTop: -20 }}
+          >
+            {socialMediaLinks.map((socialMedia, index) => (
+              <a
+                key={index}
+                href={socialMedia.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {socialMedia.icon}
+              </a>
+            ))}
+          </div>
+
+          <div className={` col-12 col-lg-3`}>
             <div className={`${styles.footerOtherMenu}`}>
               <div className={styles.footerOtherTitle}>{t("other")}</div>
               <div
@@ -60,7 +76,7 @@ export default function Footer() {
                 className={`${styles.footerItemMenu} ${styles.customLink}`}
                 style={{
                   cursor: "pointer",
-                  textDecoration: "none",
+                  textDecoration: "none"
                 }}
               >
                 {t("travel")}
@@ -86,22 +102,6 @@ export default function Footer() {
                 <Image src={midtransLogo} alt="Midtrans" width={120} />
               </a>
             </div>
-          </div>
-
-          <div
-            className={`col-12 ${styles.socialMedia}`}
-            style={{ marginTop: -20 }}
-          >
-            {socialMediaLinks.map((socialMedia, index) => (
-              <a
-                key={index}
-                href={socialMedia.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {socialMedia.icon}
-              </a>
-            ))}
           </div>
         </div>
 

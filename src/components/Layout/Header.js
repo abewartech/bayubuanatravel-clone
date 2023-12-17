@@ -143,9 +143,9 @@ export default function Header(props) {
               {/* <div className={styles.navItem}>
                 <Link href="/resort">{t("resort")}</Link>
               </div> */}
-              <div className={styles.navItem}>
+              {/* <div className={styles.navItem}>
                 <Link href="/gallery">{t("gallery")}</Link>
-              </div>
+              </div> */}
               <div className={styles.navItem}>
                 <Link href="/contact-us">{t("contactus")}</Link>
               </div>
