@@ -3,6 +3,7 @@ import Link from "next/link";
 import logo from "./../../../public/assets/logo/logo.png";
 import styles from "./Layout.module.scss";
 import mail from "./../../../public/assets/icon/mail.svg";
+import midtransLogo from "./../../../public/assets/logo/midtrans-logo.png";
 import call from "./../../../public/assets/icon/call.svg";
 import useTranslation from "next-translate/useTranslation";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -11,9 +12,15 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 export default function Footer() {
   const { t, lang } = useTranslation("common");
   const socialMediaLinks = [
-    { icon: <InstagramIcon />, url: "https://www.instagram.com/marinarajaampatt" },
-    { icon: <FacebookIcon />, url: "https://www.facebook.com/hashtag/marinarajaampat/" },
-    { icon: <TwitterIcon />, url: "https://twitter.com/example" },
+    {
+      icon: <InstagramIcon />,
+      url: "https://www.instagram.com/marinarajaampatt"
+    },
+    {
+      icon: <FacebookIcon />,
+      url: "https://www.facebook.com/hashtag/marinarajaampat/"
+    },
+    { icon: <TwitterIcon />, url: "https://twitter.com/example" }
   ];
   return (
     <div className={`${styles.footerWrap} `}>
@@ -43,7 +50,22 @@ export default function Footer() {
           <div className={` col-12 col-lg-3 offset-lg-5`}>
             <div className={`${styles.footerOtherMenu}`}>
               <div className={styles.footerOtherTitle}>{t("other")}</div>
-              <div className={styles.footerItemMenu}>{t("travel")}</div>
+              <div
+                onClick={() =>
+                  window.open(
+                    "https://www.instagram.com/marinarajaampatt",
+                    "_blank"
+                  )
+                }
+                className={`${styles.footerItemMenu} ${styles.customLink}`}
+                style={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                }}
+              >
+                {t("travel")}
+              </div>
+
               <Link
                 href="/termsandconditions"
                 passHref
@@ -55,10 +77,21 @@ export default function Footer() {
                 <div className={styles.footerItemMenu}>FAQs</div>
               </Link>
               <div className={styles.footerItemMenu}>{t("sitemap")}</div>
+              <a
+                href="https://www.midtrans.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ marginTop: -10 }}
+              >
+                <Image src={midtransLogo} alt="Midtrans" width={120} />
+              </a>
             </div>
           </div>
 
-          <div className={`col-12 ${styles.socialMedia}`}>
+          <div
+            className={`col-12 ${styles.socialMedia}`}
+            style={{ marginTop: -20 }}
+          >
             {socialMediaLinks.map((socialMedia, index) => (
               <a
                 key={index}

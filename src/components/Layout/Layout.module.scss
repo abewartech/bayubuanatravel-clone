@@ -224,4 +224,54 @@
       font-size: 20px; // Set the icon size as needed
     }
   }
+
+  a[href*="instagram"] {
+    background-color: #bc2a8d; // Instagram color
+  }
+
+  a[href*="facebook"] {
+    background-color: #3b5998; // Facebook color
+  }
+
+  a[href*="twitter"] {
+    background-color: #1da1f2; // Twitter color
+  }
 }
+
+.midtransLogo {
+  /* Styles for Midtrans Logo */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -20px; /* Adjust the margin as needed */
+
+  a {
+    /* Your styles for the Midtrans logo link */
+  }
+
+  img {
+    width: 120px;
+    height: auto;
+  }
+}
+
+.customLink {
+  text-decoration: none;
+  margin-bottom: 28px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.customLink:hover {
+  color: #0000ff; /* Change this to your desired hover color */
+}
+
+.customLink:hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 35%;  
+  height: 2px;
+  background-color: #000; /* Change this to your desired underline color */
+}
+
