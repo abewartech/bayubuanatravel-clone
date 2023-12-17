@@ -48,19 +48,32 @@ export default function Footer() {
           </div>
 
           <div
-            className={`col-12 ${styles.socialMedia} col-lg-5`}
-            style={{ marginTop: -20 }}
+            className={`col-12 col-lg-5`}
+            style={{ marginTop: -5 }}
           >
-            {socialMediaLinks.map((socialMedia, index) => (
-              <a
-                key={index}
-                href={socialMedia.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {socialMedia.icon}
-              </a>
-            ))}
+            <div className="row ps-5">
+              <div className="col">
+                <b>Payment powered by</b>
+                <div className={styles.midtransLogoContainer}>
+                  <Image src={midtransLogo} alt="Midtrans" width={120} />
+                </div>
+              </div>
+            </div>
+            <div className="row mt-5 ps-5">
+              <b>Follow Us On</b>
+              <div className={`col ${styles.socialMedia}`}>
+                {socialMediaLinks.map((socialMedia, index) => (
+                  <a
+                    key={index}
+                    href={socialMedia.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {socialMedia.icon}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className={` col-12 col-lg-3`}>
@@ -93,14 +106,14 @@ export default function Footer() {
                 <div className={styles.footerItemMenu}>FAQs</div>
               </Link>
               <div className={styles.footerItemMenu}>{t("sitemap")}</div>
-              <a
+              {/* <a
                 href="https://www.midtrans.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ marginTop: -10 }}
               >
                 <Image src={midtransLogo} alt="Midtrans" width={120} />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
