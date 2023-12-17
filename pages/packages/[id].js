@@ -7,6 +7,7 @@ import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import React, { useEffect, useState } from "react";
+import { md5 } from "js-md5";
 import {
   Button,
   Modal,
@@ -499,7 +500,32 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     if (amountChanges) {
-      router.push("/detailorder");
+      const queryParams = {
+        amount: amountChanges,
+        product_id: router.query.id,
+        product_subs: selectedItinerary,
+        voucher_code: promoCode,
+        qty: qty,
+        metadata: {
+          product_name: productData.title,
+          product_image: productData.image_url,
+          nama: username,
+          no_hp: "",
+          no_identitas: "",
+          email: "",
+          alamat: ""
+        },
+        currency: lang === "en" ? "USD" : "IDR",
+        price: productData.price
+      };
+
+      const queryParamsString = btoa(JSON.stringify(queryParams));
+
+      router.push({
+        pathname: "/detailorder",
+        query: { id: queryParamsString }
+      });
+
       // fetchBookingCash();
     } else {
       setPesanError(t("amountk"));

@@ -1,9 +1,23 @@
 // pages/detailorder.js
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../src/components/Layout";
 import { Box, Typography, TextField, Button } from "@mui/material";
+import { useRouter } from "next/router";
 
 const DetailOrder = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const sanitizedId = router.query.id?.replace(/\s/g, "");
+
+    try {
+      const decodedId = decodeURIComponent(atob(sanitizedId || ""));
+
+      console.log(decodedId);
+    } catch (error) {
+      console.error("Error decoding ID:", error);
+    }
+  }, [router.query.id]);
+
   return (
     <Layout>
       <Box sx={{ my: 4 }}>
