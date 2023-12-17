@@ -5,7 +5,6 @@ import Layout from "../../src/components/Layout";
 import { styled } from "@mui/material/styles";
 import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
-import airplane from "./../../public/assets/icon/airplane-square.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import React, { useEffect, useState } from "react";
 import {
@@ -37,6 +36,7 @@ import { ErrorMessage, Field, Formik } from "formik";
 import Link from "next/link";
 import useAuthStore from "../../src/store/loginStore";
 import API from "../../src/common/api";
+import { generatePDF } from "../../src/utils/pdfUtils";
 
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
   ssr: false
@@ -532,6 +532,27 @@ export default function DetailPackages() {
     }
   };
 
+  const handleDownloadPDF = () => {
+    if (productData) {
+      const { title, description, image_url, product_subs } = productData;
+      const qty = 1; // Update with your actual quantity
+      const totalPrice =
+        productData.base_price_usd !== null
+          ? productData.base_price_usd
+          : productData.base_price;
+
+      generatePDF(
+        { title, description, image_url, product_subs, lang },
+        qty,
+        totalPrice,
+        itineraryItems, // Pass itineraryItems here
+        (pdf) => {
+          pdf.save(`${title}.pdf`);
+        }
+      );
+    }
+  };
+
   return (
     <Layout>
       <div className="container my-4">
@@ -592,7 +613,7 @@ export default function DetailPackages() {
             <div className="mt-2">
               <Button
                 variant="contained"
-                onClick={print}
+                onClick={handleDownloadPDF}
                 style={{ backgroundColor: "#feed13", color: "#0197da" }}
               >
                 Download PDF
@@ -912,11 +933,7 @@ export default function DetailPackages() {
                       >
                         Email
                       </Typography>
-                      <Field
-                        type="text"
-                        name="email"
-                        placeholder="Email"
-                      />
+                      <Field type="text" name="email" placeholder="Email" />
                       <ErrorMessage name="email" component="div" />
 
                       <Typography
