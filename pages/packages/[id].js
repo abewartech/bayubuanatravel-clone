@@ -7,7 +7,6 @@ import thumbnail from "./../../public/assets/gallery/1.jpg";
 import clock from "./../../public/assets/icon/clock.svg";
 import styles from "./../../styles/pages/DetailPackages.module.scss";
 import React, { useEffect, useState } from "react";
-import { md5 } from "js-md5";
 import {
   Button,
   Modal,
