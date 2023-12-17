@@ -200,7 +200,7 @@ const DetailOrder = () => {
                   className="mt-4"
                 >
                   <Grid item>
-                    <Typography variant="h6">Rincian Biaya</Typography>
+                    <Typography variant="h6">{t('cost')}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
@@ -238,7 +238,7 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
-                    <Typography variant="h6">Total Biaya</Typography>
+                    <Typography variant="h6">{t('total')}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">
@@ -260,7 +260,7 @@ const DetailOrder = () => {
                   className="mt-4"
                 >
                   <Grid item>
-                    <Typography variant="h6">Rencana Bayar</Typography>
+                    <Typography variant="h6">{t('total')}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">
@@ -278,7 +278,7 @@ const DetailOrder = () => {
                   className="mt-3"
                 >
                   <Grid item>
-                    <Typography variant="body1">Sisa Biaya</Typography>
+                    <Typography variant="body1">{t('remaining')}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">
@@ -301,8 +301,7 @@ const DetailOrder = () => {
                 >
                   <Grid item>
                     <Typography variant="caption">
-                      *Sisa Biaya maximal dibayarkan 2 minggu sebelum
-                      keberangkatan
+                      {t('theremaining')}
                     </Typography>
                   </Grid>
                 </Grid>
