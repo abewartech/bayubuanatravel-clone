@@ -26,6 +26,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { MuiPhone } from "../src/components/common/MuiPhone";
 
 export default function Register() {
   const router = useRouter();
@@ -92,6 +93,12 @@ export default function Register() {
                   errors.password =
                     "Password must contain at least one capital letter";
                 }
+                if (
+                  !values.phone_number ||
+                  /^\+\d+$/.test(values.phone_number.trim())
+                ) {
+                  errors.phone_number = "Phone number cannot be empty";
+                }
 
                 if (values.password !== values.confirmPassword) {
                   errors.confirmPassword = "Passwords do not match";
@@ -151,32 +158,9 @@ export default function Register() {
                     onChange={handleChange}
                     name="full_name"
                     placeholder={t("yfullname")}
-                    style={{ height: "50px" }}
+                    style={{ height: "50px", backgroundColor: "#e9f0fe" }}
                   />
                   <ErrorMessage name="full_name" component="div" />
-
-                  {/* <Typography
-                    fontSize={16}
-                    fontWeight={500}
-                    marginBottom={1}
-                    lineHeight="24px"
-                  >
-                    {t("address")}
-                  </Typography>
-                  <Field
-                    type="text"
-                    onChange={handleChange}
-                    name="address"
-                    render={({ field, form }) => (
-                      <TextareaAutosize
-                        {...field}
-                        minRows={3} // Set the number of rows as needed
-                        placeholder={t("yaddress")}
-                        style={{ width: "100%", padding: 10 }}
-                      />
-                    )}
-                  />
-                  <ErrorMessage name="address" component="div" /> */}
 
                   <Typography fontSize={16} fontWeight={500} lineHeight="24px">
                     {t("country")}
@@ -184,7 +168,9 @@ export default function Register() {
                   <Field
                     name="country"
                     render={({ field, form }) => (
-                      <div style={{ height: "50px" }}>
+                      <div
+                        style={{ height: "50px", backgroundColor: "#e9f0fe" }}
+                      >
                         <Select
                           options={options}
                           value={options.find(
@@ -194,7 +180,11 @@ export default function Register() {
                             form.setFieldValue(field.name, option.value)
                           }
                           styles={{
-                            control: (provided) => ({ ...provided, height: 50 })
+                            control: (provided) => ({
+                              ...provided,
+                              height: 50,
+                              backgroundColor: "#e9f0fe"
+                            })
                           }}
                         />
                       </div>
@@ -266,7 +256,7 @@ export default function Register() {
                         borderRadius: "4px",
                         padding: "8px",
                         width: "100%",
-                        backgroundColor: "rgb(254, 247, 247)"
+                        backgroundColor: "#e9f0fe"
                       }}
                     />
                     {errors.email && touched.email && (
@@ -294,16 +284,30 @@ export default function Register() {
 
                   <Field name="phone_number">
                     {({ field, form }) => (
-                      <PhoneInput
-                        defaultCountry="id"
-                        value={field.value}
-                        onChange={(value) =>
-                          form.setFieldValue("phone_number", value)
-                        }
-                        onBlur={field.onBlur}
-                        className="form-control"
-                        style={{ height: "50px" }}
-                      />
+                      <div
+                        style={{ height: "50px", backgroundColor: "#e9f0fe" }}
+                      >
+                        {/* <PhoneInput
+                          defaultCountry="id"
+                          value={field.value}
+                          onChange={(value) =>
+                            form.setFieldValue("phone_number", value)
+                          }
+                          onBlur={field.onBlur}
+                          className="form-control"
+                          style={{ height: "50px", backgroundColor: "#e9f0fe" }}
+                        /> */}
+
+                        <MuiPhone
+                          defaultCountry="id"
+                          value={field.value}
+                          onChange={(value) =>
+                            form.setFieldValue("phone_number", value)
+                          }
+                          fullWidth
+                          onBlur={field.onBlur}
+                        />
+                      </div>
                     )}
                   </Field>
                   <ErrorMessage name="phone_number" component="div" />
@@ -313,7 +317,7 @@ export default function Register() {
                     fontWeight={500}
                     marginBottom={1}
                     lineHeight="24px"
-                    className="mt-2"
+                    className="mt-3"
                   >
                     Password
                   </Typography>
@@ -346,6 +350,7 @@ export default function Register() {
                             </InputAdornment>
                           )
                         }}
+                        style={{ backgroundColor: "#e9f0fe" }}
                       />
                     )}
                   </Field>
@@ -356,6 +361,7 @@ export default function Register() {
                     fontWeight={500}
                     marginBottom={1}
                     lineHeight="24px"
+                    className="mt-2"
                   >
                     {t("cpassword")}
                   </Typography>
@@ -388,6 +394,7 @@ export default function Register() {
                             </InputAdornment>
                           )
                         }}
+                        style={{ backgroundColor: "#e9f0fe" }}
                       />
                     )}
                   </Field>
