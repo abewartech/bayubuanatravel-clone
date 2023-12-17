@@ -12,6 +12,8 @@ import Pagination from "@mui/material/Pagination";
 import useTranslation from "next-translate/useTranslation";
 import numeral from "numeral";
 import { useRouter } from "next/router";
+import Head from "next/head";
+
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -85,6 +87,14 @@ export default function TypeDestination() {
 
   return (
     <Layout>
+
+<Head>
+        <title>Marina Raja Ampat - {t('packages')}</title>
+        <meta
+          name="description"
+          content={t("packageh")}
+        />
+      </Head>
       <HeaderPage
         title={"Packages"}
         breadcrumb={breadcrumb}

@@ -54,7 +54,7 @@ export default function About() {
   return (
     <Layout>
       <Head>
-        <title>Marina Raja Ampat - About</title>
+        <title>Marina Raja Ampat - {t("about")}</title>
         <meta
           name="description"
           content="Is a company that handles Raja Ampat tourism, from arrival to departure to your hometown. Once again, we also have complete services to meet your Raja Ampat tourism needs."

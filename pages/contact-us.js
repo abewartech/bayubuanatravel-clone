@@ -8,6 +8,7 @@ import Client from "../src/components/common/Client";
 import TitleSection from "../src/components/common/TitleSection";
 import useTranslation from 'next-translate/useTranslation';
 import resort from "./../public/assets/resort.jpg";
+import Head from "next/head";
 
 
 export default function ContactUs() {
@@ -27,8 +28,16 @@ export default function ContactUs() {
     setExpand(!expand);
   };
   return (
+
     <>
       <Layout>
+      <Head>
+        <title>Marina Raja Ampat - {t('contactus')}</title>
+        <meta
+          name="description"
+          content={t("contacth")}
+        />
+      </Head>
         <HeaderPage
           title={t('contactus')}
           breadcrumb={breadcrumb}
