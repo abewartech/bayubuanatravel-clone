@@ -6,6 +6,7 @@ import styles from "./../styles/pages/Gallery.module.scss";
 import resort from "./../public/assets/resort.jpg";
 import TitleSection from "../src/components/common/TitleSection";
 import useTranslation from "next-translate/useTranslation";
+import Head from "next/head";
 export default function Gallery() {
   const [active, setActive] = useState("All");
   const { t, lang } = useTranslation("common");
@@ -31,6 +32,16 @@ export default function Gallery() {
 
   return (
     <Layout>
+ <Head>
+        <title>Marina Raja Ampat - {t('gallery')}</title>
+        <meta
+          name="description"
+          content={t("galleryh")}
+        />
+      </Head>
+
+
+
       <HeaderPage title="Gallery" breadcrumb={breadcrumb} background={resort} />
       <div className="container">
         <div className="row">
