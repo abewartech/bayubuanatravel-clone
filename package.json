@@ -26,6 +26,7 @@
     "eslint-config-next": "13.4.12",
     "formik": "^2.4.5",
     "html2canvas": "^1.4.1",
+    "js-md5": "^0.8.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.1",
     "jspdf-html2canvas": "^1.5.1",
