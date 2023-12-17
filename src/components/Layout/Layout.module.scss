@@ -203,8 +203,12 @@
 
 .socialMedia {
   display: flex;
-  gap: 10px; // Adjust the gap between social media buttons as needed
-
+  gap: 10px;
+  span {
+    font-size: 16px;
+    display: block;
+    font-weight: bold;
+  }
   a {
     display: flex;
     align-items: center;
@@ -216,6 +220,7 @@
     border-radius: 50%;
     transition: background-color 0.3s ease;
 
+    margin-top: 10px;
     &:hover {
       background-color: #303f9f; // Set hover background color as needed
     }
@@ -236,6 +241,17 @@
   a[href*="twitter"] {
     background-color: #1da1f2; // Twitter color
   }
+}
+.midtransLogoContainer {
+  align-self: flex-start; /* Adjust the alignment as needed */
+  margin-top: 25px;
+  // margin-left: -136px;
+}
+.midtransSection,
+.socialMediaSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .midtransLogo {
@@ -270,8 +286,7 @@
   position: absolute;
   left: 0;
   bottom: -2px;
-  width: 35%;  
+  width: 35%;
   height: 2px;
   background-color: #000; /* Change this to your desired underline color */
 }
-
