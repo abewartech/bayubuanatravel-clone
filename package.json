@@ -39,6 +39,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-international-phone": "^4.0.2",
     "react-modal": "^3.16.1",
+    "react-number-format": "^5.3.1",
     "react-responsive-modal": "^6.4.2",
     "react-select": "^5.7.7",
     "react-select-country-list": "^2.2.3",

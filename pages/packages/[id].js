@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
+import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
@@ -498,7 +499,8 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     if (amountChanges) {
-      fetchBookingCash();
+      router.push("/detailorder");
+      // fetchBookingCash();
     } else {
       setPesanError(t("amountk"));
       setOpenSnackbar(true);
@@ -793,6 +795,16 @@ export default function DetailPackages() {
             onChange={amountChange}
             fullWidth
           />
+          {/* <NumberFormat
+      customInput={TextField}
+      error={errorAmount}
+      label={t("amount")}
+      type="tel" // 'tel' allows entering only numeric values
+      onChange={amountChange}
+      fullWidth
+      thousandSeparator // Add thousand separator
+      value={amountChanges}
+    /> */}
           <Typography
             fontSize={12}
             lineHeight="16px"
@@ -804,13 +816,6 @@ export default function DetailPackages() {
             ${productData && productData.minimum_payment}
             %`}
           </Typography>
-          {/* <TextField
-            label='Quantity'
-            type="number"
-            onChange={(e) => setQty(e.target.value)}
-            fullWidth
-            className="mb-4"
-          /> */}
           <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
@@ -834,7 +839,7 @@ export default function DetailPackages() {
                 onClick={handleMidtrans}
                 disabled={errorAmount}
               >
-                {t("proceedtopayment")}
+                Next
               </Button>
             </Grid>
           </Grid>
