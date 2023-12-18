@@ -23,7 +23,10 @@ import {
   Grid,
   Snackbar,
   SnackbarContent,
-  CircularProgress
+  CircularProgress,
+  TextField,
+  InputAdornment,
+  IconButton
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { ErrorMessage, Field, Formik } from "formik";
@@ -31,6 +34,8 @@ import axios from "axios";
 import API from "../../common/api";
 import LanguageSwitcher from "./LanguageSwitcher";
 import useAuthStore from "../../store/loginStore";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const style = {
   position: "absolute",
@@ -54,6 +59,7 @@ export default function Header(props) {
   const [isClient, setIsClient] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -298,9 +304,7 @@ export default function Header(props) {
                       .catch((error) => {
                         console.error(error);
                         setSubmitting(false);
-                        setSnackbarMessage(
-                          "Login failed. Please check your credentials."
-                        );
+                        setSnackbarMessage("Email dan Password salah");
                         setSnackbarOpen(true);
                       });
                   }}
@@ -328,8 +332,40 @@ export default function Header(props) {
                       >
                         Email
                       </Typography>
-                      <Field type="text" name="email" placeholder="Email" />
-                      <ErrorMessage name="email" component="div" />
+
+                      {/* <Field type="text" name="email" placeholder="Email" />
+                      <ErrorMessage name="email" component="div" /> */}
+
+                      <div
+                        style={{ position: "relative", marginBottom: "16px" }}
+                      >
+                        <Field
+                          type="text"
+                          onChange={handleChange}
+                          name="email"
+                          placeholder="Email"
+                          className={
+                            touched.email && errors.email ? "error-input" : ""
+                          }
+                          style={{
+                            height: "60px",
+                            backgroundColor: "#e9f0fe"
+                          }}
+                        />
+                        {errors.email && touched.email && (
+                          <div
+                            style={{
+                              color: "red",
+                              position: "absolute",
+                              bottom: "-2px",
+                              fontSize: 11,
+                              fontWeight: "bold"
+                            }}
+                          >
+                            {errors.email}
+                          </div>
+                        )}
+                      </div>
 
                       <Typography
                         fontSize={16}
@@ -339,12 +375,75 @@ export default function Header(props) {
                       >
                         Password
                       </Typography>
-                      <Field
+
+                      <div
+                        style={{ position: "relative", marginBottom: "16px" }}
+                      >
+                        <Field name="password">
+                          {({ field, form }) => (
+                            <TextField
+                              type={showPassword ? "text" : "password"}
+                              onChange={(e) => {
+                                form.handleChange(e);
+                                form.setFieldValue("password", e.target.value);
+                              }}
+                              onBlur={() => form.handleBlur("password")}
+                              value={field.value}
+                              autoComplete="on"
+                              name="password"
+                              placeholder="Password"
+                              className={
+                                touched.password && errors.password
+                                  ? "error-input"
+                                  : ""
+                              }
+                              fullWidth
+                              style={{ backgroundColor: "#e9f0fe" }}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment
+                                    position="end"
+                                    style={{ backgroundColor: "white" }}
+                                  >
+                                    <IconButton
+                                      onClick={() =>
+                                        setShowPassword(!showPassword)
+                                      }
+                                      edge="end"
+                                    >
+                                      {showPassword ? (
+                                        <Visibility />
+                                      ) : (
+                                        <VisibilityOff />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                )
+                              }}
+                            />
+                          )}
+                        </Field>
+                        {errors.password && touched.password && (
+                          <div
+                            style={{
+                              color: "red",
+                              position: "absolute",
+                              bottom: "-2px",
+                              fontSize: 11,
+                              fontWeight: "bold"
+                            }}
+                          >
+                            {errors.password}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* <Field
                         type="password"
                         name="password"
                         placeholder="Your Password"
                       />
-                      <ErrorMessage name="password" component="div" />
+                      <ErrorMessage name="password" component="div" /> */}
 
                       <div
                         sx={{
@@ -421,7 +520,7 @@ export default function Header(props) {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "center"
         }}
         open={snackbarOpen}
         autoHideDuration={6000}

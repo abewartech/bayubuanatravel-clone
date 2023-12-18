@@ -4,6 +4,7 @@ import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import resort from "./../public/assets/resort.jpg";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import dynamic from "next/dynamic";
 import useTranslation from "next-translate/useTranslation";
 import {
   Box,
@@ -12,7 +13,9 @@ import {
   Radio,
   Typography,
   TextField,
-  TextareaAutosize
+  TextareaAutosize,
+  Container,
+  Grid
 } from "@mui/material";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
@@ -27,6 +30,24 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { MuiPhone } from "../src/components/common/MuiPhone";
+import LoginForm from "../src/components/Layout/LoginForm";
+
+const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
+  ssr: false
+});
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "none",
+  borderRadius: 4,
+  boxShadow: 24,
+  p: 1
+};
 
 export default function Register() {
   const router = useRouter();
@@ -63,6 +84,11 @@ export default function Register() {
   };
   const options = useMemo(() => countryList().getData(), []);
   const [showPassword, setShowPassword] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleLogin = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
   return (
     <Layout>
       <HeaderPage
@@ -93,15 +119,16 @@ export default function Register() {
                   errors.password =
                     "Password must contain at least one capital letter";
                 }
+                console.log(values);
                 if (
                   !values.phone_number ||
-                  /^\+\d+$/.test(values.phone_number.trim())
+                  !/^\+\d{3,}$/.test(values.phone_number.trim())
                 ) {
-                  errors.phone_number = "Phone number cannot be empty";
+                  errors.phone_number = "Required";
                 }
 
                 if (values.password !== values.confirmPassword) {
-                  errors.confirmPassword = "Passwords do not match";
+                  errors.confirmPassword = "Password doesn't match";
                 }
                 return errors;
               }}
@@ -306,11 +333,25 @@ export default function Register() {
                           }
                           fullWidth
                           onBlur={field.onBlur}
+                          className={
+                            touched.password && errors.password
+                              ? "error-input"
+                              : ""
+                          }
                         />
                       </div>
                     )}
                   </Field>
-                  <ErrorMessage name="phone_number" component="div" />
+                  <ErrorMessage
+                    name="phone_number"
+                    component="div"
+                    style={{
+                      color: "red",
+                      marginTop: 10,
+                      fontSize: 11,
+                      fontWeight: "bold"
+                    }}
+                  />
 
                   <Typography
                     fontSize={16}
@@ -334,6 +375,11 @@ export default function Register() {
                         autoComplete="on"
                         placeholder={t("ypassword")}
                         fullWidth
+                        className={
+                          touched.password && errors.password
+                            ? "error-input"
+                            : ""
+                        }
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
@@ -354,7 +400,16 @@ export default function Register() {
                       />
                     )}
                   </Field>
-                  <ErrorMessage name="password" component="div" />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    style={{
+                      color: "red",
+                      marginTop: 10,
+                      fontSize: 11,
+                      fontWeight: "bold"
+                    }}
+                  />
 
                   <Typography
                     fontSize={16}
@@ -376,6 +431,11 @@ export default function Register() {
                         onBlur={() => form.handleBlur("confirmPassword")}
                         value={field.value}
                         autoComplete="on"
+                        className={
+                          touched.password && errors.password
+                            ? "error-input"
+                            : ""
+                        }
                         placeholder={t("cpassword")}
                         fullWidth
                         InputProps={{
@@ -398,7 +458,16 @@ export default function Register() {
                       />
                     )}
                   </Field>
-                  <ErrorMessage name="confirmPassword" component="div" />
+                  <ErrorMessage
+                    name="confirmPassword"
+                    component="div"
+                    style={{
+                      color: "red",
+                      marginTop: 10,
+                      fontSize: 11,
+                      fontWeight: "bold"
+                    }}
+                  />
 
                   <div
                     id="btn-login"
@@ -416,13 +485,16 @@ export default function Register() {
                     sx={{
                       display: "flex",
                       justifyContent: "flex-start",
-                      marginTop: 10
                     }}
                   >
                     {t("ahaccount?")}
-                    <Link href="/login" passHref>
-                      <Button>{t("login")}</Button>
-                    </Link>
+                    <Button
+                      variant="text"
+                      onClick={handleLogin}
+                      suppressHydrationWarning
+                    >
+                      {t("login")}
+                    </Button>
                   </div>
                 </Form>
               )}
@@ -430,6 +502,35 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <DynamicModal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Container
+            maxWidth="sm"
+            sx={{ height: "65vh", display: "flex", alignItems: "center" }}
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12}>
+                <Typography>
+                  <Box fontSize={32} fontWeight={600}>
+                    {t("login")}
+                  </Box>
+                  <Box fontSize={12} fontWeight={400} lineHeight="16px">
+                    {t("welcomeback")}
+                  </Box>
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <LoginForm />
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </DynamicModal>
     </Layout>
   );
 }
