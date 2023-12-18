@@ -63,6 +63,7 @@ export default function ForgotPassword() {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
+    console.log("a");
     // Add logic based on the current step
     if (currentStep === "email") {
       // Add logic to send OTP to the provided email address
@@ -102,14 +103,16 @@ export default function ForgotPassword() {
                 ) {
                   errors.email = "Invalid email address";
                 }
-                if (!values.password) {
-                  errors.password = "Required";
-                } else if (values.password.length < 6) {
-                  errors.password =
-                    "Password must be at least 6 characters long";
-                } else if (!/[A-Z]/.test(values.password)) {
-                  errors.password =
-                    "Password must contain at least one capital letter";
+                if (currentStep === "newPassword") {
+                  if (!values.password) {
+                    errors.password = "Required";
+                  } else if (values.password.length < 6) {
+                    errors.password =
+                      "Password must be at least 6 characters long";
+                  } else if (!/[A-Z]/.test(values.password)) {
+                    errors.password =
+                      "Password must contain at least one capital letter";
+                  }
                 }
 
                 if (values.password !== values.confirmPassword) {
@@ -250,8 +253,15 @@ export default function ForgotPassword() {
                       >
                         Please enter a new password.
                       </Typography>
-                      <div style={{ position: "relative", marginBottom: "16px" }}>
-                        <Typography fontSize={16} fontWeight={500} marginBottom={1} lineHeight="24px">
+                      <div
+                        style={{ position: "relative", marginBottom: "16px" }}
+                      >
+                        <Typography
+                          fontSize={16}
+                          fontWeight={500}
+                          marginBottom={1}
+                          lineHeight="24px"
+                        >
                           New Password
                         </Typography>
                         <Field
@@ -259,7 +269,11 @@ export default function ForgotPassword() {
                           onChange={handleChange}
                           name="password"
                           placeholder="Enter new password"
-                          className={touched.password && errors.password ? "error-input" : ""}
+                          className={
+                            touched.password && errors.password
+                              ? "error-input"
+                              : ""
+                          }
                           style={{
                             height: "50px",
                             borderRadius: "4px",
@@ -273,20 +287,37 @@ export default function ForgotPassword() {
                                 onClick={() => setShowPassword(!showPassword)}
                                 edge="end"
                               >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
                               </IconButton>
                             </InputAdornment>
                           }
                         />
                         {errors.password && touched.password && (
-                          <div style={{ color: "red", position: "absolute", bottom: "-13px" }}>
+                          <div
+                            style={{
+                              color: "red",
+                              position: "absolute",
+                              bottom: "-13px"
+                            }}
+                          >
                             {errors.password}
                           </div>
                         )}
                       </div>
 
-                      <div style={{ position: "relative", marginBottom: "16px" }}>
-                        <Typography fontSize={16} fontWeight={500} marginBottom={1} lineHeight="24px">
+                      <div
+                        style={{ position: "relative", marginBottom: "16px" }}
+                      >
+                        <Typography
+                          fontSize={16}
+                          fontWeight={500}
+                          marginBottom={1}
+                          lineHeight="24px"
+                        >
                           Confirm Password
                         </Typography>
                         <Field
@@ -294,7 +325,11 @@ export default function ForgotPassword() {
                           onChange={handleChange}
                           name="confirmPassword"
                           placeholder="Confirm new password"
-                          className={touched.confirmPassword && errors.confirmPassword ? "error-input" : ""}
+                          className={
+                            touched.confirmPassword && errors.confirmPassword
+                              ? "error-input"
+                              : ""
+                          }
                           style={{
                             height: "50px",
                             borderRadius: "4px",
@@ -308,13 +343,23 @@ export default function ForgotPassword() {
                                 onClick={() => setShowPassword(!showPassword)}
                                 edge="end"
                               >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? (
+                                  <VisibilityOff />
+                                ) : (
+                                  <Visibility />
+                                )}
                               </IconButton>
                             </InputAdornment>
                           }
                         />
                         {errors.confirmPassword && touched.confirmPassword && (
-                          <div style={{ color: "red", position: "absolute", bottom: "-13px" }}>
+                          <div
+                            style={{
+                              color: "red",
+                              position: "absolute",
+                              bottom: "-13px"
+                            }}
+                          >
                             {errors.confirmPassword}
                           </div>
                         )}
