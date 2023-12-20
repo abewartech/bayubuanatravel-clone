@@ -106,8 +106,8 @@
   "total":"Total cost",
   "pay":"Pay Plan",
   "remaining":"Remaining Costs",
-  "theremaining":"*The remaining maximum fee is paid 2 weeks before departure"
-  
+  "theremaining":"*The remaining maximum fee is paid 2 weeks before departure",
+  "fgpassword": "Please enter your email below. We will send you instructions to recover your password."
   
 
 }

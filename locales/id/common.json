@@ -101,7 +101,7 @@
  "total":"Total Biaya",
  "pay":"Rencana Bayar",
  "remaining":"Sisa Biaya",
- "theremaining":"*Sisa Biaya maximal dibayarkan 2 minggu sebelum keberangkatan"
-  
+ "theremaining":"*Sisa Biaya maximal dibayarkan 2 minggu sebelum keberangkatan",
+ "fgpassword": "Silakan masukkan email Anda di bawah ini. Kami akan mengirimkan Anda petunjuk untuk memulihkan kata sandi Anda."
 
 }

@@ -145,8 +145,7 @@ export default function ForgotPassword() {
                         marginBottom={1}
                         lineHeight="24px"
                       >
-                        Please enter your email below. We will send you
-                        instructions to recover your password.
+                        {t("fgpassword")}
                       </Typography>
 
                       <div

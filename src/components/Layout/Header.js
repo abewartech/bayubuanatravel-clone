@@ -449,18 +449,28 @@ export default function Header(props) {
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 1
+                          marginTop: 1,
+                          textDecoration: "none"
                         }}
                       >
-                        <a color="textPrimary" href="forgot-password" replace>
+                        <Link
+                          href="/forgot-password"
+                          passHref
+                          style={{
+                            textDecoration: "none"
+                          }}
+                        >
                           <Typography
-                            variant="caption"
-                            display="block"
-                            gutterBottom
+                            as="a"
+                            style={{
+                              color: "textPrimary",
+                              textDecoration: "none"
+                            }}
+                            variant="body2"
                           >
                             {t("forgot")}
                           </Typography>
-                        </a>
+                        </Link>
                       </div>
                       <div
                         id="btn-login"
