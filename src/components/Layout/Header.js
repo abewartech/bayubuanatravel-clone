@@ -115,13 +115,13 @@ export default function Header(props) {
               <span className="me-2">
                 <PhoneIcon fontSize="small" style={{ color: "white" }} />
               </span>
-              +6221-23509999
+              +6281316776671
             </div>
             <div>
               <span className="me-2">
                 <EmailIcon fontSize="small" style={{ fill: "white" }} />
               </span>
-              office@marinarajaampat.com
+              tourtravelmarina@gmail.com
             </div>
           </div>
         </div>

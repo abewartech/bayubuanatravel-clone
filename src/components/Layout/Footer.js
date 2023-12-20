@@ -4,6 +4,12 @@ import logo from "./../../../public/assets/logo/logo.png";
 import styles from "./Layout.module.scss";
 import mail from "./../../../public/assets/icon/mail.svg";
 import midtransLogo from "./../../../public/assets/logo/midtrans-logo.png";
+import gopayLogo from "./../../../public/assets/logo/gopay.png";
+import qrisLogo from "./../../../public/assets/logo/qris.png";
+import spayLogo from "./../../../public/assets/logo/spay.png";
+import visaLogo from "./../../../public/assets/logo/visa.png";
+import mastercardLogo from "./../../../public/assets/logo/mastercard.png";
+import jcbLogo from "./../../../public/assets/logo/jcb.png";
 import call from "./../../../public/assets/icon/call.svg";
 import useTranslation from "next-translate/useTranslation";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -30,7 +36,12 @@ export default function Footer() {
             <Image src={logo} alt="logo" width={250} />
           </div>
 
-          <div className={`col-12 col-lg-3`} style={{ marginTop: -5 }}>
+          <div className={`col-12 col-lg-3 mb-1`}>
+            <div className="row mb-1">
+              <div className="col">
+                <b>Contact Us</b>
+              </div>
+            </div>
             <div className={styles.footerAddress}>
               Jl. Cakalang komp. Pelabuhan Perikanan. Kota sorong Papua Barat
             </div>
@@ -39,44 +50,66 @@ export default function Footer() {
                 <span className="me-2">
                   <Image src={call} alt="call" width={16} height={16} />
                 </span>
-                +6221-23509999
+                +6281316776671
               </div>
               <div>
                 <span className="me-2">
                   <Image src={mail} alt="mail" width={16} height={16} />
                 </span>
-                office@marinarajaampat.com
+                tourtravelmarina@gmail.com
               </div>
             </div>
           </div>
 
-          <div className={` col-12 col-lg-3`}>
-            <div className="row ps-5">
+          <div className={`col-12 col-lg-3 mb-2`}>
+            <div className="row ps-1">
               <div className="col">
                 <b>Payment powered by</b>
                 <div className={styles.midtransLogoContainer}>
-                  <Image src={midtransLogo} alt="Midtrans" width={120} />
+                  <Image src={midtransLogo} alt="Midtrans" width={150} />
                 </div>
-              </div>
-            </div>
-            <div className="row mt-5 ps-5">
-              <b>Follow Us On</b>
-              <div className={`col ${styles.socialMedia}`}>
-                {socialMediaLinks.map((socialMedia, index) => (
-                  <a
-                    key={index}
-                    href={socialMedia.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {socialMedia.icon}
-                  </a>
-                ))}
+                <div className="row">
+                  <div className="col-6">
+                    <div className="mt-3">
+                      <Image src={gopayLogo} alt="Gopay" width={80} />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="mt-3">
+                      <Image src={qrisLogo} alt="QRIS" width={80} />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <div className="mt-3">
+                      <Image src={spayLogo} alt="ShoppePay" width={80} />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="mt-3">
+                      <Image src={visaLogo} alt="Visa" width={80} height={40} />
+                    </div>
+                  </div>
+                </div>
+                <div className="row mt-3">
+                  <div className="col-6">
+                    <Image
+                      src={mastercardLogo}
+                      alt="mastercard"
+                      width={80}
+                      height={40}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <Image src={jcbLogo} alt="jcbLogo" width={80} height={40} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className={` col-12 col-lg-3`}>
+          <div className={`col-12 col-lg-3`}>
             <div className={`${styles.footerOtherMenu}`}>
               <div className={styles.footerOtherTitle}>{t("other")}</div>
               <div
@@ -119,6 +152,23 @@ export default function Footer() {
         </div>
 
         <div className="col-12 mt-5">
+          <div className="row text-center mb-4">
+            <b>Follow Us On</b>
+            <div
+              className={`col ${styles.socialMedia} text-center align-items-center justify-content-center`}
+            >
+              {socialMediaLinks.map((socialMedia, index) => (
+                <a
+                  key={index}
+                  href={socialMedia.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {socialMedia.icon}
+                </a>
+              ))}
+            </div>
+          </div>
           <div className={styles.copyRight}>
             © 2023 Bayu Buana Travel Services. All Rights Reserved.
           </div>
