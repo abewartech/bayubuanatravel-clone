@@ -63,23 +63,21 @@ export default function ForgotPassword() {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log("a");
-    // Add logic based on the current step
     if (currentStep === "email") {
-      // Add logic to send OTP to the provided email address
-      // You can use an API call to generate and send the OTP
-      // For simplicity, let's assume the API call is successful
-      handleStepChange("otp");
+      API.post("/users/v1/reset-password", values)
+        .then((res) => {
+          if (res.message === "success") {
+            handleStepChange("otp");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (currentStep === "otp") {
-      // Add logic to verify the OTP
-      // If the OTP is valid, move to the next step (creating a new password)
-      // If the OTP is invalid, display an error message
       handleStepChange("newPassword");
     } else if (currentStep === "newPassword") {
-      // Add logic to submit the new password
-      // After successfully resetting the password, you can redirect the user
       setSubmitting(false);
-      router.push("/login"); // Redirect to the login page
+      router.push("/login");
     }
   };
   return (
