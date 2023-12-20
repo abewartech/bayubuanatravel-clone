@@ -317,7 +317,8 @@ export default function DetailPackages() {
     setLoggedIn,
     setAccessToken,
     setRefreshToken,
-    setUsername
+    setUsername,
+    setLoginData
   } = useAuthStore();
 
   const handleQtyChange = (e, val) => {
@@ -930,6 +931,7 @@ export default function DetailPackages() {
                         setSubmitting(false);
                         setAccessToken(res.data.access_token);
                         setRefreshToken(res.data.refresh_token);
+                        setLoginData(res.data.user_data);
                         setUsername(values.email.split("@")[0]);
                         setOpen(true);
                         setOpenModalLogin(false);

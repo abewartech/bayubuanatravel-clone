@@ -9,11 +9,13 @@ const useAuthStore = create(
       refreshToken: null,
       username: null,
       email: null,
+      loginData: null,
       setLoggedIn: (isLoggedIn) => set({ isLoggedIn }),
       setAccessToken: (accessToken) => set({ accessToken }),
       setRefreshToken: (refreshToken) => set({ refreshToken }),
       setUsername: (username) => set({ username }),
-      setEmail: (email) => set({ email })
+      setEmail: (email) => set({ email }),
+      setLoginData: (loginData) => set({ loginData })
     }),
     {
       name: "auth" // Name for the persisted storage key

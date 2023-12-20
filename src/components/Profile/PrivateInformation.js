@@ -34,7 +34,9 @@ export default function PrivateInformation(props) {
     setLoggedIn,
     setAccessToken,
     setRefreshToken,
-    setUsername
+    setUsername,
+    setLoginData,
+    setEmail
   } = useAuthStore();
   useEffect(() => {
     setUserName(username);
@@ -107,6 +109,7 @@ export default function PrivateInformation(props) {
                     setRefreshToken(res.data.refresh_token);
                     setUsername(values.email.split("@")[0]);
                     setEmail(values.email);
+                    setLoginData(res.data.user_data);
                     setSubmitting(false);
                     setLoggedIn(true);
                     router.push("/");

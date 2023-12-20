@@ -61,7 +61,8 @@ export default function Register() {
     setAccessToken,
     setRefreshToken,
     setUsername,
-    setEmail
+    setEmail,
+    setLoginData
   } = useAuthStore();
   // const typePage = currUrl.query.type;
   const breadcrumb = [
@@ -141,6 +142,7 @@ export default function Register() {
                         setRefreshToken(res.data.refresh_token);
                         setUsername(values.email.split("@")[0]);
                         setEmail(values.email);
+                        setLoginData(res.data.user_data);
                         setSubmitting(false);
                         setLoggedIn(true);
                         router.push("/");

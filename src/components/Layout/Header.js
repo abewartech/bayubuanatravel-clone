@@ -73,7 +73,8 @@ export default function Header(props) {
     setAccessToken,
     setRefreshToken,
     setUsername,
-    setEmail
+    setEmail,
+    setLoginData
   } = useAuthStore();
   const handleClose = () => setOpen(false);
   useEffect(() => {
@@ -297,6 +298,7 @@ export default function Header(props) {
                         setRefreshToken(res.data.refresh_token);
                         setUsername(values.email.split("@")[0]);
                         setEmail(values.email);
+                        setLoginData(res.data.user_data);
                         setOpen(false);
                         setLoggedIn(true);
                         setShowButton(false);

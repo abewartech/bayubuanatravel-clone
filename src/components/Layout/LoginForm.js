@@ -37,7 +37,8 @@ const LoginForm = () => {
     setAccessToken,
     setRefreshToken,
     setUsername,
-    setEmail
+    setEmail,
+    setLoginData
   } = useAuthStore();
   return (
     <>
@@ -66,6 +67,7 @@ const LoginForm = () => {
               setRefreshToken(res.data.refresh_token);
               setUsername(values.email.split("@")[0]);
               setEmail(values.email);
+              setLoginData(res.data.user_data);
               setLoggedIn(true);
             })
             .catch((error) => {
