@@ -5,7 +5,13 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/router";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import API from "../../common/api";
-import { Button, Typography, TextField } from "@mui/material";
+import {
+  Button,
+  Typography,
+  TextField,
+  Snackbar,
+  SnackbarContent
+} from "@mui/material";
 import countryList from "react-select-country-list";
 import "react-international-phone/style.css";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -17,6 +23,8 @@ export default function PasswordChange(props) {
   const { data, handleNavigateMenu, currMenu } = props;
   const { t, lang } = useTranslation("common");
   const [userName, setUserName] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const router = useRouter();
   const currUrl = router.pathname.split("/");
   const options = useMemo(() => countryList().getData(), []);
@@ -47,12 +55,10 @@ export default function PasswordChange(props) {
   }, []);
   const [showPassword, setShowPassword] = useState(false);
   const initialValues = {
-    address: "",
-    country: "",
-    email: email,
-    full_name: username,
-    gender: "",
-    password: ""
+    current_password: "",
+    new_password: "",
+    confirmPassword: "",
+    condition: "change_password"
   };
   return (
     <div className="col-lg-8 mb-5">
@@ -62,49 +68,43 @@ export default function PasswordChange(props) {
           initialValues={initialValues}
           validate={(values) => {
             const errors = {};
-            if (!values.email) {
-              errors.email = "Required";
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = "Invalid email address";
+            if (!values.current_password) {
+              errors.current_password = "Required";
             }
-            if (!values.password) {
-              errors.password = "Required";
-            } else if (values.password.length < 6) {
-              errors.password = "Password must be at least 6 characters long";
-            } else if (!/[A-Z]/.test(values.password)) {
-              errors.password =
-                "Password must contain at least one capital letter";
+            if (!values.new_password) {
+              errors.new_password = "Required";
+            } else if (values.new_password.length < 6) {
+              errors.new_password =
+                "New Password must be at least 6 characters long";
+            } else if (!/[A-Z]/.test(values.new_password)) {
+              errors.new_password =
+                "New Password must contain at least one capital letter";
             }
 
-            if (values.password !== values.confirmPassword) {
+            if (values.new_password !== values.confirmPassword) {
               errors.confirmPassword = "Passwords do not match";
             }
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            API.post("users/v1/", values)
+            API.post("users/v1/change-password", values)
               .then((res) => {
-                API.post("/users/v1/login", values)
-                  .then((res) => {
-                    setAccessToken(res.data.access_token);
-                    setRefreshToken(res.data.refresh_token);
-                    setUsername(values.email.split("@")[0]);
-                    setEmail(values.email);
-                    setLoginData(res.data.user_data);
-                    setSubmitting(false);
-                    setLoggedIn(true);
-                    router.push("/");
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                    setSubmitting(false);
-                  });
+                if (res.message === "success") {
+                  setSnackbarMessage("Password has been changed successfully");
+                  setSnackbarOpen(true);
+                  setSubmitting(false);
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 1000);
+                }
               })
               .catch((err) => {
                 setSubmitting(false);
                 if (err) {
+                  if (err.data.message === "invalid password") {
+                    setSnackbarMessage("Current password is incorrect");
+                    setSnackbarOpen(true);
+                  }
                   console.log(err);
                 }
               });
@@ -133,13 +133,13 @@ export default function PasswordChange(props) {
               >
                 Current Password
               </Typography>
-              <Field name="password">
+              <Field name="current_password">
                 {({ field, form }) => (
                   <TextField
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => {
                       form.handleChange(e);
-                      form.setFieldValue("password", e.target.value);
+                      form.setFieldValue("current_password", e.target.value);
                     }}
                     onBlur={() => form.handleBlur("password")}
                     value={field.value}
@@ -161,7 +161,7 @@ export default function PasswordChange(props) {
                   />
                 )}
               </Field>
-              <ErrorMessage name="password" component="div" />
+              <ErrorMessage name="current_password" component="div" />
               <Typography
                 fontSize={16}
                 fontWeight={500}
@@ -171,13 +171,13 @@ export default function PasswordChange(props) {
               >
                 New Password
               </Typography>
-              <Field name="password">
+              <Field name="new_password">
                 {({ field, form }) => (
                   <TextField
                     type={showPassword ? "text" : "password"}
                     onChange={(e) => {
                       form.handleChange(e);
-                      form.setFieldValue("password", e.target.value);
+                      form.setFieldValue("new_password", e.target.value);
                     }}
                     onBlur={() => form.handleBlur("password")}
                     value={field.value}
@@ -199,7 +199,7 @@ export default function PasswordChange(props) {
                   />
                 )}
               </Field>
-              <ErrorMessage name="password" component="div" />
+              <ErrorMessage name="new_password" component="div" />
 
               <Typography
                 fontSize={16}
@@ -254,6 +254,17 @@ export default function PasswordChange(props) {
           )}
         </Formik>
       </div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent message={snackbarMessage} />
+      </Snackbar>
     </div>
   );
 }
