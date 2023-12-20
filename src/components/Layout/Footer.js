@@ -26,8 +26,11 @@ export default function Footer() {
     <div className={`${styles.footerWrap} `}>
       <div className="container">
         <div className={`${styles.footerContent} row`}>
-          <div className="col-12 col-lg-4 mb-5">
-            <Image src={logo} alt="logo" width={180} height={80} />
+          <div className="col-12 col-lg-3 mb-5">
+            <Image src={logo} alt="logo" width={250} />
+          </div>
+
+          <div className={`col-12 col-lg-3`} style={{ marginTop: -5 }}>
             <div className={styles.footerAddress}>
               Jl. Cakalang komp. Pelabuhan Perikanan. Kota sorong Papua Barat
             </div>
@@ -47,10 +50,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div
-            className={`col-12 col-lg-5`}
-            style={{ marginTop: -5 }}
-          >
+          <div className={` col-12 col-lg-3`}>
             <div className="row ps-5">
               <div className="col">
                 <b>Payment powered by</b>
