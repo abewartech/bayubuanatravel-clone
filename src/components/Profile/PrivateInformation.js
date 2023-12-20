@@ -22,6 +22,7 @@ export default function PrivateInformation(props) {
   const { data, handleNavigateMenu, currMenu } = props;
   const { t, lang } = useTranslation("common");
   const [userName, setUserName] = useState("");
+  const [dataUser, setDataUser] = useState(null);
   const router = useRouter();
   const currUrl = router.pathname.split("/");
   const options = useMemo(() => countryList().getData(), []);
@@ -36,15 +37,17 @@ export default function PrivateInformation(props) {
     setRefreshToken,
     setUsername,
     setLoginData,
-    setEmail
+    setEmail,
+    loginData
   } = useAuthStore();
   useEffect(() => {
     setUserName(username);
   }, []);
   useEffect(() => {
-    API.get("/users/v1/detail")
+    API.get(`/users/v1/${loginData.id}`)
       .then((response) => {
         const userData = response.data;
+        setDataUser(userData)
       })
       .catch((error) => {
         console.error("Error fetching user details", error);
@@ -64,10 +67,10 @@ export default function PrivateInformation(props) {
     );
   };
   const initialValues = {
-    address: "",
+    address: loginData?.address,
     country: "",
     email: email,
-    full_name: username,
+    full_name: loginData?.full_name,
     gender: "",
     password: ""
   };
