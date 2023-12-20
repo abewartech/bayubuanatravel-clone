@@ -74,7 +74,25 @@ export default function ForgotPassword() {
           console.log(err);
         });
     } else if (currentStep === "otp") {
-      handleStepChange("newPassword");
+      axios.defaults.headers.post['Reset-Token'] = values.otp
+      axios.defaults.headers.post['Reset-Token'] = values.otp
+      API.post(
+        "/users/v1/token-validation",
+        {},
+        {
+          headers: {
+            "Reset-Token": values.otp
+          }
+        }
+      )
+        .then((res) => {
+          if (res.message === "success") {
+            handleStepChange("newPassword");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else if (currentStep === "newPassword") {
       setSubmitting(false);
       router.push("/login");
