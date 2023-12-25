@@ -74,7 +74,6 @@ export default function Register() {
     }
   ];
   const initialValues = {
-    address: "N/A",
     country: "",
     email: "",
     full_name: "",
