@@ -99,9 +99,9 @@
  "packageh" :"Kami dengan bangga mempersembahkan serangkaian paket petualangan yang dirancang khusus untuk membawa Anda melalui pengalaman tak terlupakan di surga tropis, Raja Ampat. Dengan detail yang dipikirkan dengan cermat, setiap paket kami menjanjikan kombinasi sempurna antara keindahan alam yang luar biasa dan kenyamanan layanan terbaik. ",
  "cost" : "Rincian Biaya",
  "total":"Total Biaya",
- "pay":"Rencana Bayar",
- "remaining":"Sisa Biaya",
- "theremaining":"*Sisa Biaya maximal dibayarkan 2 minggu sebelum keberangkatan",
+ "pay":"DP Pembayaran",
+ "remaining":"Sisa Pembayaran",
+ "theremaining":"*Sisa Pembayaran harus dilunaskan 2 minggu sebelum keberangkatan",
  "fgpassword": "Silakan masukkan email Anda di bawah ini. Kami akan mengirimkan Anda petunjuk untuk memulihkan kata sandi Anda."
 
 }

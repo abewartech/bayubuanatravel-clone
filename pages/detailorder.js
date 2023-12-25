@@ -173,7 +173,7 @@ const DetailOrder = () => {
               <Box mb={3} sx={{ position: "relative" }}>
                 {/* Add your detail package content here */}
                 {/* For example: */}
-                <Typography variant="h6">Promo</Typography>
+                <Typography variant="h6">Promo Kode Voucher</Typography>
                 <TextField
                   fullWidth
                   value={promoCode}
@@ -190,6 +190,7 @@ const DetailOrder = () => {
                       </InputAdornment>
                     )
                   }}
+                  placeholder="Masukan Kode Voucher"
                 />
                 <Divider />
 
@@ -200,11 +201,11 @@ const DetailOrder = () => {
                   className="mt-4"
                 >
                   <Grid item>
-                    <Typography variant="h6">{t('cost')}</Typography>
+                    <Typography variant="h6">{t("cost")}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
-                      Harga Dalam {lang === "en" ? `USD` : `IDR`}
+                      Harga dalam {lang === "en" ? `USD` : `IDR`}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -238,7 +239,7 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
-                    <Typography variant="h6">{t('total')}</Typography>
+                    <Typography variant="h6">{t("total")}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">
@@ -260,7 +261,7 @@ const DetailOrder = () => {
                   className="mt-4"
                 >
                   <Grid item>
-                    <Typography variant="h6">{t('total')}</Typography>
+                    <Typography variant="h6">{t("total")}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">
@@ -278,7 +279,7 @@ const DetailOrder = () => {
                   className="mt-3"
                 >
                   <Grid item>
-                    <Typography variant="body1">{t('remaining')}</Typography>
+                    <Typography variant="body1">{t("remaining")}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">
@@ -301,7 +302,7 @@ const DetailOrder = () => {
                 >
                   <Grid item>
                     <Typography variant="caption">
-                      {t('theremaining')}
+                      {t("theremaining")}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -321,15 +322,15 @@ const DetailOrder = () => {
                 {productData && <Card type="common" data={productData} />}
                 <Divider variant="middle" />
                 <Typography variant="h6">
-                  DP{" "}
+                  DP |{" "}
                   {lang === "en"
                     ? `USD ${numeral(decodedInfo?.amount).format("0,0.00")}`
                     : `Rp. ${numeral(decodedInfo?.amount).format("0,0")}`}
                 </Typography>
                 <div className="row">
                   <div className="col">
-                    <Typography variant="h6">
-                      Total{" "}
+                    <Typography variant="h6" style={{ color: "#F26F49", fontWeight: 'bold' }}>
+                      Total Bayar |{" "}
                       {lang === "en"
                         ? `USD ${numeral(decodedInfo?.totalPriceFix).format(
                             "0,0.00"
@@ -341,7 +342,11 @@ const DetailOrder = () => {
                   </div>
                 </div>
 
-                <Button className="mt-2" variant="contained" onClick={handlePayment}>
+                <Button
+                  className="mt-2"
+                  variant="contained"
+                  onClick={handlePayment}
+                >
                   {t("proceedtopayment")}
                 </Button>
               </Box>
