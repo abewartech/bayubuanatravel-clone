@@ -509,7 +509,7 @@ export default function Header(props) {
                       >
                         {t("dont")}
                         <Link href="/register" passHref>
-                          <Button>{t("register")}</Button>
+                          <Button onClick={() => setOpen(false)}>{t("register")}</Button>
                         </Link>
                       </div>
                     </form>

@@ -11,7 +11,9 @@ import {
   FormControlLabel,
   Radio,
   Typography,
-  TextareaAutosize
+  TextareaAutosize,
+  Snackbar,
+  SnackbarContent
 } from "@mui/material";
 import { PhoneInput } from "react-international-phone";
 import Select from "react-select";
@@ -23,6 +25,8 @@ export default function PrivateInformation(props) {
   const { t, lang } = useTranslation("common");
   const [userName, setUserName] = useState("");
   const [dataUser, setDataUser] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const router = useRouter();
   const currUrl = router.pathname.split("/");
   const options = useMemo(() => countryList().getData(), []);
@@ -47,7 +51,7 @@ export default function PrivateInformation(props) {
     API.get(`/users/v1/${loginData.id}`)
       .then((response) => {
         const userData = response.data;
-        setDataUser(userData)
+        setDataUser(userData);
       })
       .catch((error) => {
         console.error("Error fetching user details", error);
@@ -89,38 +93,17 @@ export default function PrivateInformation(props) {
             ) {
               errors.email = "Invalid email address";
             }
-            if (!values.password) {
-              errors.password = "Required";
-            } else if (values.password.length < 6) {
-              errors.password = "Password must be at least 6 characters long";
-            } else if (!/[A-Z]/.test(values.password)) {
-              errors.password =
-                "Password must contain at least one capital letter";
-            }
 
-            if (values.password !== values.confirmPassword) {
-              errors.confirmPassword = "Passwords do not match";
-            }
+            console.log(values);
             return errors;
           }}
           onSubmit={(values, { setSubmitting }) => {
-            API.post("users/v1/", values)
+            API.put(`users/v1/${loginData.id}`, values)
               .then((res) => {
-                API.post("/users/v1/login", values)
-                  .then((res) => {
-                    setAccessToken(res.data.access_token);
-                    setRefreshToken(res.data.refresh_token);
-                    setUsername(values.email.split("@")[0]);
-                    setEmail(values.email);
-                    setLoginData(res.data.user_data);
-                    setSubmitting(false);
-                    setLoggedIn(true);
-                    router.push("/");
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                    setSubmitting(false);
-                  });
+                if (res.message === "success") {
+                  setSnackbarMessage("Personal Information Has Been Successfully Updated");
+                  setSnackbarOpen(true);
+                }
               })
               .catch((err) => {
                 setSubmitting(false);
@@ -297,6 +280,20 @@ export default function PrivateInformation(props) {
           )}
         </Formik>
       </div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          message={snackbarMessage}
+          style={{ backgroundColor: "green" }} // You can customize the color
+        />
+      </Snackbar>
     </div>
   );
 }
