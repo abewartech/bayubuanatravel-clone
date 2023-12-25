@@ -10,6 +10,10 @@ import spayLogo from "./../../../public/assets/logo/spay.png";
 import visaLogo from "./../../../public/assets/logo/visa.png";
 import mastercardLogo from "./../../../public/assets/logo/mastercard.png";
 import jcbLogo from "./../../../public/assets/logo/jcb.png";
+import bcaLogo from "./../../../public/assets/logo/bca.png";
+import bniLogo from "./../../../public/assets/logo/bni.png";
+import briLogo from "./../../../public/assets/logo/bri.png";
+import mandiriLogo from "./../../../public/assets/logo/mandiri.png";
 import call from "./../../../public/assets/icon/call.svg";
 import useTranslation from "next-translate/useTranslation";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -61,7 +65,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className={`col-12 col-lg-3 mb-2`}>
+          <div className={`col-12 col-lg-3 mb-3`}>
             <div className="row ps-1">
               <div className="col">
                 <b>Payment powered by</b>
@@ -88,7 +92,7 @@ export default function Footer() {
                   </div>
                   <div className="col-6">
                     <div className="mt-3">
-                      <Image src={visaLogo} alt="Visa" width={80} height={40} />
+                      <Image src={visaLogo} alt="Visa" width={80} height={38} />
                     </div>
                   </div>
                 </div>
@@ -98,11 +102,35 @@ export default function Footer() {
                       src={mastercardLogo}
                       alt="mastercard"
                       width={80}
-                      height={40}
+                      height={38}
                     />
                   </div>
                   <div className="col-6">
-                    <Image src={jcbLogo} alt="jcbLogo" width={80} height={40} />
+                    <Image src={jcbLogo} alt="jcbLogo" width={80} height={38} />
+                  </div>
+                </div>
+                <div className="row mt-3">
+                  <div className="col-6">
+                    <Image
+                      src={bcaLogo}
+                      alt="bca"
+                      width={80}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <Image src={bniLogo} alt="bniLogo" width={80} />
+                  </div>
+                </div>
+                <div className="row mt-3">
+                  <div className="col-6">
+                    <Image
+                      src={briLogo}
+                      alt="bri"
+                      width={80}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <Image src={mandiriLogo} alt="mandiriLogo" width={80} />
                   </div>
                 </div>
               </div>
