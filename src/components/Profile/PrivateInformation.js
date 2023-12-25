@@ -30,6 +30,11 @@ export default function PrivateInformation(props) {
   const router = useRouter();
   const currUrl = router.pathname.split("/");
   const options = useMemo(() => countryList().getData(), []);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
   const {
     isLoggedIn,
     accessToken,
@@ -72,10 +77,10 @@ export default function PrivateInformation(props) {
   };
   const initialValues = {
     address: loginData?.address,
-    country: "",
+    country: loginData?.country,
     email: email,
     full_name: loginData?.full_name,
-    gender: "",
+    gender: loginData?.gender,
     password: ""
   };
   return (
@@ -101,7 +106,9 @@ export default function PrivateInformation(props) {
             API.put(`users/v1/${loginData.id}`, values)
               .then((res) => {
                 if (res.message === "success") {
-                  setSnackbarMessage("Personal Information Has Been Successfully Updated");
+                  setSnackbarMessage(
+                    "Personal Information Has Been Successfully Updated"
+                  );
                   setSnackbarOpen(true);
                 }
               })
@@ -169,20 +176,22 @@ export default function PrivateInformation(props) {
               <Typography fontSize={16} fontWeight={500} lineHeight="24px">
                 {t("country")}
               </Typography>
-              <Field
-                name="country"
-                render={({ field, form }) => (
-                  <Select
-                    options={options}
-                    value={options.find(
-                      (option) => option.value === field.value
-                    )}
-                    onChange={(option) =>
-                      form.setFieldValue(field.name, option.value)
-                    }
-                  />
-                )}
-              />
+              {hasMounted && (
+                <Field
+                  name="country"
+                  render={({ field, form }) => (
+                    <Select
+                      options={options}
+                      value={options.find(
+                        (option) => option.value === field.value
+                      )}
+                      onChange={(option) =>
+                        form.setFieldValue(field.name, option.value)
+                      }
+                    />
+                  )}
+                />
+              )}
               <ErrorMessage name="country" component="div" />
 
               <Typography
@@ -193,36 +202,39 @@ export default function PrivateInformation(props) {
               >
                 {t("gender")}
               </Typography>
-              <div
-                role="group"
-                className="mb-1"
-                aria-labelledby="my-radio-group"
-              >
-                <FormControlLabel
-                  control={
-                    <Radio
-                      type="radio"
-                      name="gender"
-                      value="l"
-                      checked={values.gender === "l"}
-                      onChange={handleChange}
-                    />
-                  }
-                  label="Male"
-                />
-                <FormControlLabel
-                  control={
-                    <Radio
-                      type="radio"
-                      name="gender"
-                      value="p"
-                      checked={values.gender === "p"}
-                      onChange={handleChange}
-                    />
-                  }
-                  label="Female"
-                />
-              </div>
+              {hasMounted && (
+                <div
+                  role="group"
+                  className="mb-1"
+                  aria-labelledby="my-radio-group"
+                >
+                  <FormControlLabel
+                    control={
+                      <Radio
+                        type="radio"
+                        name="gender"
+                        value="l"
+                        checked={values.gender === "l"}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Radio
+                        type="radio"
+                        name="gender"
+                        value="p"
+                        checked={values.gender === "p"}
+                        onChange={handleChange}
+                      />
+                    }
+                    label="Female"
+                  />
+                </div>
+              )}
+
               <ErrorMessage name="gender" component="div" />
 
               <Typography
