@@ -81,7 +81,8 @@ export default function PrivateInformation(props) {
     email: email,
     full_name: loginData?.full_name,
     gender: loginData?.gender,
-    password: ""
+    password: "",
+    phone_number: loginData?.phone_number,
   };
   return (
     <div className="col-lg-8 mb-5">
