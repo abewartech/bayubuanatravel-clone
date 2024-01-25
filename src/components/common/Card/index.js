@@ -7,9 +7,23 @@ import thumbnail from "./../../../../public/assets/gallery/1.jpg";
 import calendar from "./../../../../public/assets/icon/calendar.svg";
 import useTranslation from "next-translate/useTranslation";
 import numeral from "numeral";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 import passport from "./../../../../public/assets/passport.png";
 import Link from "next/link";
+import { styled } from "@mui/material";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+
+const LightTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 11
+  }
+}));
 
 export default function Card(props) {
   const { type, data } = props;
@@ -26,8 +40,7 @@ export default function Card(props) {
         // Calculate days, hours, minutes, etc. as needed
         const days = Math.floor(durationInMilliseconds / (1000 * 60 * 60 * 24));
 
-        return `${days} ${t('days')}`;
-
+        return `${days} ${t("days")}`;
       }
 
       return "N/A"; // Handle the case where data is missing or invalid
@@ -80,8 +93,13 @@ export default function Card(props) {
                 data.title
               )}%0A%0A https://marinarajaampat.id/id/packages/${data.id}`}
             >
-              <button>{t('contact')}</button>
+              <button>{t("contact")}</button>
             </Link>
+            <div className={styles.infoDetail}>
+              <LightTooltip title="10 Spot" placement="top">
+                <Image src={info} alt="info" />
+              </LightTooltip>
+            </div>
           </div>
         </div>
         <div className={styles.overlay}></div>
