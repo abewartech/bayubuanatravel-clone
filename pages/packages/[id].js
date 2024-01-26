@@ -17,10 +17,14 @@ import {
   Snackbar,
   TextField,
   Switch,
-  FormControlLabel
+  FormControlLabel,
+  Card,
+  CardContent,
+  CardActions
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
+import Select from "react-select";
 import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -38,6 +42,7 @@ import Link from "next/link";
 import useAuthStore from "../../src/store/loginStore";
 import API from "../../src/common/api";
 import { generatePDF } from "../../src/utils/pdfUtils";
+import NumberInputIntroduction from "../../src/components/common/NumberInputIntroduction";
 
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
   ssr: false
@@ -650,6 +655,52 @@ export default function DetailPackages() {
             </div>
           </div>
           <div className="col-lg-7">
+            <Card className="mb-5" sx={{ maxWidth: 545 }}>
+              <CardContent>
+                <div className="row mb-4">
+                  <div className="col-12">
+                    <Typography className="mb-1">Select Tour Date</Typography>
+                    <Select
+                      options={[
+                        { value: "chocolate", label: "Chocolate" },
+                        { value: "strawberry", label: "Strawberry" },
+                        { value: "vanilla", label: "Vanilla" }
+                      ]}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <Typography className="mb-1">Guests</Typography>
+                    <NumberInputIntroduction />
+                  </div>
+                  <div className="col-6">
+                    <Typography className="mb-1">Rooms</Typography>
+                    <NumberInputIntroduction />
+                  </div>
+                </div>
+              </CardContent>
+              <CardActions>
+                <Grid
+                  container
+                  spacing={2}
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Grid item xs={8}>
+                    <Button size="small" variant="contained" fullWidth>
+                      Book Now
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button size="small" variant="outlined" fullWidth>
+                      Customize
+                    </Button>
+                  </Grid>
+                </Grid>
+              </CardActions>
+            </Card>
             <div className={styles.itineraryTitle}>{t("itinerary")}</div>
             <p className="mb-3">{t("customize")} </p>
             {itineraryItems.map((item, idx) => {
