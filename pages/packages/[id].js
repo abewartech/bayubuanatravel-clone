@@ -20,7 +20,8 @@ import {
   FormControlLabel,
   Card,
   CardContent,
-  CardActions
+  CardActions,
+  Popover
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
@@ -246,6 +247,7 @@ export default function DetailPackages() {
     Array(itineraryItems.length).fill(false)
   );
   const [orderStatus, setOrderStatus] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -266,6 +268,16 @@ export default function DetailPackages() {
       : 0
   );
   const router = useRouter();
+
+  const handleOpenGuest = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseGuest = () => {
+    setAnchorEl(null);
+  };
+
+  const openGuest = Boolean(anchorEl);
 
   const successPayment = () => {
     setOpenDialog(false);
@@ -662,17 +674,45 @@ export default function DetailPackages() {
                     <Typography className="mb-1">Select Tour Date</Typography>
                     <Select
                       options={[
-                        { value: "chocolate", label: "Chocolate" },
-                        { value: "strawberry", label: "Strawberry" },
-                        { value: "vanilla", label: "Vanilla" }
+                        {
+                          value: "chocolate",
+                          label: "21 July 2023 - 25 July 2023"
+                        },
+                        {
+                          value: "strawberry",
+                          label: "27 July 2023 - 29 July 2023"
+                        },
+                        {
+                          value: "vanilla",
+                          label: "1 August 2023 - 5 August 2023"
+                        }
                       ]}
+                      placeholder="Select available dates"
                     />
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-6">
                     <Typography className="mb-1">Guests</Typography>
-                    <NumberInputIntroduction />
+                    <NumberInputIntroduction
+                      onClick={handleOpenGuest}
+                      onFocus={handleOpenGuest}
+                      aria-describedby={"guests"}
+                    />
+                    <Popover
+                      id={"guests"}
+                      open={openGuest}
+                      anchorEl={anchorEl}
+                      onClose={handleCloseGuest}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left"
+                      }}
+                    >
+                      <Typography sx={{ p: 2 }}>
+                        The content of the Popover.
+                      </Typography>
+                    </Popover>
                   </div>
                   <div className="col-6">
                     <Typography className="mb-1">Rooms</Typography>
@@ -688,14 +728,14 @@ export default function DetailPackages() {
                   justifyContent="center"
                   alignItems="center"
                 >
-                  <Grid item xs={8}>
-                    <Button size="small" variant="contained" fullWidth>
-                      Book Now
+                  <Grid item xs={4}>
+                    <Button variant="outlined" fullWidth>
+                      Customize
                     </Button>
                   </Grid>
-                  <Grid item xs={4}>
-                    <Button size="small" variant="outlined" fullWidth>
-                      Customize
+                  <Grid item xs={8}>
+                    <Button variant="contained" fullWidth>
+                      Book Now
                     </Button>
                   </Grid>
                 </Grid>
