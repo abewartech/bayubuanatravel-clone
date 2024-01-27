@@ -21,7 +21,8 @@ import {
   Card,
   CardContent,
   CardActions,
-  Popover
+  Popover,
+  Divider
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
@@ -248,6 +249,7 @@ export default function DetailPackages() {
   );
   const [orderStatus, setOrderStatus] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElRoom, setAnchorElRoom] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -277,7 +279,16 @@ export default function DetailPackages() {
     setAnchorEl(null);
   };
 
+  const handleOpenRoom = (event) => {
+    setAnchorElRoom(event.currentTarget);
+  };
+
+  const handleCloseRoom = () => {
+    setAnchorElRoom(null);
+  };
+
   const openGuest = Boolean(anchorEl);
+  const openRoom = Boolean(anchorElRoom);
 
   const successPayment = () => {
     setOpenDialog(false);
@@ -709,14 +720,114 @@ export default function DetailPackages() {
                         horizontal: "left"
                       }}
                     >
-                      <Typography sx={{ p: 2 }}>
-                        The content of the Popover.
-                      </Typography>
+                      <Grid
+                        container
+                        sx={{ p: 1.5 }}
+                        direction="column"
+                        spacing={2}
+                      >
+                        <Grid item>
+                          <Typography>Guests:</Typography>
+                          <Divider />
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="row" spacing={2}>
+                            <Grid item xs={6}>
+                              <Typography className="mb-1">Adults:</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <NumberInputIntroduction />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="row" spacing={2}>
+                            <Grid item xs={6}>
+                              <Typography className="mb-1">
+                                Childerns:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <NumberInputIntroduction />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Button variant="contained" fullWidth>
+                            Confirm
+                          </Button>
+                        </Grid>
+                      </Grid>
                     </Popover>
                   </div>
                   <div className="col-6">
                     <Typography className="mb-1">Rooms</Typography>
-                    <NumberInputIntroduction />
+                    <NumberInputIntroduction
+                      onClick={handleOpenRoom}
+                      onFocus={handleCloseRoom}
+                      aria-describedby={"rooms"}
+                    />
+                    <Popover
+                      id={"rooms"}
+                      open={openRoom}
+                      anchorEl={anchorElRoom}
+                      onClose={handleCloseRoom}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left"
+                      }}
+                    >
+                      <Grid
+                        container
+                        sx={{ p: 1.5 }}
+                        direction="column"
+                        spacing={2}
+                      >
+                        <Grid item>
+                          <Typography>Rooms:</Typography>
+                          <Divider />
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="row" spacing={2}>
+                            <Grid item xs={6}>
+                              <Typography className="mb-1">Single:</Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <NumberInputIntroduction />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="row" spacing={2}>
+                            <Grid item xs={6}>
+                              <Typography className="mb-1">
+                                Double:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <NumberInputIntroduction />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Grid container direction="row" spacing={2}>
+                            <Grid item xs={6}>
+                              <Typography className="mb-1">
+                                Triple:
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <NumberInputIntroduction />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Button variant="contained" fullWidth>
+                            Confirm
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Popover>
                   </div>
                 </div>
               </CardContent>
