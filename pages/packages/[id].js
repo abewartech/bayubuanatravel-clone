@@ -22,7 +22,8 @@ import {
   CardContent,
   CardActions,
   Popover,
-  Divider
+  Divider,
+  IconButton
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
@@ -41,6 +42,7 @@ import midtrans from "../../public/assets/midtrans.png";
 import axios from "axios";
 import { ErrorMessage, Field, Formik } from "formik";
 import Link from "next/link";
+import CloseIcon from "@mui/icons-material/Close";
 import useAuthStore from "../../src/store/loginStore";
 import API from "../../src/common/api";
 import { generatePDF } from "../../src/utils/pdfUtils";
@@ -62,6 +64,21 @@ const style = {
   borderRadius: 4,
   p: 4
 };
+const styleModalCustom = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "65%",
+  maxHeight: "85vh", // Set the maximum height to 70% of the viewport height
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  borderRadius: 4,
+  p: 4,
+  overflowY: "auto" // Enable vertical scrolling if the content exceeds maxHeight
+};
+
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
   "& .MuiSwitch-track": {
@@ -243,6 +260,7 @@ export default function DetailPackages() {
   const [double, setDouble] = useState(0);
   const [triple, setTriple] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModalCustom, setOpenModalCustom] = useState(false);
   const [errorAmount, setErrorAmount] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
   const [productData, setProductData] = useState(null);
@@ -525,6 +543,7 @@ export default function DetailPackages() {
   };
   const handleCloseLogin = () => setOpenModalLogin(false);
   const handleClose = () => setOpen(false);
+  const handleCloseModalCustom = () => setOpenModalCustom(false);
 
   const amountChange = (e) => {
     if (productData && productData.minimum_payment) {
@@ -921,7 +940,11 @@ export default function DetailPackages() {
                   alignItems="center"
                 >
                   <Grid item xs={4}>
-                    <Button variant="outlined" fullWidth>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => setOpenModalCustom(true)}
+                    >
                       Customize
                     </Button>
                   </Grid>
@@ -1344,6 +1367,97 @@ export default function DetailPackages() {
           <Button onClick={successPayment}>Close</Button>
         </DialogActions>
       </Dialog>
+      <Modal
+        open={openModalCustom}
+        onClose={handleCloseModalCustom}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none"
+        }}
+      >
+        <Box sx={styleModalCustom}>
+          <div
+            sx={{
+              backgroundColor: "#181818",
+              boxShadow: 5,
+              padding: 5,
+              margin: 2,
+              overflowY: "auto",
+              height: "-webkit-fill-available"
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                margin: "10px"
+              }}
+            >
+              <IconButton onClick={handleCloseModalCustom} color="primary">
+                <CloseIcon />
+              </IconButton>
+            </div>
+            <Typography variant="h5" gutterBottom className="text-center">
+              Customize Tour
+            </Typography>
+            <Divider className="mb-5" />
+            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+            <p className="mb-3">{t("customize")} </p>
+            {itineraryItems.map((item, idx) => {
+              return (
+                <div key={idx} className={styles.itineraryItem}>
+                  <div className={styles.itineraryDetail}>
+                    <div className={styles.number}>{idx + 1}</div>
+                    <div
+                      onClick={() => handleShowDetail(idx)}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
+                      <span
+                        className={`${styles.arrowIcon} ${
+                          expandedItems[idx] ? styles.active : ""
+                        }`}
+                      >
+                        {expandedItems[idx] ? "▲" : "▼"}
+                      </span>
+                    </div>
+                  </div>
+                  {expandedItems[idx] && (
+                    <div className="p-4">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: item?.description
+                        }}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Android12Switch
+                            checked={checkedItinerary[idx]}
+                            onChange={() => handleCheckboxChange(idx)}
+                          />
+                        }
+                        label={`${t("iwill")} ${item?.title}`}
+                        className="mt-2"
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            <div className="mt-5" style={{ textAlign: "center" }}>
+              <Button variant="contained" onClick={handleCloseModalCustom} className="w-25">
+                Update
+              </Button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </Layout>
   );
 }
