@@ -32,16 +32,44 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
   );
 });
 
-export default function NumberInputIntroduction({ onClick, onChange, value, disabled }) {
+export default function NumberInputIntroduction({
+  onClick,
+  onChange,
+  value,
+  disabled
+}) {
+  const handleClick = (event) => {
+    if (!disabled && onClick) {
+      onClick(event);
+    }
+  };
+
   return (
-    <CustomNumberInput
-      aria-label="Demo number input"
-      placeholder=""
-      onClick={onClick}
-      onChange={onChange}
-      value={value}
-      disabled={disabled}
-    />
+    <div
+      style={{ position: "relative", display: "inline-block" }}
+      onClick={handleClick}
+    >
+      <CustomNumberInput
+        aria-label="Demo number input"
+        placeholder=""
+        onChange={onChange}
+        value={value}
+        disabled={disabled}
+      />
+      {disabled && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            cursor: "pointer" // Set the cursor to pointer for the wrapper
+          }}
+          onClick={onClick}
+        />
+      )}
+    </div>
   );
 }
 

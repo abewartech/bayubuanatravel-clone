@@ -754,6 +754,7 @@ export default function DetailPackages() {
                     <NumberInputIntroduction
                       onClick={handleOpenGuest}
                       onFocus={handleOpenGuest}
+                      onMouseDown={handleOpenGuest}
                       aria-describedby={"guests"}
                       value={totalGuest}
                       disabled
@@ -811,7 +812,7 @@ export default function DetailPackages() {
                           </Grid>
                         </Grid>
                         <Grid item>
-                          <Button variant="contained" fullWidth>
+                          <Button variant="contained" fullWidth onClick={handleCloseGuest}>
                             Confirm
                           </Button>
                         </Grid>
@@ -822,7 +823,8 @@ export default function DetailPackages() {
                     <Typography className="mb-1">Rooms</Typography>
                     <NumberInputIntroduction
                       onClick={handleOpenRoom}
-                      onFocus={handleCloseRoom}
+                      onFocus={handleOpenRoom}
+                      onMouseDown={handleOpenRoom}
                       aria-describedby={"rooms"}
                       value={totalRoom}
                       disabled
@@ -893,7 +895,7 @@ export default function DetailPackages() {
                           </Grid>
                         </Grid>
                         <Grid item>
-                          <Button variant="contained" fullWidth>
+                          <Button variant="contained" fullWidth onClick={handleCloseRoom}>
                             Confirm
                           </Button>
                         </Grid>
