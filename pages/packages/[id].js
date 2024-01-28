@@ -235,6 +235,13 @@ export default function DetailPackages() {
   const [id, setId] = useState(0);
   const [amountChanges, setAmountChanges] = useState(0);
   const [qty, setQty] = useState(1);
+  const [totalGuest, setTotalGuest] = useState(0);
+  const [totalRoom, setTotalRoom] = useState(0);
+  const [adult, setAdult] = useState(0);
+  const [child, setChild] = useState(0);
+  const [single, setSingle] = useState(0);
+  const [double, setDouble] = useState(0);
+  const [triple, setTriple] = useState(0);
   const [open, setOpen] = useState(false);
   const [errorAmount, setErrorAmount] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
@@ -353,24 +360,43 @@ export default function DetailPackages() {
     setQty(val);
   };
 
+  const updateTotalCounts = () => {
+    const totalAdults = adult;
+    const totalChildren = child;
+    const totalSingleRooms = single;
+    const totalDoubleRooms = double;
+    const totalTripleRooms = triple;
+
+    const newTotalGuest = totalAdults + totalChildren;
+    const newTotalRoom = totalSingleRooms + totalDoubleRooms + totalTripleRooms;
+
+    setTotalGuest(newTotalGuest);
+    setTotalRoom(newTotalRoom);
+  };
+
   const handleAdultChange = (e, val) => {
-    setQty(val);
+    setAdult(val);
+    updateTotalCounts();
   };
 
   const handleChildChange = (e, val) => {
-    setQty(val);
+    setChild(val);
+    updateTotalCounts();
   };
 
   const handleSingleChange = (e, val) => {
-    setQty(val);
+    setSingle(val);
+    updateTotalCounts();
   };
 
   const handleDoubleChange = (e, val) => {
-    setQty(val);
+    setDouble(val);
+    updateTotalCounts();
   };
 
   const handleTripleChange = (e, val) => {
-    setQty(val);
+    setTriple(val);
+    updateTotalCounts();
   };
 
   useEffect(() => {
@@ -729,7 +755,8 @@ export default function DetailPackages() {
                       onClick={handleOpenGuest}
                       onFocus={handleOpenGuest}
                       aria-describedby={"guests"}
-                      value={qty}
+                      value={totalGuest}
+                      disabled
                     />
                     <Popover
                       id={"guests"}
@@ -760,7 +787,7 @@ export default function DetailPackages() {
                               <NumberInputIntroduction
                                 min={1}
                                 max={999}
-                                value={qty}
+                                value={adult}
                                 onChange={handleAdultChange}
                               />
                             </Grid>
@@ -777,7 +804,7 @@ export default function DetailPackages() {
                               <NumberInputIntroduction
                                 min={1}
                                 max={999}
-                                value={qty}
+                                value={child}
                                 onChange={handleChildChange}
                               />
                             </Grid>
@@ -797,7 +824,8 @@ export default function DetailPackages() {
                       onClick={handleOpenRoom}
                       onFocus={handleCloseRoom}
                       aria-describedby={"rooms"}
-                      value={qty}
+                      value={totalRoom}
+                      disabled
                     />
                     <Popover
                       id={"rooms"}
@@ -828,7 +856,7 @@ export default function DetailPackages() {
                               <NumberInputIntroduction
                                 min={1}
                                 max={999}
-                                value={qty}
+                                value={single}
                                 onChange={handleSingleChange}
                               />
                             </Grid>
@@ -843,7 +871,7 @@ export default function DetailPackages() {
                               <NumberInputIntroduction
                                 min={1}
                                 max={999}
-                                value={qty}
+                                value={double}
                                 onChange={handleDoubleChange}
                               />
                             </Grid>
@@ -858,7 +886,7 @@ export default function DetailPackages() {
                               <NumberInputIntroduction
                                 min={1}
                                 max={999}
-                                value={qty}
+                                value={triple}
                                 onChange={handleTripleChange}
                               />
                             </Grid>
