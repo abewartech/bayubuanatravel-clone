@@ -353,6 +353,26 @@ export default function DetailPackages() {
     setQty(val);
   };
 
+  const handleAdultChange = (e, val) => {
+    setQty(val);
+  };
+
+  const handleChildChange = (e, val) => {
+    setQty(val);
+  };
+
+  const handleSingleChange = (e, val) => {
+    setQty(val);
+  };
+
+  const handleDoubleChange = (e, val) => {
+    setQty(val);
+  };
+
+  const handleTripleChange = (e, val) => {
+    setQty(val);
+  };
+
   useEffect(() => {
     setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
   }, [qty]);
@@ -709,6 +729,7 @@ export default function DetailPackages() {
                       onClick={handleOpenGuest}
                       onFocus={handleOpenGuest}
                       aria-describedby={"guests"}
+                      value={qty}
                     />
                     <Popover
                       id={"guests"}
@@ -736,7 +757,12 @@ export default function DetailPackages() {
                               <Typography className="mb-1">Adults:</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <NumberInputIntroduction />
+                              <NumberInputIntroduction
+                                min={1}
+                                max={999}
+                                value={qty}
+                                onChange={handleAdultChange}
+                              />
                             </Grid>
                           </Grid>
                         </Grid>
@@ -748,7 +774,12 @@ export default function DetailPackages() {
                               </Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <NumberInputIntroduction />
+                              <NumberInputIntroduction
+                                min={1}
+                                max={999}
+                                value={qty}
+                                onChange={handleChildChange}
+                              />
                             </Grid>
                           </Grid>
                         </Grid>
@@ -766,6 +797,7 @@ export default function DetailPackages() {
                       onClick={handleOpenRoom}
                       onFocus={handleCloseRoom}
                       aria-describedby={"rooms"}
+                      value={qty}
                     />
                     <Popover
                       id={"rooms"}
@@ -793,31 +825,42 @@ export default function DetailPackages() {
                               <Typography className="mb-1">Single:</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <NumberInputIntroduction />
+                              <NumberInputIntroduction
+                                min={1}
+                                max={999}
+                                value={qty}
+                                onChange={handleSingleChange}
+                              />
                             </Grid>
                           </Grid>
                         </Grid>
                         <Grid item>
                           <Grid container direction="row" spacing={2}>
                             <Grid item xs={6}>
-                              <Typography className="mb-1">
-                                Double:
-                              </Typography>
+                              <Typography className="mb-1">Double:</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <NumberInputIntroduction />
+                              <NumberInputIntroduction
+                                min={1}
+                                max={999}
+                                value={qty}
+                                onChange={handleDoubleChange}
+                              />
                             </Grid>
                           </Grid>
                         </Grid>
                         <Grid item>
                           <Grid container direction="row" spacing={2}>
                             <Grid item xs={6}>
-                              <Typography className="mb-1">
-                                Triple:
-                              </Typography>
+                              <Typography className="mb-1">Triple:</Typography>
                             </Grid>
                             <Grid item xs={6}>
-                              <NumberInputIntroduction />
+                              <NumberInputIntroduction
+                                min={1}
+                                max={999}
+                                value={qty}
+                                onChange={handleTripleChange}
+                              />
                             </Grid>
                           </Grid>
                         </Grid>

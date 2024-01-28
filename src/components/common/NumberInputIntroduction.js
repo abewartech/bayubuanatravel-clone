@@ -27,16 +27,18 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
       }}
       {...props}
       ref={ref}
+      onChange={props.onChange}
     />
   );
 });
 
-export default function NumberInputIntroduction({ onClick }) {
+export default function NumberInputIntroduction({ onClick, onChange }) {
   return (
     <CustomNumberInput
       aria-label="Demo number input"
       placeholder=""
       onClick={onClick}
+      onChange={onChange}
     />
   );
 }
