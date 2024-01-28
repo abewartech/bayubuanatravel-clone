@@ -812,7 +812,11 @@ export default function DetailPackages() {
                           </Grid>
                         </Grid>
                         <Grid item>
-                          <Button variant="contained" fullWidth onClick={handleCloseGuest}>
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={handleCloseGuest}
+                          >
                             Confirm
                           </Button>
                         </Grid>
@@ -895,7 +899,11 @@ export default function DetailPackages() {
                           </Grid>
                         </Grid>
                         <Grid item>
-                          <Button variant="contained" fullWidth onClick={handleCloseRoom}>
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={handleCloseRoom}
+                          >
                             Confirm
                           </Button>
                         </Grid>
@@ -918,8 +926,8 @@ export default function DetailPackages() {
                     </Button>
                   </Grid>
                   <Grid item xs={8}>
-                    <Button variant="contained" fullWidth>
-                      Book Now
+                    <Button variant="contained" fullWidth onClick={handleBook}>
+                      {t("booknow")}
                     </Button>
                   </Grid>
                 </Grid>
