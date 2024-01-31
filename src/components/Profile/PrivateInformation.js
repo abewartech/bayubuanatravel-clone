@@ -76,29 +76,29 @@ export default function PrivateInformation(props) {
     );
   };
   const initialValues = {
-    address: loginData?.address,
-    country: loginData?.country,
+    address: dataUser?.address,
+    country: dataUser?.country,
     email: email,
     full_name: loginData?.full_name,
-    gender: loginData?.gender,
+    gender: dataUser?.gender,
     password: "",
-    phone_number: loginData?.phone_number,
+    phone_number: dataUser?.phone_number || ""
   };
   const customStylesReactSelect = {
     container: (provided) => ({
       ...provided,
-      width: '100%',
+      width: "100%"
     }),
     menuPortal: (base) => ({
       ...base,
-      zIndex: 9999,
+      zIndex: 9999
     }),
     menu: (provided) => ({
       ...provided,
       zIndex: 9999,
-      width: '100%',
-      minWidth: '100%',
-    }),
+      width: "100%",
+      minWidth: "100%"
+    })
   };
   return (
     <div className="col-lg-8 mb-5">
@@ -106,6 +106,7 @@ export default function PrivateInformation(props) {
         <h1 className="mb-4 mb-md-0">{t("personal")}</h1>
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           validate={(values) => {
             const errors = {};
             if (!values.email) {
