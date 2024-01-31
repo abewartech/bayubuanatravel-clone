@@ -84,6 +84,22 @@ export default function PrivateInformation(props) {
     password: "",
     phone_number: loginData?.phone_number,
   };
+  const customStylesReactSelect = {
+    container: (provided) => ({
+      ...provided,
+      width: '100%',
+    }),
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999,
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999,
+      width: '100%',
+      minWidth: '100%',
+    }),
+  };
   return (
     <div className="col-lg-8 mb-5">
       <div className={styles.menuShow}>
@@ -189,6 +205,7 @@ export default function PrivateInformation(props) {
                       onChange={(option) =>
                         form.setFieldValue(field.name, option.value)
                       }
+                      styles={customStylesReactSelect}
                     />
                   )}
                 />
