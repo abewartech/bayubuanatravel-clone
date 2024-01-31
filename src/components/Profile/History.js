@@ -222,18 +222,23 @@ export default function History(props) {
                       </Button>
                     </div>
                     <div className={styles.historySee}>
+                      {item.status !== "PAID" && (
+                        <Button
+                          variant="outlined"
+                          color="success"
+                          onClick={() => {
+                            handlePayment();
+                          }}
+                        >
+                          Bayar
+                        </Button>
+                      )}
                       <Button
                         variant="outlined"
                         color="success"
-                        onClick={() => {
-                          if (item.status === "PAID") {
-                            print(item.id);
-                          } else {
-                            handlePayment();
-                          }
-                        }}
+                        onClick={() => print(item.id)}
                       >
-                        {item.status === "PAID" ? "Print" : "Bayar"}
+                        Print
                       </Button>
                     </div>
                   </div>
