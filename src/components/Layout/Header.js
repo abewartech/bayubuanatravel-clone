@@ -7,6 +7,7 @@ import mail from "./../../../public/assets/icon/mail.svg";
 import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import PhoneIcon from "@mui/icons-material/Phone";
+import CloseIcon from "@mui/icons-material/Close";
 import Icon from "@mui/material/Icon";
 import EmailIcon from "@mui/icons-material/Email";
 import { useEffect, useState } from "react";
@@ -255,6 +256,18 @@ export default function Header(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+        <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                margin: "10px"
+              }}
+            >
+              <IconButton onClick={handleClose} color="primary">
+                <CloseIcon />
+              </IconButton>
+            </div>
           <Container
             maxWidth="sm"
             sx={{ height: "65vh", display: "flex", alignItems: "center" }}
