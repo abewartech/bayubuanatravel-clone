@@ -17,6 +17,15 @@ import {
   DialogContentText,
   DialogActions
 } from "@mui/material";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineOppositeContent, {
+  timelineOppositeContentClasses
+} from "@mui/lab/TimelineOppositeContent";
 import { useRouter } from "next/router";
 import BackIcon from "@mui/icons-material/ArrowBack";
 import useTranslation from "next-translate/useTranslation";
@@ -313,6 +322,38 @@ const DetailOrder = () => {
                     <pre>{JSON.stringify(decodedInfo, null, 2)}</pre>
                   </div>
                 )} */}
+
+                <Divider className="mt-4 border" />
+
+                <Grid
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  className="mt-3"
+                >
+                  <Grid item>
+                    <Typography variant="h6">Trip Summary</Typography>
+                  </Grid>
+                </Grid>
+
+                <Timeline
+                  sx={{
+                    [`& .${timelineItemClasses.root}:before`]: {
+                      flex: 0,
+                      padding: 0
+                    }
+                  }}
+                >
+                  {itineraryItems.map((item, index) => (
+                    <TimelineItem key={index}>
+                      <TimelineSeparator>
+                        <TimelineDot />
+                        <TimelineConnector />
+                      </TimelineSeparator>
+                      <TimelineContent>{item?.title}</TimelineContent>
+                    </TimelineItem>
+                  ))}
+                </Timeline>
               </Box>
             </div>
 
@@ -329,7 +370,10 @@ const DetailOrder = () => {
                 </Typography>
                 <div className="row">
                   <div className="col">
-                    <Typography variant="h6" style={{ color: "#F26F49", fontWeight: 'bold' }}>
+                    <Typography
+                      variant="h6"
+                      style={{ color: "#F26F49", fontWeight: "bold" }}
+                    >
                       Total Bayar |{" "}
                       {lang === "en"
                         ? `USD ${numeral(decodedInfo?.totalPriceFix).format(
