@@ -511,7 +511,7 @@ export default function DetailPackages() {
 
   useEffect(() => {
     // Calculate total price whenever productData changes
-    if (productData) {
+    if (productData && productData.product_subs) {
       const productSubsPrice = productData.product_subs.reduce(
         (acc, sub) =>
           acc +

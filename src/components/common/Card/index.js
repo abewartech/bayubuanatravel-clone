@@ -46,13 +46,13 @@ export default function Card(props) {
       return "N/A"; // Handle the case where data is missing or invalid
     };
     return (
+      <Link
+        href={
+          data && data.id !== null ? `/packages/${data.id}` : "/default-url"
+        }
+        className="h-100"
+      >
       <div className={`${styles.card} mt-3  `}>
-        <Link
-          href={
-            data && data.id !== null ? `/packages/${data.id}` : "/default-url"
-          }
-          className="h-100"
-        >
           {data && data.image_url && (
             <Image
               src={data && data.image_url}
@@ -62,7 +62,6 @@ export default function Card(props) {
               height={200}
             />
           )}
-        </Link>
         <div className={styles.date}>
           <span className="me-2">
             <Image src={clock} width={10} height={10} alt="clock" />
@@ -104,6 +103,7 @@ export default function Card(props) {
         </div>
         <div className={styles.overlay}></div>
       </div>
+        </Link>
     );
   };
 
