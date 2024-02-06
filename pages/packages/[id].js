@@ -433,9 +433,9 @@ export default function DetailPackages() {
           prevTotalPrice +
           (productData &&
           lang === "en" &&
-          productData.product_subs[idx].price_usd !== null
-            ? productData.product_subs[idx].price_usd
-            : productData.product_subs[idx].price) *
+          productData.activities[idx].price_usd !== null
+            ? productData.activities[idx].price_usd
+            : productData.activities[idx].price) *
             qty
       );
       setTotalPriceFix(
@@ -443,19 +443,19 @@ export default function DetailPackages() {
           prevTotalPrice +
           (productData &&
           lang === "en" &&
-          productData.product_subs[idx].price_usd !== null
-            ? productData.product_subs[idx].price_usd
-            : productData.product_subs[idx].price) *
+          productData.activities[idx].price_usd !== null
+            ? productData.activities[idx].price_usd
+            : productData.activities[idx].price) *
             qty
       );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
-      const productSubIdToRemove = productData.product_subs[idx].id; // assuming id is the product sub id
+      const productSubIdToRemove = productData.activities[idx].id; // assuming id is the product sub id
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== productSubIdToRemove)
       );
 
-      const productSubsPrice = productData.product_subs.reduce(
+      const productSubsPrice = productData.activities.reduce(
         (acc, sub, subIdx) =>
           updatedCheckedItinerary[subIdx]
             ? acc +
@@ -477,11 +477,11 @@ export default function DetailPackages() {
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
       setProductData(response.data.data);
-      if (response.data.data && response.data.data.product_subs) {
-        const updatedItineraryItems = response.data.data.product_subs.map(
+      if (response.data.data && response.data.data.activities) {
+        const updatedItineraryItems = response.data.data.activities.map(
           (sub) => {
             return {
-              title: sub.title, // You can modify this based on your product_sub structure
+              title: sub.name, // You can modify this based on your product_sub structure
               description:
                 lang === "en" ? sub.description_en : sub.description_id
               // Add other properties as needed
@@ -490,7 +490,7 @@ export default function DetailPackages() {
         );
 
         setItineraryItems(updatedItineraryItems);
-        const productSubIds = response.data.data.product_subs.map(
+        const productSubIds = response.data.data.activities.map(
           (sub) => sub.id
         );
         setSelectedItinerary(productSubIds);
@@ -511,11 +511,11 @@ export default function DetailPackages() {
 
   useEffect(() => {
     // Calculate total price whenever productData changes
-    if (productData && productData.product_subs) {
-      const productSubsPrice = productData.product_subs.reduce(
+    if (productData && productData.activities) {
+      const productSubsPrice = productData.activities.reduce(
         (acc, sub) =>
           acc +
-          (lang === "en" && sub.price_usd !== null ? sub.price_usd : sub.price),
+          (lang === "en" && sub.base_price_usd !== null ? sub.base_price_usd : sub.base_price),
         0
       );
       setTotalPrice(productSubsPrice);
@@ -656,7 +656,7 @@ export default function DetailPackages() {
 
   const handleDownloadPDF = () => {
     if (productData) {
-      const { title, description, image_url, product_subs } = productData;
+      const { title, description, image_url, activities } = productData;
       const qty = 1; // Update with your actual quantity
       const totalPrice =
         productData.base_price_usd !== null
@@ -664,7 +664,7 @@ export default function DetailPackages() {
           : productData.base_price;
 
       generatePDF(
-        { title, description, image_url, product_subs, lang },
+        { title, description, image_url, activities, lang },
         qty,
         totalPrice,
         itineraryItems, // Pass itineraryItems here
