@@ -257,6 +257,7 @@ export default function DetailPackages() {
   const [totalRoom, setTotalRoom] = useState(0);
   const [adult, setAdult] = useState(0);
   const [child, setChild] = useState(0);
+  const [stockId, setStockId] = useState(null);
   const [single, setSingle] = useState(0);
   const [double, setDouble] = useState(0);
   const [triple, setTriple] = useState(0);
@@ -613,33 +614,38 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     if (amountChanges) {
-      const queryParams = {
-        amount: parseFloat(amountChanges),
-        product_id: parseInt(router.query.id, 10),
-        stock_id: parseInt(router.query.id, 10),
-        activities: selectedItinerary,
-        voucher_code: promoCode,
-        qty: qty,
-        metadata: {
-          product_name: productData.title,
-          product_image: productData.image_url,
-          nama: username,
-          no_hp: "",
-          no_identitas: "",
-          email: "",
-          alamat: ""
-        },
-        currency: lang === "en" ? "USD" : "IDR",
-        price: productData.price,
-        totalPriceFix
-      };
+      if (stockId) {
+        setPesanError("Select Tour Date");
+        setOpenSnackbar(true);
+      } else {
+        const queryParams = {
+          amount: parseFloat(amountChanges),
+          product_id: parseInt(router.query.id, 10),
+          stock_id: parseInt(router.query.id, 10),
+          activities: selectedItinerary,
+          voucher_code: promoCode,
+          qty: qty,
+          metadata: {
+            product_name: productData.title,
+            product_image: productData.image_url,
+            nama: username,
+            no_hp: "",
+            no_identitas: "",
+            email: "",
+            alamat: ""
+          },
+          currency: lang === "en" ? "USD" : "IDR",
+          price: productData.price,
+          totalPriceFix
+        };
 
-      const queryParamsString = btoa(JSON.stringify(queryParams));
+        const queryParamsString = btoa(JSON.stringify(queryParams));
 
-      router.push({
-        pathname: "/detailorder",
-        query: { id: queryParamsString }
-      });
+        router.push({
+          pathname: "/detailorder",
+          query: { id: queryParamsString }
+        });
+      }
 
       // fetchBookingCash();
     } else {
