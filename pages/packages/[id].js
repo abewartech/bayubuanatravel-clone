@@ -30,6 +30,7 @@ import numeral from "numeral";
 import Select from "react-select";
 import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
+import dayjs from "dayjs";
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -280,6 +281,7 @@ export default function DetailPackages() {
   const [openDialog, setOpenDialog] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
+  const [stocks, setStocks] = useState([]);
   const [totalPrice, setTotalPrice] = useState(
     productData
       ? lang === "en" && productData.base_price_usd !== null
@@ -386,10 +388,25 @@ export default function DetailPackages() {
     const totalTripleRooms = triple;
 
     const newTotalGuest = totalAdults + totalChildren;
+    const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
     const newTotalRoom = totalSingleRooms + totalDoubleRooms + totalTripleRooms;
 
     setTotalGuest(newTotalGuest);
     setTotalRoom(newTotalRoom);
+
+    if (
+      (newTotalGuest !== totalGuest || newTotalRoom !== totalRoom) &&
+      newTotalGuest !== 0 &&
+      newTotalRoom !== 0 // Check if neither guests nor rooms are zero
+    ) {
+      if (forjustchecknewTotalGuest !== newTotalRoom) {
+        // alert("The number of guests does not match the number of rooms!");
+        setPesanError(
+          "The number of guests does not match the number of rooms!"
+        );
+        setOpenSnackbar(true);
+      }
+    }
   };
 
   const handleAdultChange = (e, val) => {
@@ -477,6 +494,7 @@ export default function DetailPackages() {
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
       setProductData(response.data.data);
+      setStocks(response.data.data.stocks);
       if (response.data.data && response.data.data.activities) {
         const updatedItineraryItems = response.data.data.activities.map(
           (sub) => {
@@ -515,7 +533,9 @@ export default function DetailPackages() {
       const productSubsPrice = productData.activities.reduce(
         (acc, sub) =>
           acc +
-          (lang === "en" && sub.base_price_usd !== null ? sub.base_price_usd : sub.base_price),
+          (lang === "en" && sub.base_price_usd !== null
+            ? sub.base_price_usd
+            : sub.base_price),
         0
       );
       setTotalPrice(productSubsPrice);
@@ -749,20 +769,12 @@ export default function DetailPackages() {
                   <div className="col-12">
                     <Typography className="mb-1">Select Tour Date</Typography>
                     <Select
-                      options={[
-                        {
-                          value: "chocolate",
-                          label: "21 July 2023 - 25 July 2023"
-                        },
-                        {
-                          value: "strawberry",
-                          label: "27 July 2023 - 29 July 2023"
-                        },
-                        {
-                          value: "vanilla",
-                          label: "1 August 2023 - 5 August 2023"
-                        }
-                      ]}
+                      options={stocks.map((stock) => ({
+                        value: stock.id,
+                        label: `${dayjs(stock.start_date).format(
+                          "DD MMMM YYYY"
+                        )} - ${dayjs(stock.end_date).format("DD MMMM YYYY")}`
+                      }))}
                       placeholder="Select available dates"
                     />
                   </div>
@@ -1451,7 +1463,11 @@ export default function DetailPackages() {
               );
             })}
             <div className="mt-5" style={{ textAlign: "center" }}>
-              <Button variant="contained" onClick={handleCloseModalCustom} className="w-25">
+              <Button
+                variant="contained"
+                onClick={handleCloseModalCustom}
+                className="w-25"
+              >
                 Update
               </Button>
             </div>
