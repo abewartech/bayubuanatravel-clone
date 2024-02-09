@@ -614,10 +614,8 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     if (amountChanges) {
+      console.log(stockId);
       if (stockId) {
-        setPesanError("Select Tour Date");
-        setOpenSnackbar(true);
-      } else {
         const queryParams = {
           amount: parseFloat(amountChanges),
           product_id: parseInt(router.query.id, 10),
@@ -645,6 +643,9 @@ export default function DetailPackages() {
           pathname: "/detailorder",
           query: { id: queryParamsString }
         });
+      } else {
+        setPesanError("Select Tour Date");
+        setOpenSnackbar(true);
       }
 
       // fetchBookingCash();
