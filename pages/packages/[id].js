@@ -566,8 +566,8 @@ export default function DetailPackages() {
   const handleCloseModalCustom = () => setOpenModalCustom(false);
 
   const amountChange = (e) => {
-    if (productData && productData.minimum_payment) {
-      const minimumPaymentPercentage = productData.minimum_payment;
+    if (productData && productData.minimum_down_payment) {
+      const minimumPaymentPercentage = productData.minimum_down_payment;
       const calculatedMinimumAmount =
         (minimumPaymentPercentage / 100) * totalPriceFix;
 
@@ -616,7 +616,8 @@ export default function DetailPackages() {
       const queryParams = {
         amount: parseFloat(amountChanges),
         product_id: parseInt(router.query.id, 10),
-        product_subs: selectedItinerary,
+        stock_id: parseInt(router.query.id, 10),
+        activities: selectedItinerary,
         voucher_code: promoCode,
         qty: qty,
         metadata: {
@@ -1158,7 +1159,7 @@ export default function DetailPackages() {
             className="mt-2"
           >
             {`*${t("Jumlahminimumyangperludibayarkan")}
-            ${productData && productData.minimum_payment}
+            ${productData && productData.minimum_down_payment}
             %`}
           </Typography>
           <Grid container spacing={2}>

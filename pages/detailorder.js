@@ -113,11 +113,11 @@ const DetailOrder = () => {
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
       setProductData(response.data.data);
-      if (response.data.data && response.data.data.product_subs) {
-        const updatedItineraryItems = response.data.data.product_subs.map(
+      if (response.data.data && response.data.data.activities) {
+        const updatedItineraryItems = response.data.data.activities.map(
           (sub) => {
             return {
-              title: sub.title, // You can modify this based on your product_sub structure
+              title: sub.name, // You can modify this based on your product_sub structure
               description:
                 lang === "en" ? sub.description_en : sub.description_id
               // Add other properties as needed
@@ -126,7 +126,7 @@ const DetailOrder = () => {
         );
 
         setItineraryItems(updatedItineraryItems);
-        const productSubIds = response.data.data.product_subs.map(
+        const productSubIds = response.data.data.activities.map(
           (sub) => sub.id
         );
         setSelectedItinerary(productSubIds);
