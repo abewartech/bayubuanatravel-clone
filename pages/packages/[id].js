@@ -247,6 +247,17 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
     />
   );
 });
+
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 export default function DetailPackages() {
   const { t, lang } = useTranslation("common");
   const [expand, setExpand] = useState(false);
@@ -399,15 +410,22 @@ export default function DetailPackages() {
       newTotalGuest !== 0 &&
       newTotalRoom !== 0 // Check if neither guests nor rooms are zero
     ) {
+      debounceCheckGuestsVsRooms(forjustchecknewTotalGuest, newTotalGuest);
+    }
+  };
+
+  // Define a separate debounced function for checking guests vs rooms
+  const debounceCheckGuestsVsRooms = debounce(
+    (forjustchecknewTotalGuest, newTotalGuest) => {
       if (forjustchecknewTotalGuest !== newTotalGuest) {
-        // alert("The number of guests does not match the number of rooms!");
         setPesanError(
           "The number of guests does not match the number of rooms!"
         );
         setOpenSnackbar(true);
       }
-    }
-  };
+    },
+    900
+  );
 
   useEffect(() => {
     updateTotalCounts();
