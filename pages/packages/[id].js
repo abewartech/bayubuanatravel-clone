@@ -271,6 +271,7 @@ export default function DetailPackages() {
   const [stockId, setStockId] = useState(null);
   const [single, setSingle] = useState(0);
   const [double, setDouble] = useState(0);
+  const [selectedTourDate, setSelectedTourDate] = useState("");
   const [triple, setTriple] = useState(0);
   const [open, setOpen] = useState(false);
   const [openModalCustom, setOpenModalCustom] = useState(false);
@@ -404,28 +405,40 @@ export default function DetailPackages() {
     const newTotalRoom = totalSingleRooms + totalDoubleRooms + totalTripleRooms;
     setTotalGuest(newTotalGuest);
     setTotalRoom(newTotalRoom);
-
-    if (
-      (newTotalGuest !== totalGuest || newTotalRoom !== totalRoom) &&
-      newTotalGuest !== 0 &&
-      newTotalRoom !== 0 // Check if neither guests nor rooms are zero
-    ) {
-      debounceCheckGuestsVsRooms(forjustchecknewTotalGuest, newTotalGuest);
-    }
   };
 
   // Define a separate debounced function for checking guests vs rooms
-  const debounceCheckGuestsVsRooms = debounce(
-    (forjustchecknewTotalGuest, newTotalGuest) => {
-      if (forjustchecknewTotalGuest !== newTotalGuest) {
-        setPesanError(
-          "The number of guests does not match the number of rooms!"
-        );
-        setOpenSnackbar(true);
+  const debounceCheckGuestsVsRooms = debounce(() => {
+    setTimeout(() => {
+      const totalAdults = adult;
+      const totalChildren = child;
+      const totalSingleRooms = single;
+      const totalDoubleRooms = double;
+      const totalTripleRooms = triple;
+
+      const newTotalGuest = totalAdults + totalChildren;
+      const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
+      const newTotalRoom =
+        totalSingleRooms + totalDoubleRooms + totalTripleRooms;
+
+      if (
+        (newTotalGuest !== totalGuest || newTotalRoom !== totalRoom) &&
+        newTotalGuest !== 0 &&
+        newTotalRoom !== 0 // Check if neither guests nor rooms are zero
+      ) {
+        if (forjustchecknewTotalGuest !== newTotalGuest) {
+          setPesanError(
+            "The number of guests does not match the number of rooms!"
+          );
+          setOpenSnackbar(true);
+        }
       }
-    },
-    900
-  );
+    }, 500);
+  }, 900);
+
+  useEffect(() => {
+    setTimeout(() => debounceCheckGuestsVsRooms(), 1000);
+  }, [adult, child, single, double, triple]);
 
   useEffect(() => {
     updateTotalCounts();
@@ -635,7 +648,6 @@ export default function DetailPackages() {
 
   const handleMidtrans = () => {
     if (amountChanges) {
-      console.log(stockId);
       if (stockId) {
         const queryParams = {
           amount: parseFloat(amountChanges),
@@ -655,7 +667,13 @@ export default function DetailPackages() {
           },
           currency: lang === "en" ? "USD" : "IDR",
           price: productData.price,
-          totalPriceFix
+          totalPriceFix,
+          adult,
+          child,
+          single,
+          double,
+          triple,
+          selectedTourDate
         };
 
         const queryParamsString = btoa(JSON.stringify(queryParams));
@@ -809,6 +827,7 @@ export default function DetailPackages() {
                         if (val) {
                           // Check if val is not null or undefined
                           setStockId(val.value);
+                          setSelectedTourDate(val.label);
                         } else {
                           setStockId(null); // Reset stockId if no value is selected
                         }

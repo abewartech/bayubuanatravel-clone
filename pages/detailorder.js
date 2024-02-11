@@ -63,7 +63,7 @@ const DetailOrder = () => {
       console.error("Error decoding ID:", error);
     }
   }, [router.query.id]);
-
+  console.log(decodedInfo);
   useEffect(() => {
     let intervalId; // Define intervalId here
 
@@ -248,6 +248,31 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
+                    {decodedInfo?.adult > 0 && (
+                      <Typography variant="body1">{`Adult (x${decodedInfo?.adult})`}</Typography>
+                    )}
+                    {decodedInfo?.child > 0 && (
+                      <Typography variant="body1">{`Child (x${decodedInfo?.child})`}</Typography>
+                    )}
+                    {decodedInfo?.single > 0 && (
+                      <Typography variant="body1">{`Single (x${decodedInfo?.single})`}</Typography>
+                    )}
+                    {decodedInfo?.double > 0 && (
+                      <Typography variant="body1">{`Double (x${decodedInfo?.double})`}</Typography>
+                    )}
+                    {decodedInfo?.triple > 0 && (
+                      <Typography variant="body1">{`Triple (x${decodedInfo?.triple})`}</Typography>
+                    )}
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  justifyContent="space-between"
+                  alignItems="center"
+                  className="mt-2"
+                >
+                  <Grid item>
                     <Typography variant="h6">{t("total")}</Typography>
                   </Grid>
                   <Grid item>
@@ -332,7 +357,8 @@ const DetailOrder = () => {
                   className="mt-3"
                 >
                   <Grid item>
-                    <Typography variant="h6">Trip Summary</Typography>
+                    <Typography variant="h6" className="text-center">Trip Summary</Typography>
+                    <Typography variant="body2">{`(${decodedInfo?.selectedTourDate})`}</Typography>
                   </Grid>
                 </Grid>
 
