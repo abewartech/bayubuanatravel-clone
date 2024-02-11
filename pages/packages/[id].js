@@ -391,7 +391,6 @@ export default function DetailPackages() {
     const newTotalGuest = totalAdults + totalChildren;
     const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
     const newTotalRoom = totalSingleRooms + totalDoubleRooms + totalTripleRooms;
-
     setTotalGuest(newTotalGuest);
     setTotalRoom(newTotalRoom);
 
@@ -400,7 +399,7 @@ export default function DetailPackages() {
       newTotalGuest !== 0 &&
       newTotalRoom !== 0 // Check if neither guests nor rooms are zero
     ) {
-      if (forjustchecknewTotalGuest !== newTotalRoom) {
+      if (forjustchecknewTotalGuest !== newTotalGuest) {
         // alert("The number of guests does not match the number of rooms!");
         setPesanError(
           "The number of guests does not match the number of rooms!"
@@ -409,6 +408,10 @@ export default function DetailPackages() {
       }
     }
   };
+
+  useEffect(() => {
+    updateTotalCounts();
+  }, [adult, child, single, double, triple]);
 
   const handleAdultChange = (e, val) => {
     setAdult(val);
@@ -784,6 +787,14 @@ export default function DetailPackages() {
                         )} - ${dayjs(stock.end_date).format("DD MMMM YYYY")}`
                       }))}
                       placeholder="Select available dates"
+                      onChange={(val) => {
+                        if (val) {
+                          // Check if val is not null or undefined
+                          setStockId(val.value);
+                        } else {
+                          setStockId(null); // Reset stockId if no value is selected
+                        }
+                      }}
                     />
                   </div>
                 </div>
@@ -991,16 +1002,16 @@ export default function DetailPackages() {
                       }}
                     >
                       <span style={{ fontWeight: "bold" }}>{item?.title}</span>
-                      <span
+                      {/* <span
                         className={`${styles.arrowIcon} ${
                           expandedItems[idx] ? styles.active : ""
                         }`}
                       >
                         {expandedItems[idx] ? "▲" : "▼"}
-                      </span>
+                      </span> */}
                     </div>
                   </div>
-                  {expandedItems[idx] && (
+                  {/* {expandedItems[idx] && (
                     <div className="p-4">
                       <div
                         dangerouslySetInnerHTML={{ __html: item?.description }}
@@ -1016,7 +1027,7 @@ export default function DetailPackages() {
                         className="mt-2"
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
               );
             })}
