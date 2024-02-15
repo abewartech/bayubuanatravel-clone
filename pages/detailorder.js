@@ -127,7 +127,7 @@ const DetailOrder = () => {
 
         setItineraryItems(updatedItineraryItems);
         const productSubIds = response.data.data.activities.map(
-          (sub) => sub.id
+          (sub) => sub.activity_id
         );
         setSelectedItinerary(productSubIds);
       }

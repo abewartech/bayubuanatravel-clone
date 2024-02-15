@@ -502,7 +502,7 @@ export default function DetailPackages() {
       );
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
-      const productSubIdToRemove = productData.activities[idx].id; // assuming id is the product sub id
+      const productSubIdToRemove = productData.activities[idx].activity_id; // assuming id is the product sub id
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== productSubIdToRemove)
       );
@@ -511,9 +511,9 @@ export default function DetailPackages() {
         (acc, sub, subIdx) =>
           updatedCheckedItinerary[subIdx]
             ? acc +
-              (lang === "en" && sub.price_usd !== null
-                ? sub.price_usd
-                : sub.price) *
+              (lang === "en" && sub.base_price_usd !== null
+                ? sub.base_price_usd
+                : sub.base_price) *
                 qty
             : acc,
         0
@@ -544,7 +544,7 @@ export default function DetailPackages() {
 
         setItineraryItems(updatedItineraryItems);
         const productSubIds = response.data.data.activities.map(
-          (sub) => sub.id
+          (sub) => sub.activity_id
         );
         setSelectedItinerary(productSubIds);
       }
