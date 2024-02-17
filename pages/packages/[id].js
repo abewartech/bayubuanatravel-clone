@@ -516,7 +516,8 @@ export default function DetailPackages() {
         const updatedItineraryItems = response.data.data.activities.map(
           (sub) => {
             return {
-              title: sub.name, // You can modify this based on your product_sub structure
+              title: `Day ${sub.activity_days}`,
+              name: `${sub.name}`, // You can modify this based on your product_sub structure
               description:
                 lang === "en" ? sub.description_en : sub.description_id
               // Add other properties as needed
@@ -807,23 +808,14 @@ export default function DetailPackages() {
                       </span> */}
                     </div>
                   </div>
-                  {/* {expandedItems[idx] && (
-                    <div className="p-4">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: item?.description }}
-                      />
-                      <FormControlLabel
-                        control={
-                          <Android12Switch
-                            checked={checkedItinerary[idx]}
-                            onChange={() => handleCheckboxChange(idx)}
-                          />
-                        }
-                        label={`${t("iwill")} ${item?.title}`}
-                        className="mt-2"
-                      />
-                    </div>
-                  )} */}
+                  <div className="p-4">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: item?.description }}
+                    />
+                    {[itineraryItems[idx]].map((item, idx) => (
+                      <Typography className="" key={idx}>{item?.name}</Typography>
+                    ))}
+                  </div>
                 </div>
               );
             })}
