@@ -176,11 +176,11 @@ export default function History(props) {
                   <div className={styles.historyContainer}>
                     <div className={styles.historyLeft}>
                       <div className={styles.historyImg}>
-                        {item.metadata &&
-                          typeof item.metadata === "string" &&
-                          JSON.parse(item.metadata)?.product_image && (
+                        {item.additional_info &&
+                          typeof item.additional_info === "string" &&
+                          JSON.parse(item.additional_info)?.product_image && (
                             <Image
-                              src={JSON.parse(item.metadata).product_image}
+                              src={JSON.parse(item.additional_info).product_image}
                               alt="thumbnail"
                               className={`${styles.img}`}
                               width={62}
@@ -197,8 +197,8 @@ export default function History(props) {
                             : t("notyet")}
                         </div>
                         <div className={styles.historyName}>
-                          {item.metadata && typeof item.metadata === "string"
-                            ? JSON.parse(item.metadata).product_name
+                          {item.additional_info && typeof item.additional_info === "string"
+                            ? JSON.parse(item.additional_info).product_name
                             : ""}
                         </div>
                       </div>
@@ -300,13 +300,13 @@ export default function History(props) {
                     </div>
                     <div>
                       <Typography variant="subtitle1" gutterBottom>
-                        Metadata:
+                        Additional Info:
                       </Typography>
                       <Table>
                         <TableBody>
-                          {selectedHistory.metadata &&
+                          {selectedHistory.additional_info &&
                             Object.entries(
-                              JSON.parse(selectedHistory.metadata)
+                              JSON.parse(selectedHistory.additional_info)
                             ).map(
                               ([key, value], index) =>
                                 value !== "" && (

@@ -143,10 +143,10 @@ const DetailOrder = () => {
 
   const handlePayment = async () => {
     try {
-      const stringifiedMetadata = JSON.stringify(decodedInfo.metadata);
+      const stringifiedMetadata = JSON.stringify(decodedInfo.additional_info);
       const response = await API.post("orders/v1/client", {
         ...decodedInfo,
-        metadata: stringifiedMetadata
+        additional_info: stringifiedMetadata
       });
 
       if (response.data) {
@@ -226,7 +226,7 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
-                    <Typography variant="body1">{`${decodedInfo?.metadata.product_name} (x${decodedInfo?.qty})`}</Typography>
+                    <Typography variant="body1">{`${decodedInfo?.additional_info.product_name} (x${decodedInfo?.qty})`}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
@@ -248,20 +248,20 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
-                    {decodedInfo?.adult > 0 && (
-                      <Typography variant="body1">{`Adult (x${decodedInfo?.adult})`}</Typography>
+                    {decodedInfo?.metadata.adult > 0 && (
+                      <Typography variant="body1">{`Adult (x${decodedInfo?.metadata.adult})`}</Typography>
                     )}
-                    {decodedInfo?.child > 0 && (
-                      <Typography variant="body1">{`Child (x${decodedInfo?.child})`}</Typography>
+                    {decodedInfo?.metadata.child > 0 && (
+                      <Typography variant="body1">{`Child (x${decodedInfo?.metadata.child})`}</Typography>
                     )}
-                    {decodedInfo?.single > 0 && (
-                      <Typography variant="body1">{`Single (x${decodedInfo?.single})`}</Typography>
+                    {decodedInfo?.metadata.single > 0 && (
+                      <Typography variant="body1">{`Single (x${decodedInfo?.metadata.single})`}</Typography>
                     )}
-                    {decodedInfo?.double > 0 && (
-                      <Typography variant="body1">{`Double (x${decodedInfo?.double})`}</Typography>
+                    {decodedInfo?.metadata.double > 0 && (
+                      <Typography variant="body1">{`Double (x${decodedInfo?.metadata.double})`}</Typography>
                     )}
-                    {decodedInfo?.triple > 0 && (
-                      <Typography variant="body1">{`Triple (x${decodedInfo?.triple})`}</Typography>
+                    {decodedInfo?.metadata.triple > 0 && (
+                      <Typography variant="body1">{`Triple (x${decodedInfo?.metadata.triple})`}</Typography>
                     )}
                   </Grid>
                 </Grid>
@@ -358,7 +358,7 @@ const DetailOrder = () => {
                 >
                   <Grid item>
                     <Typography variant="h6" className="text-center">Trip Summary</Typography>
-                    <Typography variant="body2">{`(${decodedInfo?.selectedTourDate})`}</Typography>
+                    <Typography variant="body2">{`(${decodedInfo?.metadata.selectedTourDate})`}</Typography>
                   </Grid>
                 </Grid>
 

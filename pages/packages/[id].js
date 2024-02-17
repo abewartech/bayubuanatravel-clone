@@ -70,7 +70,7 @@ const styleModalCustom = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "65%",
+  width: "45%",
   maxHeight: "85vh", // Set the maximum height to 70% of the viewport height
   bgcolor: "background.paper",
   boxShadow: 24,
@@ -291,6 +291,7 @@ export default function DetailPackages() {
   const [anchorElRoom, setAnchorElRoom] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [isDisableBook, setIsDisableBook] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
@@ -401,7 +402,6 @@ export default function DetailPackages() {
     const totalTripleRooms = triple;
 
     const newTotalGuest = totalAdults + totalChildren;
-    const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
     const newTotalRoom = totalSingleRooms + totalDoubleRooms + totalTripleRooms;
     setTotalGuest(newTotalGuest);
     setTotalRoom(newTotalRoom);
@@ -409,39 +409,21 @@ export default function DetailPackages() {
 
   // Define a separate debounced function for checking guests vs rooms
   const debounceCheckGuestsVsRooms = debounce(() => {
-    setTimeout(() => {
-      const totalAdults = adult;
-      const totalChildren = child;
-      const totalSingleRooms = single;
-      const totalDoubleRooms = double;
-      const totalTripleRooms = triple;
+    const newTotalGuest = totalGuest;
+    const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
 
-      const newTotalGuest = totalAdults + totalChildren;
-      const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
-      const newTotalRoom =
-        totalSingleRooms + totalDoubleRooms + totalTripleRooms;
-
-      if (
-        (newTotalGuest !== totalGuest || newTotalRoom !== totalRoom) &&
-        newTotalGuest !== 0 &&
-        newTotalRoom !== 0 // Check if neither guests nor rooms are zero
-      ) {
-        if (forjustchecknewTotalGuest !== newTotalGuest) {
-          setPesanError(
-            "The number of guests does not match the number of rooms!"
-          );
-          setOpenSnackbar(true);
-        }
-      }
-    }, 500);
-  }, 900);
-
-  useEffect(() => {
-    setTimeout(() => debounceCheckGuestsVsRooms(), 1000);
-  }, [adult, child, single, double, triple]);
+    if (forjustchecknewTotalGuest !== newTotalGuest) {
+      setIsDisableBook(true);
+      // setPesanError("The number of guests does not match the number of rooms!");
+      // setOpenSnackbar(true);
+    } else {
+      setIsDisableBook(false);
+    }
+  }, 1200);
 
   useEffect(() => {
     updateTotalCounts();
+    debounceCheckGuestsVsRooms();
   }, [adult, child, single, double, triple]);
 
   const handleAdultChange = (e, val) => {
@@ -621,7 +603,7 @@ export default function DetailPackages() {
         product_subs: selectedItinerary,
         voucher_code: promoCode,
         qty: qty,
-        metadata: JSON.stringify({
+        additional_info: JSON.stringify({
           product_name: productData.title,
           product_image: productData.image_url,
           nama: username,
@@ -656,7 +638,7 @@ export default function DetailPackages() {
           activities: selectedItinerary,
           voucher_code: promoCode,
           qty: qty,
-          metadata: {
+          additional_info: {
             product_name: productData.title,
             product_image: productData.image_url,
             nama: username,
@@ -668,12 +650,14 @@ export default function DetailPackages() {
           currency: lang === "en" ? "USD" : "IDR",
           price: productData.price,
           totalPriceFix,
-          adult,
-          child,
-          single,
-          double,
-          triple,
-          selectedTourDate
+          metadata: {
+            adult,
+            child,
+            single,
+            double,
+            triple,
+            selectedTourDate
+          }
         };
 
         const queryParamsString = btoa(JSON.stringify(queryParams));
@@ -764,7 +748,7 @@ export default function DetailPackages() {
                 {productData && productData.duration} Days
               </div>
             </div>
-            <div className="mb-5">
+            <div className="mb-3">
               <div
                 className={styles.topLabel}
                 style={{ fontSize: "20px", fontWeight: "bold" }}
@@ -799,6 +783,50 @@ export default function DetailPackages() {
                 />
               )}
             </div>
+            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+            {/* <p className="mb-3">{t("customize")} </p> */}
+            {itineraryItems.map((item, idx) => {
+              return (
+                <div key={idx} className={styles.itineraryItem}>
+                  <div className={styles.itineraryDetail}>
+                    <div className={styles.number}>{idx + 1}</div>
+                    <div
+                      onClick={() => handleShowDetail(idx)}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
+                      {/* <span
+                        className={`${styles.arrowIcon} ${
+                          expandedItems[idx] ? styles.active : ""
+                        }`}
+                      >
+                        {expandedItems[idx] ? "▲" : "▼"}
+                      </span> */}
+                    </div>
+                  </div>
+                  {/* {expandedItems[idx] && (
+                    <div className="p-4">
+                      <div
+                        dangerouslySetInnerHTML={{ __html: item?.description }}
+                      />
+                      <FormControlLabel
+                        control={
+                          <Android12Switch
+                            checked={checkedItinerary[idx]}
+                            onChange={() => handleCheckboxChange(idx)}
+                          />
+                        }
+                        label={`${t("iwill")} ${item?.title}`}
+                        className="mt-2"
+                      />
+                    </div>
+                  )} */}
+                </div>
+              );
+            })}
             <div className="mt-2">
               <Button
                 variant="contained"
@@ -810,11 +838,13 @@ export default function DetailPackages() {
             </div>
           </div>
           <div className="col-lg-7">
-            <Card className="mb-5" sx={{ maxWidth: 545 }}>
+            <Card className="mb-5 p-3" sx={{ maxWidth: 575 }}>
               <CardContent>
                 <div className="row mb-4">
                   <div className="col-12">
-                    <Typography className="mb-1">Select Tour Date</Typography>
+                    <Typography className="mb-1 mt-1">
+                      Select Tour Date
+                    </Typography>
                     <Select
                       options={stocks.map((stock) => ({
                         value: stock.id,
@@ -835,7 +865,7 @@ export default function DetailPackages() {
                     />
                   </div>
                 </div>
-                <div className="row">
+                <div className="row mb-2">
                   <div className="col-6">
                     <Typography className="mb-1">Guests</Typography>
                     <NumberInputIntroduction
@@ -999,7 +1029,7 @@ export default function DetailPackages() {
                   </div>
                 </div>
               </CardContent>
-              <CardActions>
+              <CardActions className="mb-2">
                 <Grid
                   container
                   spacing={2}
@@ -1017,58 +1047,20 @@ export default function DetailPackages() {
                     </Button>
                   </Grid>
                   <Grid item xs={8}>
-                    <Button variant="contained" fullWidth onClick={handleBook}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={handleBook}
+                      disabled={isDisableBook}
+                    >
                       {t("booknow")}
                     </Button>
                   </Grid>
                 </Grid>
               </CardActions>
             </Card>
-            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
-            <p className="mb-3">{t("customize")} </p>
-            {itineraryItems.map((item, idx) => {
-              return (
-                <div key={idx} className={styles.itineraryItem}>
-                  <div className={styles.itineraryDetail}>
-                    <div className={styles.number}>{idx + 1}</div>
-                    <div
-                      onClick={() => handleShowDetail(idx)}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
-                      {/* <span
-                        className={`${styles.arrowIcon} ${
-                          expandedItems[idx] ? styles.active : ""
-                        }`}
-                      >
-                        {expandedItems[idx] ? "▲" : "▼"}
-                      </span> */}
-                    </div>
-                  </div>
-                  {/* {expandedItems[idx] && (
-                    <div className="p-4">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: item?.description }}
-                      />
-                      <FormControlLabel
-                        control={
-                          <Android12Switch
-                            checked={checkedItinerary[idx]}
-                            onChange={() => handleCheckboxChange(idx)}
-                          />
-                        }
-                        label={`${t("iwill")} ${item?.title}`}
-                        className="mt-2"
-                      />
-                    </div>
-                  )} */}
-                </div>
-              );
-            })}
-            <div className="row">
+
+            {/* <div className="row">
               <div class="col-auto me-auto"></div>
               <div class="col-auto">
                 <NumberInput
@@ -1079,8 +1071,8 @@ export default function DetailPackages() {
                   onChange={handleQtyChange}
                 />
               </div>
-            </div>
-            <div class="row mt-3">
+            </div> */}
+            {/* <div class="row mt-3">
               <div class="col-auto me-auto"></div>
               <div class="col-auto">
                 <div>{t("totalprice")}</div>
@@ -1090,8 +1082,8 @@ export default function DetailPackages() {
                     : `Rp. ${numeral(totalPriceFix).format("0,0")}`}
                 </div>
               </div>
-            </div>
-            <div id="book" className="mt-2">
+            </div> */}
+            {/* <div id="book" className="mt-2">
               <Button
                 variant="contained"
                 onClick={handleBook}
@@ -1099,7 +1091,7 @@ export default function DetailPackages() {
               >
                 {t("booknow")}
               </Button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
