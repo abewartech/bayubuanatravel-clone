@@ -513,17 +513,35 @@ export default function DetailPackages() {
       setProductData(response.data.data);
       setStocks(response.data.data.stocks);
       if (response.data.data && response.data.data.activities) {
-        const updatedItineraryItems = response.data.data.activities.map(
-          (sub) => {
-            return {
-              title: `Day ${sub.activity_days}`,
-              name: `${sub.name}`, // You can modify this based on your product_sub structure
-              description:
-                lang === "en" ? sub.description_en : sub.description_id
-              // Add other properties as needed
-            };
-          }
+        const groupedData = response.data.data.activities.reduce(
+          (acc, curr) => {
+            const { activity_days, ...rest } = curr;
+            if (!acc[activity_days]) {
+              acc[activity_days] = [];
+            }
+            acc[activity_days].push(rest);
+            return acc;
+          },
+          {}
         );
+
+        const groupedDataArray = Object.entries(groupedData).map(
+          ([activity_days, activities]) => ({
+            activity_days: parseInt(activity_days),
+            activities
+          })
+        );
+
+        console.log(groupedDataArray);
+
+        const updatedItineraryItems = groupedDataArray.map((sub) => {
+          return {
+            title: `Day ${sub.activity_days}`,
+            activities: sub.activities, // You can modify this based on your product_sub structure
+            description: lang === "en" ? sub.description_en : sub.description_id
+            // Add other properties as needed
+          };
+        });
 
         setItineraryItems(updatedItineraryItems);
         const productSubIds = response.data.data.activities.map(
@@ -812,9 +830,12 @@ export default function DetailPackages() {
                     <div
                       dangerouslySetInnerHTML={{ __html: item?.description }}
                     />
-                    {[itineraryItems[idx]].map((item, idx) => (
-                      <Typography className="" key={idx}>{item?.name}</Typography>
-                    ))}
+                    {item &&
+                      item.activities.map((activity, idxact) => (
+                        <Typography className="" key={idxact}>
+                          {activity.name}
+                        </Typography>
+                      ))}
                   </div>
                 </div>
               );
