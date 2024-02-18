@@ -621,7 +621,7 @@ export default function DetailPackages() {
         product_id: parseInt(id, 10), // Parse 'id' to an integer
         product_subs: selectedItinerary,
         voucher_code: promoCode,
-        qty: qty,
+        // qty: qty,
         additional_info: JSON.stringify({
           product_name: productData.title,
           product_image: productData.image_url,
@@ -656,7 +656,7 @@ export default function DetailPackages() {
           stock_id: parseInt(router.query.id, 10),
           activities: selectedItinerary,
           voucher_code: promoCode,
-          qty: qty,
+          // qty: qty,
           additional_info: {
             product_name: productData.title,
             product_image: productData.image_url,
@@ -817,13 +817,6 @@ export default function DetailPackages() {
                       }}
                     >
                       <span style={{ fontWeight: "bold" }}>{item?.title}</span>
-                      {/* <span
-                        className={`${styles.arrowIcon} ${
-                          expandedItems[idx] ? styles.active : ""
-                        }`}
-                      >
-                        {expandedItems[idx] ? "▲" : "▼"}
-                      </span> */}
                     </div>
                   </div>
                   <div className="p-4">
@@ -1222,7 +1215,7 @@ export default function DetailPackages() {
             ${productData && productData.minimum_down_payment}
             %`}
           </Typography>
-          <Grid container spacing={2}>
+          {/* <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
                 label={t("promocode")}
@@ -1237,7 +1230,7 @@ export default function DetailPackages() {
                 {t("usepromo")}
               </Button>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid container spacing={2} className="mt-2">
             <Grid item xs={12} md={6}>
               <Button
@@ -1508,16 +1501,22 @@ export default function DetailPackages() {
                           __html: item?.description
                         }}
                       />
-                      <FormControlLabel
-                        control={
-                          <Android12Switch
-                            checked={checkedItinerary[idx]}
-                            onChange={() => handleCheckboxChange(idx)}
-                          />
-                        }
-                        label={`${t("iwill")} ${item?.title}`}
-                        className="mt-2"
-                      />
+                      {item &&
+                        item.activities.map((activity, idxact) => (
+                          <>
+                            <FormControlLabel
+                              key={idxact}
+                              control={
+                                <Android12Switch
+                                  checked={checkedItinerary[idx]}
+                                  onChange={() => handleCheckboxChange(idx)}
+                                />
+                              }
+                              label={`${activity.name}`}
+                              className="mt-2"
+                            />
+                          </>
+                        ))}
                     </div>
                   )}
                 </div>

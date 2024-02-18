@@ -143,10 +143,12 @@ const DetailOrder = () => {
 
   const handlePayment = async () => {
     try {
-      const stringifiedMetadata = JSON.stringify(decodedInfo.additional_info);
+      const stringifiedMetadata = JSON.stringify(decodedInfo.metadata);
+      const stringifiedAddtionalInfo = JSON.stringify(decodedInfo.additional_info);
       const response = await API.post("orders/v1/client", {
         ...decodedInfo,
-        additional_info: stringifiedMetadata
+        additional_info: stringifiedAddtionalInfo,
+        metadata: stringifiedMetadata,
       });
 
       if (response.data) {
@@ -182,7 +184,7 @@ const DetailOrder = () => {
               <Box mb={3} sx={{ position: "relative" }}>
                 {/* Add your detail package content here */}
                 {/* For example: */}
-                <Typography variant="h6">Promo Kode Voucher</Typography>
+                {/* <Typography variant="h6">Promo Kode Voucher</Typography>
                 <TextField
                   fullWidth
                   value={promoCode}
@@ -200,7 +202,7 @@ const DetailOrder = () => {
                     )
                   }}
                   placeholder="Masukan Kode Voucher"
-                />
+                /> */}
                 <Divider />
 
                 <Grid
@@ -226,7 +228,7 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
-                    <Typography variant="body1">{`${decodedInfo?.additional_info.product_name} (x${decodedInfo?.qty})`}</Typography>
+                    <Typography variant="body1">{`${decodedInfo?.additional_info.product_name}`}</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="body1">
