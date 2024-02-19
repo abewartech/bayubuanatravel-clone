@@ -664,7 +664,8 @@ export default function DetailPackages() {
             no_hp: "",
             no_identitas: "",
             email: "",
-            alamat: ""
+            alamat: "",
+            selectedTourDate
           },
           currency: lang === "en" ? "USD" : "IDR",
           price: productData.price,
@@ -675,7 +676,6 @@ export default function DetailPackages() {
             single,
             double,
             triple,
-            selectedTourDate
           }
         };
 

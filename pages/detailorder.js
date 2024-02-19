@@ -360,7 +360,7 @@ const DetailOrder = () => {
                 >
                   <Grid item>
                     <Typography variant="h6" className="text-center">Trip Summary</Typography>
-                    <Typography variant="body2">{`(${decodedInfo?.metadata.selectedTourDate})`}</Typography>
+                    <Typography variant="body2">{`(${decodedInfo?.additional_info.selectedTourDate})`}</Typography>
                   </Grid>
                 </Grid>
 
