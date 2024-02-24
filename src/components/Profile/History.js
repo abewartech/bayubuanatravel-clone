@@ -134,6 +134,8 @@ export default function History(props) {
     toggleModal();
   };
 
+  const metadataEntries = Object.entries(JSON.parse(selectedHistory.metadata));
+
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
@@ -180,7 +182,9 @@ export default function History(props) {
                           typeof item.additional_info === "string" &&
                           JSON.parse(item.additional_info)?.product_image && (
                             <Image
-                              src={JSON.parse(item.additional_info).product_image}
+                              src={
+                                JSON.parse(item.additional_info).product_image
+                              }
                               alt="thumbnail"
                               className={`${styles.img}`}
                               width={62}
@@ -197,7 +201,8 @@ export default function History(props) {
                             : t("notyet")}
                         </div>
                         <div className={styles.historyName}>
-                          {item.additional_info && typeof item.additional_info === "string"
+                          {item.additional_info &&
+                          typeof item.additional_info === "string"
                             ? JSON.parse(item.additional_info).product_name
                             : ""}
                         </div>
@@ -226,6 +231,7 @@ export default function History(props) {
                         <Button
                           variant="outlined"
                           color="success"
+                          className="m-2"
                           onClick={() => {
                             handlePayment();
                           }}
@@ -276,28 +282,20 @@ export default function History(props) {
               <Grid item xs={12} md={12}>
                 {selectedHistory && (
                   <>
-                    <div>
-                      {dayjs(selectedHistory.created_at).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        color:
-                          selectedHistory.status === "PAID"
-                            ? "#00854C"
-                            : selectedHistory.status === "FAILED"
-                            ? "red"
-                            : "#0199da"
-                      }}
-                    >
-                      Status: {selectedHistory.status}
-                    </div>
-
-                    <div>Amount: {selectedHistory.amount}</div>
-                    <div style={{ color: "#0199da" }}>
-                      Order ID: {selectedHistory.id}
-                    </div>
+                  <Typography variant="body1">
+        {dayjs(selectedHistory.created_at).format("YYYY-MM-DD HH:mm:ss")}
+      </Typography>
+      <Typography variant="body1" style={{ color: 
+        selectedHistory.status === "PAID" ? "#00854C" : 
+        selectedHistory.status === "FAILED" ? "red" : 
+        "#0199da" 
+      }}>
+        Status: {selectedHistory.status}
+      </Typography>
+      <Typography variant="body1">Amount: {selectedHistory.amount}</Typography>
+      <Typography variant="body1" style={{ color: "#0199da" }}>
+        Order ID: {selectedHistory.id}
+      </Typography>
                     <div>
                       <Typography variant="subtitle1" gutterBottom>
                         Additional Info:
@@ -330,10 +328,17 @@ export default function History(props) {
                         </TableBody>
                       </Table>
                     </div>
-                    <div>Qty: {selectedHistory.qty || "N/A"}</div>
-                    <div>
+                    {metadataEntries.map(([key, value]) => (
+                      <Typography key={key} variant="body1">
+                        <strong>{key}:</strong> {value}
+                      </Typography>
+                    ))}
+                    <Typography variant="body1">
+                      Qty: {selectedHistory.qty || "N/A"}
+                    </Typography>
+                    <Typography variant="body1">
                       Voucher Code: {selectedHistory.voucher_code || "N/A"}
-                    </div>
+                    </Typography>
                     <Divider />
                   </>
                 )}
