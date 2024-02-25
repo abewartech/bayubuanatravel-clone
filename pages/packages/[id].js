@@ -532,8 +532,6 @@ export default function DetailPackages() {
           })
         );
 
-        console.log(groupedDataArray);
-
         const updatedItineraryItems = groupedDataArray.map((sub) => {
           return {
             title: `Day ${sub.activity_days}`,
