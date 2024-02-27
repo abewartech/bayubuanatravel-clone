@@ -134,7 +134,7 @@ export default function History(props) {
     toggleModal();
   };
 
-  const metadataEntries = Object.entries(JSON.parse(selectedHistory.metadata));
+  const metadataEntries = selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
 
   return (
     <div className="col-lg-8">
