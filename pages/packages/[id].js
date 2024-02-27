@@ -455,7 +455,7 @@ export default function DetailPackages() {
     setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
   }, [qty]);
 
-  const handleCheckboxChange = (idx) => {
+  const handleCheckboxChange = (idx, idxact) => {
     const updatedCheckedItinerary = [...checkedItinerary];
     updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
     setCheckedItinerary(updatedCheckedItinerary);
@@ -1507,7 +1507,7 @@ export default function DetailPackages() {
                               control={
                                 <Android12Switch
                                   checked={checkedItinerary[idx]}
-                                  onChange={() => handleCheckboxChange(idx)}
+                                  onChange={() => handleCheckboxChange(idx, idxact)}
                                 />
                               }
                               label={`${activity.name}`}
