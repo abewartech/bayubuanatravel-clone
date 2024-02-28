@@ -568,7 +568,7 @@ export default function DetailPackages() {
           return {
             title: `Day ${sub.activity_days}`,
             activities: sub.activities, // You can modify this based on your product_sub structure
-            description: lang === "en" ? sub.description_en : sub.description_id
+            description: lang === "en" ? sub.description_en : sub.description_id,
             // Add other properties as needed
           };
         });
@@ -1513,6 +1513,7 @@ export default function DetailPackages() {
                                     checkedItinerary[idx] &&
                                     checkedItinerary[idx][idxact]
                                   }
+                                  disabled={activity.is_mandatory}
                                   onChange={() =>
                                     handleCheckboxChange(idx, idxact)
                                   }
