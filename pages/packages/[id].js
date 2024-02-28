@@ -415,8 +415,8 @@ export default function DetailPackages() {
 
     if (forjustchecknewTotalGuest !== newTotalGuest) {
       setIsDisableBook(true);
-      // setPesanError("The number of guests does not match the number of rooms!");
-      // setOpenSnackbar(true);
+      setPesanError("The number of guests does not match the number of rooms!");
+      setOpenSnackbar(true);
     } else {
       setIsDisableBook(false);
     }
