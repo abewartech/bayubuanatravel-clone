@@ -9,11 +9,13 @@ import KeyIcon from '@mui/icons-material/Key';
 import HistoryIcon from "@mui/icons-material/History";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { Button } from "@mui/material";
+import API from "../../common/api";
 
 export default function NavProfile(props) {
   const { data, handleNavigateMenu, currMenu } = props;
   const { t, lang } = useTranslation("common");
   const [userName, setUserName] = useState("");
+  const [dataUser, setDataUser] = useState(null);
   const router = useRouter();
   const currUrl = router.pathname.split("/");
   const {
@@ -25,10 +27,21 @@ export default function NavProfile(props) {
     setAccessToken,
     setRefreshToken,
     setUsername,
-    setEmail
+    setEmail,
+    loginData
   } = useAuthStore();
   useEffect(() => {
     setUserName(username);
+  }, []);
+  useEffect(() => {
+    API.get(`/users/v1/${loginData.id}`)
+      .then((response) => {
+        const userData = response.data;
+        setDataUser(userData);
+      })
+      .catch((error) => {
+        console.error("Error fetching user details", error);
+      });
   }, []);
   const navigationMenu = (url, curr, param, active, unActive, text) => {
     const handleClick = () => {
@@ -79,7 +92,7 @@ export default function NavProfile(props) {
             className={styles.profileInformation}
             style={{ textAlign: "center" }}
           >
-            <div className={styles.name}>{userName}</div>
+            <div className={styles.name}>{dataUser?.full_name}</div>
             <div className={styles.subName}></div>
           </div>
         </div>

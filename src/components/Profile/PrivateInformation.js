@@ -81,7 +81,7 @@ export default function PrivateInformation(props) {
     email: email,
     full_name: loginData?.full_name,
     gender: dataUser?.gender,
-    password: "",
+    // password: "",
     phone_number: dataUser?.phone_number || ""
   };
   const customStylesReactSelect = {
