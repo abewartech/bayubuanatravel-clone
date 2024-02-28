@@ -48,6 +48,7 @@ const DetailOrder = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null);
   const [pesanError, setPesanError] = useState("");
+  const [activitiesAll, setActivitiesAll] = useState([]);
 
   useEffect(() => {
     const sanitizedId = router.query.id?.replace(/\s/g, "");
@@ -63,7 +64,7 @@ const DetailOrder = () => {
       console.error("Error decoding ID:", error);
     }
   }, [router.query.id]);
-  console.log(decodedInfo);
+
   useEffect(() => {
     let intervalId; // Define intervalId here
 
@@ -119,6 +120,14 @@ const DetailOrder = () => {
     return groupedActivities;
   };
 
+  useEffect(() => {
+    const filteredActivities = activitiesAll.filter((activity) =>
+      decodedInfo?.activities.includes(activity.activity_id)
+    );
+    console.log(filteredActivities);
+    setGroupedActivities(groupActivitiesByDays(filteredActivities));
+  }, [activitiesAll, decodedInfo]);
+
   const [groupedActivities, setGroupedActivities] = useState({});
 
   const fetchProductData = async (productId) => {
@@ -141,7 +150,7 @@ const DetailOrder = () => {
 
         if (response.data.data && response.data.data.activities) {
           const activities = response.data.data.activities;
-          setGroupedActivities(groupActivitiesByDays(activities));
+          setActivitiesAll(activities);
         }
 
         setItineraryItems(updatedItineraryItems);

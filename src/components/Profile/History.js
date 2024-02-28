@@ -281,7 +281,7 @@ export default function History(props) {
                 </Typography>
                 <Box sx={{ display: "grid", alignItems: "center" }}>
                   {(() => {
-                    switch (selectedHistory.status) {
+                    switch (selectedHistory?.status) {
                       case "INITIATED":
                         return (
                           <Image
@@ -315,7 +315,7 @@ export default function History(props) {
                     }
                   })()}
                   <Typography style={{ fontWeight: "bold" }}>
-                    {selectedHistory.status}
+                    {selectedHistory?.status}
                   </Typography>
                 </Box>
               </Grid>

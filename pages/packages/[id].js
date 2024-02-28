@@ -428,7 +428,7 @@ export default function DetailPackages() {
   }, [adult, child, single, double, triple]);
 
   const handleAdultChange = (e, val) => {
-    if (val >= 1) {
+    if (val >= 0) {
       setAdult(val);
       updateTotalCounts();
     } else {
@@ -439,28 +439,28 @@ export default function DetailPackages() {
   };
 
   const handleChildChange = (e, val) => {
-    if (val >= 1) {
+    if (val >= 0) {
       setChild(val);
       updateTotalCounts();
     }
   };
 
   const handleSingleChange = (e, val) => {
-    if (val >= 1) {
+    if (val >= 0) {
       setSingle(val);
       updateTotalCounts();
     }
   };
 
   const handleDoubleChange = (e, val) => {
-    if (val >= 1) {
+    if (val >= 0) {
       setDouble(val);
       updateTotalCounts();
     }
   };
 
   const handleTripleChange = (e, val) => {
-    if (val >= 1) {
+    if (val >= 0) {
       setTriple(val);
       updateTotalCounts();
     }
@@ -470,6 +470,18 @@ export default function DetailPackages() {
     setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
   }, [qty]);
 
+  const groupActivitiesByDays = (activities) => {
+    const groupedActivities = {};
+    activities.forEach((activity) => {
+      const { activity_days } = activity;
+      if (!groupedActivities[activity_days]) {
+        groupedActivities[activity_days] = [];
+      }
+      groupedActivities[activity_days].push(activity);
+    });
+    return groupedActivities;
+  };
+
   const handleCheckboxChange = (idx, idxact) => {
     const updatedCheckedItinerary = [...checkedItinerary];
     updatedCheckedItinerary[idx][idxact] =
@@ -477,12 +489,18 @@ export default function DetailPackages() {
     setCheckedItinerary(updatedCheckedItinerary);
 
     if (updatedCheckedItinerary[idx][idxact]) {
-      // Item is checked, add it to the selectedItinerary state
-      const productSubIdToAdd = productData.activities[idx].activity_id;
-      setSelectedItinerary((prevSelected) => [
-        ...prevSelected,
-        productSubIdToAdd
-      ]);
+      const activities = productData?.activities;
+      if (activities) {
+        const groupedActivities = groupActivitiesByDays(activities);
+        const selectedActivity = groupedActivities[idx]?.[idxact];
+        if (selectedActivity) {
+          const productSubIdToAdd = selectedActivity.activity_id;
+          setSelectedItinerary((prevSelected) => [
+            ...prevSelected,
+            productSubIdToAdd
+          ]);
+        }
+      }
 
       const productSubPrice =
         (lang === "en" && productData.activities[idx].price_usd !== null
@@ -491,11 +509,17 @@ export default function DetailPackages() {
       setTotalPrice((prevTotalPrice) => prevTotalPrice + productSubPrice);
       setTotalPriceFix((prevTotalPrice) => prevTotalPrice + productSubPrice);
     } else {
-      // Item is unchecked, remove it from the selectedItinerary state
-      const productSubIdToRemove = productData.activities[idx].activity_id;
-      setSelectedItinerary((prevSelected) =>
-        prevSelected.filter((item) => item !== productSubIdToRemove)
-      );
+      const activities = productData?.activities;
+      if (activities) {
+        const groupedActivities = groupActivitiesByDays(activities);
+        const selectedActivity = groupedActivities[idx]?.[idxact];
+        if (selectedActivity) {
+          const productSubIdToRemove = selectedActivity.activity_id;
+          setSelectedItinerary((prevSelected) =>
+            prevSelected.filter((item) => item !== productSubIdToRemove)
+          );
+        }
+      }
 
       const productSubsPrice = productData.activities.reduce(
         (acc, sub, subIdx) =>
@@ -619,84 +643,54 @@ export default function DetailPackages() {
     setAmountChanges(e.target.value);
   };
 
-  const fetchBookingCash = async () => {
-    try {
-      const { id } = router.query;
-      const payload = {
-        amount: parseFloat(amountChanges), // Parse 'amountChanges' to an integer
-        product_id: parseInt(id, 10), // Parse 'id' to an integer
-        product_subs: selectedItinerary,
-        voucher_code: promoCode,
-        // qty: qty,
-        additional_info: JSON.stringify({
-          product_name: productData.title,
-          product_image: productData.image_url,
-          nama: username,
-          no_hp: "",
-          no_identitas: "",
-          email: "",
-          alamat: ""
-        }),
-        currency: lang === "en" ? "USD" : "IDR",
-        price: productData.price
-      };
-
-      const response = await API.post("orders/v1/client", payload);
-
-      console.log("Response data:", response.data);
-      if (response.data) {
-        setTransactionId(response.data.order.id);
-        window.open(`${response.data.link.redirect_url}`, "_blank");
-      }
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-    }
-  };
-
   const handleMidtrans = () => {
     if (amountChanges) {
       if (stockId) {
-        const queryParams = {
-          amount: parseFloat(amountChanges),
-          product_id: parseInt(router.query.id, 10),
-          stock_id: parseInt(router.query.id, 10),
-          activities: selectedItinerary,
-          voucher_code: promoCode,
-          // qty: qty,
-          additional_info: {
-            product_name: productData.title,
-            product_image: productData.image_url,
-            nama: username,
-            no_hp: "",
-            no_identitas: "",
-            email: "",
-            alamat: "",
-            selectedTourDate
-          },
-          currency: lang === "en" ? "USD" : "IDR",
-          price: productData.price,
-          totalPriceFix,
-          metadata: {
-            adult,
-            child,
-            single,
-            double,
-            triple
-          }
-        };
+        if(selectedItinerary.length > 0 && selectedItinerary){
 
-        const queryParamsString = btoa(JSON.stringify(queryParams));
-
-        router.push({
-          pathname: "/detailorder",
-          query: { id: queryParamsString }
-        });
+          const queryParams = {
+            amount: parseFloat(amountChanges),
+            product_id: parseInt(router.query.id, 10),
+            stock_id: parseInt(router.query.id, 10),
+            activities: selectedItinerary,
+            voucher_code: promoCode,
+            // qty: qty,
+            additional_info: {
+              product_name: productData.title,
+              product_image: productData.image_url,
+              nama: username,
+              no_hp: "",
+              no_identitas: "",
+              email: "",
+              alamat: "",
+              selectedTourDate
+            },
+            currency: lang === "en" ? "USD" : "IDR",
+            price: productData.price,
+            totalPriceFix,
+            metadata: {
+              adult,
+              child,
+              single,
+              double,
+              triple
+            }
+          };
+  
+          const queryParamsString = btoa(JSON.stringify(queryParams));
+  
+          router.push({
+            pathname: "/detailorder",
+            query: { id: queryParamsString }
+          });
+        } else {
+          setPesanError("Select Itinerary");
+          setOpenSnackbar(true);
+        }
       } else {
         setPesanError("Select Tour Date");
         setOpenSnackbar(true);
       }
-
-      // fetchBookingCash();
     } else {
       setPesanError(t("amountk"));
       setOpenSnackbar(true);
@@ -778,7 +772,7 @@ export default function DetailPackages() {
                 className={styles.topLabel}
                 style={{ fontSize: "20px", fontWeight: "bold" }}
               >
-                <span style={{fontWeight: '500'}}>Base Price :</span>
+                <span style={{ fontWeight: "500" }}>Base Price :</span>
                 {lang === "en"
                   ? ` USD ${
                       (productData && productData.base_price_usd) ||
@@ -916,7 +910,7 @@ export default function DetailPackages() {
                             </Grid>
                             <Grid item xs={6}>
                               <NumberInputIntroduction
-                                min={1}
+                                min={0}
                                 max={999}
                                 value={adult}
                                 onChange={handleAdultChange}
@@ -933,7 +927,7 @@ export default function DetailPackages() {
                             </Grid>
                             <Grid item xs={6}>
                               <NumberInputIntroduction
-                                min={1}
+                                min={0}
                                 max={999}
                                 value={child}
                                 onChange={handleChildChange}
@@ -990,7 +984,7 @@ export default function DetailPackages() {
                             </Grid>
                             <Grid item xs={6}>
                               <NumberInputIntroduction
-                                min={1}
+                                min={0}
                                 max={999}
                                 value={single}
                                 onChange={handleSingleChange}
@@ -1005,7 +999,7 @@ export default function DetailPackages() {
                             </Grid>
                             <Grid item xs={6}>
                               <NumberInputIntroduction
-                                min={1}
+                                min={0}
                                 max={999}
                                 value={double}
                                 onChange={handleDoubleChange}
@@ -1020,7 +1014,7 @@ export default function DetailPackages() {
                             </Grid>
                             <Grid item xs={6}>
                               <NumberInputIntroduction
-                                min={1}
+                                min={0}
                                 max={999}
                                 value={triple}
                                 onChange={handleTripleChange}
