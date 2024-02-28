@@ -54,6 +54,7 @@ export default function History(props) {
   const { t, lang } = useTranslation("common");
   const router = useRouter();
   const [statusTrx, setStatusTrx] = useState("all");
+  const [transactionId, setTransactionId] = useState(null);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
@@ -155,6 +156,26 @@ export default function History(props) {
     return matchingItem ? matchingItem.label : key;
   };
 
+  const handlePayment = async (item) => {
+    console.log(item);
+    try {
+      const stringifiedMetadata = item.metadata;
+      const stringifiedAddtionalInfo = item.additional_info;
+      const response = await API.post("orders/v1/client", {
+        ...item,
+        additional_info: stringifiedAddtionalInfo,
+        metadata: stringifiedMetadata
+      });
+
+      if (response.data) {
+        setTransactionId(response.data.order.id);
+        window.open(`${response.data.link.redirect_url}`, "_blank");
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
   return (
     <div className="col-lg-8">
       <div className={styles.menuShow}>
@@ -233,9 +254,7 @@ export default function History(props) {
                       </div>
                       <div>
                         {t("remainingpayment")}: Rp.
-                        {numeral(item.price * item.qty - item.amount).format(
-                          "0,0"
-                        )}
+                        {numeral(item.price - item.amount).format("0,0")}
                       </div>
                     </div>
                   </div>
@@ -252,7 +271,7 @@ export default function History(props) {
                           color="success"
                           className="m-2"
                           onClick={() => {
-                            handlePayment();
+                            handlePayment(item);
                           }}
                         >
                           Bayar
@@ -281,18 +300,18 @@ export default function History(props) {
             ...style
           }}
         >
-        <div
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 45,
-                margin: "10px"
-              }}
-            >
-              <IconButton onClick={toggleModal} color="primary">
-                <CloseIcon />
-              </IconButton>
-            </div>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 45,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={toggleModal} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Container
             maxWidth="sm"
             sx={{

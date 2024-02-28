@@ -94,122 +94,6 @@ export default function PrintHistory() {
     fetchOrderData();
   }, [router.query.id]);
 
-  const paymentData = [
-    {
-      date: "31-May-2023",
-      paymentType: "Pembayaran Paket Transfer Ke Bank Mandiri",
-      paymentAmount: "IDR 25,000,000",
-      currencyConversionFee: "IDR 15,000.00",
-      totalPayment: "IDR 25,000,000"
-    },
-    {
-      date: "18-Jul-2023",
-      paymentType: "Pembayaran Paket Transfer Ke Bank Mandiri",
-      paymentAmount: "IDR 27,500,000",
-      currencyConversionFee: "IDR 15,000.00",
-      totalPayment: "IDR 27,500,000"
-    }
-  ];
-
-  const packageData = [
-    {
-      description: "Paket Umroh Paket Mulia Oman Air via Madinah 9 Hari",
-      dateRange: "14-Aug-2023 sampai 22-Aug-2023",
-      packageType: "Double Ekonomi",
-      pricePerUnit: "IDR 32,500,000",
-      quantity: 2,
-      subTotal: "IDR 65,000,000",
-      biaya: "IDR 1.000.000"
-    },
-    {
-      description: "Paket Umroh Paket Mulia Oman Air via Madinah 9 Hari",
-      dateRange: "14-Aug-2023 sampai 22-Aug-2023",
-      packageType: "Quad Ekonomi",
-      pricePerUnit: "IDR 29,300,000",
-      quantity: 3,
-      subTotal: "IDR 87,900,000",
-      biaya: "IDR 1.000.000"
-    }
-  ];
-
-  const totalData = {
-    totalPackage: "IDR 152,900,000",
-    totalOther: "IDR 0"
-  };
-
-  const jamaahData = [
-    {
-      name: "ADE SETIAWAN",
-      age: "36 Tahun",
-      partner: "Ya",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Sudah",
-      familyCard: "Belum Ada",
-      marriageCertificate: "Belum Ada",
-      birthCertificate: "Belum Ada"
-    },
-    {
-      name: "EKA SUPRIANINGSIH",
-      age: "32 Tahun",
-      partner: "Tidak",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Sudah",
-      familyCard: "Belum Ada",
-      marriageCertificate: "Sudah Ada",
-      birthCertificate: "Sudah Ada"
-    },
-    {
-      name: "KASETIANINGSIH LESTARI INDRO",
-      age: "53 Tahun",
-      partner: "Tidak",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Sudah",
-      familyCard: "Belum Ada",
-      marriageCertificate: "-",
-      birthCertificate: "-"
-    },
-    {
-      name: "SITI FATIMAH",
-      age: "37 Tahun",
-      partner: "Ya",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Belum Ada",
-      familyCard: "Belum Ada",
-      marriageCertificate: "Belum Ada",
-      birthCertificate: "Belum Ada"
-    },
-    {
-      name: "YUNITA PUTRI",
-      age: "29 Tahun",
-      partner: "Tidak",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Belum Ada",
-      familyCard: "Belum Ada",
-      marriageCertificate: "-",
-      birthCertificate: "-"
-    }
-  ];
-
   return (
     <>
       <Container>
@@ -283,7 +167,7 @@ export default function PrintHistory() {
                   <Typography align="right">Jumlah :</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{orderData && orderData.qty}</Typography>
+                  <Typography>{1}</Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -322,35 +206,19 @@ export default function PrintHistory() {
             </TableHead>
             <TableBody>
               {productData &&
-                productData.product_subs.map((row, index) => (
+                productData.activities.map((row, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      {row.title} (
-                      {lang === "en" ? (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: productData?.description_en
-                          }}
-                        />
-                      ) : (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: productData?.description_id
-                          }}
-                        />
-                      )}
-                      )
-                      <br />
-                      {row.additional_info}
+                      {row.name}
                     </TableCell>
                     <TableCell>
                       {" "}
-                      Rp. {numeral(row.price).format("0,0")}
+                      Rp. {numeral(row.base_price).format("0,0")}
                     </TableCell>
-                    <TableCell>{orderData && orderData.qty}</TableCell>
+                    <TableCell>{1}</TableCell>
                     <TableCell>
                       {" "}
-                      Rp. {numeral(row.price).format("0,0")}
+                      Rp. {numeral(row.base_price).format("0,0")}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -360,7 +228,7 @@ export default function PrintHistory() {
                 <TableCell>Total Paket</TableCell>
                 <TableCell>
                   {orderData && orderData.price
-                    ? `Rp. ${numeral(orderData.price * orderData.qty).format(
+                    ? `Rp. ${numeral(orderData.price).format(
                         "0,0"
                       )}`
                     : "Price not available"}
