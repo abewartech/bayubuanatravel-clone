@@ -134,7 +134,8 @@ export default function History(props) {
     toggleModal();
   };
 
-  const metadataEntries = selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
+  const metadataEntries =
+    selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
 
   return (
     <div className="col-lg-8">
@@ -278,24 +279,41 @@ export default function History(props) {
                     {t("pdetails")}
                   </Box>
                 </Typography>
+                <Image
+                  src={"/assets/check.png"}
+                  alt="person"
+                  width={115}
+                  height={100}
+                />
+                <Typography>{selectedHistory.status}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
                 {selectedHistory && (
                   <>
-                  <Typography variant="body1">
-        {dayjs(selectedHistory.created_at).format("YYYY-MM-DD HH:mm:ss")}
-      </Typography>
-      <Typography variant="body1" style={{ color: 
-        selectedHistory.status === "PAID" ? "#00854C" : 
-        selectedHistory.status === "FAILED" ? "red" : 
-        "#0199da" 
-      }}>
-        Status: {selectedHistory.status}
-      </Typography>
-      <Typography variant="body1">Amount: {selectedHistory.amount}</Typography>
-      <Typography variant="body1" style={{ color: "#0199da" }}>
-        Order ID: {selectedHistory.id}
-      </Typography>
+                    <Typography variant="body1">
+                      {dayjs(selectedHistory.created_at).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      )}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      style={{
+                        color:
+                          selectedHistory.status === "PAID"
+                            ? "#00854C"
+                            : selectedHistory.status === "FAILED"
+                            ? "red"
+                            : "#0199da"
+                      }}
+                    >
+                      Status: {selectedHistory.status}
+                    </Typography>
+                    <Typography variant="body1">
+                      Amount: {selectedHistory.amount}
+                    </Typography>
+                    <Typography variant="body1" style={{ color: "#0199da" }}>
+                      Order ID: {selectedHistory.id}
+                    </Typography>
                     <div>
                       <Typography variant="subtitle1" gutterBottom>
                         Additional Info:
