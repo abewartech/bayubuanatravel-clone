@@ -280,11 +280,9 @@ export default function DetailPackages() {
   const [productData, setProductData] = useState(null);
   const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
   const [checkedItinerary, setCheckedItinerary] = useState(
-    new Array(itineraryItems.length).fill(
-      new Array(8).fill(true)
-    )
+    Array.from({ length: itineraryItems.length }, () => Array(8).fill(true))
   );
-  
+
   const [selectedItinerary, setSelectedItinerary] = useState([]);
   const [expandedItems, setExpandedItems] = useState(
     Array(itineraryItems.length).fill(false)
@@ -460,45 +458,38 @@ export default function DetailPackages() {
 
   const handleCheckboxChange = (idx, idxact) => {
     const updatedCheckedItinerary = [...checkedItinerary];
-    updatedCheckedItinerary[idx][idxact] = !updatedCheckedItinerary[idx][idxact];
+    updatedCheckedItinerary[idx][idxact] =
+      !updatedCheckedItinerary[idx][idxact];
     setCheckedItinerary(updatedCheckedItinerary);
 
-    if (updatedCheckedItinerary[idx]) {
-      // Item is checked, no need to modify the selectedItinerary state
-      setTotalPrice(
-        (prevTotalPrice) =>
-          prevTotalPrice +
-          (productData &&
-          lang === "en" &&
-          productData.activities[idx].price_usd !== null
-            ? productData.activities[idx].price_usd
-            : productData.activities[idx].price) *
-            qty
-      );
-      setTotalPriceFix(
-        (prevTotalPrice) =>
-          prevTotalPrice +
-          (productData &&
-          lang === "en" &&
-          productData.activities[idx].price_usd !== null
-            ? productData.activities[idx].price_usd
-            : productData.activities[idx].price) *
-            qty
-      );
+    if (updatedCheckedItinerary[idx][idxact]) {
+      // Item is checked, add it to the selectedItinerary state
+      const productSubIdToAdd = productData.activities[idx].activity_id;
+      setSelectedItinerary((prevSelected) => [
+        ...prevSelected,
+        productSubIdToAdd
+      ]);
+
+      const productSubPrice =
+        (lang === "en" && productData.activities[idx].price_usd !== null
+          ? productData.activities[idx].price_usd
+          : productData.activities[idx].price) * qty;
+      setTotalPrice((prevTotalPrice) => prevTotalPrice + productSubPrice);
+      setTotalPriceFix((prevTotalPrice) => prevTotalPrice + productSubPrice);
     } else {
       // Item is unchecked, remove it from the selectedItinerary state
-      const productSubIdToRemove = productData.activities[idx].activity_id; // assuming id is the product sub id
+      const productSubIdToRemove = productData.activities[idx].activity_id;
       setSelectedItinerary((prevSelected) =>
         prevSelected.filter((item) => item !== productSubIdToRemove)
       );
 
       const productSubsPrice = productData.activities.reduce(
         (acc, sub, subIdx) =>
-          updatedCheckedItinerary[subIdx]
+          updatedCheckedItinerary[subIdx][idxact]
             ? acc +
-              (lang === "en" && sub.base_price_usd !== null
-                ? sub.base_price_usd
-                : sub.base_price) *
+              (lang === "en" && sub.price_usd !== null
+                ? sub.price_usd
+                : sub.price) *
                 qty
             : acc,
         0
