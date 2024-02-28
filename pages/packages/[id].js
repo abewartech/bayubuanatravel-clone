@@ -280,8 +280,11 @@ export default function DetailPackages() {
   const [productData, setProductData] = useState(null);
   const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
   const [checkedItinerary, setCheckedItinerary] = useState(
-    new Array(8).fill(true)
+    new Array(itineraryItems.length).fill(
+      new Array(8).fill(true)
+    )
   );
+  
   const [selectedItinerary, setSelectedItinerary] = useState([]);
   const [expandedItems, setExpandedItems] = useState(
     Array(itineraryItems.length).fill(false)
@@ -457,7 +460,7 @@ export default function DetailPackages() {
 
   const handleCheckboxChange = (idx, idxact) => {
     const updatedCheckedItinerary = [...checkedItinerary];
-    updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
+    updatedCheckedItinerary[idx][idxact] = !updatedCheckedItinerary[idx][idxact];
     setCheckedItinerary(updatedCheckedItinerary);
 
     if (updatedCheckedItinerary[idx]) {
@@ -673,7 +676,7 @@ export default function DetailPackages() {
             child,
             single,
             double,
-            triple,
+            triple
           }
         };
 
@@ -1506,8 +1509,13 @@ export default function DetailPackages() {
                               key={idxact}
                               control={
                                 <Android12Switch
-                                  checked={checkedItinerary[idx]}
-                                  onChange={() => handleCheckboxChange(idx, idxact)}
+                                  checked={
+                                    checkedItinerary[idx] &&
+                                    checkedItinerary[idx][idxact]
+                                  }
+                                  onChange={() =>
+                                    handleCheckboxChange(idx, idxact)
+                                  }
                                 />
                               }
                               label={`${activity.name}`}
