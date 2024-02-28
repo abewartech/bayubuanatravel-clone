@@ -411,7 +411,7 @@ const DetailOrder = () => {
                           <TimelineConnector />
                         </TimelineSeparator>
                         <TimelineContent>
-                          <p>Day {day}</p>
+                          <p style={{fontWeight: 'bold'}}>Day {day}</p>
                           {activities.map((activity) => (
                             <p key={activity.activity_id}>{activity.name}</p>
                           ))}
