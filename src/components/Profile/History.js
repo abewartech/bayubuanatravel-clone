@@ -335,7 +335,7 @@ export default function History(props) {
                     alignItems: "center",
                     textAlign: "center"
                   }}
-                  className="mt-2"
+                  className="mt-4"
                 >
                   {(() => {
                     switch (selectedHistory?.status) {
