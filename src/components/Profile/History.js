@@ -13,11 +13,13 @@ import {
   Table,
   TableBody,
   TableRow,
+  IconButton,
   TableCell
 } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import CloseIcon from "@mui/icons-material/Close";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
@@ -136,6 +138,22 @@ export default function History(props) {
 
   const metadataEntries =
     selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
+
+  const stringToView = [
+    { key: "min_dp", label: "Minimal DP" },
+    { key: "adult", label: "Adult" },
+    { key: "child", label: "Child" },
+    { key: "double", label: "Double" },
+    { key: "single", label: "Single" },
+    { key: "total_price", label: "Total Price" },
+    { key: "triple", label: "Triple" }
+  ];
+
+  const getDisplayedKey = (key) => {
+    const formattedKey = key.trim().toLowerCase();
+    const matchingItem = stringToView.find((item) => item.key === formattedKey);
+    return matchingItem ? matchingItem.label : key;
+  };
 
   return (
     <div className="col-lg-8">
@@ -263,11 +281,23 @@ export default function History(props) {
             ...style
           }}
         >
+        <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 45,
+                margin: "10px"
+              }}
+            >
+              <IconButton onClick={toggleModal} color="primary">
+                <CloseIcon />
+              </IconButton>
+            </div>
           <Container
             maxWidth="sm"
             sx={{
               overflow: "auto",
-              maxHeight: "65vh",
+              maxHeight: "75vh",
               display: "flex",
               flexDirection: "column"
             }}
@@ -275,11 +305,19 @@ export default function History(props) {
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 <Typography>
-                  <Box fontSize={32} fontWeight={600}>
+                  <Box fontSize={32} fontWeight={600} className="text-center">
                     {t("pdetails")}
                   </Box>
                 </Typography>
-                <Box sx={{ display: "grid", alignItems: "center" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center"
+                  }}
+                  className="mt-2"
+                >
                   {(() => {
                     switch (selectedHistory?.status) {
                       case "INITIATED":
@@ -314,7 +352,7 @@ export default function History(props) {
                         return null;
                     }
                   })()}
-                  <Typography style={{ fontWeight: "bold" }}>
+                  <Typography style={{ fontWeight: "bold" }} className="mt-2">
                     {selectedHistory?.status}
                   </Typography>
                 </Box>
@@ -322,73 +360,82 @@ export default function History(props) {
               <Grid item xs={12} md={12}>
                 {selectedHistory && (
                   <>
-                    <Typography variant="body1">
-                      {dayjs(selectedHistory.created_at).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      style={{
-                        color:
-                          selectedHistory.status === "PAID"
-                            ? "#00854C"
-                            : selectedHistory.status === "FAILED"
-                            ? "red"
-                            : "#0199da"
-                      }}
-                    >
-                      Status: {selectedHistory.status}
-                    </Typography>
-                    <Typography variant="body1">
-                      Amount: {selectedHistory.amount}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: "#0199da" }}>
-                      Order ID: {selectedHistory.id}
-                    </Typography>
-                    <div>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Additional Info:
-                      </Typography>
-                      <Table>
-                        <TableBody>
-                          {selectedHistory.additional_info &&
-                            Object.entries(
-                              JSON.parse(selectedHistory.additional_info)
-                            ).map(
-                              ([key, value], index) =>
-                                value !== "" && (
-                                  <TableRow key={index}>
-                                    <TableCell>{key}</TableCell>
-                                    <TableCell>
-                                      {key === "product_image" ? (
-                                        <Image
-                                          src={value}
-                                          alt="Product Image"
-                                          width={100}
-                                          height={100}
-                                        />
-                                      ) : (
-                                        value
-                                      )}
-                                    </TableCell>
-                                  </TableRow>
-                                )
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Date</TableCell>
+                          <TableCell>
+                            {dayjs(selectedHistory.created_at).format(
+                              "YYYY-MM-DD HH:mm:ss"
                             )}
-                        </TableBody>
-                      </Table>
-                    </div>
-                    {metadataEntries.map(([key, value]) => (
-                      <Typography key={key} variant="body1">
-                        <strong>{key}:</strong> {value}
-                      </Typography>
-                    ))}
-                    <Typography variant="body1">
-                      Qty: {selectedHistory.qty || "N/A"}
-                    </Typography>
-                    <Typography variant="body1">
-                      Voucher Code: {selectedHistory.voucher_code || "N/A"}
-                    </Typography>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Status</TableCell>
+                          <TableCell
+                            style={{
+                              color:
+                                selectedHistory.status === "PAID"
+                                  ? "#00854C"
+                                  : selectedHistory.status === "FAILED"
+                                  ? "red"
+                                  : "#0199da"
+                            }}
+                          >
+                            {selectedHistory.status}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Amount</TableCell>
+                          <TableCell>{selectedHistory.amount}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Order ID</TableCell>
+                          <TableCell style={{ color: "#0199da" }}>
+                            {selectedHistory.id}
+                          </TableCell>
+                        </TableRow>
+                        {selectedHistory.additional_info &&
+                          Object.entries(
+                            JSON.parse(selectedHistory.additional_info)
+                          ).map(
+                            ([key, value], index) =>
+                              value !== "" && (
+                                <TableRow key={index}>
+                                  <TableCell>{key}</TableCell>
+                                  <TableCell>
+                                    {key === "product_image" ? (
+                                      <Image
+                                        src={value}
+                                        alt="Product Image"
+                                        width={100}
+                                        height={100}
+                                      />
+                                    ) : (
+                                      value
+                                    )}
+                                  </TableCell>
+                                </TableRow>
+                              )
+                          )}
+                        {metadataEntries.map(([key, value]) => (
+                          <TableRow key={key}>
+                            <TableCell>{getDisplayedKey(key)}:</TableCell>
+                            <TableCell>{value}</TableCell>
+                          </TableRow>
+                        ))}
+                        <TableRow>
+                          <TableCell>Qty</TableCell>
+                          <TableCell>{selectedHistory.qty || "N/A"}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Voucher Code</TableCell>
+                          <TableCell>
+                            {selectedHistory.voucher_code || "N/A"}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                     <Divider />
                   </>
                 )}
