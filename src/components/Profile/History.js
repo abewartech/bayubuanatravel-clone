@@ -279,22 +279,41 @@ export default function History(props) {
                     {t("pdetails")}
                   </Box>
                 </Typography>
-                <Box sx={{ justifyContent: "center" }}>
-                  {selectedHistory.status === "INITIATED" ? (
-                    <Image
-                      src={"/assets/loading.png"}
-                      alt="loading"
-                      width={115}
-                      height={100}
-                    />
-                  ) : (
-                    <Image
-                      src={"/assets/check.png"}
-                      alt="person"
-                      width={115}
-                      height={100}
-                    />
-                  )}
+                <Box sx={{ display: "grid", alignItems: "center" }}>
+                  {(() => {
+                    switch (selectedHistory.status) {
+                      case "INITIATED":
+                        return (
+                          <Image
+                            src={"/assets/loading.png"}
+                            alt="loading"
+                            width={115}
+                            height={100}
+                          />
+                        );
+                      case "ORDERED":
+                      case "PAID":
+                        return (
+                          <Image
+                            src={"/assets/check.png"}
+                            alt="check"
+                            width={115}
+                            height={100}
+                          />
+                        );
+                      case "FAILED":
+                        return (
+                          <Image
+                            src={"/assets/silang.png"}
+                            alt="silang"
+                            width={115}
+                            height={100}
+                          />
+                        );
+                      default:
+                        return null;
+                    }
+                  })()}
                   <Typography style={{ fontWeight: "bold" }}>
                     {selectedHistory.status}
                   </Typography>
