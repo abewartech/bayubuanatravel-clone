@@ -79,7 +79,7 @@ export default function PrivateInformation(props) {
     address: dataUser?.address,
     country: dataUser?.country,
     email: email,
-    full_name: loginData?.full_name,
+    full_name: dataUser?.full_name,
     gender: dataUser?.gender,
     // password: "",
     phone_number: dataUser?.phone_number || ""
