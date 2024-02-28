@@ -128,6 +128,7 @@ export default function PrivateInformation(props) {
                     "Personal Information Has Been Successfully Updated"
                   );
                   setSnackbarOpen(true);
+                  location.reload()
                 }
               })
               .catch((err) => {
