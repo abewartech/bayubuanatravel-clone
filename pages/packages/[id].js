@@ -428,28 +428,42 @@ export default function DetailPackages() {
   }, [adult, child, single, double, triple]);
 
   const handleAdultChange = (e, val) => {
-    setAdult(val);
-    updateTotalCounts();
+    if (val >= 1) {
+      setAdult(val);
+      updateTotalCounts();
+    } else {
+      // If the new value is less than 1, set it to 1
+      setAdult(1);
+      updateTotalCounts();
+    }
   };
 
   const handleChildChange = (e, val) => {
-    setChild(val);
-    updateTotalCounts();
+    if (val >= 1) {
+      setChild(val);
+      updateTotalCounts();
+    }
   };
 
   const handleSingleChange = (e, val) => {
-    setSingle(val);
-    updateTotalCounts();
+    if (val >= 1) {
+      setSingle(val);
+      updateTotalCounts();
+    }
   };
 
   const handleDoubleChange = (e, val) => {
-    setDouble(val);
-    updateTotalCounts();
+    if (val >= 1) {
+      setDouble(val);
+      updateTotalCounts();
+    }
   };
 
   const handleTripleChange = (e, val) => {
-    setTriple(val);
-    updateTotalCounts();
+    if (val >= 1) {
+      setTriple(val);
+      updateTotalCounts();
+    }
   };
 
   useEffect(() => {
@@ -1495,7 +1509,7 @@ export default function DetailPackages() {
                       />
                       {item &&
                         item.activities.map((activity, idxact) => (
-                          <>
+                          <div key={idxact} className="mt-2">
                             <FormControlLabel
                               key={idxact}
                               control={
@@ -1512,7 +1526,7 @@ export default function DetailPackages() {
                               label={`${activity.name}`}
                               className="mt-2"
                             />
-                          </>
+                          </div>
                         ))}
                     </div>
                   )}

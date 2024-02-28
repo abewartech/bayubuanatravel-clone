@@ -17,6 +17,7 @@ const CustomNumberInput = React.forwardRef(function CustomNumberInput(
         incrementButton: StyledButton,
         decrementButton: StyledButton
       }}
+      min={0}
       slotProps={{
         incrementButton: {
           children: "▴"
