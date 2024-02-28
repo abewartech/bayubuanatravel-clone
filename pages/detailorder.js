@@ -107,6 +107,20 @@ const DetailOrder = () => {
     router.push("/profile?menu=history");
   };
 
+  const groupActivitiesByDays = (activities) => {
+    const groupedActivities = {};
+    activities.forEach((activity) => {
+      const { activity_days } = activity;
+      if (!groupedActivities[activity_days]) {
+        groupedActivities[activity_days] = [];
+      }
+      groupedActivities[activity_days].push(activity);
+    });
+    return groupedActivities;
+  };
+
+  const [groupedActivities, setGroupedActivities] = useState({});
+
   const fetchProductData = async (productId) => {
     try {
       const response = await axios.get(
@@ -124,6 +138,11 @@ const DetailOrder = () => {
             };
           }
         );
+
+        if (response.data.data && response.data.data.activities) {
+          const activities = response.data.data.activities;
+          setGroupedActivities(groupActivitiesByDays(activities));
+        }
 
         setItineraryItems(updatedItineraryItems);
         const productSubIds = response.data.data.activities.map(
@@ -144,11 +163,13 @@ const DetailOrder = () => {
   const handlePayment = async () => {
     try {
       const stringifiedMetadata = JSON.stringify(decodedInfo.metadata);
-      const stringifiedAddtionalInfo = JSON.stringify(decodedInfo.additional_info);
+      const stringifiedAddtionalInfo = JSON.stringify(
+        decodedInfo.additional_info
+      );
       const response = await API.post("orders/v1/client", {
         ...decodedInfo,
         additional_info: stringifiedAddtionalInfo,
-        metadata: stringifiedMetadata,
+        metadata: stringifiedMetadata
       });
 
       if (response.data) {
@@ -359,7 +380,9 @@ const DetailOrder = () => {
                   className="mt-3"
                 >
                   <Grid item>
-                    <Typography variant="h6" className="text-center">Trip Summary</Typography>
+                    <Typography variant="h6" className="text-center">
+                      Trip Summary
+                    </Typography>
                     <Typography variant="body2">{`(${decodedInfo?.additional_info.selectedTourDate})`}</Typography>
                   </Grid>
                 </Grid>
@@ -372,15 +395,22 @@ const DetailOrder = () => {
                     }
                   }}
                 >
-                  {itineraryItems.map((item, index) => (
-                    <TimelineItem key={index}>
-                      <TimelineSeparator>
-                        <TimelineDot />
-                        <TimelineConnector />
-                      </TimelineSeparator>
-                      <TimelineContent>{item?.title}</TimelineContent>
-                    </TimelineItem>
-                  ))}
+                  {Object.entries(groupedActivities).map(
+                    ([day, activities]) => (
+                      <TimelineItem key={day}>
+                        <TimelineSeparator>
+                          <TimelineDot />
+                          <TimelineConnector />
+                        </TimelineSeparator>
+                        <TimelineContent>
+                          <p>Day {day}</p>
+                          {activities.map((activity) => (
+                            <p key={activity.activity_id}>{activity.name}</p>
+                          ))}
+                        </TimelineContent>
+                      </TimelineItem>
+                    )
+                  )}
                 </Timeline>
               </Box>
             </div>

@@ -778,8 +778,9 @@ export default function DetailPackages() {
                 className={styles.topLabel}
                 style={{ fontSize: "20px", fontWeight: "bold" }}
               >
+                <span style={{fontWeight: '500'}}>Base Price :</span>
                 {lang === "en"
-                  ? `USD ${
+                  ? ` USD ${
                       (productData && productData.base_price_usd) ||
                       productData?.base_price
                     }`
