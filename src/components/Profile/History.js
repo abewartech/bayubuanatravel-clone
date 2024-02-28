@@ -406,7 +406,9 @@ export default function History(props) {
                         </TableRow>
                         <TableRow>
                           <TableCell>Amount</TableCell>
-                          <TableCell>{selectedHistory.amount}</TableCell>
+                          <TableCell>{`Rp. ${numeral(
+                            selectedHistory.amount
+                          ).format("0,0")}`}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Order ID</TableCell>
@@ -440,10 +442,14 @@ export default function History(props) {
                         {metadataEntries.map(([key, value]) => (
                           <TableRow key={key}>
                             <TableCell>{getDisplayedKey(key)}:</TableCell>
-                            <TableCell>{value}</TableCell>
+                            <TableCell>
+                              {key === "total_price"
+                                ? `Rp. ${numeral(value).format("0,0")}`
+                                : value}
+                            </TableCell>
                           </TableRow>
                         ))}
-                        <TableRow>
+                        {/* <TableRow>
                           <TableCell>Qty</TableCell>
                           <TableCell>{selectedHistory.qty || "N/A"}</TableCell>
                         </TableRow>
@@ -452,7 +458,7 @@ export default function History(props) {
                           <TableCell>
                             {selectedHistory.voucher_code || "N/A"}
                           </TableCell>
-                        </TableRow>
+                        </TableRow> */}
                       </TableBody>
                     </Table>
                     <Divider />
