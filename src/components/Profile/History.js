@@ -279,13 +279,26 @@ export default function History(props) {
                     {t("pdetails")}
                   </Box>
                 </Typography>
-                <Image
-                  src={"/assets/check.png"}
-                  alt="person"
-                  width={115}
-                  height={100}
-                />
-                <Typography>{selectedHistory.status}</Typography>
+                <Box sx={{ justifyContent: "center" }}>
+                  {selectedHistory.status === "INITIATED" ? (
+                    <Image
+                      src={"/assets/loading.png"}
+                      alt="loading"
+                      width={115}
+                      height={100}
+                    />
+                  ) : (
+                    <Image
+                      src={"/assets/check.png"}
+                      alt="person"
+                      width={115}
+                      height={100}
+                    />
+                  )}
+                  <Typography style={{ fontWeight: "bold" }}>
+                    {selectedHistory.status}
+                  </Typography>
+                </Box>
               </Grid>
               <Grid item xs={12} md={12}>
                 {selectedHistory && (
