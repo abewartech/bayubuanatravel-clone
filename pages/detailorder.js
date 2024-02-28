@@ -124,7 +124,6 @@ const DetailOrder = () => {
     const filteredActivities = activitiesAll.filter((activity) =>
       decodedInfo?.activities.includes(activity.activity_id)
     );
-    console.log(filteredActivities);
     setGroupedActivities(groupActivitiesByDays(filteredActivities));
   }, [activitiesAll, decodedInfo]);
 
