@@ -1274,6 +1274,18 @@ export default function DetailPackages() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={handleClose} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Container
             maxWidth="sm"
             sx={{ height: "65vh", display: "flex", alignItems: "center" }}
