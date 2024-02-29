@@ -568,7 +568,7 @@ export default function DetailPackages() {
           return {
             title: `Day ${sub.activity_days}`,
             activities: sub.activities, // You can modify this based on your product_sub structure
-            description: lang === "en" ? sub.description_en : sub.description_id,
+            description: lang === "en" ? sub.description_en : sub.description_id
             // Add other properties as needed
           };
         });
@@ -646,8 +646,7 @@ export default function DetailPackages() {
   const handleMidtrans = () => {
     if (amountChanges) {
       if (stockId) {
-        if(selectedItinerary.length > 0 && selectedItinerary){
-
+        if (selectedItinerary.length > 0 && selectedItinerary) {
           const queryParams = {
             amount: parseFloat(amountChanges),
             product_id: parseInt(router.query.id, 10),
@@ -676,9 +675,9 @@ export default function DetailPackages() {
               triple
             }
           };
-  
+
           const queryParamsString = btoa(JSON.stringify(queryParams));
-  
+
           router.push({
             pathname: "/detailorder",
             query: { id: queryParamsString }
@@ -853,12 +852,20 @@ export default function DetailPackages() {
                       Select Tour Date
                     </Typography>
                     <Select
-                      options={stocks.map((stock) => ({
-                        value: stock.id,
-                        label: `${dayjs(stock.start_date).format(
-                          "DD MMMM YYYY"
-                        )} - ${dayjs(stock.end_date).format("DD MMMM YYYY")}`
-                      }))}
+                      options={stocks
+                        .filter((stock) =>
+                          dayjs(stock.start_date).isSameOrAfter(dayjs(), "day")
+                        )
+                        .map((stock) => ({
+                          value: stock.id,
+                          label: `${dayjs(stock.start_date).format(
+                            "DD MMMM YYYY"
+                          )} - ${dayjs(stock.end_date).format("DD MMMM YYYY")}`,
+                          isDisabled: dayjs(stock.start_date).isBefore(
+                            dayjs(),
+                            "day"
+                          ) // Disable if start_date is before today
+                        }))}
                       placeholder="Select available dates"
                       onChange={(val) => {
                         if (val) {
@@ -922,7 +929,7 @@ export default function DetailPackages() {
                           <Grid container direction="row" spacing={2}>
                             <Grid item xs={6}>
                               <Typography className="mb-1">
-                                Childerns:
+                                Childrens:
                               </Typography>
                             </Grid>
                             <Grid item xs={6}>
