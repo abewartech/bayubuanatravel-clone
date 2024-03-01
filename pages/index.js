@@ -10,10 +10,10 @@ import "@splidejs/react-splide/css/core";
 import "@splidejs/react-splide/css";
 import Client from "../src/components/common/Client";
 import ModalComponent from "../src/components/common/Modal";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import {
   Snackbar,
   Dialog,
@@ -22,6 +22,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  SnackbarContent
 } from "@mui/material";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
@@ -32,8 +33,8 @@ export default function Homepage() {
   const router = useRouter();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [orderId, setOrderId] = useState('');
-  const [transactionStatus, setTransactionStatus] = useState('');
+  const [orderId, setOrderId] = useState("");
+  const [transactionStatus, setTransactionStatus] = useState("");
   const [pesanError, setPesanError] = useState("");
   const successPayment = () => {
     setOpenDialog(false);
@@ -43,7 +44,7 @@ export default function Homepage() {
   useEffect(() => {
     const { query } = router;
     if (query.order_id) {
-      console.log(query.order_id)
+      console.log(query.order_id);
       setOrderId(query.order_id);
     }
     if (query.transaction_status) {
@@ -115,13 +116,17 @@ export default function Homepage() {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "center"
         }}
         open={openSnackbar}
         autoHideDuration={6000}
-        message={pesanError}
         onClose={() => setOpenSnackbar(false)}
-      />
+      >
+        <SnackbarContent
+          message={pesanError}
+          style={{ backgroundColor: "green" }} // You can customize the color
+        />
+      </Snackbar>
       <Dialog
         open={openDialog}
         onClose={successPayment}

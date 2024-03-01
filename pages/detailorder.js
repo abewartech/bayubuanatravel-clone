@@ -15,7 +15,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  SnackbarContent
 } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
@@ -467,13 +468,17 @@ const DetailOrder = () => {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "center"
         }}
         open={openSnackbar}
         autoHideDuration={6000}
-        message={pesanError}
         onClose={() => setOpenSnackbar(false)}
-      />
+      >
+        <SnackbarContent
+          message={pesanError}
+          style={{ backgroundColor: "green" }} // You can customize the color
+        />
+      </Snackbar>
       <Dialog
         open={openDialog}
         onClose={successPayment}

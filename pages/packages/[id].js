@@ -23,7 +23,9 @@ import {
   CardActions,
   Popover,
   Divider,
-  IconButton
+  IconButton,
+  Alert,
+  SnackbarContent
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
@@ -31,7 +33,7 @@ import Select from "react-select";
 import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
 import dayjs from "dayjs";
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -295,6 +297,7 @@ export default function DetailPackages() {
   const [anchorElRoom, setAnchorElRoom] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbarError, setOpenSnackbarError] = useState(false);
   const [isDisableBook, setIsDisableBook] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
@@ -419,7 +422,7 @@ export default function DetailPackages() {
     if (forjustchecknewTotalGuest !== newTotalGuest) {
       setIsDisableBook(true);
       setPesanError("The number of guests does not match the number of rooms!");
-      setOpenSnackbar(true);
+      setOpenSnackbarError(true);
     } else {
       setIsDisableBook(false);
     }
@@ -1285,7 +1288,7 @@ export default function DetailPackages() {
               margin: "10px"
             }}
           >
-            <IconButton onClick={handleClose} color="primary">
+            <IconButton onClick={handleCloseLogin} color="primary">
               <CloseIcon />
             </IconButton>
           </div>
@@ -1335,6 +1338,8 @@ export default function DetailPackages() {
                       .catch((error) => {
                         console.error(error);
                         setSubmitting(false);
+                        setPesanError("Email dan Password salah");
+                        setOpenSnackbarError(true);
                       });
                   }}
                 >
@@ -1431,13 +1436,27 @@ export default function DetailPackages() {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "center"
         }}
         open={openSnackbar}
         autoHideDuration={6000}
         message={pesanError}
         onClose={() => setOpenSnackbar(false)}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={openSnackbarError}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbarError(false)}
+      >
+        <SnackbarContent
+          message={pesanError}
+          style={{ backgroundColor: "#ff0000" }} // You can customize the color
+        />
+      </Snackbar>
       <Dialog
         open={openDialog}
         onClose={successPayment}

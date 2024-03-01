@@ -532,15 +532,6 @@ export default function Header(props) {
                 </Formik>
               </Grid>
             </Grid>
-            {/* <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right"
-              }}
-              open={open}
-              autoHideDuration={6000}
-              message={this.props.userStore.pesanError}
-            /> */}
           </Container>
         </Box>
       </DynamicModal>
