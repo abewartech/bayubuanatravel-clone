@@ -13,7 +13,7 @@ import useTranslation from "next-translate/useTranslation";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import useDebounce from "./UseDebounce";
+import useDebounce from "./useDebounce";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
