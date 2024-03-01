@@ -279,10 +279,11 @@ export default function History(props) {
                       )}
                       <Button
                         variant="outlined"
+                        className={styles.historySeekecil}
                         color="success"
                         onClick={() => print(item.id)}
                       >
-                        Print
+                        Detail Order Pesanan
                       </Button>
                     </div>
                   </div>
