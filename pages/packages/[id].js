@@ -31,6 +31,7 @@ import Select from "react-select";
 import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
 import dayjs from "dayjs";
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -48,6 +49,8 @@ import useAuthStore from "../../src/store/loginStore";
 import API from "../../src/common/api";
 import { generatePDF } from "../../src/utils/pdfUtils";
 import NumberInputIntroduction from "../../src/components/common/NumberInputIntroduction";
+
+dayjs.extend(isSameOrAfter);
 
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
   ssr: false
