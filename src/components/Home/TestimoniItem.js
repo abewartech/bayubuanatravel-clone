@@ -1,25 +1,23 @@
 import Image from "next/image";
 import styles from "./../../../styles/pages/Home.module.scss";
 import quote from "./../../../public/assets/quote-review.svg";
-export default function TestimoniItem() {
+
+export default function TestimoniItem({ testimony }) {
+  const { name, travelDate, testimonial } = testimony;
+
   return (
     <div className="mb-4">
       <div className={styles.testimoniCard}>
         <div className={styles.userInformation}>
           <div className={styles.profilePict}></div>
           <div className={styles.profileUser}>
-            <div className={styles.name}>Bayu Indra</div>
-            <div className={styles.travelDate}>Travel Date: 2022-07-25</div>
+            <div className={styles.name}>{name}</div>
+            <div className={styles.travelDate}>Travel Date: {travelDate}</div>
           </div>
           <Image src={quote} alt="quote" />
         </div>
         <div className={styles.testimoniText}>
-          <p>
-            Pertama kali ke Jepang, tadinya mau pergi sendiri aja.eh ternyata
-            harus group kalo mau ke Jepang. trus coba nanya2 sama adminnya
-            Nadia, eh cocok. Dan seneng banget soalnya semua destinasi yang mau
-            gw datengin ada semua di list nya
-          </p>
+          <p>{testimonial}</p>
         </div>
       </div>
     </div>
