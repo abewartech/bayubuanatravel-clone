@@ -212,27 +212,6 @@ const DetailOrder = () => {
             {/* Detail Package & Summary Price */}
             <div className="col-lg-8">
               <Box mb={3} sx={{ position: "relative" }}>
-                {/* Add your detail package content here */}
-                {/* For example: */}
-                {/* <Typography variant="h6">Promo Kode Voucher</Typography>
-                <TextField
-                  fullWidth
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">%</InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Button onClick={handleApplyPromoCode} variant="text">
-                          Apply
-                        </Button>
-                      </InputAdornment>
-                    )
-                  }}
-                  placeholder="Masukan Kode Voucher"
-                /> */}
                 <Divider />
 
                 <Grid
@@ -305,7 +284,7 @@ const DetailOrder = () => {
                   className="mt-2"
                 >
                   <Grid item>
-                    <Typography variant="h6">{t("total")}</Typography>
+                    <Typography variant="h6">Base Price</Typography>
                   </Grid>
                   <Grid item>
                     <Typography variant="h6">

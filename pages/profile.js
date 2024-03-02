@@ -26,14 +26,18 @@ export default function Profile() {
     setCurrMenu(menu);
     router.push(`?menu=${menu}`);
   };
-  const initialValues = {
-    address: "",
-    country: "",
-    email: "",
-    full_name: "",
-    gender: "",
-    password: ""
-  };
+
+  // Extract menu from query parameters on initial load
+  useEffect(() => {
+    const { menu } = router.query;
+    if (menu) {
+      setCurrMenu(menu);
+      // Save the scroll position if the menu is "history"
+      if (menu === "history") {
+        setScrollPosition(window.scrollY);
+      }
+    }
+  }, [router.query]);
 
   useEffect(() => {
     // Event listener to handle scroll position after route change

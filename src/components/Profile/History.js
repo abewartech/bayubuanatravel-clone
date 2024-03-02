@@ -141,12 +141,12 @@ export default function History(props) {
     selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
 
   const stringToView = [
+    { key: "total_price", label: "Total Price" },
     { key: "min_dp", label: "Minimal DP" },
     { key: "adult", label: "Adult" },
     { key: "child", label: "Child" },
     { key: "double", label: "Double" },
     { key: "single", label: "Single" },
-    { key: "total_price", label: "Total Price" },
     { key: "triple", label: "Triple" }
   ];
 
@@ -155,6 +155,21 @@ export default function History(props) {
     const matchingItem = stringToView.find((item) => item.key === formattedKey);
     return matchingItem ? matchingItem.label : key;
   };
+
+  // Sort metadataEntries based on the order defined in stringToView
+  let sortedMetadataEntries = [];
+
+  if (metadataEntries) {
+    sortedMetadataEntries = metadataEntries.sort((a, b) => {
+      const indexA = stringToView.findIndex(
+        (item) => item.key === a[0].trim().toLowerCase()
+      );
+      const indexB = stringToView.findIndex(
+        (item) => item.key === b[0].trim().toLowerCase()
+      );
+      return indexA - indexB;
+    });
+  }
 
   const handlePayment = async (item) => {
     console.log(item);
@@ -440,16 +455,42 @@ export default function History(props) {
                                 </TableRow>
                               )
                           )}
-                        {metadataEntries.map(([key, value]) => (
-                          <TableRow key={key}>
-                            <TableCell>{getDisplayedKey(key)}:</TableCell>
-                            <TableCell>
-                              {key === "total_price"
-                                ? `Rp. ${numeral(value).format("0,0")}`
-                                : value}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {sortedMetadataEntries.map(([key, value]) => {
+                          // Skip rendering if value is 0
+                          if (value === 0) return null;
+
+                          let displayValue = value;
+
+                          // Append appropriate suffix based on the key
+                          if (key === "min_dp") {
+                            displayValue =
+                              value === 1 ? `${value}%` : `${value}%`;
+                          } else if (key === "adult" || key === "child") {
+                            displayValue =
+                              value === 1
+                                ? `${value} person`
+                                : `${value} people`;
+                          } else if (
+                            key === "double" ||
+                            key === "single" ||
+                            key === "triple"
+                          ) {
+                            displayValue =
+                              value === 1 ? `${value} room` : `${value} rooms`;
+                          }
+
+                          return (
+                            <TableRow key={key}>
+                              <TableCell>{getDisplayedKey(key)}:</TableCell>
+                              <TableCell>
+                                {key === "total_price"
+                                  ? `Rp. ${numeral(value).format("0,0")}`
+                                  : displayValue}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+
                         {/* <TableRow>
                           <TableCell>Qty</TableCell>
                           <TableCell>{selectedHistory.qty || "N/A"}</TableCell>

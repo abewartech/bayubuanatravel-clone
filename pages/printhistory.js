@@ -12,7 +12,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box
+  Box,
+  Divider
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -21,7 +22,7 @@ import useTranslation from "next-translate/useTranslation";
 import dayjs from "dayjs";
 import numeral from "numeral";
 import Timeline from "@mui/lab/Timeline";
-import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
@@ -31,6 +32,8 @@ export default function PrintHistory() {
   const { t, lang } = useTranslation("common");
   const [orderData, setOrderData] = useState(null);
   const [productData, setProductData] = useState(null);
+  const [decodedInfo, setDecodedInfo] = useState(null);
+  const [activitiesAll, setActivitiesAll] = useState([]);
   const router = useRouter();
   useEffect(() => {
     const css = `
@@ -66,8 +69,34 @@ export default function PrintHistory() {
     }
 
     head.appendChild(style);
-    setTimeout(() => window.print(), 1000); //uncomment print
-  }, []);
+    if (productData) {
+      if (!window.__PRINT_STARTED__) {
+        window.__PRINT_STARTED__ = true;
+        setTimeout(() => window.print(), 2000);
+      }
+    }
+  }, [productData]);
+
+  const groupActivitiesByDays = (activities) => {
+    const groupedActivities = {};
+    activities.forEach((activity) => {
+      const { activity_days } = activity;
+      if (!groupedActivities[activity_days]) {
+        groupedActivities[activity_days] = [];
+      }
+      groupedActivities[activity_days].push(activity);
+    });
+    return groupedActivities;
+  };
+
+  useEffect(() => {
+    const filteredActivities = activitiesAll.filter((activity) =>
+      decodedInfo?.activities.includes(activity.activity_id)
+    );
+    setGroupedActivities(groupActivitiesByDays(filteredActivities));
+  }, [activitiesAll, decodedInfo]);
+
+  const [groupedActivities, setGroupedActivities] = useState({});
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -77,13 +106,18 @@ export default function PrintHistory() {
             `/orders/v1/client/${router.query.id}`
           );
           setOrderData(response.data);
-
+          console.log(response.data);
+          setDecodedInfo(response.data);
           // Make the second API call
           if (response.data && response.data.product_id) {
             const productResponse = await API.get(
               `/products/v1/external/${response.data.product_id}`
             );
             setProductData(productResponse.data);
+            if (productResponse.data && productResponse.data.activities) {
+              const activities = productResponse.data.activities;
+              setActivitiesAll(activities);
+            }
           }
         } catch (error) {
           console.error("Error fetching order data:", error);
@@ -164,10 +198,10 @@ export default function PrintHistory() {
                   <Typography>081316776671</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography align="right">Jumlah :</Typography>
+                  <Typography align="right"></Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{1}</Typography>
+                  <Typography></Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -193,49 +227,185 @@ export default function PrintHistory() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TableContainer component={Paper} className="mb-3 p-4">
+          <div className="col-lg-8">
+            <Box mb={3} sx={{ position: "relative" }}>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-4"
+              >
+                <Grid item>
+                  <Typography variant="h6">{t("cost")}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">Harga dalam IDR</Typography>
+                </Grid>
+              </Grid>
 
-        <TableContainer component={Paper} className="mb-3">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Keterangan</TableCell>
-                <TableCell>Biaya</TableCell>
-                <TableCell>Qty</TableCell>
-                <TableCell>Sub Total</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {productData &&
-                productData.activities.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {row.name}
-                    </TableCell>
-                    <TableCell>
-                      {" "}
-                      Rp. {numeral(row.base_price).format("0,0")}
-                    </TableCell>
-                    <TableCell>{1}</TableCell>
-                    <TableCell>
-                      {" "}
-                      Rp. {numeral(row.base_price).format("0,0")}
-                    </TableCell>
-                  </TableRow>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-2"
+              >
+                <Grid item>
+                  <Typography variant="body1">{`${productData?.title}`}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">
+                    {`Rp. ${numeral(productData?.base_price).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-2"
+              >
+                <Grid item>
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.adult > 0 && (
+                      <Typography variant="body1">{`Adult (x${
+                        JSON.parse(decodedInfo?.metadata)?.adult
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.child > 0 && (
+                      <Typography variant="body1">{`Child (x${
+                        JSON.parse(decodedInfo?.metadata)?.child
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.single > 0 && (
+                      <Typography variant="body1">{`Single (x${
+                        JSON.parse(decodedInfo?.metadata)?.single
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.double > 0 && (
+                      <Typography variant="body1">{`Double (x${
+                        JSON.parse(decodedInfo?.metadata)?.double
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.triple > 0 && (
+                      <Typography variant="body1">{`Triple (x${
+                        JSON.parse(decodedInfo?.metadata)?.triple
+                      })`}</Typography>
+                    )}
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-2"
+              >
+                <Grid item>
+                  <Typography variant="h6">Base Price</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">
+                    {`Rp. ${numeral(productData?.base_price).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-4"
+              >
+                <Grid item>
+                  <Typography variant="h6">{t("total")}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">
+                    {`Rp. ${numeral(decodedInfo?.amount).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-3"
+              >
+                <Grid item>
+                  <Typography variant="body1">{t("remaining")}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">
+                    {`Rp. ${numeral(
+                      decodedInfo?.price - decodedInfo?.amount
+                    ).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-3"
+              >
+                <Grid item>
+                  <Typography variant="caption">{t("theremaining")}</Typography>
+                </Grid>
+              </Grid>
+
+              <Divider className="mt-4 border" />
+
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                className="mt-3"
+              >
+                <Grid item>
+                  <Typography variant="h6" className="text-center">
+                    Trip Summary
+                  </Typography>
+                  {decodedInfo?.additional_info?.selectedTourDate && (
+                    <Typography variant="body2">
+                      {`(${decodedInfo.additional_info.selectedTourDate})`}
+                    </Typography>
+                  )}
+                </Grid>
+              </Grid>
+
+              <Timeline
+                sx={{
+                  [`& .${timelineItemClasses.root}:before`]: {
+                    flex: 0,
+                    padding: 0
+                  }
+                }}
+              >
+                {Object.entries(groupedActivities).map(([day, activities]) => (
+                  <TimelineItem key={day}>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>
+                      <p style={{ fontWeight: "bold" }}>Day {day}</p>
+                      {activities.map((activity) => (
+                        <p key={activity.activity_id}>{activity.name}</p>
+                      ))}
+                    </TimelineContent>
+                  </TimelineItem>
                 ))}
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell>Total Paket</TableCell>
-                <TableCell>
-                  {orderData && orderData.price
-                    ? `Rp. ${numeral(orderData.price).format(
-                        "0,0"
-                      )}`
-                    : "Price not available"}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+              </Timeline>
+            </Box>
+          </div>
         </TableContainer>
 
         <Typography variant="h6" className="mt-4 mb-1">
