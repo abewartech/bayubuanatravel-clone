@@ -656,7 +656,7 @@ export default function DetailPackages() {
           const queryParams = {
             amount: parseFloat(amountChanges),
             product_id: parseInt(router.query.id, 10),
-            stock_id: parseInt(router.query.id, 10),
+            stock_id: parseInt(productData.stock_id, 10),
             activities: selectedItinerary,
             voucher_code: promoCode,
             // qty: qty,
