@@ -14,7 +14,8 @@ import {
   TableBody,
   TableRow,
   IconButton,
-  TableCell
+  TableCell,
+  TextField
 } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
@@ -58,7 +59,23 @@ export default function History(props) {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenBayar, setModalOpenBayar] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [errorAmount, setErrorAmount] = useState(false);
+  const [amountChanges, setAmountChanges] = useState(0);
+  const [productData, setProductData] = useState(null);
+
+  const fetchProductData = async (productId) => {
+    try {
+      const response = await axios.get(
+        `https://api.marinarajaampat.id/products/v1/external/${productId}`
+      );
+      setProductData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
 
   // Use useEffect to fetch data from the API
   useEffect(() => {
@@ -123,6 +140,18 @@ export default function History(props) {
     setStatusTrx(status);
   };
 
+  const amountChange = (e) => {
+    if (productData && productData.minimum_down_payment) {
+      const minimumPaymentPercentage = productData.minimum_down_payment;
+      const calculatedMinimumAmount =
+        (minimumPaymentPercentage / 100) * totalPriceFix;
+
+      setErrorAmount(e.target.value < calculatedMinimumAmount);
+    }
+
+    setAmountChanges(e.target.value);
+  };
+
   const print = (id) => {
     const printURL = `/printhistory?id=${id}`; // Replace with your URL and parameter
     window.open(printURL, "_blank");
@@ -130,6 +159,16 @@ export default function History(props) {
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
+  };
+
+  const toggleModalBayar = () => {
+    setModalOpenBayar(!modalOpenBayar);
+  };
+
+  const onBayar = (item) => {
+    console.log(item);
+    toggleModalBayar();
+    setSelectedOrder(item.id);
   };
 
   const handleDetails = (history) => {
@@ -141,6 +180,10 @@ export default function History(props) {
     selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
 
   const stringToView = [
+    { key: "product_name", label: "Product Name" },
+    { key: "product_image", label: "Product Image" },
+    { key: "nama", label: "Nama" },
+    { key: "selectedTourDate", label: "Tour Date" },
     { key: "total_price", label: "Total Price" },
     { key: "min_dp", label: "Minimal DP" },
     { key: "adult", label: "Adult" },
@@ -286,7 +329,7 @@ export default function History(props) {
                           color="success"
                           className="m-2"
                           onClick={() => {
-                            handlePayment(item);
+                            onBayar(item);
                           }}
                         >
                           Bayar
@@ -439,7 +482,7 @@ export default function History(props) {
                             ([key, value], index) =>
                               value !== "" && (
                                 <TableRow key={index}>
-                                  <TableCell>{key}</TableCell>
+                                  <TableCell>{getDisplayedKey(key)}</TableCell>
                                   <TableCell>
                                     {key === "product_image" ? (
                                       <Image
@@ -539,6 +582,51 @@ export default function History(props) {
                     </Timeline>
                   )}
               </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </DynamicModal>
+      <DynamicModal open={modalOpenBayar} onClose={toggleModalBayar}>
+        <Box
+          sx={{
+            ...style
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 45,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={toggleModalBayar} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <Container
+            maxWidth="sm"
+            sx={{
+              overflow: "auto",
+              maxHeight: "75vh",
+              display: "flex",
+              flexDirection: "column"
+            }}
+          >
+            <Grid container spacing={3}>
+              <div className="d-flex align-items-center mb-4">
+                <div className="d-flex  align-items-center">
+                  <Grid item xs={12} md={12}>
+                    <TextField
+                      error={errorAmount}
+                      label={t("amount")}
+                      type="number"
+                      onChange={amountChange}
+                      fullWidth
+                    />
+                  </Grid>
+                </div>
+              </div>
             </Grid>
           </Container>
         </Box>
