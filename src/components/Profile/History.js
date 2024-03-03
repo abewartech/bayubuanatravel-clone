@@ -166,20 +166,11 @@ export default function History(props) {
   };
 
   const onBayar = (item) => {
-    console.log(item);
     toggleModalBayar();
     setSelectedOrder(item.id);
   };
 
-  const handleDetails = (history) => {
-    console.log(history);
-    // Parse the additional_info JSON string
-    const additionalInfo = JSON.parse(history.additional_info);
-
-    // Access the selectedTourDate
-    const selectedTourDate = additionalInfo.selectedTourDate;
-
-    console.log(selectedTourDate); // Output: 14 March 2024 - 17 March 2024
+  const handleDetails = (history) => { // Output: 14 March 2024 - 17 March 2024
     setSelectedHistory(history);
     toggleModal();
   };
@@ -224,7 +215,6 @@ export default function History(props) {
   }
 
   const handlePayment = async (item) => {
-    console.log(item);
     try {
       const stringifiedMetadata = item.metadata;
       const stringifiedAddtionalInfo = item.additional_info;
