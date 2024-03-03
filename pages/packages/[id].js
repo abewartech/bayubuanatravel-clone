@@ -670,7 +670,6 @@ export default function DetailPackages() {
   const handleMidtrans = () => {
     if (amountChanges) {
       if (stockId) {
-        console.log(selectedItinerary);
         if (selectedItinerary.length > 0 && selectedItinerary) {
           const activityIds = selectedItinerary.map(
             (activity) => activity.activity_id
