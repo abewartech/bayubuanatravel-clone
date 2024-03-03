@@ -480,21 +480,11 @@ export default function History(props) {
                             JSON.parse(selectedHistory.additional_info)
                           ).map(
                             ([key, value], index) =>
+                              key !== "product_image" &&
                               value !== "" && (
                                 <TableRow key={index}>
                                   <TableCell>{getDisplayedKey(key)}</TableCell>
-                                  <TableCell>
-                                    {key === "product_image" ? (
-                                      <Image
-                                        src={value}
-                                        alt="Product Image"
-                                        width={100}
-                                        height={100}
-                                      />
-                                    ) : (
-                                      value
-                                    )}
-                                  </TableCell>
+                                  <TableCell>{value}</TableCell>
                                 </TableRow>
                               )
                           )}
