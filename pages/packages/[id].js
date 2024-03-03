@@ -538,8 +538,6 @@ export default function DetailPackages() {
       );
     }
 
-    console.log(selectedActivity, "goblok");
-
     // Calculate product price based on the language and quantity
     const productPrice =
       (lang === "en" && selectedActivity.base_price_usd !== null
