@@ -352,7 +352,6 @@ export default function DetailPackages() {
       try {
         if (transactionId) {
           const response = await API.get(`orders/v1/client/${transactionId}`);
-          console.log("Response data:", response.data);
           if (response.data.status !== "INITIATED") {
             // If it's "ORDERED," stop the interval
             clearInterval(intervalId);
@@ -477,14 +476,15 @@ export default function DetailPackages() {
   }, [qty]);
 
   const groupActivitiesByDays = (activities) => {
-    return activities.reduce((grouped, activity) => {
+    const groupedActivities = {};
+    activities.forEach((activity) => {
       const { activity_days } = activity;
-      if (!grouped[activity_days]) {
-        grouped[activity_days] = [];
+      if (!groupedActivities[activity_days]) {
+        groupedActivities[activity_days] = [];
       }
-      grouped[activity_days].push(activity);
-      return grouped;
-    }, {});
+      groupedActivities[activity_days].push(activity);
+    });
+    return groupedActivities;
   };
 
   const handleCheckboxChange = (idx, idxact) => {
@@ -497,30 +497,54 @@ export default function DetailPackages() {
     if (!activities) return;
 
     // Call groupActivitiesByDays to group activities by days
-    const groupedActivities = groupActivitiesByDays(activities);
+
+    const groupedActivities = {};
+
+    activities.forEach((activity) => {
+      const { activity_days, ...rest } = activity;
+      const index = activity_days - 1; // Decrement by 1 to start indexing from 0
+      if (!(index in groupedActivities)) {
+        groupedActivities[index] = [];
+      }
+      groupedActivities[index].push({
+        activity_id: activity.activity_id,
+        activity_days: activity.activity_days,
+        is_mandatory: activity.is_mandatory,
+        base_price_usd: activity.base_price_usd,
+        base_price: activity.base_price
+      });
+    });
 
     // Assuming idx and idxact are valid indices
-    const selectedDay = groupedActivities[idx + 1]; // Get the array of activities for the selected day
+    const selectedDay = groupedActivities[idx]; // Get the array of activities for the selected day
     if (!selectedDay || !selectedDay[idxact]) return; // Ensure the selected day and activity exist
 
     const selectedActivity = selectedDay[idxact]; // Get the selected activity
-    const productSubId = selectedActivity.activity_id; // Get the activity ID
 
     if (updatedCheckedItinerary[idx][idxact]) {
       // Checkbox is checked, add the activity to selectedItinerary
-      setSelectedItinerary((prevSelected) => [...prevSelected, productSubId]);
+      setSelectedItinerary((prevSelected) => [
+        ...prevSelected,
+        selectedActivity
+      ]);
     } else {
       // Checkbox is unchecked, remove the activity from selectedItinerary
       setSelectedItinerary((prevSelected) =>
-        prevSelected.filter((item) => item !== productSubId)
+        prevSelected.filter(
+          (item) =>
+            item.activity_id !== selectedActivity.activity_id &&
+            item.activity_days !== selectedActivity.activity_days
+        )
       );
     }
 
+    console.log(selectedActivity, "goblok");
+
     // Calculate product price based on the language and quantity
     const productPrice =
-      (lang === "en" && selectedActivity.price_usd !== null
-        ? selectedActivity.price_usd
-        : selectedActivity.price) * qty;
+      (lang === "en" && selectedActivity.base_price_usd !== null
+        ? selectedActivity.base_price_usd
+        : selectedActivity.base_price) * qty;
 
     // Update the total price
     setTotalPrice((prevTotalPrice) =>
@@ -534,7 +558,6 @@ export default function DetailPackages() {
         : prevTotalPrice - productPrice
     );
   };
-
   const fetchProductData = async (productId) => {
     try {
       const response = await axios.get(
@@ -572,10 +595,15 @@ export default function DetailPackages() {
         });
 
         setItineraryItems(updatedItineraryItems);
-        const productSubIds = response.data.data.activities.map(
-          (sub) => sub.activity_id
+        const extractedActivities = response.data.data.activities.map(
+          ({ activity_id, activity_days, base_price, base_price_usd }) => ({
+            activity_id,
+            activity_days,
+            base_price,
+            base_price_usd
+          })
         );
-        setSelectedItinerary(productSubIds);
+        setSelectedItinerary(extractedActivities);
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -644,12 +672,16 @@ export default function DetailPackages() {
   const handleMidtrans = () => {
     if (amountChanges) {
       if (stockId) {
+        console.log(selectedItinerary);
         if (selectedItinerary.length > 0 && selectedItinerary) {
+          const activityIds = selectedItinerary.map(
+            (activity) => activity.activity_id
+          );
           const queryParams = {
             amount: parseFloat(amountChanges),
             product_id: parseInt(router.query.id, 10),
             stock_id: parseInt(productData.stock_id, 10),
-            activities: selectedItinerary,
+            activities: activityIds,
             voucher_code: promoCode,
             // qty: qty,
             additional_info: {
