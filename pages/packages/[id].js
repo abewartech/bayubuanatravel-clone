@@ -477,15 +477,14 @@ export default function DetailPackages() {
   }, [qty]);
 
   const groupActivitiesByDays = (activities) => {
-    const groupedActivities = {};
-    activities.forEach((activity) => {
+    return activities.reduce((grouped, activity) => {
       const { activity_days } = activity;
-      if (!groupedActivities[activity_days]) {
-        groupedActivities[activity_days] = [];
+      if (!grouped[activity_days]) {
+        grouped[activity_days] = [];
       }
-      groupedActivities[activity_days].push(activity);
-    });
-    return groupedActivities;
+      grouped[activity_days].push(activity);
+      return grouped;
+    }, {});
   };
 
   const handleCheckboxChange = (idx, idxact) => {
@@ -494,53 +493,46 @@ export default function DetailPackages() {
       !updatedCheckedItinerary[idx][idxact];
     setCheckedItinerary(updatedCheckedItinerary);
 
+    const activities = productData?.activities;
+    if (!activities) return;
+
+    // Call groupActivitiesByDays to group activities by days
+    const groupedActivities = groupActivitiesByDays(activities);
+
+    // Assuming idx and idxact are valid indices
+    const selectedDay = groupedActivities[idx + 1]; // Get the array of activities for the selected day
+    if (!selectedDay || !selectedDay[idxact]) return; // Ensure the selected day and activity exist
+
+    const selectedActivity = selectedDay[idxact]; // Get the selected activity
+    const productSubId = selectedActivity.activity_id; // Get the activity ID
+
     if (updatedCheckedItinerary[idx][idxact]) {
-      const activities = productData?.activities;
-      if (activities) {
-        const groupedActivities = groupActivitiesByDays(activities);
-        const selectedActivity = groupedActivities[idx]?.[idxact];
-        if (selectedActivity) {
-          const productSubIdToAdd = selectedActivity.activity_id;
-          setSelectedItinerary((prevSelected) => [
-            ...prevSelected,
-            productSubIdToAdd
-          ]);
-        }
-      }
-
-      const productSubPrice =
-        (lang === "en" && productData.activities[idx].price_usd !== null
-          ? productData.activities[idx].price_usd
-          : productData.activities[idx].price) * qty;
-      setTotalPrice((prevTotalPrice) => prevTotalPrice + productSubPrice);
-      setTotalPriceFix((prevTotalPrice) => prevTotalPrice + productSubPrice);
+      // Checkbox is checked, add the activity to selectedItinerary
+      setSelectedItinerary((prevSelected) => [...prevSelected, productSubId]);
     } else {
-      const activities = productData?.activities;
-      if (activities) {
-        const groupedActivities = groupActivitiesByDays(activities);
-        const selectedActivity = groupedActivities[idx]?.[idxact];
-        if (selectedActivity) {
-          const productSubIdToRemove = selectedActivity.activity_id;
-          setSelectedItinerary((prevSelected) =>
-            prevSelected.filter((item) => item !== productSubIdToRemove)
-          );
-        }
-      }
-
-      const productSubsPrice = productData.activities.reduce(
-        (acc, sub, subIdx) =>
-          updatedCheckedItinerary[subIdx][idxact]
-            ? acc +
-              (lang === "en" && sub.price_usd !== null
-                ? sub.price_usd
-                : sub.price) *
-                qty
-            : acc,
-        0
+      // Checkbox is unchecked, remove the activity from selectedItinerary
+      setSelectedItinerary((prevSelected) =>
+        prevSelected.filter((item) => item !== productSubId)
       );
-      setTotalPrice(productSubsPrice);
-      setTotalPriceFix(productSubsPrice);
     }
+
+    // Calculate product price based on the language and quantity
+    const productPrice =
+      (lang === "en" && selectedActivity.price_usd !== null
+        ? selectedActivity.price_usd
+        : selectedActivity.price) * qty;
+
+    // Update the total price
+    setTotalPrice((prevTotalPrice) =>
+      updatedCheckedItinerary[idx][idxact]
+        ? prevTotalPrice + productPrice
+        : prevTotalPrice - productPrice
+    );
+    setTotalPriceFix((prevTotalPrice) =>
+      updatedCheckedItinerary[idx][idxact]
+        ? prevTotalPrice + productPrice
+        : prevTotalPrice - productPrice
+    );
   };
 
   const fetchProductData = async (productId) => {
