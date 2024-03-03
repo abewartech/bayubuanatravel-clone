@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
+import Pagination from "@mui/material/Pagination";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import CloseIcon from "@mui/icons-material/Close";
 import TimelineConnector from "@mui/lab/TimelineConnector";
@@ -65,6 +66,7 @@ export default function History(props) {
   const [errorAmount, setErrorAmount] = useState(false);
   const [amountChanges, setAmountChanges] = useState(0);
   const [productData, setProductData] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchProductData = async (productId) => {
     try {
@@ -136,6 +138,10 @@ export default function History(props) {
     fetchData();
   }, [page, statusTrx]);
 
+  const handlePageChange = (event, pageNumber) => {
+    fetchData(pageNumber);
+  };
+
   const handleFilter = (status) => {
     setStatusTrx(status);
   };
@@ -167,10 +173,11 @@ export default function History(props) {
 
   const onBayar = (item) => {
     toggleModalBayar();
-    setSelectedOrder(item.id);
+    setSelectedOrder(item);
   };
 
-  const handleDetails = (history) => { // Output: 14 March 2024 - 17 March 2024
+  const handleDetails = (history) => {
+    // Output: 14 March 2024 - 17 March 2024
     setSelectedHistory(history);
     toggleModal();
   };
@@ -195,9 +202,12 @@ export default function History(props) {
   const getDisplayedKey = (key) => {
     const formattedKey = key.trim().toLowerCase();
     const matchingItem = stringToView.find((item) => item.key === formattedKey);
-    return matchingItem ? matchingItem.label : key === "selectedTourDate" ? "Tour Date" : key;
-};
-
+    return matchingItem
+      ? matchingItem.label
+      : key === "selectedTourDate"
+      ? "Tour Date"
+      : key;
+  };
 
   // Sort metadataEntries based on the order defined in stringToView
   let sortedMetadataEntries = [];
@@ -214,15 +224,14 @@ export default function History(props) {
     });
   }
 
-  const handlePayment = async (item) => {
+  const handlePayment = async () => {
+    const item = selectedOrder;
+    const data = {
+      amount: amountChanges,
+      currency: "IDR"
+    };
     try {
-      const stringifiedMetadata = item.metadata;
-      const stringifiedAddtionalInfo = item.additional_info;
-      const response = await API.post("orders/v1/client", {
-        ...item,
-        additional_info: stringifiedAddtionalInfo,
-        metadata: stringifiedMetadata
-      });
+      const response = await API.put(`orders/v1/client/pay/${item.id}`, data);
 
       if (response.data) {
         setTransactionId(response.data.order.id);
@@ -350,6 +359,13 @@ export default function History(props) {
           ) : (
             <div>No {t("thistory")}</div>
           )}
+        </div>
+        <div className="d-flex justify-content-center mt-4 mb-3">
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+          />
         </div>
       </div>
       <DynamicModal open={modalOpen} onClose={toggleModal}>
@@ -588,7 +604,7 @@ export default function History(props) {
             style={{
               position: "absolute",
               top: 0,
-              right: 45,
+              right: 1,
               margin: "10px"
             }}
           >
@@ -606,19 +622,42 @@ export default function History(props) {
             }}
           >
             <Grid container spacing={3}>
-              <div className="d-flex align-items-center mb-4">
-                <div className="d-flex  align-items-center">
+              <Grid item xs={6} md={6}>
+                <Grid item xs={12} md={12} className="mt-3">
+                  <TextField
+                    error={errorAmount}
+                    label={t("amount")}
+                    type="number"
+                    onChange={amountChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid container spacing={2} className="mt-2">
                   <Grid item xs={12} md={12}>
-                    <TextField
-                      error={errorAmount}
-                      label={t("amount")}
-                      type="number"
-                      onChange={amountChange}
-                      fullWidth
-                    />
+                    <Button
+                      variant="contained"
+                      onClick={handlePayment}
+                      disabled={errorAmount}
+                    >
+                      bayar
+                    </Button>
                   </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6} md={6} className="mt-3">
+                <div>
+                  <Typography variant="body1" gutterBottom>
+                    {t("samount")} Rp.{" "}
+                    {numeral(selectedOrder?.price).format("0,0")}
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    {t("remainingpayment")}: Rp.{" "}
+                    {numeral(
+                      selectedOrder?.price - selectedOrder?.amount
+                    ).format("0,0")}
+                  </Typography>
                 </div>
-              </div>
+              </Grid>
             </Grid>
           </Container>
         </Box>
