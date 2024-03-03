@@ -172,6 +172,14 @@ export default function History(props) {
   };
 
   const handleDetails = (history) => {
+    console.log(history);
+    // Parse the additional_info JSON string
+    const additionalInfo = JSON.parse(history.additional_info);
+
+    // Access the selectedTourDate
+    const selectedTourDate = additionalInfo.selectedTourDate;
+
+    console.log(selectedTourDate); // Output: 14 March 2024 - 17 March 2024
     setSelectedHistory(history);
     toggleModal();
   };
@@ -196,8 +204,9 @@ export default function History(props) {
   const getDisplayedKey = (key) => {
     const formattedKey = key.trim().toLowerCase();
     const matchingItem = stringToView.find((item) => item.key === formattedKey);
-    return matchingItem ? matchingItem.label : key;
-  };
+    return matchingItem ? matchingItem.label : key === "selectedTourDate" ? "Tour Date" : key;
+};
+
 
   // Sort metadataEntries based on the order defined in stringToView
   let sortedMetadataEntries = [];
@@ -484,10 +493,13 @@ export default function History(props) {
                               value !== "" && (
                                 <TableRow key={index}>
                                   <TableCell>{getDisplayedKey(key)}</TableCell>
-                                  <TableCell>{value}</TableCell>
+                                  <TableCell>
+                                    {key === "selectedTourDate" ? value : value}
+                                  </TableCell>
                                 </TableRow>
                               )
                           )}
+
                         {sortedMetadataEntries.map(([key, value]) => {
                           // Skip rendering if value is 0
                           if (value === 0) return null;
