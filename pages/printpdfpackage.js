@@ -1,5 +1,16 @@
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography
+} from "@mui/material";
 import { useEffect, useState, useRef } from "react";
+import dayjs from "dayjs";
 import API from "../src/common/api";
 import styles from "./../styles/pages/DetailPackages.module.scss";
 import { useRouter } from "next/router";
@@ -12,9 +23,7 @@ export default function PrintPDF() {
   const router = useRouter();
   const [productData, setProductData] = useState(null);
   const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
-  const [expandedItems, setExpandedItems] = useState(
-    Array(itineraryItems.length).fill(false)
-  );
+  const [stocks, setStocks] = useState([]);
   const [totalPrice, setTotalPrice] = useState(
     productData
       ? lang === "en" && productData.base_price_usd !== null
@@ -29,17 +38,33 @@ export default function PrintPDF() {
         const { id } = router.query;
         const response = await API.get(`/products/v1/external/${id}`);
         setProductData(response.data);
-
-        if (response.data && response.data.product_subs) {
-          const updatedItineraryItems = response.data.product_subs.map(
-            (sub) => {
-              return {
-                title: sub.title,
-                description:
-                  lang === "en" ? sub.description_en : sub.description_id
-              };
+        setStocks(response.data.stocks);
+        if (response.data && response.data.activities) {
+          const groupedData = response.data.activities.reduce((acc, curr) => {
+            const { activity_days, ...rest } = curr;
+            if (!acc[activity_days]) {
+              acc[activity_days] = [];
             }
+            acc[activity_days].push(rest);
+            return acc;
+          }, {});
+
+          const groupedDataArray = Object.entries(groupedData).map(
+            ([activity_days, activities]) => ({
+              activity_days: parseInt(activity_days),
+              activities
+            })
           );
+
+          const updatedItineraryItems = groupedDataArray.map((sub) => {
+            return {
+              title: `Day ${sub.activity_days}`,
+              activities: sub.activities, // You can modify this based on your product_sub structure
+              description:
+                lang === "en" ? sub.description_en : sub.description_id
+              // Add other properties as needed
+            };
+          });
 
           setItineraryItems(updatedItineraryItems);
         }
@@ -55,7 +80,7 @@ export default function PrintPDF() {
     // Calculate total price whenever productData changes
     if (productData) {
       const basePrice = 0;
-      const productSubsPrice = productData.product_subs.reduce(
+      const productSubsPrice = productData.activities.reduce(
         (acc, sub) => acc + sub.price,
         0
       );
@@ -150,30 +175,82 @@ export default function PrintPDF() {
               </div>
               <div className="col-lg-7">
                 <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+                <TableContainer className="mb-2">
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>Tour Package</TableCell>
+                        <TableCell>
+                          {productData && productData.title}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Travel Dates</TableCell>
+                        <TableCell>
+                          {stocks
+                            .map(
+                              (entry) =>
+                                `${dayjs(entry.start_date).format(
+                                  "DD"
+                                )} - ${dayjs(entry.end_date).format(
+                                  "DD MMMM YYYY"
+                                )}`
+                            )
+                            .join(", ")}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
                 {itineraryItems.map((item, idx) => {
                   return (
-                    <div key={idx} className={styles.itineraryItem}>
-                      <div className={styles.itineraryDetail}>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between"
-                          }}
-                        >
-                          {item?.title}
-                        </div>
-                        <div className="p-1 mt-3">
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: item?.description
-                            }}
-                          />
-                        </div>
-                      </div>
+                    <div key={idx} className="mt-3">
+                      <Typography variant="h5" className="mt-3 mb-2">
+                        {item?.title}
+                      </Typography>
+
+                      <TableContainer>
+                        <table className="table table-sm table-bordered table-hover table-striped">
+                          <tbody>
+                            {item &&
+                              item.activities.map((activity, idxact) => (
+                                <tr key={idxact}>
+                                  <th scope="row">Activity {idxact + 1}</th>
+                                  <td>{activity.name}</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </TableContainer>
                     </div>
                   );
                 })}
+                <Typography variant="h6" className="text-center mt-3 mb-1">
+                  END OF TOUR
+                </Typography>
               </div>
+            </div>
+            <div className="row">
+              <Typography variant="body1" className="mt-4">
+                Notes:
+              </Typography>
+              <Typography variant="body1">
+                Additional for Foreigner/KITAS Holder at Bunaken Island
+                Rp.200.000/pax Optional Tour at Bunaken :
+              </Typography>
+              <Typography variant="body1">
+                1x Snorkeling : Rp. 200.000/Pax (Include : Mask, Snorkel &amp;
+                Fins)
+              </Typography>
+              <Typography variant="body1">
+                1x Diving : Rp.900.000/Pax (Include : Mask, Fins, wetsuit, tank,
+                weight, regulator &amp; BCD)
+              </Typography>
+
+              <Typography variant="body1" className="mb-2">
+                Thank you for choosing Marina Raja Ampat! Enjoy your journey!
+              </Typography>
             </div>
           </Grid>
         </Grid>

@@ -866,7 +866,7 @@ export default function DetailPackages() {
             <div className="mt-2">
               <Button
                 variant="contained"
-                onClick={handleDownloadPDF}
+                onClick={print}
                 style={{ backgroundColor: "#feed13", color: "#0197da" }}
               >
                 Download PDF
