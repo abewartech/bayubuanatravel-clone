@@ -45,6 +45,8 @@ import useTranslation from "next-translate/useTranslation";
 import midtrans from "../../public/assets/midtrans.png";
 import axios from "axios";
 import { ErrorMessage, Field, Formik } from "formik";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Tooltip from "@mui/material/Tooltip";
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
 import useAuthStore from "../../src/store/loginStore";
@@ -420,7 +422,7 @@ export default function DetailPackages() {
 
     if (forjustchecknewTotalGuest !== newTotalGuest) {
       setIsDisableBook(true);
-      setPesanError("The number of guests does not match the number of rooms!");
+      setPesanError(t("notifnotsameguest"));
       setOpenSnackbarError(true);
     } else {
       setIsDisableBook(false);
@@ -871,7 +873,7 @@ export default function DetailPackages() {
             </div>
           </div>
           <div className="col-lg-7">
-            <Card className="mb-5 p-3" sx={{ maxWidth: 575 }}>
+            <Card className="mb-5 p-3" sx={{ maxWidth: 600 }}>
               <CardContent>
                 <div className="row mb-4">
                   <div className="col-12">
@@ -1087,7 +1089,7 @@ export default function DetailPackages() {
                       Customize
                     </Button>
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={7}>
                     <Button
                       variant="contained"
                       fullWidth
@@ -1096,6 +1098,13 @@ export default function DetailPackages() {
                     >
                       {t("booknow")}
                     </Button>
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Tooltip title={t("infonotsameguest")}>
+                      <IconButton>
+                        <HelpOutlineIcon />
+                      </IconButton>
+                    </Tooltip>
                   </Grid>
                 </Grid>
               </CardActions>

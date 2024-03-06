@@ -331,7 +331,7 @@ export default function History(props) {
                       </Button>
                     </div>
                     <div className={styles.historySee}>
-                      {item.status !== "PAID" && (
+                      {/* {item.status !== "PAID" && (
                         <Button
                           variant="outlined"
                           color="success"
@@ -342,7 +342,7 @@ export default function History(props) {
                         >
                           Bayar
                         </Button>
-                      )}
+                      )} */}
                       <Button
                         variant="outlined"
                         className={styles.historySeekecil}
