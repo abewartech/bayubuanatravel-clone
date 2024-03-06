@@ -106,7 +106,6 @@ export default function PrintHistory() {
             `/orders/v1/client/${router.query.id}`
           );
           setOrderData(response.data);
-          console.log(response.data);
           setDecodedInfo(response.data);
           // Make the second API call
           if (response.data && response.data.product_id) {
