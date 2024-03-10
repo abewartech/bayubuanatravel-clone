@@ -473,9 +473,9 @@ export default function DetailPackages() {
     }
   };
 
-  useEffect(() => {
-    setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
-  }, [qty]);
+  // useEffect(() => {
+  //   setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
+  // }, [qty]);
 
   const groupActivitiesByDays = (activities) => {
     const groupedActivities = {};
@@ -646,11 +646,48 @@ export default function DetailPackages() {
     // // Update the state with the new array
     // setExpandedItems(updatedExpandedItems);
   };
+  const [exchangeRate, setExchangeRate] = useState(null);
+  useEffect(() => {
+    const fetchExchangeRate = async () => {
+      try {
+        const response = await fetch("https://open.er-api.com/v6/latest/USD");
+        if (!response.ok) {
+          throw new Error("Failed to fetch exchange rate");
+        }
+        const data = await response.json();
+        setExchangeRate(data.rates.IDR); // Assuming IDR is the code for Rupiah in the API response
+      } catch (error) {
+        // setError(error.message);
+      }
+    };
+
+    fetchExchangeRate();
+
+    // Cleanup function to clear state if the component unmounts
+    return () => {
+      setExchangeRate(null);
+    };
+  }, []);
+
   const handleBook = () => {
     if (isLoggedIn) {
       setOpen(true);
     } else {
       setOpenModalLogin(true);
+    }
+    // setTotalPriceFix()
+    const filteredStocks = stocks.filter((stock) => stock.id === stockId);
+    const adultTotalPrice = filteredStocks[0].adult_price * adult;
+    const childTotalPrice = filteredStocks[0].child_price * child;
+    const singleRoomTotalPrice = single * filteredStocks[0].single_supplement;
+
+    const priceTotal = adultTotalPrice + childTotalPrice + singleRoomTotalPrice;
+
+    if (lang === "en") {
+      const usdAmount = priceTotal / exchangeRate;
+      setTotalPriceFix(parseFloat((totalPrice + usdAmount).toFixed(2)));
+    } else {
+      setTotalPriceFix(parseFloat((totalPrice + priceTotal).toFixed(2)));
     }
   };
   const handleCloseLogin = () => setOpenModalLogin(false);
@@ -1109,39 +1146,6 @@ export default function DetailPackages() {
                 </Grid>
               </CardActions>
             </Card>
-
-            {/* <div className="row">
-              <div class="col-auto me-auto"></div>
-              <div class="col-auto">
-                <NumberInput
-                  aria-label="Quantity Input"
-                  min={1}
-                  max={999}
-                  value={qty}
-                  onChange={handleQtyChange}
-                />
-              </div>
-            </div> */}
-            {/* <div class="row mt-3">
-              <div class="col-auto me-auto"></div>
-              <div class="col-auto">
-                <div>{t("totalprice")}</div>
-                <div style={{ fontWeight: "bold" }}>
-                  {lang === "en"
-                    ? `USD ${numeral(totalPriceFix).format("0,0.00")}`
-                    : `Rp. ${numeral(totalPriceFix).format("0,0")}`}
-                </div>
-              </div>
-            </div> */}
-            {/* <div id="book" className="mt-2">
-              <Button
-                variant="contained"
-                onClick={handleBook}
-                style={{ backgroundColor: "#0197da" }}
-              >
-                {t("booknow")}
-              </Button>
-            </div> */}
           </div>
         </div>
       </div>
