@@ -53,7 +53,7 @@ export default function PrivateInformation(props) {
     setUserName(username);
   }, []);
   useEffect(() => {
-    API.get(`/users/v1/${loginData.id}`)
+    API.get(`/users/v1/${loginData?.id}`)
       .then((response) => {
         const userData = response.data;
         setDataUser(userData);

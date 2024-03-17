@@ -79,29 +79,35 @@ export default function History(props) {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(endDate.getDate() - 7);
+      const apiParams = {
+        page: page,
+        limit: 10,
+        start_date: startDate.toISOString().slice(0, 10),
+        end_date: endDate.toISOString().slice(0, 10)
+      };
+
+      const response = await API.get(`orders/v1/client/history`, {
+        params: apiParams
+      });
+      setData(response.data);
+
+      const totalItems = response.totalData.total;
+      console.log(totalItems);
+      const calculatedTotalPages = Math.ceil(totalItems / 10);
+      console.log(calculatedTotalPages);
+      setTotalPages(calculatedTotalPages);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
   // Use useEffect to fetch data from the API
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setDate(endDate.getDate() - 7);
-        const apiParams = {
-          page: page,
-          limit: 10,
-          start_date: startDate.toISOString().slice(0, 10),
-          end_date: endDate.toISOString().slice(0, 10)
-        };
-
-        const response = await API.get(`orders/v1/client/history`, {
-          params: apiParams
-        });
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
     fetchData();
   }, []); // The empty dependency array ensures this effect runs once when the component mounts.
 
@@ -139,7 +145,8 @@ export default function History(props) {
   }, [page, statusTrx]);
 
   const handlePageChange = (event, pageNumber) => {
-    fetchData(pageNumber);
+    setPage(pageNumber)
+    fetchData();
   };
 
   const handleFilter = (status) => {

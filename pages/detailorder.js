@@ -46,6 +46,7 @@ const DetailOrder = () => {
   const [transactionId, setTransactionId] = useState(null);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [disableButtonPayment, setDisableButtonPayment] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null);
   const [pesanError, setPesanError] = useState("");
@@ -170,6 +171,7 @@ const DetailOrder = () => {
   };
 
   const handlePayment = async () => {
+    setDisableButtonPayment(true)
     try {
       const stringifiedMetadata = JSON.stringify(decodedInfo.metadata);
       const stringifiedAddtionalInfo = JSON.stringify(
@@ -184,9 +186,11 @@ const DetailOrder = () => {
       if (response.data) {
         setTransactionId(response.data.order.id);
         window.open(`${response.data.link.redirect_url}`, "_blank");
+        setDisableButtonPayment(false)
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
+      setDisableButtonPayment(false)
     }
   };
 
@@ -436,6 +440,7 @@ const DetailOrder = () => {
                   className="mt-2"
                   variant="contained"
                   onClick={handlePayment}
+                  disabled={disableButtonPayment}
                 >
                   {t("proceedtopayment")}
                 </Button>
