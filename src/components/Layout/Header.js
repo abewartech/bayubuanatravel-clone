@@ -140,13 +140,13 @@ export default function Header(props) {
               className={`${styles.navWrap} col-lg-8 col-10 justify-content-end`}
             >
               <div className={styles.navItem}>
-                <Link href="/">{t("home")}</Link>
+                <Link href="/" className="text-uppercase">{t("home")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/about">{t("about")}</Link>
+                <Link href="/about" className="text-uppercase">{t("about")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/packages">{t("packages")}</Link>
+                <Link href="/packages" className="text-uppercase">{t("packages")}</Link>
               </div>
               {/* <div className={styles.navItem}>
                 <Link href="/resort">{t("resort")}</Link>
@@ -155,7 +155,7 @@ export default function Header(props) {
                 <Link href="/gallery">{t("gallery")}</Link>
               </div> */}
               <div className={styles.navItem}>
-                <Link href="/contact-us">{t("contactus")}</Link>
+                <Link href="/contact-us" className="text-uppercase">{t("contactus")}</Link>
               </div>
               <div className={`${styles.navItem} language-switcher`}>
                 <LanguageSwitcher />

@@ -1,5 +1,5 @@
 .card {
-  border-radius: 10px;
+  border-radius: 15px;
   height: 400px;
   margin-bottom: 0;
   @media (min-width: 768px) {
@@ -18,7 +18,7 @@
   img {
     object-fit: cover;
     object-position: top;
-    border-radius: 10px;
+    border-radius: 15px;
     height: inherit;
   }
   .thumbnailWrap {
@@ -33,7 +33,7 @@
       font-size: 16px;
       text-transform: capitalize;
       color: #fff;
-      background: #f26f49;
+      background: #01B7F2;
       border-radius: 24px;
       position: absolute;
       padding: 9px 24px;
@@ -69,7 +69,7 @@
         font-size: 12px;
       }
       .priceNumber {
-        color: #ff4838;
+        color: #01B7F2;
         font-weight: 600;
         font-size: 17px;
         line-height: 1;
@@ -83,7 +83,7 @@
     font-size: 12px;
     text-transform: capitalize;
     color: #fff;
-    background: #f26f49;
+    background: #01B7F2;
     border-radius: 24px;
     padding: 4px 12px;
     width: fit-content;
@@ -154,8 +154,8 @@
       button {
         font-weight: 600;
         font-size: 16px;
-        color: #f26f49;
-        // border: 1px solid #f26f49;
+        color: #01B7F2;
+        // border: 1px solid #01B7F2;
         background-color: #fff;
         border-radius: 5px;
         padding: 4px 16px;
@@ -163,7 +163,7 @@
         margin-top: 8px;
         margin-right: 8px;
         &:hover {
-          background-color: #f26f49;
+          background-color: #01B7F2;
           color: #fff;
         }
       }
@@ -182,7 +182,7 @@
 
 .cardNewsUpdate {
   box-shadow: 3px 5px 12px #e7e7e785;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
   margin-bottom: 30px;
   // height: 450px;
@@ -243,7 +243,7 @@
 
 .cardPassword {
   box-shadow: 3px 5px 12px #e7e7e785;
-  border-radius: 10px;
+  border-radius: 15px;
   display: flex;
   margin-bottom: 42px;
   flex-direction: column;
@@ -252,7 +252,7 @@
   }
   .cardImg {
     img {
-      border-radius: 10px;
+      border-radius: 15px;
       object-fit: cover;
       height: 250px;
       width: 100%;

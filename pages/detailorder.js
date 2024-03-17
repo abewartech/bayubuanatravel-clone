@@ -422,7 +422,7 @@ const DetailOrder = () => {
                   <div className="col">
                     <Typography
                       variant="h6"
-                      style={{ color: "#F26F49", fontWeight: "bold" }}
+                      style={{ color: "#01B7F2", fontWeight: "bold" }}
                     >
                       Total Bayar |{" "}
                       {lang === "en"

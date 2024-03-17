@@ -4,7 +4,7 @@ import Head from "next/head";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
-  weight: ['300'],
+  weight: ['400'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',

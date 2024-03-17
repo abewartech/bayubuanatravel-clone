@@ -72,6 +72,18 @@ export default function Footer() {
                 <div className={styles.midtransLogoContainer}>
                   <Image src={midtransLogo} alt="Midtrans" width={150} />
                 </div>
+                <div className="row mt-1">
+                  <div className="col-6">
+                    <Image
+                      src={bcaLogo}
+                      alt="bca"
+                      width={80}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <Image src={bniLogo} alt="bniLogo" width={80} />
+                  </div>
+                </div>
                 <div className="row">
                   <div className="col-6">
                     <div className="mt-3">
@@ -102,23 +114,11 @@ export default function Footer() {
                       src={mastercardLogo}
                       alt="mastercard"
                       width={80}
-                      height={38}
+                      height={42}
                     />
                   </div>
                   <div className="col-6">
                     <Image src={jcbLogo} alt="jcbLogo" width={80} height={38} />
-                  </div>
-                </div>
-                <div className="row mt-3">
-                  <div className="col-6">
-                    <Image
-                      src={bcaLogo}
-                      alt="bca"
-                      width={80}
-                    />
-                  </div>
-                  <div className="col-6">
-                    <Image src={bniLogo} alt="bniLogo" width={80} />
                   </div>
                 </div>
                 <div className="row mt-3">

@@ -83,6 +83,8 @@
     z-index: 9;
     .filter {
       border: 1px solid #e2e2e2;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
       box-sizing: border-box;
       padding: 10px 15px;
       margin-bottom: 16px;
@@ -118,13 +120,15 @@
       font-size: 18px;
       color: #fff;
       border: none;
-      background: #ff4838;
+      background: #01B7F2;
       display: block;
       width: 100%;
       height: 100%;
       padding: 12px 24px;
       transition: all 0.35s;
       margin-bottom: 16px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
     }
   }
 }
@@ -175,7 +179,7 @@
   margin-bottom: 32px;
   color: #fff;
   .testimoniCard {
-    background-color: #fff;
+    background-color: #F5F6F7;
     padding: 32px 30px;
     border-radius: 8px;
     height: 400px;
