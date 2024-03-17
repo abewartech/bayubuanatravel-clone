@@ -1,6 +1,14 @@
 // Import the necessary modules
 import "./../styles/global.scss";
 import Head from "next/head";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  weight: ['300'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 // Define your App component
 function MyApp({ Component, pageProps }) {
@@ -14,7 +22,9 @@ function MyApp({ Component, pageProps }) {
           content={pageProps.description || "Your default description"}
         />
       </Head>
-      <Component {...pageProps} />
+      <main className={poppins.className}>
+        <Component {...pageProps} />
+      </main>
     </>
   );
 }
