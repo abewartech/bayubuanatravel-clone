@@ -2,12 +2,21 @@
 import "./../styles/global.scss";
 import Head from "next/head";
 import { Poppins } from "next/font/google";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const poppins = Poppins({
-  weight: ['400'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  display: 'swap',
+  weight: ["400"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  display: "swap"
+});
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#0899da"
+    }
+  }
 });
 
 // Define your App component
@@ -23,7 +32,9 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <main className={poppins.className}>
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </main>
     </>
   );
