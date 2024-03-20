@@ -16,6 +16,9 @@ const theme = createTheme({
     primary: {
       main: "#0899da"
     }
+  },
+  typography: {
+    fontFamily: `"Poppins", "Bricolage Grotesque", sans-serif`
   }
 });
 

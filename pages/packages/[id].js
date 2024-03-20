@@ -814,7 +814,7 @@ export default function DetailPackages() {
     <Layout>
       <div className="container my-4">
         <div className="row">
-          <div className="col-lg-5">
+          <div className="col-lg-6">
             <div className="mb-3 position-relative">
               {productData && productData.image_url && (
                 <Image
@@ -909,7 +909,7 @@ export default function DetailPackages() {
               </Button>
             </div>
           </div>
-          <div className="col-lg-7">
+          <div className="col-lg-6">
             <Card className="mb-5 p-3" sx={{ maxWidth: 600 }}>
               <CardContent>
                 <div className="row mb-4">
