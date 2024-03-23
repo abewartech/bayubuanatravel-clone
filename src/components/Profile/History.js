@@ -145,7 +145,7 @@ export default function History(props) {
   }, [page, statusTrx]);
 
   const handlePageChange = (event, pageNumber) => {
-    setPage(pageNumber)
+    setPage(pageNumber);
     fetchData();
   };
 
@@ -590,7 +590,9 @@ export default function History(props) {
                             <Typography variant="h6" component="span">
                               {payment.status}
                             </Typography>
-                            <Typography>Amount: {payment.amount}</Typography>
+                            <Typography>
+                              {`Rp. ${numeral(payment.amount).format("0,0")}`}
+                            </Typography>
                           </TimelineContent>
                         </TimelineItem>
                       ))}
