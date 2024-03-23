@@ -25,6 +25,7 @@ export default function TitleSection(props) {
       >
         <div className={styles.title}>{title}</div>
         {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
+        {!subtitle && <div className={styles.border}></div>}
       </div>
       {more === false ? (
         ""

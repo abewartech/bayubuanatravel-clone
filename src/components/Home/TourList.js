@@ -4,7 +4,7 @@ import useTranslation from "next-translate/useTranslation";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import API from "../../common/api";
 import { useState, useEffect } from "react";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 export default function TourList() {
   const { t, lang } = useTranslation("common");
@@ -25,7 +25,7 @@ export default function TourList() {
 
   return (
     <>
-      <TitleSection title={t('packages')} tours/>
+      <TitleSection title={t("packages")} tours />
       <div className="mb-4">
         {loading ? ( // Display loading indicator while waiting for data
           <div
