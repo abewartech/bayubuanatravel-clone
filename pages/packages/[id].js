@@ -889,12 +889,13 @@ export default function DetailPackages() {
                     <div
                       dangerouslySetInnerHTML={{ __html: item?.description }}
                     />
-                    {item &&
-                      item.activities.map((activity, idxact) => (
-                        <Typography className="" key={idxact}>
-                          {activity.name}
-                        </Typography>
-                      ))}
+                    {item && item.activities.length > 0 && (
+                      <ul>
+                        {item.activities.map((activity, idxact) => (
+                          <li key={idxact}>{activity.name}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
               );
