@@ -319,6 +319,9 @@ export default function DetailPackages() {
         : productData.base_price
       : 0
   );
+  const [totalPriceFixIDR, setTotalPriceFixIDR] = useState(
+    productData ? productData.base_price : 0
+  );
   const router = useRouter();
 
   const handleOpenGuest = (event) => {
@@ -473,10 +476,6 @@ export default function DetailPackages() {
     }
   };
 
-  // useEffect(() => {
-  //   setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
-  // }, [qty]);
-
   const groupActivitiesByDays = (activities) => {
     const groupedActivities = {};
     activities.forEach((activity) => {
@@ -546,6 +545,8 @@ export default function DetailPackages() {
         ? selectedActivity.base_price_usd
         : selectedActivity.base_price) * qty;
 
+    const productPriceIDR = selectedActivity.base_price * qty;
+
     // Update the total price
     setTotalPrice((prevTotalPrice) =>
       updatedCheckedItinerary[idx][idxact]
@@ -556,6 +557,11 @@ export default function DetailPackages() {
       updatedCheckedItinerary[idx][idxact]
         ? prevTotalPrice + productPrice
         : prevTotalPrice - productPrice
+    );
+    setTotalPriceFixIDR((prevTotalPrice) =>
+      updatedCheckedItinerary[idx][idxact]
+        ? prevTotalPrice + productPriceIDR
+        : prevTotalPrice - productPriceIDR
     );
   };
   const fetchProductData = async (productId) => {
@@ -630,8 +636,13 @@ export default function DetailPackages() {
             : sub.base_price),
         0
       );
+      const productSubsPriceIDR = productData.activities.reduce(
+        (acc, sub) => acc + sub.base_price,
+        0
+      );
       setTotalPrice(productSubsPrice);
       setTotalPriceFix(productSubsPrice);
+      setTotalPriceFixIDR(productSubsPriceIDR);
     }
   }, [productData, lang]);
 
@@ -675,7 +686,6 @@ export default function DetailPackages() {
     } else {
       setOpenModalLogin(true);
     }
-    // setTotalPriceFix()
     const filteredStocks = stocks.filter((stock) => stock.id === stockId);
     const adultTotalPrice = filteredStocks[0].adult_price * adult;
     const childTotalPrice = filteredStocks[0].child_price * child;
@@ -686,8 +696,10 @@ export default function DetailPackages() {
     if (lang === "en") {
       const usdAmount = priceTotal / exchangeRate;
       setTotalPriceFix(parseFloat((totalPrice + usdAmount).toFixed(2)));
+      setTotalPriceFixIDR(parseFloat((totalPrice + priceTotal).toFixed(2)));
     } else {
       setTotalPriceFix(parseFloat((totalPrice + priceTotal).toFixed(2)));
+      setTotalPriceFixIDR(parseFloat((totalPrice + priceTotal).toFixed(2)));
     }
   };
   const handleCloseLogin = () => setOpenModalLogin(false);
@@ -729,7 +741,8 @@ export default function DetailPackages() {
               email: "",
               alamat: "",
               selectedTourDate,
-              totalPriceFix
+              totalPriceFix,
+              totalPriceFixIDR,
             },
             currency: lang === "en" ? "USD" : "IDR",
             price: productData.price,
