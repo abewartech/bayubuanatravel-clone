@@ -728,7 +728,8 @@ export default function DetailPackages() {
               no_identitas: "",
               email: "",
               alamat: "",
-              selectedTourDate
+              selectedTourDate,
+              totalPriceFix
             },
             currency: lang === "en" ? "USD" : "IDR",
             price: productData.price,
