@@ -198,7 +198,7 @@ export default function Footer() {
             </div>
           </div>
           <div className={styles.copyRight}>
-            © 2023 Bayu Buana Travel Services. All Rights Reserved.
+            © 2023 Marina Raja Ampat Travel Services. All Rights Reserved.
           </div>
         </div>
       </div>

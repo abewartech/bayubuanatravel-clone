@@ -124,7 +124,7 @@ export default function Card(props) {
             Masa Berlaku Paspor Indonesia Menjadi 10 Tahun
           </div>
           <div className={styles.desc}>
-            Hi Bayu Buana Lovers, ada kabar gembira nih, Direktorat Jenderal
+            Hi Marina Raja Ampat Lovers, ada kabar gembira nih, Direktorat Jenderal
             Imigrasi resmi menetapkan Paspor RI dengan masa berlaku paling lama
             10 (sepuluh) tahun
           </div>

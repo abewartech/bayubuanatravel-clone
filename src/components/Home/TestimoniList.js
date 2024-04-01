@@ -55,7 +55,7 @@ export default function TestimoniList() {
         <div className="row">
           <TitleSection
             title="Testimoni Travelers"
-            subtitle="Kata mereka mengenai traveling bareng bayu buana"
+            subtitle="Kata mereka mengenai traveling bareng Marina Raja Ampat"
             more={false}
           />
           <Splide
