@@ -14,7 +14,7 @@ export default function TestimoniList() {
     {
       name: "Fatimah Renfaan",
       travelDate: "2022-02-15",
-      testimonial: "Action untuk Pelunasan Sisa Pembayaran."
+      testimonial: "Cocok banget untuk nyantai disini, Pemandangannya Juara apalagi pas sunset. Tempatnya nyaman dan bagus pake banget ya plus pelayannya ramah"
     },
     {
       name: "Runalolelo",
@@ -41,7 +41,7 @@ export default function TestimoniList() {
         "Tempat yang nyaman untuk menikmati sunset. Dan disuguhkan dengan laut lepas."
     },
     {
-      name: "Action untuk Pelunasan Sisa Pembayaran",
+      name: "Vincensius Surya",
       travelDate: "2022-07-10",
       testimonial:
         "Tempat yang bagus untuk menikmati matahari terbenam. Tempat ini diperuntukkan bagi anda yang ingin pergi ke Raja Ampat dengan speed boat, dan anda juga bisa makan dan minum kopi di tempat ini. Tempatnya sangat bersih dan menyenangkan, mereka menyajikan tempat duduk di luar ruangan atau di dalam ruangan. Kerja bagus."
