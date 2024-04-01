@@ -171,7 +171,7 @@ const DetailOrder = () => {
   };
 
   const handlePayment = async () => {
-    setDisableButtonPayment(true)
+    setDisableButtonPayment(true);
     try {
       const stringifiedMetadata = JSON.stringify(decodedInfo.metadata);
       const stringifiedAddtionalInfo = JSON.stringify(
@@ -186,11 +186,13 @@ const DetailOrder = () => {
       if (response.data) {
         setTransactionId(response.data.order.id);
         window.open(`${response.data.link.redirect_url}`, "_blank");
-        setDisableButtonPayment(false)
+        setTimeout(() => {
+          setDisableButtonPayment(false);
+        }, 1000);
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
-      setDisableButtonPayment(false)
+      setDisableButtonPayment(false);
     }
   };
 
@@ -395,7 +397,7 @@ const DetailOrder = () => {
                           <TimelineConnector />
                         </TimelineSeparator>
                         <TimelineContent>
-                          <p style={{fontWeight: 'bold'}}>Day {day}</p>
+                          <p style={{ fontWeight: "bold" }}>Day {day}</p>
                           {activities.map((activity) => (
                             <p key={activity.activity_id}>{activity.name}</p>
                           ))}

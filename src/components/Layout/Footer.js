@@ -47,7 +47,8 @@ export default function Footer() {
               </div>
             </div>
             <div className={styles.footerAddress}>
-              Jl. Cakalang komp. Pelabuhan Perikanan. Kota sorong Papua Barat
+              Jln. Cakalang Komp Pelabuhan Perikanan, Kampung Baru Sorong 98414,
+              Papua Barat - Indonesia
             </div>
             <div className="mt-4">
               <div className="me-4">
