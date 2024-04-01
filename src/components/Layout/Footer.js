@@ -74,11 +74,7 @@ export default function Footer() {
                 </div>
                 <div className="row mt-1">
                   <div className="col-6">
-                    <Image
-                      src={bcaLogo}
-                      alt="bca"
-                      width={80}
-                    />
+                    <Image src={bcaLogo} alt="bca" width={80} />
                   </div>
                   <div className="col-6">
                     <Image src={bniLogo} alt="bniLogo" width={80} />
@@ -123,11 +119,7 @@ export default function Footer() {
                 </div>
                 <div className="row mt-3">
                   <div className="col-6">
-                    <Image
-                      src={briLogo}
-                      alt="bri"
-                      width={80}
-                    />
+                    <Image src={briLogo} alt="bri" width={80} />
                   </div>
                   <div className="col-6">
                     <Image src={mandiriLogo} alt="mandiriLogo" width={80} />
@@ -198,7 +190,8 @@ export default function Footer() {
             </div>
           </div>
           <div className={styles.copyRight}>
-            © 2023 Marina Raja Ampat Travel Services. All Rights Reserved.
+            © {new Date().getFullYear()} Marina Raja Ampat Travel Services. All
+            Rights Reserved.
           </div>
         </div>
       </div>
