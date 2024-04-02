@@ -695,11 +695,11 @@ export default function DetailPackages() {
 
     if (lang === "en") {
       const usdAmount = priceTotal / exchangeRate;
-      setTotalPriceFix(parseFloat((totalPrice + usdAmount).toFixed(2)));
-      setTotalPriceFixIDR(parseFloat((totalPrice + priceTotal).toFixed(2)));
+      setTotalPriceFix(parseFloat((totalPrice * totalGuest + usdAmount).toFixed(2)));
+      setTotalPriceFixIDR(parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2)));
     } else {
-      setTotalPriceFix(parseFloat((totalPrice + priceTotal).toFixed(2)));
-      setTotalPriceFixIDR(parseFloat((totalPrice + priceTotal).toFixed(2)));
+      setTotalPriceFix(parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2)));
+      setTotalPriceFixIDR(parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2)));
     }
   };
   const handleCloseLogin = () => setOpenModalLogin(false);
