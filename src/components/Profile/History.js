@@ -502,7 +502,7 @@ export default function History(props) {
                             JSON.parse(selectedHistory.additional_info)
                           ).map(
                             ([key, value], index) =>
-                              key !== "product_image" && key !== "totalPriceFix" && key !== "totalPriceFix" &&
+                              key !== "product_image" && key !== "totalPriceFix" && key !== "totalPriceFixIDR" &&
                               value !== "" && (
                                 <TableRow key={index}>
                                   <TableCell>{getDisplayedKey(key)}</TableCell>
