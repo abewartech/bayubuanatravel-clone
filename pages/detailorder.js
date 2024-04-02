@@ -471,12 +471,21 @@ const DetailOrder = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ textAlign: 'center' }}>
           {t("transactionsuccess")}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id="alert-dialog-description" sx={{ textAlign: 'center' }}>
             {t("thankyou")}
+          </DialogContentText>
+          <DialogContentText id="alert-dialog-description" sx={{ textAlign: 'center' }}>
+            {t("thankyou2")}
+          </DialogContentText>
+          <DialogContentText id="alert-dialog-description" sx={{ textAlign: 'center' }}>
+            {t("thankyou3")}
+          </DialogContentText>
+          <DialogContentText id="alert-dialog-description" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+            {t("thankyou4")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
