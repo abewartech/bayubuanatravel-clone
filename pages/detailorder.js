@@ -412,7 +412,7 @@ const DetailOrder = () => {
             {/* Detail Price & Voucher Field */}
             <div className="col-lg-4">
               <Box mb={3}>
-                {productData && <Card type="common" data={productData} />}
+                {productData && <Card type="common" data={productData} disableLink={true} />}
                 <Divider variant="middle" />
                 <Typography variant="h6">
                   DP |{" "}
