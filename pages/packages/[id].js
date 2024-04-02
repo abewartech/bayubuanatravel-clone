@@ -742,7 +742,7 @@ export default function DetailPackages() {
               alamat: "",
               selectedTourDate,
               totalPriceFix,
-              totalPriceFixIDR,
+              totalPriceFixIDR
             },
             currency: lang === "en" ? "USD" : "IDR",
             price: productData.price,
@@ -915,13 +915,23 @@ export default function DetailPackages() {
               );
             })}
             <div className="mt-2">
-              <Button
-                variant="contained"
-                onClick={print}
-                style={{ backgroundColor: "#feed13", color: "#0197da" }}
-              >
-                Download PDF
-              </Button>
+              {productData && productData.brosur_url ? (
+                <Button
+                  variant="contained"
+                  onClick={() => window.open(productData.brosur_url, "_blank")}
+                  style={{ backgroundColor: "#feed13", color: "#0197da" }}
+                >
+                  Download PDF
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={print}
+                  style={{ backgroundColor: "#feed13", color: "#0197da" }}
+                >
+                  Download PDF
+                </Button>
+              )}
             </div>
           </div>
           <div className="col-lg-6">
