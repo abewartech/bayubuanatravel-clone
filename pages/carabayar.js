@@ -53,7 +53,7 @@ export default function Terms({ serverRenderedData }) {
       <Container className="mb-5">
         <Paper elevation={3} style={{ padding: "16px", marginTop: "16px" }}>
           <Typography variant="h5" className="mb-1">
-            {t("carabayar")} Bank Transfer :
+            {t("carabayar")} via Bank Transfer :
           </Typography>
           <ol className="m-2">
             <li className="mt-3">
