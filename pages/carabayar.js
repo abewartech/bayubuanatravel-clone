@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import API from "../src/common/api";
 import { Button } from "@mui/material";
-import mandiriLogo from "./../public/assets/logo/mandiri.png";
-import bniLogo from "./../public/assets/logo/bni.png";
+import mandiriLogo from "./../public/assets/logo/mandiri2.png";
+import bniLogo from "./../public/assets/logo/bni2.png";
 import Image from "next/image";
 
 export default function Terms({ serverRenderedData }) {
@@ -61,15 +61,14 @@ export default function Terms({ serverRenderedData }) {
               rekening milik <b>Marina Raja Ampat</b>, yaitu :
               <ul className="m-2">
                 <li className="mt-4">
-                  <Image src={mandiriLogo} alt="mandiriLogo" width={80} /> Bank
-                  Mandiri
+                  <Image src={mandiriLogo} alt="mandiriLogo" width={380} />
                 </li>
-                <li className="mt-4">
-                  <Image src={bniLogo} alt="bniLogo" width={80} /> Bank BNI
+                <li className="mt-4 mb-3">
+                  <Image src={bniLogo} alt="bniLogo" width={380} />
                 </li>
               </ul>
             </li>
-            <li className="mt-3">
+            <li className="mt-4">
               Pilih salah satu Bank yang tertera.<br></br> Transfer pembayaran
               dilakukan sesuai dengan nominal transaksi ke nomor rekening Bank
               yang kamu pilih.
