@@ -159,7 +159,10 @@ export default function Footer() {
               <Link href="/faq" passHref style={{ textDecoration: "none" }}>
                 <div className={styles.footerItemMenu}>FAQs</div>
               </Link>
-              <div className={styles.footerItemMenu}>{t("sitemap")}</div>
+              <Link href="/carabayar" passHref style={{ textDecoration: "none" }}>
+                <div className={styles.footerItemMenu}>{t("carabayar")}</div>
+              </Link>
+              {/* <div className={styles.footerItemMenu}>{t("carabayar")}</div> */}
               {/* <a
                 href="https://www.midtrans.com/"
                 target="_blank"
