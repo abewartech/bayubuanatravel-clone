@@ -75,7 +75,7 @@ export default function Terms({ serverRenderedData }) {
               yang kamu pilih.
             </li>
             <li className="mt-3">
-              {t('carabayar2')} <b>Marina Raja Ampat</b>.
+              {t("carabayar2")} <b>Marina Raja Ampat</b>.
             </li>
           </ol>
           <p className="text-center mt-4">
@@ -84,7 +84,9 @@ export default function Terms({ serverRenderedData }) {
           <p className="text-center">
             <Button
               variant="contained"
-              onClick={print}
+              onClick={() =>
+                window.open("https://wa.me/6281316776671?text=Hi", "_blank")
+              }
               style={{ backgroundColor: "#feed13", color: "#0197da" }}
             >
               Hubungi Tim Marina Raja Ampat
