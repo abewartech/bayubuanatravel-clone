@@ -31,16 +31,16 @@ export default function Card(props) {
 
   const commonCard = () => {
     const calculateDuration = () => {
-      if (data && data.active_date && data.expired_date) {
-        const startDate = new Date(data.active_date);
-        const endDate = new Date(data.expired_date);
+      if (data && data.duration) {
+        // const startDate = new Date(data.active_date);
+        // const endDate = new Date(data.expired_date);
 
-        const durationInMilliseconds = endDate - startDate;
+        // const durationInMilliseconds = endDate - startDate;
 
-        // Calculate days, hours, minutes, etc. as needed
-        const days = Math.floor(durationInMilliseconds / (1000 * 60 * 60 * 24));
+        // // Calculate days, hours, minutes, etc. as needed
+        // const days = Math.floor(durationInMilliseconds / (1000 * 60 * 60 * 24));
 
-        return `${days} ${t("days")}`;
+        return `${data.duration} ${t("days")}`;
       }
 
       return "N/A"; // Handle the case where data is missing or invalid

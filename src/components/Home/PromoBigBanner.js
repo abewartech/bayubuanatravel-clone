@@ -1,6 +1,7 @@
 import styles from "./../../../styles/pages/Home.module.scss";
 import promo from "./../../../public/assets/promo.png";
 import promo2 from "./../../../public/assets/promo2.jpg";
+import promo3 from "./../../../public/assets/promo3.jpg";
 import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import TitleSection from "../common/TitleSection";
