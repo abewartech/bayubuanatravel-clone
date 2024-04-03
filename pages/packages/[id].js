@@ -755,8 +755,8 @@ export default function DetailPackages() {
               triple
             }
           };
-
-          const queryParamsString = btoa(JSON.stringify(queryParams));
+          const queryParamsString = btoa(unescape(encodeURIComponent(JSON.stringify(queryParams))))
+          // const queryParamsString = btoa(JSON.stringify(queryParams));
 
           router.push({
             pathname: "/detailorder",
