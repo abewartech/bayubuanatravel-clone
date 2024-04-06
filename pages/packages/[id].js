@@ -302,6 +302,7 @@ export default function DetailPackages() {
   const [openSnackbarError, setOpenSnackbarError] = useState(false);
   const [isDisableBook, setIsDisableBook] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [errorDetail, setErrorDetail] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
   const [stocks, setStocks] = useState([]);
@@ -613,6 +614,7 @@ export default function DetailPackages() {
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
+      setErrorDetail(true);
     }
   };
 
@@ -695,11 +697,19 @@ export default function DetailPackages() {
 
     if (lang === "en") {
       const usdAmount = priceTotal / exchangeRate;
-      setTotalPriceFix(parseFloat((totalPrice * totalGuest + usdAmount).toFixed(2)));
-      setTotalPriceFixIDR(parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2)));
+      setTotalPriceFix(
+        parseFloat((totalPrice * totalGuest + usdAmount).toFixed(2))
+      );
+      setTotalPriceFixIDR(
+        parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2))
+      );
     } else {
-      setTotalPriceFix(parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2)));
-      setTotalPriceFixIDR(parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2)));
+      setTotalPriceFix(
+        parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2))
+      );
+      setTotalPriceFixIDR(
+        parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2))
+      );
     }
   };
   const handleCloseLogin = () => setOpenModalLogin(false);
@@ -755,7 +765,9 @@ export default function DetailPackages() {
               triple
             }
           };
-          const queryParamsString = btoa(unescape(encodeURIComponent(JSON.stringify(queryParams))))
+          const queryParamsString = btoa(
+            unescape(encodeURIComponent(JSON.stringify(queryParams)))
+          );
           // const queryParamsString = btoa(JSON.stringify(queryParams));
 
           router.push({
@@ -828,350 +840,378 @@ export default function DetailPackages() {
     <Layout>
       <div className="container my-4">
         <div className="row">
-          <div className="col-lg-6">
-            <div className="mb-3 position-relative">
-              {productData && productData.image_url && (
-                <Image
-                  src={productData && productData.image_url}
-                  alt="thumbnail"
-                  className={`w-100 h-50 ${styles.img}`}
-                  width={500}
-                  height={200}
-                />
-              )}
-              <div className={styles.date}>
-                <span className="me-2">
-                  <Image src={clock} width={10} height={10} alt="clock" />
-                </span>
-                {productData && productData.duration} Days
-              </div>
+          {errorDetail ? (
+            <div className="col-12 p-5">
+              <Alert severity="error" className="mb-5">404 Page Not Found</Alert>
+              <button onClick={() => router.back()} className="btn btn-primary mt-3">Back</button>
             </div>
-            <div className="mb-3">
-              <div
-                className={styles.topLabel}
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-              >
-                <span style={{ fontWeight: "500" }}>Base Price :</span>
-                {lang === "en"
-                  ? ` USD ${
-                      (productData && productData.base_price_usd) ||
-                      productData?.base_price
-                    }`
-                  : `Rp. ${
-                      productData &&
-                      numeral(productData.base_price).format("0,0")
-                    }`}
-              </div>
+          ) : (
+            <>
+              <div className="col-lg-6">
+                <div className="mb-3 position-relative">
+                  {productData && productData.image_url && (
+                    <Image
+                      src={productData && productData.image_url}
+                      alt="thumbnail"
+                      className={`w-100 h-50 ${styles.img}`}
+                      width={500}
+                      height={200}
+                    />
+                  )}
+                  <div className={styles.date}>
+                    <span className="me-2">
+                      <Image src={clock} width={10} height={10} alt="clock" />
+                    </span>
+                    {productData && productData.duration} Days
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <div
+                    className={styles.topLabel}
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    <span style={{ fontWeight: "500" }}>Base Price :</span>
+                    {lang === "en"
+                      ? ` USD ${
+                          (productData && productData.base_price_usd) ||
+                          productData?.base_price
+                        }`
+                      : `Rp. ${
+                          productData &&
+                          numeral(productData.base_price).format("0,0")
+                        }`}
+                  </div>
 
-              <div className={styles.topTitle}>
-                {productData && productData.title}
-              </div>
-            </div>
-            <div>
-              {lang === "en" ? (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: productData?.description_en
-                  }}
-                />
-              ) : (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: productData?.description_id
-                  }}
-                />
-              )}
-            </div>
-            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
-            {/* <p className="mb-3">{t("customize")} </p> */}
-            {itineraryItems.map((item, idx) => {
-              return (
-                <div key={idx} className={styles.itineraryItem}>
-                  <div className={styles.itineraryDetail}>
-                    <div className={styles.number}>{idx + 1}</div>
+                  <div className={styles.topTitle}>
+                    {productData && productData.title}
+                  </div>
+                </div>
+                <div>
+                  {lang === "en" ? (
                     <div
-                      onClick={() => handleShowDetail(idx)}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between"
+                      dangerouslySetInnerHTML={{
+                        __html: productData?.description_en
                       }}
-                    >
-                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
+                    />
+                  ) : (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: productData?.description_id
+                      }}
+                    />
+                  )}
+                </div>
+                <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+                {/* <p className="mb-3">{t("customize")} </p> */}
+                {itineraryItems.map((item, idx) => {
+                  return (
+                    <div key={idx} className={styles.itineraryItem}>
+                      <div className={styles.itineraryDetail}>
+                        <div className={styles.number}>{idx + 1}</div>
+                        <div
+                          onClick={() => handleShowDetail(idx)}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <span style={{ fontWeight: "bold" }}>
+                            {item?.title}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: item?.description
+                          }}
+                        />
+                        {item && item.activities.length > 0 && (
+                          <ul>
+                            {item.activities.map((activity, idxact) => (
+                              <li key={idxact}>{activity.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-4">
-                    <div
-                      dangerouslySetInnerHTML={{ __html: item?.description }}
-                    />
-                    {item && item.activities.length > 0 && (
-                      <ul>
-                        {item.activities.map((activity, idxact) => (
-                          <li key={idxact}>{activity.name}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-            <div className="mt-2">
-              {productData && productData.brosur_url ? (
-                <Button
-                  variant="contained"
-                  onClick={() => window.open(productData.brosur_url, "_blank")}
-                  style={{ backgroundColor: "#feed13", color: "#0197da" }}
-                >
-                  Download PDF
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={print}
-                  style={{ backgroundColor: "#feed13", color: "#0197da" }}
-                >
-                  Download PDF
-                </Button>
-              )}
-            </div>
-          </div>
-          <div className="col-lg-6">
-            <Card className="mb-5 p-3" sx={{ maxWidth: 600 }}>
-              <CardContent>
-                <div className="row mb-4">
-                  <div className="col-12">
-                    <Typography className="mb-1 mt-1">
-                      Select Tour Date
-                    </Typography>
-                    <Select
-                      options={stocks
-                        .filter((stock) =>
-                          dayjs(stock.start_date).isSameOrAfter(dayjs(), "day")
-                        )
-                        .map((stock) => ({
-                          value: stock.id,
-                          label: `${dayjs(stock.start_date).format(
-                            "DD MMMM YYYY"
-                          )} - ${dayjs(stock.end_date).format("DD MMMM YYYY")}`,
-                          isDisabled: dayjs(stock.start_date).isBefore(
-                            dayjs(),
-                            "day"
-                          ) // Disable if start_date is before today
-                        }))}
-                      placeholder="Select available dates"
-                      onChange={(val) => {
-                        if (val) {
-                          // Check if val is not null or undefined
-                          setStockId(val.value);
-                          setSelectedTourDate(val.label);
-                        } else {
-                          setStockId(null); // Reset stockId if no value is selected
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="row mb-2">
-                  <div className="col-6">
-                    <Typography className="mb-1">Guests</Typography>
-                    <NumberInputIntroduction
-                      onClick={handleOpenGuest}
-                      onFocus={handleOpenGuest}
-                      onMouseDown={handleOpenGuest}
-                      aria-describedby={"guests"}
-                      value={totalGuest}
-                      disabled
-                    />
-                    <Popover
-                      id={"guests"}
-                      open={openGuest}
-                      anchorEl={anchorEl}
-                      onClose={handleCloseGuest}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left"
-                      }}
-                    >
-                      <Grid
-                        container
-                        sx={{ p: 1.5 }}
-                        direction="column"
-                        spacing={2}
-                      >
-                        <Grid item>
-                          <Typography>Guests:</Typography>
-                          <Divider />
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="row" spacing={2}>
-                            <Grid item xs={6}>
-                              <Typography className="mb-1">Adults:</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <NumberInputIntroduction
-                                min={0}
-                                max={999}
-                                value={adult}
-                                onChange={handleAdultChange}
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="row" spacing={2}>
-                            <Grid item xs={6}>
-                              <Typography className="mb-1">
-                                Childrens:
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <NumberInputIntroduction
-                                min={0}
-                                max={999}
-                                value={child}
-                                onChange={handleChildChange}
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Button
-                            variant="contained"
-                            fullWidth
-                            onClick={handleCloseGuest}
-                          >
-                            Confirm
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Popover>
-                  </div>
-                  <div className="col-6">
-                    <Typography className="mb-1">Rooms</Typography>
-                    <NumberInputIntroduction
-                      onClick={handleOpenRoom}
-                      onFocus={handleOpenRoom}
-                      onMouseDown={handleOpenRoom}
-                      aria-describedby={"rooms"}
-                      value={totalRoom}
-                      disabled
-                    />
-                    <Popover
-                      id={"rooms"}
-                      open={openRoom}
-                      anchorEl={anchorElRoom}
-                      onClose={handleCloseRoom}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left"
-                      }}
-                    >
-                      <Grid
-                        container
-                        sx={{ p: 1.5 }}
-                        direction="column"
-                        spacing={2}
-                      >
-                        <Grid item>
-                          <Typography>Rooms:</Typography>
-                          <Divider />
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="row" spacing={2}>
-                            <Grid item xs={6}>
-                              <Typography className="mb-1">Single:</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <NumberInputIntroduction
-                                min={0}
-                                max={999}
-                                value={single}
-                                onChange={handleSingleChange}
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="row" spacing={2}>
-                            <Grid item xs={6}>
-                              <Typography className="mb-1">Double:</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <NumberInputIntroduction
-                                min={0}
-                                max={999}
-                                value={double}
-                                onChange={handleDoubleChange}
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Grid container direction="row" spacing={2}>
-                            <Grid item xs={6}>
-                              <Typography className="mb-1">Triple:</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <NumberInputIntroduction
-                                min={0}
-                                max={999}
-                                value={triple}
-                                onChange={handleTripleChange}
-                              />
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Button
-                            variant="contained"
-                            fullWidth
-                            onClick={handleCloseRoom}
-                          >
-                            Confirm
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </Popover>
-                  </div>
-                </div>
-              </CardContent>
-              <CardActions className="mb-2">
-                <Grid
-                  container
-                  spacing={2}
-                  direction="row"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <Grid item xs={4}>
-                    <Button
-                      variant="outlined"
-                      fullWidth
-                      onClick={() => setOpenModalCustom(true)}
-                    >
-                      Customize
-                    </Button>
-                  </Grid>
-                  <Grid item xs={7}>
+                  );
+                })}
+                <div className="mt-2">
+                  {productData && productData.brosur_url ? (
                     <Button
                       variant="contained"
-                      fullWidth
-                      onClick={handleBook}
-                      disabled={isDisableBook}
+                      onClick={() =>
+                        window.open(productData.brosur_url, "_blank")
+                      }
+                      style={{ backgroundColor: "#feed13", color: "#0197da" }}
                     >
-                      {t("booknow")}
+                      Download PDF
                     </Button>
-                  </Grid>
-                  <Grid item xs={1}>
-                    <Tooltip title={t("infonotsameguest")}>
-                      <IconButton>
-                        <HelpOutlineIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Grid>
-                </Grid>
-              </CardActions>
-            </Card>
-          </div>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={print}
+                      style={{ backgroundColor: "#feed13", color: "#0197da" }}
+                    >
+                      Download PDF
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <div className="col-lg-6">
+                <Card className="mb-5 p-3" sx={{ maxWidth: 600 }}>
+                  <CardContent>
+                    <div className="row mb-4">
+                      <div className="col-12">
+                        <Typography className="mb-1 mt-1">
+                          Select Tour Date
+                        </Typography>
+                        <Select
+                          options={stocks
+                            .filter((stock) =>
+                              dayjs(stock.start_date).isSameOrAfter(
+                                dayjs(),
+                                "day"
+                              )
+                            )
+                            .map((stock) => ({
+                              value: stock.id,
+                              label: `${dayjs(stock.start_date).format(
+                                "DD MMMM YYYY"
+                              )} - ${dayjs(stock.end_date).format(
+                                "DD MMMM YYYY"
+                              )}`,
+                              isDisabled: dayjs(stock.start_date).isBefore(
+                                dayjs(),
+                                "day"
+                              ) // Disable if start_date is before today
+                            }))}
+                          placeholder="Select available dates"
+                          onChange={(val) => {
+                            if (val) {
+                              // Check if val is not null or undefined
+                              setStockId(val.value);
+                              setSelectedTourDate(val.label);
+                            } else {
+                              setStockId(null); // Reset stockId if no value is selected
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-2">
+                      <div className="col-6">
+                        <Typography className="mb-1">Guests</Typography>
+                        <NumberInputIntroduction
+                          onClick={handleOpenGuest}
+                          onFocus={handleOpenGuest}
+                          onMouseDown={handleOpenGuest}
+                          aria-describedby={"guests"}
+                          value={totalGuest}
+                          disabled
+                        />
+                        <Popover
+                          id={"guests"}
+                          open={openGuest}
+                          anchorEl={anchorEl}
+                          onClose={handleCloseGuest}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "left"
+                          }}
+                        >
+                          <Grid
+                            container
+                            sx={{ p: 1.5 }}
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item>
+                              <Typography>Guests:</Typography>
+                              <Divider />
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Adults:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={adult}
+                                    onChange={handleAdultChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Childrens:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={child}
+                                    onChange={handleChildChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={handleCloseGuest}
+                              >
+                                Confirm
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Popover>
+                      </div>
+                      <div className="col-6">
+                        <Typography className="mb-1">Rooms</Typography>
+                        <NumberInputIntroduction
+                          onClick={handleOpenRoom}
+                          onFocus={handleOpenRoom}
+                          onMouseDown={handleOpenRoom}
+                          aria-describedby={"rooms"}
+                          value={totalRoom}
+                          disabled
+                        />
+                        <Popover
+                          id={"rooms"}
+                          open={openRoom}
+                          anchorEl={anchorElRoom}
+                          onClose={handleCloseRoom}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "left"
+                          }}
+                        >
+                          <Grid
+                            container
+                            sx={{ p: 1.5 }}
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item>
+                              <Typography>Rooms:</Typography>
+                              <Divider />
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Single:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={single}
+                                    onChange={handleSingleChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Double:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={double}
+                                    onChange={handleDoubleChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Triple:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={triple}
+                                    onChange={handleTripleChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={handleCloseRoom}
+                              >
+                                Confirm
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Popover>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardActions className="mb-2">
+                    <Grid
+                      container
+                      spacing={2}
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Grid item xs={4}>
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          onClick={() => setOpenModalCustom(true)}
+                        >
+                          Customize
+                        </Button>
+                      </Grid>
+                      <Grid item xs={7}>
+                        <Button
+                          variant="contained"
+                          fullWidth
+                          onClick={handleBook}
+                          disabled={isDisableBook}
+                        >
+                          {t("booknow")}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Tooltip title={t("infonotsameguest")}>
+                          <IconButton>
+                            <HelpOutlineIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </CardActions>
+                </Card>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <Modal
