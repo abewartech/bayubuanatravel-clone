@@ -1,11 +1,14 @@
 import styles from "./../../../styles/pages/Home.module.scss";
 import promo from "./../../../public/assets/promo.png";
+import promo2 from "./../../../public/assets/promo2.jpg";
+// import promo3 from "./../../../public/assets/promo3.jpg";
 import Image from "next/image";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import TitleSection from "../common/TitleSection";
 import useTranslation from 'next-translate/useTranslation'
 export default function PromoBigBanner() {
   const { t, lang } = useTranslation('common')
+  const gallery = [promo]
   return (
     <>
       <TitleSection
@@ -24,13 +27,13 @@ export default function PromoBigBanner() {
           arrows: true,
         }}
       >
-        {[...Array(5)].map((item, idx) => {
+        {gallery.map((item, idx) => {
           return (
             <SplideSlide key={idx}>
               <div className="col-12">
                 <div className={styles.sliderList}>
                   <div className={styles.sliderItem}>
-                    <Image src={promo} alt="promo" />
+                    <Image src={item} alt="promo" />
                   </div>
                 </div>
               </div>

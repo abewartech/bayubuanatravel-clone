@@ -12,7 +12,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Box
+  Box,
+  Divider
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -21,7 +22,7 @@ import useTranslation from "next-translate/useTranslation";
 import dayjs from "dayjs";
 import numeral from "numeral";
 import Timeline from "@mui/lab/Timeline";
-import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineItem, { timelineItemClasses } from "@mui/lab/TimelineItem";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
@@ -31,6 +32,8 @@ export default function PrintHistory() {
   const { t, lang } = useTranslation("common");
   const [orderData, setOrderData] = useState(null);
   const [productData, setProductData] = useState(null);
+  const [decodedInfo, setDecodedInfo] = useState(null);
+  const [activitiesAll, setActivitiesAll] = useState([]);
   const router = useRouter();
   useEffect(() => {
     const css = `
@@ -66,8 +69,34 @@ export default function PrintHistory() {
     }
 
     head.appendChild(style);
-    setTimeout(() => window.print(), 1000); //uncomment print
-  }, []);
+    if (productData) {
+      if (!window.__PRINT_STARTED__) {
+        window.__PRINT_STARTED__ = true;
+        setTimeout(() => window.print(), 2000);
+      }
+    }
+  }, [productData]);
+
+  const groupActivitiesByDays = (activities) => {
+    const groupedActivities = {};
+    activities.forEach((activity) => {
+      const { activity_days } = activity;
+      if (!groupedActivities[activity_days]) {
+        groupedActivities[activity_days] = [];
+      }
+      groupedActivities[activity_days].push(activity);
+    });
+    return groupedActivities;
+  };
+
+  useEffect(() => {
+    const filteredActivities = activitiesAll.filter((activity) =>
+      decodedInfo?.activities.includes(activity.activity_id)
+    );
+    setGroupedActivities(groupActivitiesByDays(filteredActivities));
+  }, [activitiesAll, decodedInfo]);
+
+  const [groupedActivities, setGroupedActivities] = useState({});
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -77,13 +106,17 @@ export default function PrintHistory() {
             `/orders/v1/client/${router.query.id}`
           );
           setOrderData(response.data);
-
+          setDecodedInfo(response.data);
           // Make the second API call
           if (response.data && response.data.product_id) {
             const productResponse = await API.get(
               `/products/v1/external/${response.data.product_id}`
             );
             setProductData(productResponse.data);
+            if (productResponse.data && productResponse.data.activities) {
+              const activities = productResponse.data.activities;
+              setActivitiesAll(activities);
+            }
           }
         } catch (error) {
           console.error("Error fetching order data:", error);
@@ -93,122 +126,6 @@ export default function PrintHistory() {
 
     fetchOrderData();
   }, [router.query.id]);
-
-  const paymentData = [
-    {
-      date: "31-May-2023",
-      paymentType: "Pembayaran Paket Transfer Ke Bank Mandiri",
-      paymentAmount: "IDR 25,000,000",
-      currencyConversionFee: "IDR 15,000.00",
-      totalPayment: "IDR 25,000,000"
-    },
-    {
-      date: "18-Jul-2023",
-      paymentType: "Pembayaran Paket Transfer Ke Bank Mandiri",
-      paymentAmount: "IDR 27,500,000",
-      currencyConversionFee: "IDR 15,000.00",
-      totalPayment: "IDR 27,500,000"
-    }
-  ];
-
-  const packageData = [
-    {
-      description: "Paket Umroh Paket Mulia Oman Air via Madinah 9 Hari",
-      dateRange: "14-Aug-2023 sampai 22-Aug-2023",
-      packageType: "Double Ekonomi",
-      pricePerUnit: "IDR 32,500,000",
-      quantity: 2,
-      subTotal: "IDR 65,000,000",
-      biaya: "IDR 1.000.000"
-    },
-    {
-      description: "Paket Umroh Paket Mulia Oman Air via Madinah 9 Hari",
-      dateRange: "14-Aug-2023 sampai 22-Aug-2023",
-      packageType: "Quad Ekonomi",
-      pricePerUnit: "IDR 29,300,000",
-      quantity: 3,
-      subTotal: "IDR 87,900,000",
-      biaya: "IDR 1.000.000"
-    }
-  ];
-
-  const totalData = {
-    totalPackage: "IDR 152,900,000",
-    totalOther: "IDR 0"
-  };
-
-  const jamaahData = [
-    {
-      name: "ADE SETIAWAN",
-      age: "36 Tahun",
-      partner: "Ya",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Sudah",
-      familyCard: "Belum Ada",
-      marriageCertificate: "Belum Ada",
-      birthCertificate: "Belum Ada"
-    },
-    {
-      name: "EKA SUPRIANINGSIH",
-      age: "32 Tahun",
-      partner: "Tidak",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Sudah",
-      familyCard: "Belum Ada",
-      marriageCertificate: "Sudah Ada",
-      birthCertificate: "Sudah Ada"
-    },
-    {
-      name: "KASETIANINGSIH LESTARI INDRO",
-      age: "53 Tahun",
-      partner: "Tidak",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Sudah",
-      familyCard: "Belum Ada",
-      marriageCertificate: "-",
-      birthCertificate: "-"
-    },
-    {
-      name: "SITI FATIMAH",
-      age: "37 Tahun",
-      partner: "Ya",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Belum Ada",
-      familyCard: "Belum Ada",
-      marriageCertificate: "Belum Ada",
-      birthCertificate: "Belum Ada"
-    },
-    {
-      name: "YUNITA PUTRI",
-      age: "29 Tahun",
-      partner: "Tidak",
-      passport: "Sudah Ada",
-      originalPassport: "Sudah Ada",
-      photo: "Sudah Ada",
-      meningitis: "Sudah Ada",
-      mahram: "Sudah Ada",
-      vaxCovid: "Belum Ada",
-      familyCard: "Belum Ada",
-      marriageCertificate: "-",
-      birthCertificate: "-"
-    }
-  ];
 
   return (
     <>
@@ -280,10 +197,10 @@ export default function PrintHistory() {
                   <Typography>081316776671</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography align="right">Jumlah :</Typography>
+                  <Typography align="right"></Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography>{orderData && orderData.qty}</Typography>
+                  <Typography></Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -309,65 +226,185 @@ export default function PrintHistory() {
             </TableBody>
           </Table>
         </TableContainer>
+        <TableContainer component={Paper} className="mb-3 p-4">
+          <div className="col-lg-8">
+            <Box mb={3} sx={{ position: "relative" }}>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-4"
+              >
+                <Grid item>
+                  <Typography variant="h6">{t("cost")}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">Harga dalam IDR</Typography>
+                </Grid>
+              </Grid>
 
-        <TableContainer component={Paper} className="mb-3">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Keterangan</TableCell>
-                <TableCell>Biaya</TableCell>
-                <TableCell>Qty</TableCell>
-                <TableCell>Sub Total</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {productData &&
-                productData.product_subs.map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      {row.title} (
-                      {lang === "en" ? (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: productData?.description_en
-                          }}
-                        />
-                      ) : (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: productData?.description_id
-                          }}
-                        />
-                      )}
-                      )
-                      <br />
-                      {row.additional_info}
-                    </TableCell>
-                    <TableCell>
-                      {" "}
-                      Rp. {numeral(row.price).format("0,0")}
-                    </TableCell>
-                    <TableCell>{orderData && orderData.qty}</TableCell>
-                    <TableCell>
-                      {" "}
-                      Rp. {numeral(row.price).format("0,0")}
-                    </TableCell>
-                  </TableRow>
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-2"
+              >
+                <Grid item>
+                  <Typography variant="body1">{`${productData?.title}`}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">
+                    {`Rp. ${numeral(productData?.base_price).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-2"
+              >
+                <Grid item>
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.adult > 0 && (
+                      <Typography variant="body1">{`Adult (x${
+                        JSON.parse(decodedInfo?.metadata)?.adult
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.child > 0 && (
+                      <Typography variant="body1">{`Child (x${
+                        JSON.parse(decodedInfo?.metadata)?.child
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.single > 0 && (
+                      <Typography variant="body1">{`Single (x${
+                        JSON.parse(decodedInfo?.metadata)?.single
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.double > 0 && (
+                      <Typography variant="body1">{`Double (x${
+                        JSON.parse(decodedInfo?.metadata)?.double
+                      })`}</Typography>
+                    )}
+                  {decodedInfo?.metadata &&
+                    JSON.parse(decodedInfo?.metadata)?.triple > 0 && (
+                      <Typography variant="body1">{`Triple (x${
+                        JSON.parse(decodedInfo?.metadata)?.triple
+                      })`}</Typography>
+                    )}
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-2"
+              >
+                <Grid item>
+                  <Typography variant="h6">Base Price</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">
+                    {`Rp. ${numeral(productData?.base_price).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-4"
+              >
+                <Grid item>
+                  <Typography variant="h6">{t("total")}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">
+                    {`Rp. ${numeral(decodedInfo?.amount).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-3"
+              >
+                <Grid item>
+                  <Typography variant="body1">{t("remaining")}</Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">
+                    {`Rp. ${numeral(
+                      decodedInfo?.price - decodedInfo?.amount
+                    ).format("0,0")}`}
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="space-between"
+                alignItems="center"
+                className="mt-3"
+              >
+                <Grid item>
+                  <Typography variant="caption">{t("theremaining")}</Typography>
+                </Grid>
+              </Grid>
+
+              <Divider className="mt-4 border" />
+
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                className="mt-3"
+              >
+                <Grid item>
+                  <Typography variant="h6" className="text-center">
+                    Trip Summary
+                  </Typography>
+                  {decodedInfo?.additional_info?.selectedTourDate && (
+                    <Typography variant="body2">
+                      {`(${decodedInfo.additional_info.selectedTourDate})`}
+                    </Typography>
+                  )}
+                </Grid>
+              </Grid>
+
+              <Timeline
+                sx={{
+                  [`& .${timelineItemClasses.root}:before`]: {
+                    flex: 0,
+                    padding: 0
+                  }
+                }}
+              >
+                {Object.entries(groupedActivities).map(([day, activities]) => (
+                  <TimelineItem key={day}>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>
+                      <p style={{ fontWeight: "bold" }}>Day {day}</p>
+                      {activities.map((activity) => (
+                        <p key={activity.activity_id}>{activity.name}</p>
+                      ))}
+                    </TimelineContent>
+                  </TimelineItem>
                 ))}
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell>Total Paket</TableCell>
-                <TableCell>
-                  {orderData && orderData.price
-                    ? `Rp. ${numeral(orderData.price * orderData.qty).format(
-                        "0,0"
-                      )}`
-                    : "Price not available"}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+              </Timeline>
+            </Box>
+          </div>
         </TableContainer>
 
         <Typography variant="h6" className="mt-4 mb-1">
@@ -403,136 +440,6 @@ export default function PrintHistory() {
               </Timeline>
             )}
         </Grid>
-
-        {/* <Typography variant="h6" className="mt-3">
-          Syarat & Ketentuan
-        </Typography>
-        <Typography variant="subtitle1">Umrah :</Typography>
-        <List>
-          <ListItem>
-            <ListItemText>
-              <Typography variant="body1">
-                1. Biaya booking seat Umrah sebesar Rp. 2.000.000 per pax / per
-                jemaah untuk mengkonfirmasi kursi keberangkatan.
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>
-              <Typography variant="body1">
-                2. Pembayaran kedua Umrah minimal senilai Rp. 10.000.000
-                dibayarkan paling lambat 2 bulan sebelum keberangkatan, dan
-                pelunasan Umrah dibayarkan paling lambat 45 hari sebelum
-                keberangkatan.
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>
-              <Typography variant="body1">
-                3. Harga paket tidak termasuk: biaya kelebihan bagasi, tour dan
-                transportasi diluar paket, telepon, telex, faximili, minuman,
-                cucian dan biaya lain-lain yang bersifat pribadi.
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>
-              <Typography variant="body1">
-                4. Pembatalan Umrah 30 hari sebelum keberangkatan dikenakan
-                biaya 25% dari harga paket, 15 hari sebelum hari keberangkatan
-                dikenakan biaya 50% dari harga paket, 5 hari sebelum
-                keberangkatan dikenakan biaya 75% dari harga paket, dan uang
-                paket umrah anda akan hangus jika pembatalan 2 hari sebelum
-                keberangkatan.
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>
-              <Typography variant="body1">
-                5. Pembatalan umrah Ramadhan sejak pendaftaran s/d 15 hari
-                sebelum keberangkatan dikenakan biaya 50% dari harga paket,
-                sejak 10 hari s/d tanggal keberangkatan dikenakan biaya 85% dari
-                harga paket, dan uang paket umrah anda akan hangus jika
-                pembatalan 2 hari sebelum keberangkatan.
-              </Typography>
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>
-              <Typography variant="body1">
-                6. Harap melengkapi dokumen keberangkatan maksimal 1 bulan
-                sebelum keberangkatan, keterlambatan dalam melengkapi dokumen
-                dapat membatalkan keberangkatan.
-              </Typography>
-            </ListItemText>
-          </ListItem>
-        </List>
-        <Box>
-          <Typography
-            className="s6"
-            sx={{ pt: 3, lineHeight: "223%", textAlign: "left" }}
-          >
-            Saya telah membaca dan menyetujui{" "}
-            <strong>Syarat & Ketentuan</strong> yang diberikan oleh PERCAYA
-            UMROH Travel
-          </Typography>
-          <Typography
-            className="s6 mb-3"
-            sx={{ pt: 3, lineHeight: "223%", textAlign: "left" }}
-          >
-            Jakarta, 20-Jul-2023
-          </Typography>
-          <Grid container spacing={0} className="mt-2">
-            <Grid item xs={4}>
-              <Typography
-                className="s6 mb-5"
-                sx={{ pl: 10, textAlign: "left" }}
-              >
-                Tanda Tangan Pelanggan
-              </Typography>
-              <Typography
-                className="s6 mt-5"
-                sx={{ pl: 10, textAlign: "left" }}
-              >
-                ( <strong>RAJA Travel - Hendra</strong> )
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography
-                className="s6 mb-5"
-                sx={{ pl: 10, textAlign: "left" }}
-              >
-                Customer Service
-              </Typography>
-              <Typography
-                className="s6 mt-5"
-                sx={{ pl: 10, textAlign: "left" }}
-              >
-                ( <strong>Leiga Adilawati</strong> )
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography
-                className="s6 mb-5"
-                sx={{ pl: 10, textAlign: "center" }}
-              >
-                Kasir
-              </Typography>
-              <Typography
-                className="s6 mt-5"
-                sx={{ pl: 10, textAlign: "center" }}
-              >
-                ( )
-              </Typography>
-            </Grid>
-          </Grid>
-          <Typography sx={{ pt: 5, textAlign: "left" }}>
-            ** Harap membawa slip ini atau memberikan kode booking pada saat
-            pengambilan perlengkapan keberangkatan
-          </Typography>
-        </Box> */}
       </Container>
     </>
   );

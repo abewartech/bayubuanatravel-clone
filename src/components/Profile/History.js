@@ -13,11 +13,15 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableCell
+  IconButton,
+  TableCell,
+  TextField
 } from "@mui/material";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
+import Pagination from "@mui/material/Pagination";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import CloseIcon from "@mui/icons-material/Close";
 import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
@@ -52,34 +56,58 @@ export default function History(props) {
   const { t, lang } = useTranslation("common");
   const router = useRouter();
   const [statusTrx, setStatusTrx] = useState("all");
+  const [transactionId, setTransactionId] = useState(null);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenBayar, setModalOpenBayar] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [errorAmount, setErrorAmount] = useState(false);
+  const [amountChanges, setAmountChanges] = useState(0);
+  const [productData, setProductData] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchProductData = async (productId) => {
+    try {
+      const response = await axios.get(
+        `https://api.marinarajaampat.id/products/v1/external/${productId}`
+      );
+      setProductData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(endDate.getDate() - 7);
+      const apiParams = {
+        page: page,
+        limit: 10,
+        start_date: startDate.toISOString().slice(0, 10),
+        end_date: endDate.toISOString().slice(0, 10)
+      };
+
+      const response = await API.get(`orders/v1/client/history`, {
+        params: apiParams
+      });
+      setData(response.data);
+
+      const totalItems = response.totalData.total;
+      console.log(totalItems);
+      const calculatedTotalPages = Math.ceil(totalItems / 10);
+      console.log(calculatedTotalPages);
+      setTotalPages(calculatedTotalPages);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
 
   // Use useEffect to fetch data from the API
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setDate(endDate.getDate() - 7);
-        const apiParams = {
-          page: page,
-          limit: 10,
-          start_date: startDate.toISOString().slice(0, 10),
-          end_date: endDate.toISOString().slice(0, 10)
-        };
-
-        const response = await API.get(`orders/v1/client/history`, {
-          params: apiParams
-        });
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
-
     fetchData();
   }, []); // The empty dependency array ensures this effect runs once when the component mounts.
 
@@ -116,8 +144,25 @@ export default function History(props) {
     fetchData();
   }, [page, statusTrx]);
 
+  const handlePageChange = (event, pageNumber) => {
+    setPage(pageNumber);
+    fetchData();
+  };
+
   const handleFilter = (status) => {
     setStatusTrx(status);
+  };
+
+  const amountChange = (e) => {
+    if (productData && productData.minimum_down_payment) {
+      const minimumPaymentPercentage = productData.minimum_down_payment;
+      const calculatedMinimumAmount =
+        (minimumPaymentPercentage / 100) * totalPriceFix;
+
+      setErrorAmount(e.target.value < calculatedMinimumAmount);
+    }
+
+    setAmountChanges(e.target.value);
   };
 
   const print = (id) => {
@@ -129,9 +174,79 @@ export default function History(props) {
     setModalOpen(!modalOpen);
   };
 
+  const toggleModalBayar = () => {
+    setModalOpenBayar(!modalOpenBayar);
+  };
+
+  const onBayar = (item) => {
+    toggleModalBayar();
+    setSelectedOrder(item);
+  };
+
   const handleDetails = (history) => {
+    // Output: 14 March 2024 - 17 March 2024
     setSelectedHistory(history);
     toggleModal();
+  };
+
+  const metadataEntries =
+    selectedHistory && Object.entries(JSON.parse(selectedHistory?.metadata));
+
+  const stringToView = [
+    { key: "product_name", label: "Product Name" },
+    { key: "product_image", label: "Product Image" },
+    { key: "nama", label: "Nama" },
+    { key: "selectedTourDate", label: "Tour Date" },
+    { key: "total_price", label: "Total Price" },
+    { key: "min_dp", label: "Minimal DP" },
+    { key: "adult", label: "Adult" },
+    { key: "child", label: "Child" },
+    { key: "double", label: "Double" },
+    { key: "single", label: "Single" },
+    { key: "triple", label: "Triple" }
+  ];
+
+  const getDisplayedKey = (key) => {
+    const formattedKey = key.trim().toLowerCase();
+    const matchingItem = stringToView.find((item) => item.key === formattedKey);
+    return matchingItem
+      ? matchingItem.label
+      : key === "selectedTourDate"
+      ? "Tour Date"
+      : key;
+  };
+
+  // Sort metadataEntries based on the order defined in stringToView
+  let sortedMetadataEntries = [];
+
+  if (metadataEntries) {
+    sortedMetadataEntries = metadataEntries.sort((a, b) => {
+      const indexA = stringToView.findIndex(
+        (item) => item.key === a[0].trim().toLowerCase()
+      );
+      const indexB = stringToView.findIndex(
+        (item) => item.key === b[0].trim().toLowerCase()
+      );
+      return indexA - indexB;
+    });
+  }
+
+  const handlePayment = async () => {
+    const item = selectedOrder;
+    const data = {
+      amount: amountChanges,
+      currency: "IDR"
+    };
+    try {
+      const response = await API.put(`orders/v1/client/pay/${item.id}`, data);
+
+      if (response.data) {
+        setTransactionId(response.data.order.id);
+        window.open(`${response.data.link.redirect_url}`, "_blank");
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
   };
 
   return (
@@ -176,11 +291,13 @@ export default function History(props) {
                   <div className={styles.historyContainer}>
                     <div className={styles.historyLeft}>
                       <div className={styles.historyImg}>
-                        {item.metadata &&
-                          typeof item.metadata === "string" &&
-                          JSON.parse(item.metadata)?.product_image && (
+                        {item.additional_info &&
+                          typeof item.additional_info === "string" &&
+                          JSON.parse(item.additional_info)?.product_image && (
                             <Image
-                              src={JSON.parse(item.metadata).product_image}
+                              src={
+                                JSON.parse(item.additional_info).product_image
+                              }
                               alt="thumbnail"
                               className={`${styles.img}`}
                               width={62}
@@ -197,8 +314,9 @@ export default function History(props) {
                             : t("notyet")}
                         </div>
                         <div className={styles.historyName}>
-                          {item.metadata && typeof item.metadata === "string"
-                            ? JSON.parse(item.metadata).product_name
+                          {item.additional_info &&
+                          typeof item.additional_info === "string"
+                            ? JSON.parse(item.additional_info).product_name
                             : ""}
                         </div>
                       </div>
@@ -209,9 +327,7 @@ export default function History(props) {
                       </div>
                       <div>
                         {t("remainingpayment")}: Rp.
-                        {numeral(item.price * item.qty - item.amount).format(
-                          "0,0"
-                        )}
+                        {numeral(item.price - item.amount).format("0,0")}
                       </div>
                     </div>
                   </div>
@@ -222,18 +338,25 @@ export default function History(props) {
                       </Button>
                     </div>
                     <div className={styles.historySee}>
+                      {/* {item.status !== "PAID" && (
+                        <Button
+                          variant="outlined"
+                          color="success"
+                          className="m-2"
+                          onClick={() => {
+                            onBayar(item);
+                          }}
+                        >
+                          Bayar
+                        </Button>
+                      )} */}
                       <Button
                         variant="outlined"
+                        className={styles.historySeekecil}
                         color="success"
-                        onClick={() => {
-                          if (item.status === "PAID") {
-                            print(item.id);
-                          } else {
-                            handlePayment();
-                          }
-                        }}
+                        onClick={() => print(item.id)}
                       >
-                        {item.status === "PAID" ? "Print" : "Bayar"}
+                        Detail Order Pesanan
                       </Button>
                     </div>
                   </div>
@@ -244,6 +367,13 @@ export default function History(props) {
             <div>No {t("thistory")}</div>
           )}
         </div>
+        <div className="d-flex justify-content-center mt-4 mb-3">
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </div>
       </div>
       <DynamicModal open={modalOpen} onClose={toggleModal}>
         <Box
@@ -251,11 +381,23 @@ export default function History(props) {
             ...style
           }}
         >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 45,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={toggleModal} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Container
             maxWidth="sm"
             sx={{
               overflow: "auto",
-              maxHeight: "65vh",
+              maxHeight: "75vh",
               display: "flex",
               flexDirection: "column"
             }}
@@ -263,72 +405,162 @@ export default function History(props) {
             <Grid container spacing={3}>
               <Grid item xs={12} md={12}>
                 <Typography>
-                  <Box fontSize={32} fontWeight={600}>
+                  <Box fontSize={32} fontWeight={600} className="text-center">
                     {t("pdetails")}
                   </Box>
                 </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    textAlign: "center"
+                  }}
+                  className="mt-4"
+                >
+                  {(() => {
+                    switch (selectedHistory?.status) {
+                      case "INITIATED":
+                        return (
+                          <Image
+                            src={"/assets/loading.png"}
+                            alt="loading"
+                            width={115}
+                            height={100}
+                          />
+                        );
+                      case "ORDERED":
+                      case "PAID":
+                        return (
+                          <Image
+                            src={"/assets/check.png"}
+                            alt="check"
+                            width={115}
+                            height={100}
+                          />
+                        );
+                      case "FAILED":
+                        return (
+                          <Image
+                            src={"/assets/silang.png"}
+                            alt="silang"
+                            width={115}
+                            height={100}
+                          />
+                        );
+                      default:
+                        return null;
+                    }
+                  })()}
+                  <Typography style={{ fontWeight: "bold" }} className="mt-2">
+                    {selectedHistory?.status}
+                  </Typography>
+                </Box>
               </Grid>
               <Grid item xs={12} md={12}>
                 {selectedHistory && (
                   <>
-                    <div>
-                      {dayjs(selectedHistory.created_at).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        color:
-                          selectedHistory.status === "PAID"
-                            ? "#00854C"
-                            : selectedHistory.status === "FAILED"
-                            ? "red"
-                            : "#0199da"
-                      }}
-                    >
-                      Status: {selectedHistory.status}
-                    </div>
-
-                    <div>Amount: {selectedHistory.amount}</div>
-                    <div style={{ color: "#0199da" }}>
-                      Order ID: {selectedHistory.id}
-                    </div>
-                    <div>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Metadata:
-                      </Typography>
-                      <Table>
-                        <TableBody>
-                          {selectedHistory.metadata &&
-                            Object.entries(
-                              JSON.parse(selectedHistory.metadata)
-                            ).map(
-                              ([key, value], index) =>
-                                value !== "" && (
-                                  <TableRow key={index}>
-                                    <TableCell>{key}</TableCell>
-                                    <TableCell>
-                                      {key === "product_image" ? (
-                                        <Image
-                                          src={value}
-                                          alt="Product Image"
-                                          width={100}
-                                          height={100}
-                                        />
-                                      ) : (
-                                        value
-                                      )}
-                                    </TableCell>
-                                  </TableRow>
-                                )
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>Date</TableCell>
+                          <TableCell>
+                            {dayjs(selectedHistory.created_at).format(
+                              "YYYY-MM-DD HH:mm:ss"
                             )}
-                        </TableBody>
-                      </Table>
-                    </div>
-                    <div>Qty: {selectedHistory.qty || "N/A"}</div>
-                    <div>
-                      Voucher Code: {selectedHistory.voucher_code || "N/A"}
-                    </div>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Status</TableCell>
+                          <TableCell
+                            style={{
+                              color:
+                                selectedHistory.status === "PAID"
+                                  ? "#00854C"
+                                  : selectedHistory.status === "FAILED"
+                                  ? "red"
+                                  : "#0199da"
+                            }}
+                          >
+                            {selectedHistory.status}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Amount</TableCell>
+                          <TableCell>{`Rp. ${numeral(
+                            selectedHistory.amount
+                          ).format("0,0")}`}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Order ID</TableCell>
+                          <TableCell style={{ color: "#0199da" }}>
+                            {selectedHistory.id}
+                          </TableCell>
+                        </TableRow>
+                        {selectedHistory.additional_info &&
+                          Object.entries(
+                            JSON.parse(selectedHistory.additional_info)
+                          ).map(
+                            ([key, value], index) =>
+                              key !== "product_image" && key !== "totalPriceFix" && key !== "totalPriceFixIDR" &&
+                              value !== "" && (
+                                <TableRow key={index}>
+                                  <TableCell>{getDisplayedKey(key)}</TableCell>
+                                  <TableCell>
+                                    {key === "selectedTourDate" ? value : value}
+                                  </TableCell>
+                                </TableRow>
+                              )
+                          )}
+
+                        {sortedMetadataEntries.map(([key, value]) => {
+                          // Skip rendering if value is 0
+                          if (value === 0) return null;
+
+                          let displayValue = value;
+
+                          // Append appropriate suffix based on the key
+                          if (key === "min_dp") {
+                            displayValue =
+                              value === 1 ? `${value}%` : `${value}%`;
+                          } else if (key === "adult" || key === "child") {
+                            displayValue =
+                              value === 1
+                                ? `${value} person`
+                                : `${value} people`;
+                          } else if (
+                            key === "double" ||
+                            key === "single" ||
+                            key === "triple"
+                          ) {
+                            displayValue =
+                              value === 1 ? `${value} room` : `${value} rooms`;
+                          }
+
+                          return (
+                            <TableRow key={key}>
+                              <TableCell>{getDisplayedKey(key)}:</TableCell>
+                              <TableCell>
+                                {key === "total_price"
+                                  ? `Rp. ${numeral(value).format("0,0")}`
+                                  : displayValue}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+
+                        {/* <TableRow>
+                          <TableCell>Qty</TableCell>
+                          <TableCell>{selectedHistory.qty || "N/A"}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Voucher Code</TableCell>
+                          <TableCell>
+                            {selectedHistory.voucher_code || "N/A"}
+                          </TableCell>
+                        </TableRow> */}
+                      </TableBody>
+                    </Table>
                     <Divider />
                   </>
                 )}
@@ -358,12 +590,82 @@ export default function History(props) {
                             <Typography variant="h6" component="span">
                               {payment.status}
                             </Typography>
-                            <Typography>Amount: {payment.amount}</Typography>
+                            <Typography>
+                              {`Rp. ${numeral(payment.amount).format("0,0")}`}
+                            </Typography>
                           </TimelineContent>
                         </TimelineItem>
                       ))}
                     </Timeline>
                   )}
+              </Grid>
+            </Grid>
+          </Container>
+        </Box>
+      </DynamicModal>
+      <DynamicModal open={modalOpenBayar} onClose={toggleModalBayar}>
+        <Box
+          sx={{
+            ...style
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 1,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={toggleModalBayar} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <Container
+            maxWidth="sm"
+            sx={{
+              overflow: "auto",
+              maxHeight: "75vh",
+              display: "flex",
+              flexDirection: "column"
+            }}
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={6} md={6}>
+                <Grid item xs={12} md={12} className="mt-3">
+                  <TextField
+                    error={errorAmount}
+                    label={t("amount")}
+                    type="number"
+                    onChange={amountChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid container spacing={2} className="mt-2">
+                  <Grid item xs={12} md={12}>
+                    <Button
+                      variant="contained"
+                      onClick={handlePayment}
+                      disabled={errorAmount}
+                    >
+                      bayar
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={6} md={6} className="mt-3">
+                <div>
+                  <Typography variant="body1" gutterBottom>
+                    {t("samount")} Rp.{" "}
+                    {numeral(selectedOrder?.price).format("0,0")}
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    {t("remainingpayment")}: Rp.{" "}
+                    {numeral(
+                      selectedOrder?.price - selectedOrder?.amount
+                    ).format("0,0")}
+                  </Typography>
+                </div>
               </Grid>
             </Grid>
           </Container>

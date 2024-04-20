@@ -7,6 +7,7 @@ import mail from "./../../../public/assets/icon/mail.svg";
 import call from "./../../../public/assets/icon/call.svg";
 import menu from "./../../../public/assets/icon/menu.svg";
 import PhoneIcon from "@mui/icons-material/Phone";
+import CloseIcon from "@mui/icons-material/Close";
 import Icon from "@mui/material/Icon";
 import EmailIcon from "@mui/icons-material/Email";
 import { useEffect, useState } from "react";
@@ -139,13 +140,13 @@ export default function Header(props) {
               className={`${styles.navWrap} col-lg-8 col-10 justify-content-end`}
             >
               <div className={styles.navItem}>
-                <Link href="/">{t("home")}</Link>
+                <Link href="/" className="text-uppercase">{t("home")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/about">{t("about")}</Link>
+                <Link href="/about" className="text-uppercase">{t("about")}</Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/packages">{t("packages")}</Link>
+                <Link href="/packages" className="text-uppercase">{t("packages")}</Link>
               </div>
               {/* <div className={styles.navItem}>
                 <Link href="/resort">{t("resort")}</Link>
@@ -154,7 +155,7 @@ export default function Header(props) {
                 <Link href="/gallery">{t("gallery")}</Link>
               </div> */}
               <div className={styles.navItem}>
-                <Link href="/contact-us">{t("contactus")}</Link>
+                <Link href="/contact-us" className="text-uppercase">{t("contactus")}</Link>
               </div>
               <div className={`${styles.navItem} language-switcher`}>
                 <LanguageSwitcher />
@@ -255,6 +256,18 @@ export default function Header(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={handleClose} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Container
             maxWidth="sm"
             sx={{ height: "65vh", display: "flex", alignItems: "center" }}
@@ -509,7 +522,9 @@ export default function Header(props) {
                       >
                         {t("dont")}
                         <Link href="/register" passHref>
-                          <Button onClick={() => setOpen(false)}>{t("register")}</Button>
+                          <Button onClick={() => setOpen(false)}>
+                            {t("register")}
+                          </Button>
                         </Link>
                       </div>
                     </form>
@@ -517,15 +532,6 @@ export default function Header(props) {
                 </Formik>
               </Grid>
             </Grid>
-            {/* <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right"
-              }}
-              open={open}
-              autoHideDuration={6000}
-              message={this.props.userStore.pesanError}
-            /> */}
           </Container>
         </Box>
       </DynamicModal>

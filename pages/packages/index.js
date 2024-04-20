@@ -13,7 +13,8 @@ import useTranslation from "next-translate/useTranslation";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import Head from "next/head";
-
+import useDebounce from "./useDebounce";
+import Skeleton from "@mui/material/Skeleton";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -29,6 +30,7 @@ export default function TypeDestination() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchName, setSearchName] = useState("");
   const [orderBy, setOrderBy] = useState(0); // Default ordering option
+  const [isMounted, setIsMounted] = useState(false);
 
   const breadcrumb = [
     {
@@ -39,8 +41,19 @@ export default function TypeDestination() {
     }
   ];
 
+  useDebounce(
+    () => {
+      if (isMounted) {
+        fetchData(1); // Fetch data with debounce
+      }
+    },
+    [searchName, orderBy, isMounted],
+    800
+  );
+
   const fetchData = async (pageNumber) => {
     try {
+      setLoading(true);
       const itemsPerPage = 12; // Set your items per page
       const response = await API.get(
         `/products/v1/external/list?page=${pageNumber}&size=${itemsPerPage}&title=${searchName}&order=${orderBy}`
@@ -68,12 +81,9 @@ export default function TypeDestination() {
   };
 
   useEffect(() => {
-    fetchData(1);
-  }, []); // Empty dependency array ensures the effect runs once on mount
-
-  useEffect(() => {
-    fetchData(1);
-  }, [searchName, orderBy]);
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
 
   useEffect(() => {
     const { searchName, orderBy } = router.query;
@@ -87,13 +97,9 @@ export default function TypeDestination() {
 
   return (
     <Layout>
-
-<Head>
-        <title>Marina Raja Ampat - {t('packages')}</title>
-        <meta
-          name="description"
-          content={t("packageh")}
-        />
+      <Head>
+        <title>Marina Raja Ampat - {t("packages")}</title>
+        <meta name="description" content={t("packageh")} />
       </Head>
       <HeaderPage
         title={"Packages"}
@@ -128,12 +134,42 @@ export default function TypeDestination() {
 
         <div className="row m-1">
           {error && <Alert severity="error">{error}</Alert>}
+          {loading && (
+            <>
+              <Skeleton
+                variant="rectangular"
+                width={285}
+                height={400}
+                className="m-3"
+              />
+              <Skeleton
+                animation="wave"
+                variant="rectangular"
+                width={285}
+                height={400}
+                className="m-3"
+              />
+              <Skeleton
+                variant="rectangular"
+                width={285}
+                height={400}
+                className="m-3"
+              />
+              <Skeleton
+                variant="rectangular"
+                width={285}
+                height={400}
+                className="m-3"
+              />
+            </>
+          )}
           {!loading && data.length === 0 && !error && <p>No data found</p>}
-          {data.map((item, idx) => (
-            <div className={"col-lg-3 col-md-6 col-12"} key={idx}>
-              <Card type="common" data={item} />
-            </div>
-          ))}
+          {!loading &&
+            data.map((item, idx) => (
+              <div className={"col-lg-3 col-md-6 col-12"} key={idx}>
+                <Card type="common" data={item} />
+              </div>
+            ))}
         </div>
         <div className="d-flex justify-content-center mt-4">
           <Pagination

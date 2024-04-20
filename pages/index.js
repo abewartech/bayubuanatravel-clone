@@ -10,12 +10,78 @@ import "@splidejs/react-splide/css/core";
 import "@splidejs/react-splide/css";
 import Client from "../src/components/common/Client";
 import ModalComponent from "../src/components/common/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import {
+  Snackbar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  SnackbarContent
+} from "@mui/material";
+import useTranslation from "next-translate/useTranslation";
+import API from "../src/common/api";
 export default function Homepage() {
+  const { t, lang } = useTranslation("common");
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState();
+  const router = useRouter();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [orderId, setOrderId] = useState("");
+  const [transactionStatus, setTransactionStatus] = useState("");
+  const [pesanError, setPesanError] = useState("");
+  const successPayment = () => {
+    setOpenDialog(false);
+    router.push("/profile?menu=history");
+  };
+
+  useEffect(() => {
+    const { query } = router;
+    if (query.order_id) {
+      console.log(query.order_id);
+      setOrderId(query.order_id);
+    }
+    if (query.transaction_status) {
+      setTransactionStatus(query.transaction_status);
+    }
+  }, [router.query]);
+  useEffect(() => {
+    let intervalId; // Define intervalId here
+
+    const fetchData = async () => {
+      setOpenSnackbar(false);
+      setOpenDialog(false);
+      try {
+        if (orderId) {
+          const response = await API.get(`orders/v1/client/${orderId}`);
+          if (response.data.status !== "INITIATED") {
+            clearInterval(intervalId);
+            setPesanError("Order Success");
+            setOpenSnackbar(true);
+            setOpenDialog(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setOpenSnackbar(false);
+        setOpenDialog(false);
+      }
+    };
+
+    if (orderId) {
+      fetchData();
+      intervalId = setInterval(fetchData, 15000); // Set intervalId
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [orderId]);
   const handleOpen = (currImg) => {
     setImg(currImg);
     setOpen(!open);
@@ -47,6 +113,38 @@ export default function Homepage() {
       <Videotron />
       <Client />
       <ModalComponent open={open} close={handleOpen} content={content} />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <SnackbarContent
+          message={pesanError}
+          style={{ backgroundColor: "green" }} // You can customize the color
+        />
+      </Snackbar>
+      <Dialog
+        open={openDialog}
+        onClose={successPayment}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("transactionsuccess")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t("thankyou")}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={successPayment}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </Layout>
   );
 }

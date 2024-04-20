@@ -47,7 +47,8 @@ export default function Footer() {
               </div>
             </div>
             <div className={styles.footerAddress}>
-              Jl. Cakalang komp. Pelabuhan Perikanan. Kota sorong Papua Barat
+              Jln. Cakalang Komp Pelabuhan Perikanan, Kampung Baru Sorong 98414,
+              Papua Barat - Indonesia
             </div>
             <div className="mt-4">
               <div className="me-4">
@@ -71,6 +72,14 @@ export default function Footer() {
                 <b>Payment powered by</b>
                 <div className={styles.midtransLogoContainer}>
                   <Image src={midtransLogo} alt="Midtrans" width={150} />
+                </div>
+                <div className="row mt-1">
+                  <div className="col-6">
+                    <Image src={bcaLogo} alt="bca" width={80} />
+                  </div>
+                  <div className="col-6">
+                    <Image src={bniLogo} alt="bniLogo" width={80} />
+                  </div>
                 </div>
                 <div className="row">
                   <div className="col-6">
@@ -102,7 +111,7 @@ export default function Footer() {
                       src={mastercardLogo}
                       alt="mastercard"
                       width={80}
-                      height={38}
+                      height={42}
                     />
                   </div>
                   <div className="col-6">
@@ -111,23 +120,7 @@ export default function Footer() {
                 </div>
                 <div className="row mt-3">
                   <div className="col-6">
-                    <Image
-                      src={bcaLogo}
-                      alt="bca"
-                      width={80}
-                    />
-                  </div>
-                  <div className="col-6">
-                    <Image src={bniLogo} alt="bniLogo" width={80} />
-                  </div>
-                </div>
-                <div className="row mt-3">
-                  <div className="col-6">
-                    <Image
-                      src={briLogo}
-                      alt="bri"
-                      width={80}
-                    />
+                    <Image src={briLogo} alt="bri" width={80} />
                   </div>
                   <div className="col-6">
                     <Image src={mandiriLogo} alt="mandiriLogo" width={80} />
@@ -166,7 +159,10 @@ export default function Footer() {
               <Link href="/faq" passHref style={{ textDecoration: "none" }}>
                 <div className={styles.footerItemMenu}>FAQs</div>
               </Link>
-              <div className={styles.footerItemMenu}>{t("sitemap")}</div>
+              <Link href="/carabayar" passHref style={{ textDecoration: "none" }}>
+                <div className={styles.footerItemMenu}>{t("carabayar")}</div>
+              </Link>
+              {/* <div className={styles.footerItemMenu}>{t("carabayar")}</div> */}
               {/* <a
                 href="https://www.midtrans.com/"
                 target="_blank"
@@ -198,7 +194,8 @@ export default function Footer() {
             </div>
           </div>
           <div className={styles.copyRight}>
-            © 2023 Bayu Buana Travel Services. All Rights Reserved.
+            © {new Date().getFullYear()} Marina Raja Ampat Travel Services. All
+            Rights Reserved.
           </div>
         </div>
       </div>

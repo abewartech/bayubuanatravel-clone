@@ -53,7 +53,7 @@ export default function PrivateInformation(props) {
     setUserName(username);
   }, []);
   useEffect(() => {
-    API.get(`/users/v1/${loginData.id}`)
+    API.get(`/users/v1/${loginData?.id}`)
       .then((response) => {
         const userData = response.data;
         setDataUser(userData);
@@ -76,12 +76,29 @@ export default function PrivateInformation(props) {
     );
   };
   const initialValues = {
-    address: loginData?.address,
-    country: loginData?.country,
+    address: dataUser?.address,
+    country: dataUser?.country,
     email: email,
-    full_name: loginData?.full_name,
-    gender: loginData?.gender,
-    password: ""
+    full_name: dataUser?.full_name,
+    gender: dataUser?.gender,
+    // password: "",
+    phone_number: dataUser?.phone_number || ""
+  };
+  const customStylesReactSelect = {
+    container: (provided) => ({
+      ...provided,
+      width: "100%"
+    }),
+    menuPortal: (base) => ({
+      ...base,
+      zIndex: 9999
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999,
+      width: "100%",
+      minWidth: "100%"
+    })
   };
   return (
     <div className="col-lg-8 mb-5">
@@ -89,6 +106,7 @@ export default function PrivateInformation(props) {
         <h1 className="mb-4 mb-md-0">{t("personal")}</h1>
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           validate={(values) => {
             const errors = {};
             if (!values.email) {
@@ -110,6 +128,7 @@ export default function PrivateInformation(props) {
                     "Personal Information Has Been Successfully Updated"
                   );
                   setSnackbarOpen(true);
+                  location.reload()
                 }
               })
               .catch((err) => {
@@ -188,6 +207,7 @@ export default function PrivateInformation(props) {
                       onChange={(option) =>
                         form.setFieldValue(field.name, option.value)
                       }
+                      styles={customStylesReactSelect}
                     />
                   )}
                 />

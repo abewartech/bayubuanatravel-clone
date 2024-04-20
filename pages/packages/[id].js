@@ -17,12 +17,23 @@ import {
   Snackbar,
   TextField,
   Switch,
-  FormControlLabel
+  FormControlLabel,
+  Card,
+  CardContent,
+  CardActions,
+  Popover,
+  Divider,
+  IconButton,
+  Alert,
+  SnackbarContent
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import numeral from "numeral";
+import Select from "react-select";
 import NumberFormat from "react-number-format";
 import DialogActions from "@mui/material/DialogActions";
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import DialogContent from "@mui/material/DialogContent";
 import { Unstable_NumberInput as BaseNumberInput } from "@mui/base/Unstable_NumberInput";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -34,10 +45,16 @@ import useTranslation from "next-translate/useTranslation";
 import midtrans from "../../public/assets/midtrans.png";
 import axios from "axios";
 import { ErrorMessage, Field, Formik } from "formik";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Tooltip from "@mui/material/Tooltip";
 import Link from "next/link";
+import CloseIcon from "@mui/icons-material/Close";
 import useAuthStore from "../../src/store/loginStore";
 import API from "../../src/common/api";
 import { generatePDF } from "../../src/utils/pdfUtils";
+import NumberInputIntroduction from "../../src/components/common/NumberInputIntroduction";
+
+dayjs.extend(isSameOrAfter);
 
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
   ssr: false
@@ -55,6 +72,21 @@ const style = {
   borderRadius: 4,
   p: 4
 };
+const styleModalCustom = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "45%",
+  maxHeight: "85vh", // Set the maximum height to 70% of the viewport height
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  border: "none",
+  borderRadius: 4,
+  p: 4,
+  overflowY: "auto" // Enable vertical scrolling if the content exceeds maxHeight
+};
+
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
   "& .MuiSwitch-track": {
@@ -222,30 +254,58 @@ const NumberInput = React.forwardRef(function CustomNumberInput(props, ref) {
     />
   );
 });
+
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 export default function DetailPackages() {
   const { t, lang } = useTranslation("common");
   const [expand, setExpand] = useState(false);
   const [id, setId] = useState(0);
   const [amountChanges, setAmountChanges] = useState(0);
   const [qty, setQty] = useState(1);
+  const [totalGuest, setTotalGuest] = useState(0);
+  const [totalRoom, setTotalRoom] = useState(0);
+  const [adult, setAdult] = useState(0);
+  const [child, setChild] = useState(0);
+  const [stockId, setStockId] = useState(null);
+  const [single, setSingle] = useState(0);
+  const [double, setDouble] = useState(0);
+  const [selectedTourDate, setSelectedTourDate] = useState("");
+  const [triple, setTriple] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModalCustom, setOpenModalCustom] = useState(false);
   const [errorAmount, setErrorAmount] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
   const [productData, setProductData] = useState(null);
   const [itineraryItems, setItineraryItems] = useState(Array(8).fill(null));
   const [checkedItinerary, setCheckedItinerary] = useState(
-    new Array(8).fill(true)
+    Array.from({ length: itineraryItems.length }, () => Array(8).fill(true))
   );
+
   const [selectedItinerary, setSelectedItinerary] = useState([]);
   const [expandedItems, setExpandedItems] = useState(
     Array(itineraryItems.length).fill(false)
   );
   const [orderStatus, setOrderStatus] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElRoom, setAnchorElRoom] = useState(null);
   const [pesanError, setPesanError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbarError, setOpenSnackbarError] = useState(false);
+  const [isDisableBook, setIsDisableBook] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [errorDetail, setErrorDetail] = useState(false);
   const [transactionId, setTransactionId] = useState(null);
   const [promoCode, setPromoCode] = useState("");
+  const [stocks, setStocks] = useState([]);
   const [totalPrice, setTotalPrice] = useState(
     productData
       ? lang === "en" && productData.base_price_usd !== null
@@ -260,7 +320,29 @@ export default function DetailPackages() {
         : productData.base_price
       : 0
   );
+  const [totalPriceFixIDR, setTotalPriceFixIDR] = useState(
+    productData ? productData.base_price : 0
+  );
   const router = useRouter();
+
+  const handleOpenGuest = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseGuest = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOpenRoom = (event) => {
+    setAnchorElRoom(event.currentTarget);
+  };
+
+  const handleCloseRoom = () => {
+    setAnchorElRoom(null);
+  };
+
+  const openGuest = Boolean(anchorEl);
+  const openRoom = Boolean(anchorElRoom);
 
   const successPayment = () => {
     setOpenDialog(false);
@@ -276,7 +358,6 @@ export default function DetailPackages() {
       try {
         if (transactionId) {
           const response = await API.get(`orders/v1/client/${transactionId}`);
-          console.log("Response data:", response.data);
           if (response.data.status !== "INITIATED") {
             // If it's "ORDERED," stop the interval
             clearInterval(intervalId);
@@ -325,86 +406,215 @@ export default function DetailPackages() {
     setQty(val);
   };
 
-  useEffect(() => {
-    setTotalPriceFix(parseFloat((totalPrice * qty).toFixed(2)));
-  }, [qty]);
+  const updateTotalCounts = () => {
+    const totalAdults = adult;
+    const totalChildren = child;
+    const totalSingleRooms = single;
+    const totalDoubleRooms = double;
+    const totalTripleRooms = triple;
 
-  const handleCheckboxChange = (idx) => {
-    const updatedCheckedItinerary = [...checkedItinerary];
-    updatedCheckedItinerary[idx] = !updatedCheckedItinerary[idx];
-    setCheckedItinerary(updatedCheckedItinerary);
+    const newTotalGuest = totalAdults + totalChildren;
+    const newTotalRoom = totalSingleRooms + totalDoubleRooms + totalTripleRooms;
+    setTotalGuest(newTotalGuest);
+    setTotalRoom(newTotalRoom);
+  };
 
-    if (updatedCheckedItinerary[idx]) {
-      // Item is checked, no need to modify the selectedItinerary state
-      setTotalPrice(
-        (prevTotalPrice) =>
-          prevTotalPrice +
-          (productData &&
-          lang === "en" &&
-          productData.product_subs[idx].price_usd !== null
-            ? productData.product_subs[idx].price_usd
-            : productData.product_subs[idx].price) *
-            qty
-      );
-      setTotalPriceFix(
-        (prevTotalPrice) =>
-          prevTotalPrice +
-          (productData &&
-          lang === "en" &&
-          productData.product_subs[idx].price_usd !== null
-            ? productData.product_subs[idx].price_usd
-            : productData.product_subs[idx].price) *
-            qty
-      );
+  // Define a separate debounced function for checking guests vs rooms
+  const debounceCheckGuestsVsRooms = debounce(() => {
+    const newTotalGuest = totalGuest;
+    const forjustchecknewTotalGuest = single * 1 + double * 2 + triple * 3;
+
+    if (forjustchecknewTotalGuest !== newTotalGuest) {
+      setIsDisableBook(true);
+      setPesanError(t("notifnotsameguest"));
+      setOpenSnackbarError(true);
     } else {
-      // Item is unchecked, remove it from the selectedItinerary state
-      const productSubIdToRemove = productData.product_subs[idx].id; // assuming id is the product sub id
-      setSelectedItinerary((prevSelected) =>
-        prevSelected.filter((item) => item !== productSubIdToRemove)
-      );
+      setIsDisableBook(false);
+    }
+  }, 1200);
 
-      const productSubsPrice = productData.product_subs.reduce(
-        (acc, sub, subIdx) =>
-          updatedCheckedItinerary[subIdx]
-            ? acc +
-              (lang === "en" && sub.price_usd !== null
-                ? sub.price_usd
-                : sub.price) *
-                qty
-            : acc,
-        0
-      );
-      setTotalPrice(productSubsPrice);
-      setTotalPriceFix(productSubsPrice);
+  useEffect(() => {
+    updateTotalCounts();
+    debounceCheckGuestsVsRooms();
+  }, [adult, child, single, double, triple]);
+
+  const handleAdultChange = (e, val) => {
+    if (val >= 0) {
+      setAdult(val);
+      updateTotalCounts();
+    } else {
+      // If the new value is less than 1, set it to 1
+      setAdult(1);
+      updateTotalCounts();
     }
   };
 
+  const handleChildChange = (e, val) => {
+    if (val >= 0) {
+      setChild(val);
+      updateTotalCounts();
+    }
+  };
+
+  const handleSingleChange = (e, val) => {
+    if (val >= 0) {
+      setSingle(val);
+      updateTotalCounts();
+    }
+  };
+
+  const handleDoubleChange = (e, val) => {
+    if (val >= 0) {
+      setDouble(val);
+      updateTotalCounts();
+    }
+  };
+
+  const handleTripleChange = (e, val) => {
+    if (val >= 0) {
+      setTriple(val);
+      updateTotalCounts();
+    }
+  };
+
+  const groupActivitiesByDays = (activities) => {
+    const groupedActivities = {};
+    activities.forEach((activity) => {
+      const { activity_days } = activity;
+      if (!groupedActivities[activity_days]) {
+        groupedActivities[activity_days] = [];
+      }
+      groupedActivities[activity_days].push(activity);
+    });
+    return groupedActivities;
+  };
+
+  const handleCheckboxChange = (idx, idxact) => {
+    const updatedCheckedItinerary = [...checkedItinerary];
+    updatedCheckedItinerary[idx][idxact] =
+      !updatedCheckedItinerary[idx][idxact];
+    setCheckedItinerary(updatedCheckedItinerary);
+
+    const activities = productData?.activities;
+    if (!activities) return;
+
+    // Call groupActivitiesByDays to group activities by days
+
+    const groupedActivities = {};
+
+    activities.forEach((activity) => {
+      const { activity_days, ...rest } = activity;
+      const index = activity_days - 1; // Decrement by 1 to start indexing from 0
+      if (!(index in groupedActivities)) {
+        groupedActivities[index] = [];
+      }
+      groupedActivities[index].push({
+        activity_id: activity.activity_id,
+        activity_days: activity.activity_days,
+        is_mandatory: activity.is_mandatory,
+        base_price_usd: activity.base_price_usd,
+        base_price: activity.base_price
+      });
+    });
+
+    // Assuming idx and idxact are valid indices
+    const selectedDay = groupedActivities[idx]; // Get the array of activities for the selected day
+    if (!selectedDay || !selectedDay[idxact]) return; // Ensure the selected day and activity exist
+
+    const selectedActivity = selectedDay[idxact]; // Get the selected activity
+
+    if (updatedCheckedItinerary[idx][idxact]) {
+      // Checkbox is checked, add the activity to selectedItinerary
+      setSelectedItinerary((prevSelected) => [
+        ...prevSelected,
+        selectedActivity
+      ]);
+    } else {
+      // Checkbox is unchecked, remove the activity from selectedItinerary
+      setSelectedItinerary((prevSelected) =>
+        prevSelected.filter(
+          (item) =>
+            item.activity_id !== selectedActivity.activity_id &&
+            item.activity_days !== selectedActivity.activity_days
+        )
+      );
+    }
+
+    // Calculate product price based on the language and quantity
+    const productPrice =
+      (lang === "en" && selectedActivity.base_price_usd !== null
+        ? selectedActivity.base_price_usd
+        : selectedActivity.base_price) * qty;
+
+    const productPriceIDR = selectedActivity.base_price * qty;
+
+    // Update the total price
+    setTotalPrice((prevTotalPrice) =>
+      updatedCheckedItinerary[idx][idxact]
+        ? prevTotalPrice + productPrice
+        : prevTotalPrice - productPrice
+    );
+    setTotalPriceFix((prevTotalPrice) =>
+      updatedCheckedItinerary[idx][idxact]
+        ? prevTotalPrice + productPrice
+        : prevTotalPrice - productPrice
+    );
+    setTotalPriceFixIDR((prevTotalPrice) =>
+      updatedCheckedItinerary[idx][idxact]
+        ? prevTotalPrice + productPriceIDR
+        : prevTotalPrice - productPriceIDR
+    );
+  };
   const fetchProductData = async (productId) => {
     try {
       const response = await axios.get(
         `https://api.marinarajaampat.id/products/v1/external/${productId}`
       );
       setProductData(response.data.data);
-      if (response.data.data && response.data.data.product_subs) {
-        const updatedItineraryItems = response.data.data.product_subs.map(
-          (sub) => {
-            return {
-              title: sub.title, // You can modify this based on your product_sub structure
-              description:
-                lang === "en" ? sub.description_en : sub.description_id
-              // Add other properties as needed
-            };
-          }
+      setStocks(response.data.data.stocks);
+      if (response.data.data && response.data.data.activities) {
+        const groupedData = response.data.data.activities.reduce(
+          (acc, curr) => {
+            const { activity_days, ...rest } = curr;
+            if (!acc[activity_days]) {
+              acc[activity_days] = [];
+            }
+            acc[activity_days].push(rest);
+            return acc;
+          },
+          {}
         );
 
-        setItineraryItems(updatedItineraryItems);
-        const productSubIds = response.data.data.product_subs.map(
-          (sub) => sub.id
+        const groupedDataArray = Object.entries(groupedData).map(
+          ([activity_days, activities]) => ({
+            activity_days: parseInt(activity_days),
+            activities
+          })
         );
-        setSelectedItinerary(productSubIds);
+
+        const updatedItineraryItems = groupedDataArray.map((sub) => {
+          return {
+            title: `Day ${sub.activity_days}`,
+            activities: sub.activities, // You can modify this based on your product_sub structure
+            description: lang === "en" ? sub.description_en : sub.description_id
+            // Add other properties as needed
+          };
+        });
+
+        setItineraryItems(updatedItineraryItems);
+        const extractedActivities = response.data.data.activities.map(
+          ({ activity_id, activity_days, base_price, base_price_usd }) => ({
+            activity_id,
+            activity_days,
+            base_price,
+            base_price_usd
+          })
+        );
+        setSelectedItinerary(extractedActivities);
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
+      setErrorDetail(true);
     }
   };
 
@@ -419,15 +629,22 @@ export default function DetailPackages() {
 
   useEffect(() => {
     // Calculate total price whenever productData changes
-    if (productData) {
-      const productSubsPrice = productData.product_subs.reduce(
+    if (productData && productData.activities) {
+      const productSubsPrice = productData.activities.reduce(
         (acc, sub) =>
           acc +
-          (lang === "en" && sub.price_usd !== null ? sub.price_usd : sub.price),
+          (lang === "en" && sub.base_price_usd !== null
+            ? sub.base_price_usd
+            : sub.base_price),
+        0
+      );
+      const productSubsPriceIDR = productData.activities.reduce(
+        (acc, sub) => acc + sub.base_price,
         0
       );
       setTotalPrice(productSubsPrice);
       setTotalPriceFix(productSubsPrice);
+      setTotalPriceFixIDR(productSubsPriceIDR);
     }
   }, [productData, lang]);
 
@@ -442,19 +659,66 @@ export default function DetailPackages() {
     // // Update the state with the new array
     // setExpandedItems(updatedExpandedItems);
   };
+  const [exchangeRate, setExchangeRate] = useState(null);
+  useEffect(() => {
+    const fetchExchangeRate = async () => {
+      try {
+        const response = await fetch("https://open.er-api.com/v6/latest/USD");
+        if (!response.ok) {
+          throw new Error("Failed to fetch exchange rate");
+        }
+        const data = await response.json();
+        setExchangeRate(data.rates.IDR); // Assuming IDR is the code for Rupiah in the API response
+      } catch (error) {
+        // setError(error.message);
+      }
+    };
+
+    fetchExchangeRate();
+
+    // Cleanup function to clear state if the component unmounts
+    return () => {
+      setExchangeRate(null);
+    };
+  }, []);
+
   const handleBook = () => {
     if (isLoggedIn) {
       setOpen(true);
     } else {
       setOpenModalLogin(true);
     }
+    const filteredStocks = stocks.filter((stock) => stock.id === stockId);
+    const adultTotalPrice = filteredStocks[0].adult_price * adult;
+    const childTotalPrice = filteredStocks[0].child_price * child;
+    const singleRoomTotalPrice = single * filteredStocks[0].single_supplement;
+
+    const priceTotal = adultTotalPrice + childTotalPrice + singleRoomTotalPrice;
+
+    if (lang === "en") {
+      const usdAmount = priceTotal / exchangeRate;
+      setTotalPriceFix(
+        parseFloat((totalPrice * totalGuest + usdAmount).toFixed(2))
+      );
+      setTotalPriceFixIDR(
+        parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2))
+      );
+    } else {
+      setTotalPriceFix(
+        parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2))
+      );
+      setTotalPriceFixIDR(
+        parseFloat((totalPrice * totalGuest + priceTotal).toFixed(2))
+      );
+    }
   };
   const handleCloseLogin = () => setOpenModalLogin(false);
   const handleClose = () => setOpen(false);
+  const handleCloseModalCustom = () => setOpenModalCustom(false);
 
   const amountChange = (e) => {
-    if (productData && productData.minimum_payment) {
-      const minimumPaymentPercentage = productData.minimum_payment;
+    if (productData && productData.minimum_down_payment) {
+      const minimumPaymentPercentage = productData.minimum_down_payment;
       const calculatedMinimumAmount =
         (minimumPaymentPercentage / 100) * totalPriceFix;
 
@@ -464,70 +728,60 @@ export default function DetailPackages() {
     setAmountChanges(e.target.value);
   };
 
-  const fetchBookingCash = async () => {
-    try {
-      const { id } = router.query;
-      const payload = {
-        amount: parseFloat(amountChanges), // Parse 'amountChanges' to an integer
-        product_id: parseInt(id, 10), // Parse 'id' to an integer
-        product_subs: selectedItinerary,
-        voucher_code: promoCode,
-        qty: qty,
-        metadata: JSON.stringify({
-          product_name: productData.title,
-          product_image: productData.image_url,
-          nama: username,
-          no_hp: "",
-          no_identitas: "",
-          email: "",
-          alamat: ""
-        }),
-        currency: lang === "en" ? "USD" : "IDR",
-        price: productData.price
-      };
-
-      const response = await API.post("orders/v1/client", payload);
-
-      console.log("Response data:", response.data);
-      if (response.data) {
-        setTransactionId(response.data.order.id);
-        window.open(`${response.data.link.redirect_url}`, "_blank");
-      }
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-    }
-  };
-
   const handleMidtrans = () => {
     if (amountChanges) {
-      const queryParams = {
-        amount: parseFloat(amountChanges),
-        product_id: parseInt(router.query.id, 10),
-        product_subs: selectedItinerary,
-        voucher_code: promoCode,
-        qty: qty,
-        metadata: {
-          product_name: productData.title,
-          product_image: productData.image_url,
-          nama: username,
-          no_hp: "",
-          no_identitas: "",
-          email: "",
-          alamat: ""
-        },
-        currency: lang === "en" ? "USD" : "IDR",
-        price: productData.price,
-        totalPriceFix
-      };
+      if (stockId) {
+        if (selectedItinerary.length > 0 && selectedItinerary) {
+          const activityIds = selectedItinerary.map(
+            (activity) => activity.activity_id
+          );
+          const queryParams = {
+            amount: parseFloat(amountChanges),
+            product_id: parseInt(router.query.id, 10),
+            stock_id: parseInt(stockId, 10),
+            activities: activityIds,
+            voucher_code: promoCode,
+            // qty: qty,
+            additional_info: {
+              product_name: productData.title,
+              product_image: productData.image_url,
+              nama: username,
+              no_hp: "",
+              no_identitas: "",
+              email: "",
+              alamat: "",
+              selectedTourDate,
+              totalPriceFix,
+              totalPriceFixIDR
+            },
+            currency: lang === "en" ? "USD" : "IDR",
+            price: productData.price,
+            totalPriceFix,
+            metadata: {
+              adult,
+              child,
+              single,
+              double,
+              triple
+            }
+          };
+          const queryParamsString = btoa(
+            unescape(encodeURIComponent(JSON.stringify(queryParams)))
+          );
+          // const queryParamsString = btoa(JSON.stringify(queryParams));
 
-      const queryParamsString = btoa(JSON.stringify(queryParams));
-
-      router.push({
-        pathname: "/detailorder",
-        query: { id: queryParamsString }
-      });
-
-      // fetchBookingCash();
+          router.push({
+            pathname: "/detailorder",
+            query: { id: queryParamsString }
+          });
+        } else {
+          setPesanError("Select Itinerary");
+          setOpenSnackbar(true);
+        }
+      } else {
+        setPesanError("Select Tour Date");
+        setOpenSnackbar(true);
+      }
     } else {
       setPesanError(t("amountk"));
       setOpenSnackbar(true);
@@ -563,7 +817,7 @@ export default function DetailPackages() {
 
   const handleDownloadPDF = () => {
     if (productData) {
-      const { title, description, image_url, product_subs } = productData;
+      const { title, description, image_url, activities } = productData;
       const qty = 1; // Update with your actual quantity
       const totalPrice =
         productData.base_price_usd !== null
@@ -571,7 +825,7 @@ export default function DetailPackages() {
           : productData.base_price;
 
       generatePDF(
-        { title, description, image_url, product_subs, lang },
+        { title, description, image_url, activities, lang },
         qty,
         totalPrice,
         itineraryItems, // Pass itineraryItems here
@@ -586,147 +840,378 @@ export default function DetailPackages() {
     <Layout>
       <div className="container my-4">
         <div className="row">
-          <div className="col-lg-5">
-            <div className="mb-3 position-relative">
-              {productData && productData.image_url && (
-                <Image
-                  src={productData && productData.image_url}
-                  alt="thumbnail"
-                  className={`w-100 h-50 ${styles.img}`}
-                  width={500}
-                  height={200}
-                />
-              )}
-              <div className={styles.date}>
-                <span className="me-2">
-                  <Image src={clock} width={10} height={10} alt="clock" />
-                </span>
-                {productData && productData.duration} Days
-              </div>
+          {errorDetail ? (
+            <div className="col-12 p-5">
+              <Alert severity="error" className="mb-5">404 Page Not Found</Alert>
+              <button onClick={() => router.back()} className="btn btn-primary mt-3">Back</button>
             </div>
-            <div className="mb-5">
-              <div
-                className={styles.topLabel}
-                style={{ fontSize: "20px", fontWeight: "bold" }}
-              >
-                {lang === "en"
-                  ? `USD ${
-                      (productData && productData.base_price_usd) ||
-                      productData?.base_price
-                    }`
-                  : `Rp. ${
-                      productData &&
-                      numeral(productData.base_price).format("0,0")
-                    }`}
-              </div>
-
-              <div className={styles.topTitle}>
-                {productData && productData.title}
-              </div>
-            </div>
-            <div>
-              {lang === "en" ? (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: productData?.description_en
-                  }}
-                />
-              ) : (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: productData?.description_id
-                  }}
-                />
-              )}
-            </div>
-            <div className="mt-2">
-              <Button
-                variant="contained"
-                onClick={handleDownloadPDF}
-                style={{ backgroundColor: "#feed13", color: "#0197da" }}
-              >
-                Download PDF
-              </Button>
-            </div>
-          </div>
-          <div className="col-lg-7">
-            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
-            <p className="mb-3">{t("customize")} </p>
-            {itineraryItems.map((item, idx) => {
-              return (
-                <div key={idx} className={styles.itineraryItem}>
-                  <div className={styles.itineraryDetail}>
-                    <div className={styles.number}>{idx + 1}</div>
-                    <div
-                      onClick={() => handleShowDetail(idx)}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between"
-                      }}
-                    >
-                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
-                      <span
-                        className={`${styles.arrowIcon} ${
-                          expandedItems[idx] ? styles.active : ""
-                        }`}
-                      >
-                        {expandedItems[idx] ? "▲" : "▼"}
-                      </span>
-                    </div>
+          ) : (
+            <>
+              <div className="col-lg-6">
+                <div className="mb-3 position-relative">
+                  {productData && productData.image_url && (
+                    <Image
+                      src={productData && productData.image_url}
+                      alt="thumbnail"
+                      className={`w-100 h-50 ${styles.img}`}
+                      width={500}
+                      height={200}
+                    />
+                  )}
+                  <div className={styles.date}>
+                    <span className="me-2">
+                      <Image src={clock} width={10} height={10} alt="clock" />
+                    </span>
+                    {productData && productData.duration} Days
                   </div>
-                  {expandedItems[idx] && (
-                    <div className="p-4">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: item?.description }}
-                      />
-                      <FormControlLabel
-                        control={
-                          <Android12Switch
-                            checked={checkedItinerary[idx]}
-                            onChange={() => handleCheckboxChange(idx)}
-                          />
-                        }
-                        label={`${t("iwill")} ${item?.title}`}
-                        className="mt-2"
-                      />
-                    </div>
+                </div>
+                <div className="mb-3">
+                  <div
+                    className={styles.topLabel}
+                    style={{ fontSize: "20px", fontWeight: "bold" }}
+                  >
+                    <span style={{ fontWeight: "500" }}>Base Price :</span>
+                    {lang === "en"
+                      ? ` USD ${
+                          (productData && productData.base_price_usd) ||
+                          productData?.base_price
+                        }`
+                      : `Rp. ${
+                          productData &&
+                          numeral(productData.base_price).format("0,0")
+                        }`}
+                  </div>
+
+                  <div className={styles.topTitle}>
+                    {productData && productData.title}
+                  </div>
+                </div>
+                <div>
+                  {lang === "en" ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: productData?.description_en
+                      }}
+                    />
+                  ) : (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: productData?.description_id
+                      }}
+                    />
                   )}
                 </div>
-              );
-            })}
-            <div className="row">
-              <div class="col-auto me-auto"></div>
-              <div class="col-auto">
-                <NumberInput
-                  aria-label="Quantity Input"
-                  min={1}
-                  max={999}
-                  value={qty}
-                  onChange={handleQtyChange}
-                />
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-auto me-auto"></div>
-              <div class="col-auto">
-                <div>{t("totalprice")}</div>
-                <div style={{ fontWeight: "bold" }}>
-                  {lang === "en"
-                    ? `USD ${numeral(totalPriceFix).format("0,0.00")}`
-                    : `Rp. ${numeral(totalPriceFix).format("0,0")}`}
+                <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+                {/* <p className="mb-3">{t("customize")} </p> */}
+                {itineraryItems.map((item, idx) => {
+                  return (
+                    <div key={idx} className={styles.itineraryItem}>
+                      <div className={styles.itineraryDetail}>
+                        <div className={styles.number}>{idx + 1}</div>
+                        <div
+                          onClick={() => handleShowDetail(idx)}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between"
+                          }}
+                        >
+                          <span style={{ fontWeight: "bold" }}>
+                            {item?.title}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: item?.description
+                          }}
+                        />
+                        {item && item.activities.length > 0 && (
+                          <ul>
+                            {item.activities.map((activity, idxact) => (
+                              <li key={idxact}>{activity.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div className="mt-2">
+                  {productData && productData.brosur_url ? (
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        window.open(productData.brosur_url, "_blank")
+                      }
+                      style={{ backgroundColor: "#feed13", color: "#0197da" }}
+                    >
+                      Download PDF
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={print}
+                      style={{ backgroundColor: "#feed13", color: "#0197da" }}
+                    >
+                      Download PDF
+                    </Button>
+                  )}
                 </div>
               </div>
-            </div>
-            <div id="book" className="mt-2">
-              <Button
-                variant="contained"
-                onClick={handleBook}
-                style={{ backgroundColor: "#0197da" }}
-              >
-                {t("booknow")}
-              </Button>
-            </div>
-          </div>
+              <div className="col-lg-6">
+                <Card className="mb-5 p-3" sx={{ maxWidth: 600 }}>
+                  <CardContent>
+                    <div className="row mb-4">
+                      <div className="col-12">
+                        <Typography className="mb-1 mt-1">
+                          Select Tour Date
+                        </Typography>
+                        <Select
+                          options={stocks
+                            .filter((stock) =>
+                              dayjs(stock.start_date).isSameOrAfter(
+                                dayjs(),
+                                "day"
+                              )
+                            )
+                            .map((stock) => ({
+                              value: stock.id,
+                              label: `${dayjs(stock.start_date).format(
+                                "DD MMMM YYYY"
+                              )} - ${dayjs(stock.end_date).format(
+                                "DD MMMM YYYY"
+                              )}`,
+                              isDisabled: dayjs(stock.start_date).isBefore(
+                                dayjs(),
+                                "day"
+                              ) // Disable if start_date is before today
+                            }))}
+                          placeholder="Select available dates"
+                          onChange={(val) => {
+                            if (val) {
+                              // Check if val is not null or undefined
+                              setStockId(val.value);
+                              setSelectedTourDate(val.label);
+                            } else {
+                              setStockId(null); // Reset stockId if no value is selected
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-2">
+                      <div className="col-6">
+                        <Typography className="mb-1">Guests</Typography>
+                        <NumberInputIntroduction
+                          onClick={handleOpenGuest}
+                          onFocus={handleOpenGuest}
+                          onMouseDown={handleOpenGuest}
+                          aria-describedby={"guests"}
+                          value={totalGuest}
+                          disabled
+                        />
+                        <Popover
+                          id={"guests"}
+                          open={openGuest}
+                          anchorEl={anchorEl}
+                          onClose={handleCloseGuest}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "left"
+                          }}
+                        >
+                          <Grid
+                            container
+                            sx={{ p: 1.5 }}
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item>
+                              <Typography>Guests:</Typography>
+                              <Divider />
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Adults:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={adult}
+                                    onChange={handleAdultChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Childrens:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={child}
+                                    onChange={handleChildChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={handleCloseGuest}
+                              >
+                                Confirm
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Popover>
+                      </div>
+                      <div className="col-6">
+                        <Typography className="mb-1">Rooms</Typography>
+                        <NumberInputIntroduction
+                          onClick={handleOpenRoom}
+                          onFocus={handleOpenRoom}
+                          onMouseDown={handleOpenRoom}
+                          aria-describedby={"rooms"}
+                          value={totalRoom}
+                          disabled
+                        />
+                        <Popover
+                          id={"rooms"}
+                          open={openRoom}
+                          anchorEl={anchorElRoom}
+                          onClose={handleCloseRoom}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "left"
+                          }}
+                        >
+                          <Grid
+                            container
+                            sx={{ p: 1.5 }}
+                            direction="column"
+                            spacing={2}
+                          >
+                            <Grid item>
+                              <Typography>Rooms:</Typography>
+                              <Divider />
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Single:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={single}
+                                    onChange={handleSingleChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Double:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={double}
+                                    onChange={handleDoubleChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Grid container direction="row" spacing={2}>
+                                <Grid item xs={6}>
+                                  <Typography className="mb-1">
+                                    Triple:
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <NumberInputIntroduction
+                                    min={0}
+                                    max={999}
+                                    value={triple}
+                                    onChange={handleTripleChange}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                            <Grid item>
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={handleCloseRoom}
+                              >
+                                Confirm
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Popover>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardActions className="mb-2">
+                    <Grid
+                      container
+                      spacing={2}
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Grid item xs={4}>
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          onClick={() => setOpenModalCustom(true)}
+                        >
+                          Customize
+                        </Button>
+                      </Grid>
+                      <Grid item xs={7}>
+                        <Button
+                          variant="contained"
+                          fullWidth
+                          onClick={handleBook}
+                          disabled={isDisableBook}
+                        >
+                          {t("booknow")}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Tooltip title={t("infonotsameguest")}>
+                          <IconButton>
+                            <HelpOutlineIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </CardActions>
+                </Card>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <Modal
@@ -840,10 +1325,10 @@ export default function DetailPackages() {
             className="mt-2"
           >
             {`*${t("Jumlahminimumyangperludibayarkan")}
-            ${productData && productData.minimum_payment}
+            ${productData && productData.minimum_down_payment}
             %`}
           </Typography>
-          <Grid container spacing={2}>
+          {/* <Grid container spacing={2}>
             <Grid item xs={8} md={8}>
               <TextField
                 label={t("promocode")}
@@ -858,7 +1343,7 @@ export default function DetailPackages() {
                 {t("usepromo")}
               </Button>
             </Grid>
-          </Grid>
+          </Grid> */}
           <Grid container spacing={2} className="mt-2">
             <Grid item xs={12} md={6}>
               <Button
@@ -894,6 +1379,18 @@ export default function DetailPackages() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              margin: "10px"
+            }}
+          >
+            <IconButton onClick={handleCloseLogin} color="primary">
+              <CloseIcon />
+            </IconButton>
+          </div>
           <Container
             maxWidth="sm"
             sx={{ height: "65vh", display: "flex", alignItems: "center" }}
@@ -940,6 +1437,8 @@ export default function DetailPackages() {
                       .catch((error) => {
                         console.error(error);
                         setSubmitting(false);
+                        setPesanError("Email dan Password salah");
+                        setOpenSnackbarError(true);
                       });
                   }}
                 >
@@ -1036,13 +1535,27 @@ export default function DetailPackages() {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "center"
         }}
         open={openSnackbar}
         autoHideDuration={6000}
         message={pesanError}
         onClose={() => setOpenSnackbar(false)}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={openSnackbarError}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbarError(false)}
+      >
+        <SnackbarContent
+          message={pesanError}
+          style={{ backgroundColor: "#ff0000" }} // You can customize the color
+        />
+      </Snackbar>
       <Dialog
         open={openDialog}
         onClose={successPayment}
@@ -1061,6 +1574,113 @@ export default function DetailPackages() {
           <Button onClick={successPayment}>Close</Button>
         </DialogActions>
       </Dialog>
+      <Modal
+        open={openModalCustom}
+        onClose={handleCloseModalCustom}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none"
+        }}
+      >
+        <Box sx={styleModalCustom}>
+          <div
+            sx={{
+              backgroundColor: "#181818",
+              boxShadow: 5,
+              padding: 5,
+              margin: 2,
+              overflowY: "auto",
+              height: "-webkit-fill-available"
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                margin: "10px"
+              }}
+            >
+              <IconButton onClick={handleCloseModalCustom} color="primary">
+                <CloseIcon />
+              </IconButton>
+            </div>
+            <Typography variant="h5" gutterBottom className="text-center">
+              Customize Tour
+            </Typography>
+            <Divider className="mb-5" />
+            <div className={styles.itineraryTitle}>{t("itinerary")}</div>
+            <p className="mb-3">{t("customize")} </p>
+            {itineraryItems.map((item, idx) => {
+              return (
+                <div key={idx} className={styles.itineraryItem}>
+                  <div className={styles.itineraryDetail}>
+                    <div className={styles.number}>{idx + 1}</div>
+                    <div
+                      onClick={() => handleShowDetail(idx)}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <span style={{ fontWeight: "bold" }}>{item?.title}</span>
+                      <span
+                        className={`${styles.arrowIcon} ${
+                          expandedItems[idx] ? styles.active : ""
+                        }`}
+                      >
+                        {expandedItems[idx] ? "▲" : "▼"}
+                      </span>
+                    </div>
+                  </div>
+                  {expandedItems[idx] && (
+                    <div className="p-4">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: item?.description
+                        }}
+                      />
+                      {item &&
+                        item.activities.map((activity, idxact) => (
+                          <div key={idxact} className="mt-2">
+                            <FormControlLabel
+                              key={idxact}
+                              control={
+                                <Android12Switch
+                                  checked={
+                                    checkedItinerary[idx] &&
+                                    checkedItinerary[idx][idxact]
+                                  }
+                                  disabled={activity.is_mandatory}
+                                  onChange={() =>
+                                    handleCheckboxChange(idx, idxact)
+                                  }
+                                />
+                              }
+                              label={`${activity.name}`}
+                              className="mt-2"
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            <div className="mt-5" style={{ textAlign: "center" }}>
+              <Button
+                variant="contained"
+                onClick={handleCloseModalCustom}
+                className="w-25"
+              >
+                Update
+              </Button>
+            </div>
+          </div>
+        </Box>
+      </Modal>
     </Layout>
   );
 }

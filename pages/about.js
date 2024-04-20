@@ -57,7 +57,7 @@ export default function About() {
         <title>Marina Raja Ampat - {t("about")}</title>
         <meta
           name="description"
-          content="Is a company that handles Raja Ampat tourism, from arrival to departure to your hometown. Once again, we also have complete services to meet your Raja Ampat tourism needs."
+          content="is a field operator providing a diverse range of tour services since 2019. Our office is strategically located to facilitate easy access for guests to visit and obtain further information. In addition to tour services, we offer a wide array of facilities, including a restaurant, speedboat dock, speedboat rentals, and a privately managed island for relaxation. With well-maintained and comprehensive facilities, along with experienced and professional staff, we are committed to providing you with the best service and an unforgettable holiday experience in Raja Ampat."
         />
       </Head>
       <HeaderPage
