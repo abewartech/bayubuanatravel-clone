@@ -6,7 +6,7 @@ import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
 import Head from "next/head";
 
-export default function About() {
+export default function OurJetty() {
   const [active, setActive] = useState("All");
   const { t } = useTranslation("common");
   const [data, setData] = useState([]); // State to store API response
@@ -55,7 +55,12 @@ export default function About() {
       />
       <div className="container">
         <div className="row">
-          
+          <p>MARINA 05 (8-10) Ac, toilet Mesin 200Pk x 2</p>
+          <p>MARINA 06 (4-6 Pax) Mesin 50Pk x 2</p>
+          <p>MARINA 07 (4-6 Pax) Mesin 50Pk x 2</p>
+          <p>MARINA 08 (10-18 Pax) Ac, toilet Mesin 250Pk x 3</p>
+          <p>MARINA 09 (15-20Pax) Ac, toilet, Mesin 250x2 unit</p>
+          <p>MARINA 10 (35-42Pax) Ac, toilet, Mesin 250x4 unit</p>
         </div>
       </div>
     </Layout>

@@ -55,7 +55,22 @@ export default function About() {
       />
       <div className="container">
         <div className="row">
-          
+          <h1>our speedboat</h1>
+          <p>
+            MARINA SPEED BOAT
+            <ol>
+              <li>MARINA 01 (10-18 Pax) Ac, toilet, Mesin 200x2 unit</li>
+              <li>MARINA 02 (10-18 Pax) Ac, toilet, Mesin 150x2 unit</li>
+              <li>MARINA 03 (10-18 Pax) Ac, toilet, Mesin 200x2 unit</li>
+              <li>MARINA 47 (5-8 Pax) Ac, toilet, Mesin 115x2 unit</li>
+              <li>MARINA 05 (10 Pax) Ac, toilet, Mesin 200x2 unit</li>
+              <li>MARINA 06 (4-6 Pax) Mesin 50x2 unit</li>
+              <li>MARINA 07 (4-6 Pax) Mesin 50x2 unit</li>
+              <li>MARINA 08 (20-30 Pax) Ac, toilet, Mesin 250x3 unit</li>
+              <li>MARINA 09 (15-20Pax) Ac, toilet, Mesin 250x2 unit</li>
+              <li>MARINA 10 (35-42Pax) Ac, toilet, Mesin 250x4 unit</li>
+            </ol>
+          </p>
         </div>
       </div>
     </Layout>

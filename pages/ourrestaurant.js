@@ -49,13 +49,23 @@ export default function About() {
         />
       </Head>
       <HeaderPage
-        title={t("about")}
+        title="our restaurant MARINA STAR"
         breadcrumb={breadcrumb}
         background={resort}
       />
       <div className="container">
         <div className="row">
-          
+          <p>OPEN HOURS: 6 AM - 11 PM</p>
+          <p>Capacity:</p>
+          <ul>
+            <li>Lt1: 250 Pax Ruangan VIP</li>
+            <li>Lt2: 150 Pax Ruangan VIP</li>
+          </ul>
+          <p>Guest house:</p>
+          <ul>
+            <li>King size room: 2 Room</li>
+            <li>Twin room: 2 Room</li>
+          </ul>
         </div>
       </div>
     </Layout>
