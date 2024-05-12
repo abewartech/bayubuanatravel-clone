@@ -2,6 +2,7 @@ import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import { useEffect, useState } from "react";
 import resort from "./../public/assets/resort.jpg";
+import andauImage from "./../public/assets/andau/DJI_0701.JPG";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
 import Head from "next/head";
@@ -15,7 +16,7 @@ export default function About() {
       name: t("home")
     },
     {
-      name: t("about")
+      name: t("andau")
     }
   ];
 
@@ -49,9 +50,9 @@ export default function About() {
         />
       </Head>
       <HeaderPage
-        title={t("about")}
+        title={"Andau Island"}
         breadcrumb={breadcrumb}
-        background={resort}
+        background={andauImage}
       />
       <div className="container">
         <div className="row">
