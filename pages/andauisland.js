@@ -55,7 +55,7 @@ export default function About() {
       />
       <div className="container">
         <div className="row">
-          
+          <iframe src="https://drive.google.com/file/d/1G8m6M5zwABWsAXIKH5zJHFbkJq-X0JUi/preview" width="640" height="480" allow="autoplay"></iframe>
         </div>
       </div>
     </Layout>
