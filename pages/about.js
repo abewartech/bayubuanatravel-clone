@@ -11,6 +11,9 @@ import Card from "../src/components/common/Card";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
 import Head from "next/head";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
+
 export default function About() {
   const [active, setActive] = useState("All");
   const { t, lang } = useTranslation("common");
@@ -92,6 +95,69 @@ export default function About() {
               <Image src={thumb} alt="thumb" />
             </div>
           </div>
+          <div className="col-lg-10">
+            <div className={styles.whyUs}>
+              <TitleSection title="WHY US ?" more={false} />
+              <Typography paragraph className="mt-3">
+                <Link href="/ouroffice" style={{ textDecoration: "none" }}>
+                  <strong>1. Our Office</strong>
+                </Link>
+                <br />
+                We have a physical office that you can visit for inquiries and
+                assistance.
+              </Typography>
+              <Typography paragraph>
+                <Link href="/ourrestaurant" style={{ textDecoration: "none" }}>
+                  <strong>2. Our Restaurant</strong>
+                </Link>
+                <br />
+                Marina Star Restaurant offers delicious food and a beautiful
+                seaside view, making it an ideal meeting point before embarking
+                on your Raja Ampat Journey
+              </Typography>
+              <Typography paragraph>
+                <Link href="/ourspeedboat" style={{ textDecoration: "none" }}>
+                  <strong>3. Our Speedboat</strong>
+                </Link>
+                <br />
+                Enjoy the freedom of private speedboat with various capacity
+                options that can be tailored to your needs.
+              </Typography>
+              <Typography paragraph>
+                <Link href="/ourjetty" style={{ textDecoration: "none" }}>
+                  <strong>4. Our Private Jetty</strong>
+                </Link>
+                <br />
+                We have a secure private jetty that ensures safe boarding onto
+                the speedboat
+              </Typography>
+              <Typography paragraph>
+                <Link href="/andauisland" style={{ textDecoration: "none" }}>
+                  <strong>5. Andau Island</strong>
+                </Link>
+                <br />
+                Experience the exclusivity of Andau Island, privately managed
+                and located in the Fam Islands, Raja Ampat, just a 15 minute
+                distance from the famous tourist spot, Piaynemo.
+              </Typography>
+              <Typography paragraph>
+                <Link href="/andauresort" style={{ textDecoration: "none" }}>
+                  <strong>6. Andau Resort</strong>
+                </Link>
+                <br />
+                Relax in comfortable accommodations at Andau Resort, equipped
+                with modern amenities such as 24-hour electricity, WiFi, clean
+                water, air conditioning, hot water, and mesmerizing ocean views
+                with pristine white sandy beaches.
+              </Typography>
+              <Typography paragraph className="mb-3 mt-1">
+                At Marina Raja Ampat, we take pride in offering excellent
+                services and creating unforgettable memories for our guests.
+                Choose us for an extraordinary journey through the stunning
+                beauty of Raja Ampat.
+              </Typography>
+            </div>
+          </div>
         </div>
       </div>
       {/* <div className={styles.services}>
@@ -127,7 +193,7 @@ export default function About() {
           </div>
         </div>
       </div> */}
-      <div className="container">
+      <div className="container mt-4">
         <div className="row">
           <Client />
         </div>
