@@ -158,11 +158,11 @@ export default function Card(props) {
                   >
                     <button>{t("contact")}</button>
                   </Link>
-                  <div className={styles.infoDetail}>
+                  {/* <div className={styles.infoDetail}>
                     <LightTooltip title="10 Spot" placement="top">
                       <Image src={info} alt="info" />
                     </LightTooltip>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className={styles.overlay}></div>

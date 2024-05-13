@@ -144,6 +144,12 @@ export default function Header(props) {
               </div>
               <div className={styles.navItem}>
                 <Link href="/about" className="text-uppercase">{t("about")}</Link>
+                <div className={styles.dropdown}>
+                  <Link href="/about">About Us</Link>
+                  <Link href="/ourrestaurant">Our Restaurant</Link>
+                  <Link href="/ourspeedboat">Our Speedboat</Link>
+                  <Link href="/andauisland">Andau Island</Link>
+                </div>
               </div>
               <div className={styles.navItem}>
                 <Link href="/packages" className="text-uppercase">{t("packages")}</Link>

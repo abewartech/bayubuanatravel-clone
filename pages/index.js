@@ -14,6 +14,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import map from "./../public/image/map.jpeg";
+import image1 from "./../public/image/index/1.jpeg";
+import image2 from "./../public/image/index/2.jpeg";
+import image3 from "./../public/image/index/3.jpeg";
+import image4 from "./../public/image/index/4.jpeg";
+import image5 from "./../public/image/index/5.jpeg";
+import image6 from "./../public/image/index/6.jpeg";
 import {
   Snackbar,
   Dialog,
@@ -110,8 +117,38 @@ export default function Homepage() {
       </div>
       <TestimoniList />
       <GalleryList onClick={handleOpen} />
+      {/* <Client /> */}
+
+      <div className="col-lg-12">
+
+        <div className="text-center container">
+          <div className="row g-5 mb-2 p-3">
+            <div className="col-md-6">
+              <Image src={image5} alt="image-5" className="img-fluid" />
+            </div>
+            <div className="col-md-6">
+              <Image src={image4} alt="image-4" className="img-fluid" />
+            </div>
+            <div className="col-md-6">
+              <Image src={image1} alt="image-1" className="img-fluid" />
+            </div>
+            <div className="col-md-6">
+              <Image src={image2} alt="image-2" className="img-fluid" />
+            </div>
+            <div className="col-md-6">
+              <Image src={image3} alt="image-3" className="img-fluid" />
+            </div>
+            <div className="col-md-6">
+              <Image src={image6} alt="image-6" className="img-fluid" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="text-center mt-2">
+          <Image src={map} alt="map" className="img-fluid mb-5 mt-4" />
+        </div>
+      </div>
       <Videotron />
-      <Client />
       <ModalComponent open={open} close={handleOpen} content={content} />
       <Snackbar
         anchorOrigin={{

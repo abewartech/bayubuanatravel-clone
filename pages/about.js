@@ -86,7 +86,14 @@ export default function About() {
               </div>
 
               <div className={styles.cta}>
-                <button>{t("contactus")}</button>
+                <Link
+                  href={`https://wa.me/6281316776671?text=Hi%2C%20${
+                    lang === "en"
+                      ? "I want to inquire about Marina Raja Ampat"
+                      : "Saya ingin menanyakan detail terkait Marina Raja Ampat"}`}
+                >
+                  <button>{t("contactus")}</button>
+                </Link>
               </div>
             </div>
           </div>
@@ -124,7 +131,7 @@ export default function About() {
                 options that can be tailored to your needs.
               </Typography>
               <Typography paragraph>
-                <Link href="/ourjetty" style={{ textDecoration: "none" }}>
+                <Link href="#" style={{ textDecoration: "none" }}>
                   <strong>4. Our Private Jetty</strong>
                 </Link>
                 <br />
@@ -141,7 +148,7 @@ export default function About() {
                 distance from the famous tourist spot, Piaynemo.
               </Typography>
               <Typography paragraph>
-                <Link href="/andauresort" style={{ textDecoration: "none" }}>
+                <Link href="/andauisland" style={{ textDecoration: "none" }}>
                   <strong>6. Andau Resort</strong>
                 </Link>
                 <br />

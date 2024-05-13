@@ -4,18 +4,24 @@ import { useEffect, useState } from "react";
 import resort from "./../public/assets/resort.jpg";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
+import bg1 from "./../public/image/qw.jpeg";
+import bg2 from "./../public/image/qw2.jpeg";
+import bg3 from "./../public/image/qw3.jpeg";
 import Head from "next/head";
+import Image from "next/image";
+import TitleSection from "../src/components/common/TitleSection";
+import Link from "next/link";
 
 export default function About() {
   const [active, setActive] = useState("All");
-  const { t } = useTranslation("common");
+  const { t, lang } = useTranslation("common");
   const [data, setData] = useState([]); // State to store API response
   const breadcrumb = [
     {
       name: t("home")
     },
     {
-      name: t("about")
+      name: "Our Speedboat"
     }
   ];
 
@@ -49,13 +55,54 @@ export default function About() {
         />
       </Head>
       <HeaderPage
-        title={t("about")}
+        title={"Our Speedboat"}
         breadcrumb={breadcrumb}
         background={resort}
       />
       <div className="container">
         <div className="row">
-          <h1>our speedboat</h1>
+          <div className="col-8">
+            <TitleSection title="Marina Speedboat" more={false} />
+            <h5 className="mt-3 mb-4">
+              Enjoy the freedom of private speedboat with various capacity
+              options that can be tailored to your needs.
+            </h5>
+          </div>
+          <div className="col-4 align-self-end mb-4">
+            <div className="d-flex justify-content-end">
+              <Link
+                href={`https://wa.me/6281316776671?text=Hi%2C%20${
+                  lang === "en"
+                    ? "I want to inquire about Marina Speedboat"
+                    : "Saya ingin menanyakan detail terkait Marina Speedboat"
+                }`}
+              >
+                <button
+                  style={{
+                    border: "none",
+                    backgroundColor: "#01B7F2",
+                    color: "#fff",
+                    padding: "12px 32px"
+                  }}
+                >
+                  {t("contactus")}
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="col-md-4">
+            {" "}
+            <Image src={bg1} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            {" "}
+            <Image src={bg3} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            {" "}
+            <Image src={bg2} className="img-fluid mb-3" />
+          </div>
+          {/* <h1>our speedboat</h1>
           <p>
             MARINA SPEED BOAT
             <ol>
@@ -70,7 +117,7 @@ export default function About() {
               <li>MARINA 09 (15-20Pax) Ac, toilet, Mesin 250x2 unit</li>
               <li>MARINA 10 (35-42Pax) Ac, toilet, Mesin 250x4 unit</li>
             </ol>
-          </p>
+          </p> */}
         </div>
       </div>
     </Layout>

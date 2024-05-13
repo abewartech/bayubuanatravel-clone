@@ -2,20 +2,25 @@ import Layout from "../src/components/Layout";
 import HeaderPage from "../src/components/common/HeaderPage";
 import { useEffect, useState } from "react";
 import resort from "./../public/assets/resort.jpg";
+import image from "./../public/image/cb9a6f0c-7c93-4c78-9a34-7179d26c3873.jpg";
+import bg from "./../public/image/IMG_1874.jpg";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
 import Head from "next/head";
+import Image from "next/image";
+import TitleSection from "../src/components/common/TitleSection";
+import Link from "next/link";
 
 export default function About() {
   const [active, setActive] = useState("All");
-  const { t } = useTranslation("common");
+  const { t, lang } = useTranslation("common");
   const [data, setData] = useState([]); // State to store API response
   const breadcrumb = [
     {
       name: t("home")
     },
     {
-      name: t("about")
+      name: "Our Retaurant"
     }
   ];
 
@@ -49,13 +54,44 @@ export default function About() {
         />
       </Head>
       <HeaderPage
-        title="our restaurant MARINA STAR"
+        title={"Our Restaurant"}
         breadcrumb={breadcrumb}
-        background={resort}
+        background={bg}
       />
       <div className="container">
-        <div className="row">
-          <p>OPEN HOURS: 6 AM - 11 PM</p>
+        <div className="row ">
+          <div className="col-8">
+            <TitleSection title="Marina Star" more={false} />
+            <h5 className="mt-3 mb-4">
+              Marina Star Restaurant offers delicious food and a beautiful
+              seaside view, making it an ideal meeting point before embarking on
+              your Raja Ampat Journey
+            </h5>
+          </div>
+          <div className="col-4 align-self-end mb-4">
+            <div className="d-flex justify-content-end">
+              <Link
+                href={`https://wa.me/6281316776671?text=Hi%2C%20${
+                  lang === "en"
+                    ? "I want to inquire about Marina Star"
+                    : "Saya ingin menanyakan detail terkait Marina Star"
+                }`}
+              >
+                <button
+                  style={{
+                    border: "none",
+                    backgroundColor: "#01B7F2",
+                    color: "#fff",
+                    padding: "12px 32px"
+                  }}
+                >
+                  {t("contactus")}
+                </button>
+              </Link>
+            </div>
+          </div>
+          <Image src={image} className="img-fluid mb-3" />
+          {/* <p>OPEN HOURS: 6 AM - 11 PM</p>
           <p>Capacity:</p>
           <ul>
             <li>Lt1: 250 Pax Ruangan VIP</li>
@@ -65,7 +101,7 @@ export default function About() {
           <ul>
             <li>King size room: 2 Room</li>
             <li>Twin room: 2 Room</li>
-          </ul>
+          </ul> */}
         </div>
       </div>
     </Layout>
