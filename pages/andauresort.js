@@ -15,6 +15,7 @@ import Head from "next/head";
 import Image from "next/image";
 import TitleSection from "../src/components/common/TitleSection";
 import Link from "next/link";
+import Typography from "@mui/material/Typography";
 
 export default function AndauResort() {
   const [active, setActive] = useState("All");
@@ -100,26 +101,29 @@ export default function AndauResort() {
             </div>
           </div>
           {/* <iframe src="https://drive.google.com/file/d/1G8m6M5zwABWsAXIKH5zJHFbkJq-X0JUi/preview" width="640" height="480" allow="autoplay"></iframe> */}
-          <div className="col-md-4">
-            {" "}
-            <Image src={bg1} className="img-fluid mb-3" />
+          <div className="col-md-4" >
+            <Image src={bg1} className="img-fluid mb-3" style={{ height: "311px", objectFit: "cover" }}   />
+            <Typography variant="body2" className="mb-3">Andau Resort Double</Typography>
           </div>
-          <div className="col-md-4">
-            {" "}
-            <Image src={bg3} className="img-fluid mb-3" />
+          <div className="col-md-4" >
+            <Image src={bg3} className="img-fluid mb-3"   />
+            <Typography variant="body2" className="mb-3">Andau Resort Double</Typography>
           </div>
-          <div className="col-md-4">
-            {" "}
-            <Image src={bg2} className="img-fluid mb-5" />
+          <div className="col-md-4" >
+            <Image src={bg2} className="img-fluid mb-3"   />
+            <Typography variant="body2" className="mb-3">Andau Resort Twin</Typography>
           </div>
-          <div className="col-md-4">
-            <Image src={image1} className="img-fluid mb-3" />
+          <div className="col-md-4" >
+            <Image src={image1} className="img-fluid mb-3"   />
+            <Typography variant="body2" className="mb-3">Family Room</Typography>
           </div>
-          <div className="col-md-4">
-            <Image src={image2} className="img-fluid mb-3" />
+          <div className="col-md-4" >
+            <Image src={image2} className="img-fluid mb-3"   />
+            <Typography variant="body2" className="mb-3">Teras Andau</Typography>
           </div>
-          <div className="col-md-4">
-            <Image src={image3} className="img-fluid mb-3" />
+          <div className="col-md-4" >
+            <Image src={image3} className="img-fluid mb-3"   />
+            <Typography variant="body2" className="mb-3">Andau Resort</Typography>
           </div>
         </div>
       </div>
