@@ -61,7 +61,7 @@ export default function About() {
       <div className="container">
         <div className="row ">
           <div className="col-8">
-            <TitleSection title="Marina Star" more={false} />
+            <TitleSection title="Marina Star Sorong" more={false} />
             <h5 className="mt-3 mb-4">
               Marina Star Restaurant offers delicious food and a beautiful
               seaside view, making it an ideal meeting point before embarking on

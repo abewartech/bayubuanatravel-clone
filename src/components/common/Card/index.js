@@ -32,7 +32,7 @@ export default function Card(props) {
   const commonCard = () => {
     const calculateDuration = () => {
       if (data && data.duration) {
-        // const startDate = new Date(data.active_date);
+        // const startDate = new Date(data.active_date);a
         // const endDate = new Date(data.expired_date);
 
         // const durationInMilliseconds = endDate - startDate;
@@ -106,13 +106,15 @@ export default function Card(props) {
             </div>
           </div>
         ) : (
-          <Link
-            href={
-              data && data.id !== null ? `/packages/${data.id}` : "/default-url"
-            }
-            className="h-100"
-          >
-            <div className={styles.card}>
+          <div className={styles.card}>
+            <Link
+              href={
+                data && data.id !== null
+                  ? `/packages/${data.id}`
+                  : "/default-url"
+              }
+              className="h-100"
+            >
               {data && data.image_url && (
                 <Image
                   src={data.image_url}
@@ -166,8 +168,8 @@ export default function Card(props) {
                 </div>
               </div>
               <div className={styles.overlay}></div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         )}
       </div>
     );

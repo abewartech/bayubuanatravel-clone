@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 import resort from "./../public/assets/resort.jpg";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
-import bg1 from "./../public/image/qw.jpeg";
-import bg2 from "./../public/image/qw2.jpeg";
-import bg3 from "./../public/image/qw3.jpeg";
+import bg1 from "./../public/image/speed/MARINA01.jpeg";
+import bg3 from "./../public/image/speed/MARINA03.jpeg";
+import bg2 from "./../public/image/speed/MARINA02.jpeg";
+import bg4 from "./../public/image/speed/MARINA06.jpeg";
+import bg5 from "./../public/image/speed/MARINA07.jpeg";
+import bg6 from "./../public/image/speed/MARINA08.jpg";
+import bg7 from "./../public/image/speed/MARINA09.jpg";
+import bg8 from "./../public/image/speed/MARINA47.jpeg";
 import Head from "next/head";
 import Image from "next/image";
 import TitleSection from "../src/components/common/TitleSection";
@@ -95,12 +100,25 @@ export default function About() {
             <Image src={bg1} className="img-fluid mb-3" />
           </div>
           <div className="col-md-4">
-            {" "}
+            <Image src={bg2} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
             <Image src={bg3} className="img-fluid mb-3" />
           </div>
           <div className="col-md-4">
-            {" "}
-            <Image src={bg2} className="img-fluid mb-3" />
+            <Image src={bg4} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={bg5} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={bg6} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={bg7} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={bg8} className="img-fluid mb-3" />
           </div>
           {/* <h1>our speedboat</h1>
           <p>

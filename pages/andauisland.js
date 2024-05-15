@@ -29,7 +29,7 @@ export default function About() {
       name: t("home")
     },
     {
-      name: "Andau Island"
+      name: "Andau Island Raja Ampat"
     }
   ];
 
@@ -63,14 +63,14 @@ export default function About() {
         />
       </Head>
       <HeaderPage
-        title={"Andau Island"}
+        title={"Andau Island Raja Ampat"}
         breadcrumb={breadcrumb}
         background={andauImage}
       />
       <div className="container">
         <div className="row">
           <div className="col-8">
-            <TitleSection title="Andau Island" more={false} />
+            <TitleSection title="Andau Island Raja Ampat" more={false} />
             <h5 className="mt-3 mb-4">
               Experience the exclusivity of Andau Island, privately managed and
               located in the Fam Islands, Raja Ampat, just a 15 minute distance

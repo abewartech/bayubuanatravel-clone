@@ -2,6 +2,7 @@
 .heroShot {
   position: relative;
   margin-bottom: 40px;
+  z-index: -2;
   @media (min-width: 991px) {
     margin-bottom: 72px;
   }
