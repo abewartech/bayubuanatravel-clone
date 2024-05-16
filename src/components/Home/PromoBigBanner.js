@@ -1,5 +1,8 @@
 import styles from "./../../../styles/pages/Home.module.scss";
-import promo from "./../../../public/assets/promo.png";
+import promo from "./../../../public/assets/promo3.JPG";
+import promo4 from "./../../../public/assets/promo4.jpg";
+import promo5 from "./../../../public/assets/promo5.JPG";
+import promo6 from "./../../../public/assets/promo6.JPG";
 import promo2 from "./../../../public/assets/promo2.jpg";
 // import promo3 from "./../../../public/assets/promo3.jpg";
 import Image from "next/image";
@@ -8,7 +11,7 @@ import TitleSection from "../common/TitleSection";
 import useTranslation from 'next-translate/useTranslation'
 export default function PromoBigBanner() {
   const { t, lang } = useTranslation('common')
-  const gallery = [promo]
+  const gallery = [promo, promo4, promo5, promo6]
   return (
     <>
       <TitleSection

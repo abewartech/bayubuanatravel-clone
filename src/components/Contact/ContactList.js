@@ -19,7 +19,7 @@ export default function ContactList(props) {
                   <span className="me-2">
                     <Image src={call} alt="call" width={24} height={24} />
                   </span>
-                  +6221-23509999
+                  +6281316776671
                 </>
               ) : (
                 <>
