@@ -3,7 +3,7 @@ import styles from "./../../../styles/pages/ContactUs.module.scss";
 import mail from "./../../../public/assets/icon/mail.svg";
 import Link from "next/link";
 import call from "./../../../public/assets/icon/call.svg";
-import useTranslation from 'next-translate/useTranslation';
+import useTranslation from "next-translate/useTranslation";
 export default function ContactList(props) {
   const { title } = props;
   const { t, lang } = useTranslation("common");
@@ -31,16 +31,17 @@ export default function ContactList(props) {
               )}
             </div>
             <div className={styles.contactMe}>
-              {t('open')}
-              <br /> {t('daybyrequest')}
+              {t("open")}
+              <br /> {t("daybyrequest")}
             </div>
             {title.toLowerCase() === "contact" ? (
               <Link href="https://wa.me/6281316776671" target="_blank">
-                <button>{t('contact')}</button>
+                <button>{t("contact")}</button>
               </Link>
             ) : (
-              <button>{t('emailus')}</button>
-
+              <Link href="mailto:tourtravelmarina@gmail.com" target="_blank">
+                <button>{t("emailus")}</button>
+              </Link>
             )}
           </>
         </div>
