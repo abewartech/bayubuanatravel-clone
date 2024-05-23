@@ -26,8 +26,20 @@ import Image from "next/image";
 import TitleSection from "../src/components/common/TitleSection";
 import Link from "next/link";
 import Typography from "@mui/material/Typography";
+import GalleryList from "../src/components/Home/GalleryList";
+import ModalComponent from "../src/components/common/Modal";
+import "@splidejs/react-splide/css/core";
+import "@splidejs/react-splide/css";
+import AndauDouble from "../src/components/Home/AndauDouble";
+import AndauKing from "../src/components/Home/AndauKing";
+import Family from "../src/components/Home/Family";
+import VIPDouble from "../src/components/Home/VIPDouble";
+import VIPDoubleExtra from "../src/components/Home/VIPDoubleExtra";
+import VIPKing from "../src/components/Home/VIPKing";
 
 export default function AndauResort() {
+  const [img, setImg] = useState();
+  const [open, setOpen] = useState(false);
   const [active, setActive] = useState("All");
   const { t, lang } = useTranslation("common");
   const [data, setData] = useState([]); // State to store API response
@@ -59,6 +71,17 @@ export default function AndauResort() {
 
     fetchData();
   }, []);
+
+  const handleOpen = (currImg) => {
+    setImg(currImg);
+    setOpen(!open);
+  };
+
+  const content = (
+    <div>
+      <Image src={img} alt="img-show" />
+    </div>
+  );
 
   return (
     <Layout>
@@ -141,7 +164,7 @@ export default function AndauResort() {
           <div className="col-md-4">
             <Image src={image6} className="img-fluid mb-3" />
           </div> */}
-          <br />
+          {/* <br />
           <div className="col-md-4">
             <Image
               src={bg111}
@@ -181,11 +204,18 @@ export default function AndauResort() {
             <Typography variant="body2" className="mb-3">
               Andau Resort
             </Typography>
-          </div>
+          </div> */}
         </div>
+
+        <AndauDouble onClick={handleOpen} />
+        <AndauKing onClick={handleOpen} />
+        <Family onClick={handleOpen} />
+        <VIPDouble onClick={handleOpen} />
+        <VIPDoubleExtra onClick={handleOpen} />
+        <VIPKing onClick={handleOpen} />
         <div className="row">
           <div className="col-md-12">
-            <div className="google-map-code mb-2">
+            <div className="ratio ratio-16x9 mb-2">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d37955.16186399516!2d130.252435717325!3d-0.6707242892240801!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d5e3e46d42f1459%3A0xafa9f72bb4ba8b84!2sAndau%20Homestay%20and%20Resort!5e0!3m2!1sen!2sid!4v1716449822924!5m2!1sen!2sid"
                 width="800"
@@ -200,6 +230,7 @@ export default function AndauResort() {
           </div>
         </div>
       </div>
+      <ModalComponent open={open} close={handleOpen} content={content} />
     </Layout>
   );
 }
