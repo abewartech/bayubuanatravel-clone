@@ -5,8 +5,8 @@ import img1 from "./../../../public/rooms/VIPKING/20230722_125936.jpg";
 import img2 from "./../../../public/rooms/VIPKING/vipking.jpg";
 import img3 from "./../../../public/rooms/VIPKING/20230722_125946.jpg";
 import img4 from "./../../../public/rooms/VIPKING/20230722_130000.jpg";
-import img5 from "./../../../public/rooms/VIPKING/DSC04930.jpg";
-import img6 from "./../../../public/rooms/VIPKING/DSC04931.jpg";
+import img5 from "./../../../public/rooms/VIPKING/DSC04930.JPG";
+import img6 from "./../../../public/rooms/VIPKING/DSC04931.JPG";
 import Image from "next/image";
 import TitleKecilSection from "../common/TitleKecilSection";
 

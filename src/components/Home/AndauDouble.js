@@ -5,8 +5,8 @@ import img1 from "./../../../public/rooms/ANDAUDOUBLE/20230722_132024.jpg";
 import img2 from "./../../../public/rooms/ANDAUDOUBLE/20230722_132107.jpg";
 import img3 from "./../../../public/rooms/ANDAUDOUBLE/20230722_132119.jpg";
 import img4 from "./../../../public/rooms/ANDAUDOUBLE/andaudouble.jpg";
-import img5 from "./../../../public/rooms/ANDAUDOUBLE/DSC04935.jpg";
-import img6 from "./../../../public/rooms/ANDAUDOUBLE/DSC04936.jpg";
+import img5 from "./../../../public/rooms/ANDAUDOUBLE/DSC04935.JPG";
+import img6 from "./../../../public/rooms/ANDAUDOUBLE/DSC04936.JPG";
 import Image from "next/image";
 import TitleKecilSection from "../common/TitleKecilSection";
 
