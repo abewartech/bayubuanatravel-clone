@@ -3,12 +3,22 @@ import HeaderPage from "../src/components/common/HeaderPage";
 import { useEffect, useState } from "react";
 import resort from "./../public/assets/resort.jpg";
 import andauImage from "./../public/assets/andau/DJI_0701.JPG";
-import bg1 from "./../public/image/resort/andauresortdouble.jpeg";
-import bg2 from "./../public/image/resort/andauresortdouble1.jpeg";
-import bg3 from "./../public/image/resort/andauresorttwin.jpeg";
-import image1 from "./../public/image/resort/familyroom.jpeg";
-import image2 from "./../public/image/resort/terasandauroom.jpeg";
-import image3 from "./../public/image/resort/viewkamar.jpeg";
+import bg111 from "./../public/image/resort/andauresortdouble.jpeg";
+import bg222 from "./../public/image/resort/andauresortdouble1.jpeg";
+import bg333 from "./../public/image/resort/andauresorttwin.jpeg";
+import image111 from "./../public/image/resort/familyroom.jpeg";
+import image222 from "./../public/image/resort/terasandauroom.jpeg";
+import image333 from "./../public/image/resort/viewkamar.jpeg";
+import bg1 from "./../public/image/andau1.jpeg";
+import bg2 from "./../public/image/andau2.jpeg";
+import bg3 from "./../public/image/andau3.jpeg";
+import image1 from "./../public/image/20230722_190113.jpg";
+import image2 from "./../public/image/20230722_191322.jpg";
+import image3 from "./../public/image/20230722_203051.jpg";
+import image4 from "./../public/image/20230722_222819.jpg";
+import image5 from "./../public/image/andau_restaurant.jpg";
+import image6 from "./../public/image/gazebo.jpg";
+import andauImage2 from "./../public/assets/andau/DJI_0701.JPG";
 import useTranslation from "next-translate/useTranslation";
 import API from "../src/common/api";
 import Head from "next/head";
@@ -101,29 +111,92 @@ export default function AndauResort() {
             </div>
           </div>
           {/* <iframe src="https://drive.google.com/file/d/1G8m6M5zwABWsAXIKH5zJHFbkJq-X0JUi/preview" width="640" height="480" allow="autoplay"></iframe> */}
-          <div className="col-md-4" >
-            <Image src={bg1} className="img-fluid mb-3" style={{ height: "311px", objectFit: "cover" }}   />
-            <Typography variant="body2" className="mb-3">Andau Resort Double</Typography>
+          <div className="col-md-4">
+            {" "}
+            <Image src={bg1} className="img-fluid mb-3" />
           </div>
-          <div className="col-md-4" >
-            <Image src={bg3} className="img-fluid mb-3"   />
-            <Typography variant="body2" className="mb-3">Andau Resort Double</Typography>
+          <div className="col-md-4">
+            {" "}
+            <Image src={bg3} className="img-fluid mb-3" />
           </div>
-          <div className="col-md-4" >
-            <Image src={bg2} className="img-fluid mb-3"   />
-            <Typography variant="body2" className="mb-3">Andau Resort Twin</Typography>
+          <div className="col-md-4">
+            {" "}
+            <Image src={bg2} className="img-fluid mb-5" />
           </div>
-          <div className="col-md-4" >
-            <Image src={image1} className="img-fluid mb-3"   />
-            <Typography variant="body2" className="mb-3">Family Room</Typography>
+          {/* <div className="col-md-4">
+            <Image src={image1} className="img-fluid mb-3" />
           </div>
-          <div className="col-md-4" >
-            <Image src={image2} className="img-fluid mb-3"   />
-            <Typography variant="body2" className="mb-3">Teras Andau</Typography>
+          <div className="col-md-4">
+            <Image src={image2} className="img-fluid mb-3" />
           </div>
-          <div className="col-md-4" >
-            <Image src={image3} className="img-fluid mb-3"   />
-            <Typography variant="body2" className="mb-3">Andau Resort</Typography>
+          <div className="col-md-4">
+            <Image src={image3} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={image4} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={image5} className="img-fluid mb-3" />
+          </div>
+          <div className="col-md-4">
+            <Image src={image6} className="img-fluid mb-3" />
+          </div> */}
+          <br />
+          <div className="col-md-4">
+            <Image
+              src={bg111}
+              className="img-fluid mb-3"
+              style={{ height: "311px", objectFit: "cover" }}
+            />
+            <Typography variant="body2" className="mb-3">
+              Andau Resort Double
+            </Typography>
+          </div>
+          <div className="col-md-4">
+            <Image src={bg333} className="img-fluid mb-3" />
+            <Typography variant="body2" className="mb-3">
+              Andau Resort Double
+            </Typography>
+          </div>
+          <div className="col-md-4">
+            <Image src={bg222} className="img-fluid mb-3" />
+            <Typography variant="body2" className="mb-3">
+              Andau Resort Twin
+            </Typography>
+          </div>
+          <div className="col-md-4">
+            <Image src={image111} className="img-fluid mb-3" />
+            <Typography variant="body2" className="mb-3">
+              Family Room
+            </Typography>
+          </div>
+          <div className="col-md-4">
+            <Image src={image222} className="img-fluid mb-3" />
+            <Typography variant="body2" className="mb-3">
+              Teras Andau
+            </Typography>
+          </div>
+          <div className="col-md-4">
+            <Image src={image333} className="img-fluid mb-3" />
+            <Typography variant="body2" className="mb-3">
+              Andau Resort
+            </Typography>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="google-map-code mb-2">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d37955.16186399516!2d130.252435717325!3d-0.6707242892240801!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d5e3e46d42f1459%3A0xafa9f72bb4ba8b84!2sAndau%20Homestay%20and%20Resort!5e0!3m2!1sen!2sid!4v1716449822924!5m2!1sen!2sid"
+                width="800"
+                height="450"
+                frameborder="0"
+                style={{ border: 0 }}
+                allowfullscreen=""
+                aria-hidden="false"
+                tabindex="0"
+              />
+            </div>
           </div>
         </div>
       </div>
