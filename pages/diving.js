@@ -39,6 +39,7 @@ import Family from "../src/components/Home/Family";
 import VIPDouble from "../src/components/Home/VIPDouble";
 import VIPDoubleExtra from "../src/components/Home/VIPDoubleExtra";
 import VIPKing from "../src/components/Home/VIPKing";
+import DivingSlide from "../src/components/Home/DivingSlide";
 
 export default function AndauResort() {
     const [img, setImg] = useState();
@@ -130,7 +131,7 @@ export default function AndauResort() {
                         </div>
                     </div>
                     {/* <iframe src="https://drive.google.com/file/d/1G8m6M5zwABWsAXIKH5zJHFbkJq-X0JUi/preview" width="640" height="480" allow="autoplay"></iframe> */}
-                    <div className="col-md-4">
+                    {/* <div className="col-md-4">
                         {" "}
                         <Image src={bg1} className="img-fluid mb-3" />
                     </div>
@@ -168,7 +169,7 @@ export default function AndauResort() {
                     </div>
                     <div className="col-md-4">
                         <Image src={image9} className="img-fluid mb-3" />
-                    </div>
+                    </div> */}
                     {/* <br />
           <div className="col-md-4">
             <Image
@@ -211,7 +212,7 @@ export default function AndauResort() {
             </Typography>
           </div> */}
                 </div>
-
+                <DivingSlide onClick={handleOpen} />
                 {/* <AndauDouble onClick={handleOpen} />
                 <AndauKing onClick={handleOpen} />
                 <Family onClick={handleOpen} />
