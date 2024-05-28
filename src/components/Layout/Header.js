@@ -150,6 +150,7 @@ export default function Header(props) {
                   <Link href="/ourspeedboat">Our Speedboat</Link>
                   {/* <Link href="/andauisland">Andau Island</Link> */}
                   <Link href="/andauresort">Andau Resort</Link>
+                  <Link href="/diving">Diving</Link>
                 </div>
               </div>
               <div className={styles.navItem}>
