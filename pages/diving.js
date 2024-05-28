@@ -106,7 +106,7 @@ export default function AndauResort() {
                     <div className="col-8">
                         <TitleSection title="Diving Raja Ampat" more={false} />
                         <h5 className="mt-3 mb-4">
-                            Explore the breathtaking underwater world of Raja Ampat with Andau Vetty. Dive into crystal-clear waters and discover vibrant coral reefs teeming with marine life. Our diving tours are led by experienced guides, ensuring a safe and memorable adventure. Whether you're a beginner or an experienced diver, Andau Resort offers the perfect diving experience in one of the most beautiful marine environments on the planet.
+                            Explore the breathtaking underwater world of Raja Ampat with Andau Vetty. Dive into crystal-clear waters and discover vibrant coral reefs teeming with marine life. Our diving tours are led by experienced guides, ensuring a safe and memorable adventure. Whether youre a beginner or an experienced diver, Andau Resort offers the perfect diving experience in one of the most beautiful marine environments on the planet.
                         </h5>
                     </div>
                     <div className="col-4 align-self-end mb-4">
