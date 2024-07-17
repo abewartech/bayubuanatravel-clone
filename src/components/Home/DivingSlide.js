@@ -28,7 +28,6 @@ export default function DivingSlide(props) {
   return (
     <div className={`${styles.galleryList}`}>
       <div className="row">
-        {/* <TitleKecilSection title="Diving" more={false} /> */}
         <Splide
           options={{
             type: "loop",
@@ -64,7 +63,6 @@ export default function DivingSlide(props) {
                 >
                   <Image alt="gallery" src={item} />
                 </div>
-                {/* <div className={styles.caption}>Photo By</div> */}
               </SplideSlide>
             );
           })}
