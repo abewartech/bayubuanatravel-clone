@@ -148,7 +148,6 @@ export default function Header(props) {
                   <Link href="/about">About Us</Link>
                   <Link href="/ourrestaurant">Our Restaurant</Link>
                   <Link href="/ourspeedboat">Our Speedboat</Link>
-                  {/* <Link href="/andauisland">Andau Island</Link> */}
                   <Link href="/andauresort">Andau Resort</Link>
                   <Link href="/diving">Diving</Link>
                 </div>
@@ -156,12 +155,6 @@ export default function Header(props) {
               <div className={styles.navItem}>
                 <Link href="/packages" className="text-uppercase">{t("packages")}</Link>
               </div>
-              {/* <div className={styles.navItem}>
-                <Link href="/resort">{t("resort")}</Link>
-              </div> */}
-              {/* <div className={styles.navItem}>
-                <Link href="/gallery">{t("gallery")}</Link>
-              </div> */}
               <div className={styles.navItem}>
                 <Link href="/contact-us" className="text-uppercase">{t("contactus")}</Link>
               </div>
@@ -188,52 +181,6 @@ export default function Header(props) {
                           </div>
                         </span>
                       )}
-                      {/* {showOptions && (
-                        <div
-                          className={styles.options}
-                          style={{
-                            position: "absolute",
-                            paddingTop: "10px",
-                            opacity: 1
-                          }}
-                        >
-                          <div
-                            style={{
-                              borderRadius: 10,
-                              background: "white",
-                              display: "flex",
-                              flexDirection: "column",
-                              padding: "12px 20px",
-                              opacity: 1
-                            }}
-                          >
-                            <Button
-                              variant="contained"
-                              onClick={handleProfile} // Add a function to handle profile
-                              suppressHydrationWarning
-                              style={{
-                                margin: "5px 0",
-                                backgroundColor: "#0197da",
-                                color: "#fff"
-                              }}
-                            >
-                              Profile
-                            </Button>
-                            <Button
-                              variant="contained"
-                              onClick={handleLogout}
-                              suppressHydrationWarning
-                              style={{
-                                margin: "5px 0",
-                                backgroundColor: "#fdc202",
-                                color: "#fff"
-                              }}
-                            >
-                              {t("logout")}
-                            </Button>
-                          </div>
-                        </div>
-                      )} */}
                     </div>
                   ) : (
                     <Button
@@ -356,9 +303,6 @@ export default function Header(props) {
                         Email
                       </Typography>
 
-                      {/* <Field type="text" name="email" placeholder="Email" />
-                      <ErrorMessage name="email" component="div" /> */}
-
                       <div
                         style={{ position: "relative", marginBottom: "16px" }}
                       >
@@ -460,13 +404,6 @@ export default function Header(props) {
                           </div>
                         )}
                       </div>
-
-                      {/* <Field
-                        type="password"
-                        name="password"
-                        placeholder="Your Password"
-                      />
-                      <ErrorMessage name="password" component="div" /> */}
 
                       <div
                         sx={{
