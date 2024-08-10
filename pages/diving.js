@@ -132,29 +132,14 @@ export default function AndauResort() {
                     </div>
                 </div>
                 <DivingSlide onClick={handleOpen} />
-                <div className="iframe-container mb-10">
+                <div class="ratio ratio-16x9 w-100 mb-2" style={{ height: "600px" }}>
                     <iframe
                         src="https://marinarajaampat-31hnwcc.gamma.site/"
-                        frameBorder="0"
                         allowFullScreen
                     ></iframe>
                 </div>
             </div>
             <ModalComponent open={open} close={handleOpen} content={content} />
-            <style jsx>{`
-                .iframe-container {
-                    position: relative;
-                    overflow: hidden;
-                    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-                }
-                .iframe-container iframe {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                }
-            `}</style>
         </Layout>
     );
 }
