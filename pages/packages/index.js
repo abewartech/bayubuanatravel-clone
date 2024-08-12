@@ -123,7 +123,7 @@ export default function TypeDestination() {
               variant="standard"
               size="small"
             >
-              <MenuItem value="0">{t("nearestdate")}</MenuItem>
+              {/* <MenuItem value="0">{t("nearestdate")}</MenuItem> */}
               <MenuItem value="1">A-Z</MenuItem>
               <MenuItem value="2">Z-A</MenuItem>
               <MenuItem value="3">{t("lowprice")}</MenuItem>
