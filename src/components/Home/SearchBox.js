@@ -17,7 +17,7 @@ export default function SearchBox() {
   const [orderBy, setOrderBy] = useState(0);
 
   const options = [
-    { value: 0, label: t("nearestdate") },
+    // { value: 0, label: t("nearestdate") },
     { value: 1, label: "A-Z" },
     { value: 2, label: "Z-A" },
     { value: 3, label: t("lowprice") },
