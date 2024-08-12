@@ -29,7 +29,7 @@ export default function TypeDestination() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchName, setSearchName] = useState("");
-  const [orderBy, setOrderBy] = useState(0); // Default ordering option
+  const [orderBy, setOrderBy] = useState(1); // Default ordering option
   const [isMounted, setIsMounted] = useState(false);
 
   const breadcrumb = [
