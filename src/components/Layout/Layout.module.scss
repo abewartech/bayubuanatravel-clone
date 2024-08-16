@@ -68,6 +68,8 @@
     .mainHeader {
       padding: 16px 0;
       background-color: #fff;
+      position: relative;
+      z-index: 1;
       .logoWrap {
       }
       .navWrap {
