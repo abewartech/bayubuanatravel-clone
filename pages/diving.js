@@ -102,7 +102,7 @@ export default function AndauResort() {
                 background={andauImage}
             />
             <div className="container">
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-8">
                         <TitleSection title="Diving Raja Ampat" more={false} />
                         <h5 className="mt-3 mb-4">
@@ -131,8 +131,8 @@ export default function AndauResort() {
                         </div>
                     </div>
                 </div>
-                <DivingSlide onClick={handleOpen} />
-                <div class="ratio ratio-16x9 w-100 mb-2" style={{ height: "600px" }}>
+                <DivingSlide onClick={handleOpen} /> */}
+                <div class="ratio ratio-16x9 w-100 mb-2" style={{ height: "6900px" }}>
                     <iframe
                         src="https://marinarajaampat-31hnwcc.gamma.site/"
                         allowFullScreen
