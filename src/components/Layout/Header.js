@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 const DynamicModal = dynamic(() => import("@mui/material/Modal"), {
-  ssr: false
+  ssr: false,
 });
 import {
   Button,
@@ -27,7 +27,7 @@ import {
   CircularProgress,
   TextField,
   InputAdornment,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { ErrorMessage, Field, Formik } from "formik";
@@ -48,7 +48,7 @@ const style = {
   border: "none",
   borderRadius: 4,
   boxShadow: 24,
-  p: 1
+  p: 1,
 };
 export default function Header(props) {
   const { t, lang } = useTranslation("common");
@@ -75,7 +75,7 @@ export default function Header(props) {
     setRefreshToken,
     setUsername,
     setEmail,
-    setLoginData
+    setLoginData,
   } = useAuthStore();
   const handleClose = () => setOpen(false);
   useEffect(() => {
@@ -140,23 +140,36 @@ export default function Header(props) {
               className={`${styles.navWrap} col-lg-8 col-10 justify-content-end`}
             >
               <div className={styles.navItem}>
-                <Link href="/" className="text-uppercase">{t("home")}</Link>
+                <Link href="/" className="text-uppercase">
+                  {t("home")}
+                </Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/about" className="text-uppercase">{t("about")}</Link>
+                <Link href="/about" className="text-uppercase">
+                  {t("about")}
+                </Link>
                 <div className={styles.dropdown}>
                   <Link href="/about">About Us</Link>
                   <Link href="/ourrestaurant">Our Restaurant</Link>
                   <Link href="/ourspeedboat">Our Speedboat</Link>
                   <Link href="/andauresort">Andau Resort</Link>
-                  <Link href="/diving">Diving</Link>
+                  {/* <Link href="/diving">Diving</Link> */}
                 </div>
               </div>
               <div className={styles.navItem}>
-                <Link href="/packages" className="text-uppercase">{t("packages")}</Link>
+                <Link href="/packages" className="text-uppercase">
+                  {t("packages")}
+                </Link>
               </div>
               <div className={styles.navItem}>
-                <Link href="/contact-us" className="text-uppercase">{t("contactus")}</Link>
+                <Link href="/diving" className="text-uppercase">
+                  Diving
+                </Link>
+              </div>
+              <div className={styles.navItem}>
+                <Link href="/contact-us" className="text-uppercase">
+                  {t("contactus")}
+                </Link>
               </div>
               <div className={`${styles.navItem} language-switcher`}>
                 <LanguageSwitcher />
@@ -216,7 +229,7 @@ export default function Header(props) {
               position: "absolute",
               top: 0,
               right: 0,
-              margin: "10px"
+              margin: "10px",
             }}
           >
             <IconButton onClick={handleClose} color="primary">
@@ -286,7 +299,7 @@ export default function Header(props) {
                     handleChange,
                     handleBlur,
                     handleSubmit,
-                    isSubmitting
+                    isSubmitting,
                   }) => (
                     <form
                       sx={{ margin: 10, height: "40px" }}
@@ -316,7 +329,7 @@ export default function Header(props) {
                           }
                           style={{
                             height: "60px",
-                            backgroundColor: "#e9f0fe"
+                            backgroundColor: "#e9f0fe",
                           }}
                         />
                         {errors.email && touched.email && (
@@ -326,7 +339,7 @@ export default function Header(props) {
                               position: "absolute",
                               bottom: "-2px",
                               fontSize: 11,
-                              fontWeight: "bold"
+                              fontWeight: "bold",
                             }}
                           >
                             {errors.email}
@@ -385,7 +398,7 @@ export default function Header(props) {
                                       )}
                                     </IconButton>
                                   </InputAdornment>
-                                )
+                                ),
                               }}
                             />
                           )}
@@ -397,7 +410,7 @@ export default function Header(props) {
                               position: "absolute",
                               bottom: "-2px",
                               fontSize: 11,
-                              fontWeight: "bold"
+                              fontWeight: "bold",
                             }}
                           >
                             {errors.password}
@@ -410,21 +423,21 @@ export default function Header(props) {
                           display: "flex",
                           justifyContent: "flex-start",
                           marginTop: 1,
-                          textDecoration: "none"
+                          textDecoration: "none",
                         }}
                       >
                         <Link
                           href="/forgot-password"
                           passHref
                           style={{
-                            textDecoration: "none"
+                            textDecoration: "none",
                           }}
                         >
                           <Typography
                             as="a"
                             style={{
                               color: "textPrimary",
-                              textDecoration: "none"
+                              textDecoration: "none",
                             }}
                             variant="body2"
                           >
@@ -437,7 +450,7 @@ export default function Header(props) {
                         sx={{
                           display: "flex",
                           justifyContent: "flex-start",
-                          marginTop: 16
+                          marginTop: 16,
                         }}
                       >
                         <LoadingButton
@@ -452,7 +465,7 @@ export default function Header(props) {
                           type="submit"
                           style={{
                             backgroundColor: "#0197da",
-                            color: isSubmitting ? "grey" : "white"
+                            color: isSubmitting ? "grey" : "white",
                           }}
                         >
                           {t("login")}
@@ -462,7 +475,7 @@ export default function Header(props) {
                         id="btn-regist"
                         sx={{
                           display: "flex",
-                          justifyContent: "flex-start"
+                          justifyContent: "flex-start",
                         }}
                       >
                         {t("dont")}
@@ -483,7 +496,7 @@ export default function Header(props) {
       <Snackbar
         anchorOrigin={{
           vertical: "top",
-          horizontal: "center"
+          horizontal: "center",
         }}
         open={snackbarOpen}
         autoHideDuration={6000}
