@@ -1,5 +1,8 @@
 <!-- GitAds-Verify: 75TBJ9YUR99KAG1WRFAR27LLMX4USNE3 -->
 
+## GitAds Sponsored
+[![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=abewartech/bayubuanatravel-clone@github)](https://gitads.dev/v1/ad-track?source=abewartech/bayubuanatravel-clone@github)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
